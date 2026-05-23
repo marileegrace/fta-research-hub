@@ -356,10 +356,10 @@ body {
   <div class="hero-content">
     <div class="hero-badge">Foundational Trading Academy</div>
     <h1>Investment Research Hub</h1>
-    <div class="subtitle">Deep-Dive Analysis &middot; LUC Framework &middot; Institutional Grade</div>
+    <div class="subtitle">Deep-Dive Analysis &middot; FTA Framework &middot; Institutional Grade</div>
     <div class="hero-stats">
       <div class="hero-stat">
-        <div class="num" id="totalReports">2</div>
+        <div class="num" id="totalReports">3</div>
         <div class="label">Reports</div>
       </div>
       <div class="hero-stat">
@@ -376,10 +376,10 @@ body {
 
 <!-- FILTER BAR -->
 <div class="filter-bar">
-  <button class="filter-btn active" onclick="filterSector('all')">All<span class="count" id="count-all">2</span></button>
+  <button class="filter-btn active" onclick="filterSector('all')">All<span class="count" id="count-all">3</span></button>
   <button class="filter-btn" onclick="filterSector('robotics')">Robotics<span class="count">1</span></button>
   <button class="filter-btn" onclick="filterSector('software-ai')">Software / AI<span class="count">1</span></button>
-  <button class="filter-btn" onclick="filterSector('energy')">Energy<span class="count">0</span></button>
+  <button class="filter-btn" onclick="filterSector('energy')">Energy<span class="count">1</span></button>
   <button class="filter-btn" onclick="filterSector('data-centers')">Data Centers<span class="count">0</span></button>
   <button class="filter-btn" onclick="filterSector('space-race')">Space Race<span class="count">0</span></button>
   <button class="filter-btn" onclick="filterSector('healthcare')">Healthcare<span class="count">0</span></button>
@@ -475,13 +475,26 @@ body {
       <div>
         <div class="sector-title">Energy</div>
       </div>
-      <div class="sector-count">0 / 4 tickers</div>
+      <div class="sector-count">1 / 4 tickers</div>
     </div>
     <div class="report-grid">
-      <div class="sector-empty">
-        <div class="empty-icon">&#128203;</div>
-        <p>Reports coming soon</p>
-      </div>
+      <a href="ET_Investment_Report_2026-05-21.html" class="report-card">
+        <div class="card-top">
+          <div class="ticker">ET</div>
+          <div class="conviction">7.5/10</div>
+        </div>
+        <div class="company">Energy Transfer LP</div>
+        <div class="metrics">
+          <div class="metric"><div class="metric-label">PRICE</div><div class="metric-value">$20.42</div></div>
+          <div class="metric"><div class="metric-label">MKT CAP</div><div class="metric-value">$70.2B</div></div>
+          <div class="metric"><div class="metric-label">EV/EBITDA</div><div class="metric-value">~7.5x</div></div>
+          <div class="metric"><div class="metric-label">YIELD</div><div class="metric-value green">6.6%</div></div>
+        </div>
+        <div class="card-footer">
+          <span class="date">May 21, 2026</span>
+          <span class="arrow">&rarr;</span>
+        </div>
+      </a>
     </div>
   </div>
 
@@ -541,7 +554,7 @@ body {
 <!-- FOOTER -->
 <footer class="site-footer">
   <div class="brand">Foundational Trading Academy</div>
-  <div class="sub">Investment Research Hub &middot; LUC Advanced Analysis Framework</div>
+  <div class="sub">Investment Research Hub &middot; FTA Advanced Analysis Framework</div>
   <div class="disclaimer">
     This site is for informational and educational purposes only and does not constitute investment advice.
     Past performance is not indicative of future results. Always conduct your own due diligence.

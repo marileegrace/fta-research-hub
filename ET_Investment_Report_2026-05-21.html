@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Energy Transfer (ET) — Investment Research Report | FTA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Questrial&family=Quicksand:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  --green:#1B6B2A;
+  --green-dark:#11401a;
+  --green-mid:#2c8a3d;
+  --gold:#FCC55B;
+  --gold-deep:#e0a838;
+  --beige:#EDE8E0;
+  --beige-card:#f6f3ed;
+  --ink:#23241f;
+  --muted:#5d6155;
+  --red:#a8341f;
+  --line:#d8d1c4;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;background:var(--beige);color:var(--ink);
+  font-family:'Quicksand',sans-serif;font-weight:400;line-height:1.65;
+}
+a{color:var(--green);text-decoration:none;border-bottom:1px dotted var(--gold-deep);}
+a:hover{color:var(--green-mid);}
+
+/* ---------- LAYOUT ---------- */
+.wrap{display:flex;min-height:100vh;}
+.sidebar{
+  width:262px;flex:0 0 262px;position:sticky;top:0;height:100vh;overflow-y:auto;
+  background:linear-gradient(180deg,var(--green-dark),var(--green));
+  color:#f3efe6;padding:0 0 40px;border-right:3px solid var(--gold);
+}
+.sidebar .brand{padding:24px 22px 18px;border-bottom:1px solid rgba(252,197,91,.3);}
+.sidebar .brand .logo{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:700;font-size:1.6rem;color:var(--gold);line-height:1.1;}
+.sidebar .brand .sub{font-family:'Questrial',sans-serif;font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:#cfe6d2;margin-top:6px;}
+.sidebar nav{padding:14px 10px;}
+.sidebar nav a{
+  display:block;color:#e9f3ea;border:none;font-size:.83rem;font-weight:500;
+  padding:8px 12px;border-radius:7px;margin:1px 0;transition:.15s;
+}
+.sidebar nav a:hover{background:rgba(252,197,91,.16);color:#fff;}
+.sidebar nav a .n{font-family:'JetBrains Mono',monospace;color:var(--gold);font-size:.72rem;margin-right:8px;}
+.sidebar .tickerbox{margin:12px 16px;padding:12px 14px;background:rgba(0,0,0,.18);border-radius:9px;border:1px solid rgba(252,197,91,.25);}
+.sidebar .tickerbox .t{font-family:'JetBrains Mono',monospace;font-size:1.3rem;font-weight:700;color:#fff;}
+.sidebar .tickerbox .p{font-family:'JetBrains Mono',monospace;color:var(--gold);font-size:1.05rem;}
+.sidebar .tickerbox .m{font-size:.68rem;color:#bfe0c4;margin-top:3px;}
+
+.main{flex:1;min-width:0;}
+
+/* ---------- HEADER ---------- */
+header.hero{
+  background:linear-gradient(120deg,var(--green-dark) 0%,var(--green) 60%,var(--green-mid) 100%);
+  color:#fff;padding:42px 48px 38px;position:relative;overflow:hidden;
+  border-bottom:4px solid var(--gold);
+}
+header.hero::after{
+  content:"";position:absolute;right:-60px;top:-60px;width:280px;height:280px;border-radius:50%;
+  background:radial-gradient(circle,rgba(252,197,91,.22),transparent 70%);
+}
+header.hero .eyebrow{font-family:'Questrial',sans-serif;letter-spacing:.28em;text-transform:uppercase;font-size:.7rem;color:var(--gold);}
+header.hero h1{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:700;font-size:2.9rem;margin:8px 0 4px;line-height:1.05;}
+header.hero h1 .tk{font-family:'JetBrains Mono',monospace;font-style:normal;font-weight:700;color:var(--gold);font-size:2.1rem;}
+header.hero .meta{font-size:.86rem;color:#d7ecda;margin-top:6px;}
+header.hero .verdict{
+  display:inline-block;margin-top:18px;background:var(--gold);color:var(--green-dark);
+  font-family:'Questrial',sans-serif;font-weight:400;letter-spacing:.04em;
+  padding:9px 20px;border-radius:30px;font-size:.95rem;box-shadow:0 4px 14px rgba(0,0,0,.18);
+}
+header.hero .verdict b{font-weight:700;}
+
+/* ---------- KPI STRIP ---------- */
+.kpistrip{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:var(--line);border-bottom:1px solid var(--line);}
+.kpistrip .kpi{background:var(--beige-card);padding:14px 16px;text-align:center;}
+.kpistrip .kpi .lab{font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600;}
+.kpistrip .kpi .val{font-family:'JetBrains Mono',monospace;font-size:1.18rem;font-weight:700;color:var(--green);margin-top:4px;}
+.kpistrip .kpi .sub{font-size:.64rem;color:var(--muted);}
+
+/* ---------- CONTENT ---------- */
+.content{padding:30px 48px 80px;max-width:1080px;}
+section.card{
+  background:var(--beige-card);border:1px solid var(--line);border-radius:14px;
+  margin:20px 0;box-shadow:0 2px 10px rgba(40,50,30,.05);overflow:hidden;
+}
+.sec-head{
+  display:flex;align-items:center;gap:14px;cursor:pointer;padding:18px 24px;
+  background:linear-gradient(90deg,rgba(27,107,42,.06),transparent);
+  border-left:5px solid var(--green);transition:.15s;user-select:none;
+}
+.sec-head:hover{background:linear-gradient(90deg,rgba(27,107,42,.12),transparent);}
+.sec-head .num{font-family:'JetBrains Mono',monospace;font-weight:700;color:#fff;background:var(--green);
+  width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.9rem;flex:0 0 34px;}
+.sec-head h2{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:700;font-size:1.62rem;margin:0;color:var(--green-dark);flex:1;line-height:1.1;}
+.sec-head .chev{font-family:'JetBrains Mono',monospace;color:var(--gold-deep);font-size:1.2rem;transition:transform .25s;}
+section.card.collapsed .chev{transform:rotate(-90deg);}
+.sec-body{padding:6px 28px 26px;}
+section.card.collapsed .sec-body{display:none;}
+
+h3{font-family:'Questrial',sans-serif;font-weight:400;font-size:1.12rem;color:var(--green-dark);margin:22px 0 8px;letter-spacing:.01em;}
+h4{font-family:'Questrial',sans-serif;font-weight:400;font-size:.96rem;color:var(--green);margin:16px 0 6px;text-transform:uppercase;letter-spacing:.08em;}
+p{margin:10px 0;}
+.lead{font-size:1.04rem;}
+.callout{background:rgba(252,197,91,.16);border:1px solid var(--gold);border-radius:10px;padding:14px 18px;margin:16px 0;}
+.callout.green{background:rgba(27,107,42,.08);border-color:var(--green);}
+.thesis{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:600;line-height:1.4;color:var(--green-dark);border-left:4px solid var(--gold);padding:6px 0 6px 20px;margin:14px 0;}
+.thesis b{color:var(--green);font-style:italic;}
+
+/* ---------- TABLES ---------- */
+.tbl-wrap{overflow-x:auto;margin:14px 0;}
+table{border-collapse:collapse;width:100%;font-size:.85rem;background:#fff;border-radius:8px;overflow:hidden;}
+th{background:var(--green);color:#fff;font-family:'Questrial',sans-serif;font-weight:400;text-align:left;padding:10px 12px;font-size:.78rem;letter-spacing:.04em;}
+td{padding:9px 12px;border-bottom:1px solid var(--line);}
+td.mono,th.mono{font-family:'JetBrains Mono',monospace;}
+tr:nth-child(even) td{background:rgba(27,107,42,.035);}
+tr:hover td{background:rgba(252,197,91,.12);}
+.pos{color:var(--green);font-weight:700;}
+.neg{color:var(--red);font-weight:700;}
+.score{font-family:'JetBrains Mono',monospace;font-weight:700;padding:2px 8px;border-radius:5px;color:#fff;font-size:.78rem;}
+.s-hi{background:var(--green);}
+.s-mid{background:var(--gold-deep);}
+.s-lo{background:var(--red);}
+
+/* ---------- CHARTS ---------- */
+.chart-card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px 12px;margin:16px 0;}
+.chart-card .ctitle{font-family:'Questrial',sans-serif;font-size:.9rem;color:var(--green-dark);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px;display:flex;justify-content:space-between;align-items:center;}
+.chart-card .ctitle .zoom{font-size:.62rem;color:var(--muted);font-family:'Quicksand';text-transform:none;letter-spacing:0;border:1px solid var(--line);border-radius:20px;padding:2px 9px;cursor:pointer;}
+.chart-card .ctitle .zoom:hover{background:var(--gold);color:var(--green-dark);}
+.chart-holder{position:relative;height:300px;cursor:zoom-in;}
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media(max-width:880px){.chart-grid{grid-template-columns:1fr;}}
+.cap{font-size:.72rem;color:var(--muted);font-style:italic;margin-top:4px;}
+
+/* metric chips */
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0;}
+.chip{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;flex:1 1 140px;}
+.chip .l{font-size:.62rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);font-weight:600;}
+.chip .v{font-family:'JetBrains Mono',monospace;font-size:1.15rem;font-weight:700;color:var(--green);margin-top:2px;}
+
+/* timeline */
+.timeline{position:relative;margin:20px 0 10px;padding-left:8px;}
+.timeline::before{content:"";position:absolute;left:14px;top:6px;bottom:6px;width:3px;background:linear-gradient(var(--green),var(--gold));}
+.tl-item{position:relative;padding:0 0 20px 44px;}
+.tl-item::before{content:"";position:absolute;left:8px;top:3px;width:15px;height:15px;border-radius:50%;background:var(--gold);border:3px solid var(--green);}
+.tl-item .date{font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--green);font-weight:700;}
+.tl-item .ev{font-weight:600;}
+.tl-item .ds{font-size:.84rem;color:var(--muted);}
+
+/* scenario cards */
+.scen-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:14px 0;}
+@media(max-width:880px){.scen-grid{grid-template-columns:1fr;}}
+.scen{border-radius:12px;padding:16px;border:1px solid var(--line);background:#fff;}
+.scen.bull{border-top:4px solid var(--green);}
+.scen.base{border-top:4px solid var(--gold-deep);}
+.scen.bear{border-top:4px solid var(--red);}
+.scen h5{margin:0 0 6px;font-family:'Questrial',sans-serif;font-weight:400;text-transform:uppercase;letter-spacing:.08em;font-size:.86rem;}
+.scen .pt{font-family:'JetBrains Mono',monospace;font-size:1.5rem;font-weight:700;}
+.scen.bull .pt{color:var(--green);} .scen.base .pt{color:var(--gold-deep);} .scen.bear .pt{color:var(--red);}
+.scen .prob{font-size:.72rem;color:var(--muted);}
+.scen ul{margin:8px 0 0;padding-left:18px;font-size:.8rem;}
+.scen li{margin:3px 0;}
+
+/* risk */
+.risk{background:#fff;border:1px solid var(--line);border-left:4px solid var(--red);border-radius:10px;padding:14px 16px;margin:12px 0;}
+.risk .rh{font-weight:700;color:var(--red);font-size:1rem;}
+.risk .rmeta{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0;}
+.tag{font-size:.66rem;font-family:'JetBrains Mono',monospace;padding:3px 9px;border-radius:20px;background:var(--beige);border:1px solid var(--line);}
+.tag b{color:var(--green-dark);}
+
+/* glossary */
+.gloss dt{font-family:'Questrial',sans-serif;font-weight:700;color:var(--green-dark);margin-top:16px;font-size:1rem;}
+.gloss dd{margin:4px 0 4px 0;font-size:.88rem;}
+.gloss .formula{font-family:'JetBrains Mono',monospace;background:rgba(27,107,42,.06);padding:3px 8px;border-radius:5px;font-size:.82rem;display:inline-block;margin:4px 0;}
+.gloss .back{font-size:.72rem;}
+.gref{border-bottom:1px dashed var(--gold-deep);cursor:help;color:var(--green);}
+
+footer{background:var(--green-dark);color:#cfe6d2;padding:26px 48px;font-size:.76rem;border-top:4px solid var(--gold);}
+footer b{color:var(--gold);}
+
+/* modal */
+.modal{display:none;position:fixed;inset:0;z-index:99;background:rgba(17,30,17,.86);align-items:center;justify-content:center;padding:30px;}
+.modal.open{display:flex;}
+.modal .box{background:var(--beige-card);border-radius:14px;padding:22px;width:min(960px,95vw);height:min(640px,88vh);position:relative;border:2px solid var(--gold);}
+.modal .box .mt{font-family:'Questrial';color:var(--green-dark);text-transform:uppercase;letter-spacing:.06em;font-size:1rem;margin-bottom:10px;}
+.modal .close{position:absolute;top:12px;right:16px;cursor:pointer;font-family:'JetBrains Mono';font-weight:700;color:var(--red);font-size:1.3rem;border:none;background:none;}
+.modal .mholder{position:relative;height:calc(100% - 50px);}
+
+@media(max-width:780px){
+  .sidebar{display:none;}
+  .content,header.hero,footer{padding-left:20px;padding-right:20px;}
+  .kpistrip{grid-template-columns:repeat(3,1fr);}
+  header.hero h1{font-size:2.1rem;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- ============ SIDEBAR ============ -->
+<aside class="sidebar">
+  <div class="brand">
+    <div class="logo">Foundational<br>Trading Academy</div>
+    <div class="sub">Deep Alpha Research</div>
+  </div>
+  <div class="tickerbox">
+    <div class="t">NYSE: ET</div>
+    <div class="p">$20.42</div>
+    <div class="m">Energy Transfer LP · as of May 19 2026</div>
+  </div>
+  <nav>
+    <a href="#s1"><span class="n">01</span>Executive Summary &amp; Thesis</a>
+    <a href="#s2"><span class="n">02</span>Micro &amp; Valuation</a>
+    <a href="#s3"><span class="n">03</span>Moat, Management &amp; Culture</a>
+    <a href="#s4"><span class="n">04</span>Financial Deep Dive</a>
+    <a href="#s5"><span class="n">05</span>Earnings Tracker</a>
+    <a href="#s6"><span class="n">06</span>Bull / Base / Bear</a>
+    <a href="#s7"><span class="n">07</span>Risks &amp; Anti-Thesis</a>
+    <a href="#s8"><span class="n">08</span>Catalyst Timeline</a>
+    <a href="#s9"><span class="n">09</span>Comparable Companies</a>
+    <a href="#s10"><span class="n">10</span>First-Principles KPIs</a>
+    <a href="#s11"><span class="n">11</span>Glossary &amp; Method</a>
+  </nav>
+</aside>
+
+<div class="main">
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <div class="eyebrow">Institutional Equity Research · Independent</div>
+  <h1>Energy Transfer <span class="tk">(ET)</span></h1>
+  <div class="meta">Midstream Energy Infrastructure (MLP) · Report date: May 21, 2026 · Analyst: FTA Deep Alpha Desk</div>
+  <div class="verdict"><b>BULL</b> &nbsp;·&nbsp; Conviction <b>7.5 / 10</b> &nbsp;·&nbsp; The cheapest large-cap toll road into the AI power build-out</div>
+</header>
+
+<!-- KPI STRIP -->
+<div class="kpistrip">
+  <div class="kpi"><div class="lab">Price</div><div class="val">$20.42</div><div class="sub">19 May 2026</div></div>
+  <div class="kpi"><div class="lab">Market Cap</div><div class="val">$70.2B</div><div class="sub">~3.43B units</div></div>
+  <div class="kpi"><div class="lab">Distribution Yield</div><div class="val">6.6%</div><div class="sub">$1.35 / unit</div></div>
+  <div class="kpi"><div class="lab">2026E Adj. EBITDA</div><div class="val">$18.4B</div><div class="sub">guidance mid</div></div>
+  <div class="kpi"><div class="lab">EV / EBITDA</div><div class="val">~7.5x</div><div class="sub">fwd · peer-low</div></div>
+  <div class="kpi"><div class="lab">Analyst PT</div><div class="val">$21.7</div><div class="sub">avg · Buy</div></div>
+</div>
+
+<div class="content">
+
+<div class="callout">
+  <b>How to read this report.</b> Financial terms are not defined inline so the analysis can flow. Each <span class="gref">underlined dashed term</span> links to the <a href="#s11">Glossary &amp; Methodology</a> at the end, which defines it, gives the formula, explains why it matters, and links back. Click any section header to collapse it; click any chart to enlarge it.
+</div>
+
+<!-- ============ SECTION 1 ============ -->
+<section class="card" id="s1">
+  <div class="sec-head"><div class="num">01</div><h2>Executive Summary &amp; Investment Thesis</h2><div class="chev">▾</div></div>
+  <div class="sec-body">
+    <p class="thesis">Energy Transfer is a <b>$140B nationwide energy toll road priced like a melting ice cube</b> — yet its cash flows are growing double-digits, its balance sheet is finally inside target leverage, and it has just become a first-mover supplier of natural gas to AI data centers. The market is paying ~7.5x EBITDA for an asset compounding distributable cash flow while handing investors a covered 6.6% yield. We are <b>bullish</b>.</p>
+
+    <p class="lead">The core mispricing is simple. ET trades at the <b>lowest <a href="#g-evebitda" class="gref">EV/EBITDA</a> multiple of any large-cap midstream operator</b> (~7.5x forward vs. 9–11x for Enterprise, Williams, Kinder Morgan and MPLX), despite owning arguably the most diversified asset footprint in the sector: ~140,000 miles of pipe across 44 states touching every major U.S. basin. That discount was justified when leverage was high and capital allocation was erratic. Both problems have largely been fixed. The discount has not closed.</p>
+
+    <p>Three things changed the story in the last twelve months. First, <b>leverage is now inside the 4.0–4.5x target band</b> on all three rating agencies, ending a decade of balance-sheet anxiety. Second, the company is generating record operational volumes and raised 2026 <a href="#g-adjebitda" class="gref">Adjusted EBITDA</a> guidance by $750M at Q1 to <b>$18.2–18.6B</b>. Third — and most underappreciated — ET signed its first direct natural-gas supply deals to AI data centers (CloudBurst, Fermi), repositioning a "boring pipeline" as a <b>structural beneficiary of electricity demand growth</b> rather than a victim of energy transition.</p>
+
+    <div class="callout green">
+      <b>Why the asymmetry.</b> You are paid a ~6.6% covered distribution to wait. If ET simply re-rates from ~7.5x to a still-conservative 8.5x EBITDA — half the gap to peers — the equity is worth roughly $26–28 before counting any distribution growth. The downside is buffered by hard, fee-based, inflation-linked cash flows and a founder who keeps buying his own units in the open market. Heads you make 30%+ plus yield; tails the assets and the distribution protect you.
+    </div>
+
+    <h3>Snapshot</h3>
+    <div class="chips">
+      <div class="chip"><div class="l">Conviction</div><div class="v">7.5 / 10</div></div>
+      <div class="chip"><div class="l">Stance</div><div class="v">BULL</div></div>
+      <div class="chip"><div class="l">Sector</div><div class="v">Midstream</div></div>
+      <div class="chip"><div class="l">Structure</div><div class="v">MLP (K-1)</div></div>
+      <div class="chip"><div class="l">Q1'26 Adj. EBITDA</div><div class="v">$4.9B</div></div>
+      <div class="chip"><div class="l">Q1'26 DCF</div><div class="v">$2.7B</div></div>
+    </div>
+
+    <p style="font-size:.8rem;color:var(--muted);margin-top:14px;"><b>One caveat to the conviction score:</b> ET is a partnership that issues a <a href="#g-k1" class="gref">Schedule K-1</a> rather than a 1099, which carries tax complexity (UBTI in retirement accounts, state filings). The thesis is an asset/cash-flow thesis, not a trading call. This report is research, not personalized financial advice.</p>
+  </div>
+</section>
+
+<!-- ============ SECTION 2 ============ -->
+<section class="card" id="s2">
+  <div class="sec-head"><div class="num">02</div><h2>Microeconomic &amp; Valuation Analysis</h2><div class="chev">▾</div></div>
+  <div class="sec-body">
+    <h3>Industry &amp; TAM</h3>
+    <p>ET sits at the center of three durable demand vectors. (1) <b>U.S. natural gas</b> is the swing fuel for both LNG exports and domestic power, with EIA-class forecasts pointing to U.S. dry gas production and LNG feedgas demand both climbing through the decade. (2) <b>NGLs and exports</b> — ET runs record fractionation at Mont Belvieu and record NGL exports out of Nederland/Marcus Hook into a structurally short global market. (3) The new vector, <b>data-center electricity demand</b>, is the kicker: U.S. power demand is inflecting after two decades of flatness, and gas is the only dispatchable fuel that can scale on AI's timeline. The addressable midstream "toll" on these flows runs into the hundreds of billions; ET's relevant served market is best framed as the volume of hydrocarbons that must physically move from basin to demand center — a base that grows with both production and electrification.</p>
+
+    <div class="chart-grid">
+      <div class="chart-card"><div class="ctitle">Q1'26 Adjusted EBITDA by Segment <span class="zoom" data-c="segDoughnut">⤢ enlarge</span></div><div class="chart-holder"><canvas id="segDoughnut"></canvas></div><div class="cap">Diversification is the moat: no single segment &gt;~30% of EBITDA.</div></div>
+      <div class="chart-card"><div class="ctitle">Valuation: P/S Positioning Scale <span class="zoom" data-c="psGauge">⤢ enlarge</span></div><div class="chart-holder"><canvas id="psGauge"></canvas></div><div class="cap">ET P/S ≈ 0.8 → "Pessimistic" zone (normal for commodity-passthrough midstream).</div></div>
+    </div>
+
+    <h3>Valuation lens</h3>
+    <p>On the FTA <a href="#g-ps" class="gref">P/S</a> scale (&gt;30 Euphoric, &gt;18 Excited, &gt;8 Optimistic, 4–8 Aware, &lt;4 Cautious, &lt;2 Pessimistic), ET screens at roughly <b>0.8x sales — deep in the "Pessimistic" zone</b>. P/S is a weak tool for midstream because revenue includes large commodity pass-throughs (ET books ~$85B of revenue but keeps margin only on the toll), so we anchor instead on <a href="#g-evebitda" class="gref">EV/EBITDA</a> and <a href="#g-dcf" class="gref">DCF</a> yield. On EV/EBITDA, ET's ~7.5x forward multiple is the cheapest in its large-cap peer set. On a <a href="#g-pe" class="gref">P/E</a> basis ET trades around ~14x trailing earnings, again a discount to the group, while the distribution yield of ~6.6% is covered roughly 1.8–2.0x by DCF.</p>
+
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Metric</th><th class="mono">ET</th><th>FTA read</th></tr></thead>
+      <tbody>
+        <tr><td>EV / EBITDA (fwd)</td><td class="mono">~7.5x</td><td>Cheapest large-cap midstream — core of the thesis</td></tr>
+        <tr><td>Price / Sales</td><td class="mono">~0.8x</td><td>"Pessimistic" — but low-signal for pass-through revenue</td></tr>
+        <tr><td>P / E (ttm)</td><td class="mono">~14x</td><td>Discount to peers and to S&amp;P</td></tr>
+        <tr><td>Distribution yield</td><td class="mono">6.6%</td><td>Covered ~1.8–2.0x by DCF; 3–5% growth target</td></tr>
+        <tr><td>DCF coverage</td><td class="mono">~1.9x</td><td>Ample room to keep raising the payout</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <h3>Ownership &amp; insider behavior</h3>
+    <p>Insider alignment is unusually strong for a company this size. Executive Chairman and founder <b>Kelcy Warren</b> is the largest individual holder and has been a persistent <b>open-market buyer</b> — including a 1,000,000-unit purchase in November 2025 around $16.95, well above a token gesture. Founder buying at-or-above market is the highest-quality insider signal there is. Institutional ownership sits around the high-20s percent (with retail and insiders making up the balance), and institutional positioning was increasing into 2026. Analyst sentiment is constructive: a consensus <b>Buy</b>, with roughly 12 buy vs. 5 hold and no sells in the most recent tally, and Goldman Sachs raising its target after Q1.</p>
+
+    <div class="chart-card"><div class="ctitle">Analyst growth estimates &amp; price targets <span class="zoom" data-c="ptChart">⤢ enlarge</span></div><div class="chart-holder"><canvas id="ptChart"></canvas></div><div class="cap">Consensus PT ~$21.7 (range $21–$25). Note: street targets are conservative vs. our re-rating case.</div></div>
+  </div>
+</section>
+
+<!-- ============ SECTION 3 ============ -->
+<section class="card" id="s3">
+  <div class="sec-head"><div class="num">03</div><h2>Qualitative Analysis — Moat, Management &amp; Culture</h2><div class="chev">▾</div></div>
+  <div class="sec-body">
+    <h3>The moat, philosophically</h3>
+    <p>A pipeline's moat is not a brand or a patent — it is <b>geography plus permission</b>. You cannot build a competing 140,000-mile network across 44 states; the rights-of-way, permits, eminent-domain history, and basin connectivity took decades and are effectively un-replicable. This is a <b>physical-network moat</b> with high barriers to entry and low substitution risk: once a molecule of gas is committed to ET's system under a long-term contract, switching costs are enormous. The deeper, systemic edge is <b>optionality density</b> — because ET touches every major basin and every demand node (Gulf Coast export, Mont Belvieu fractionation, intrastate Texas power, interstate trunk lines), it can re-route value to wherever the spread is widest. Diversification here is not a hedge against weakness; it is an <b>opportunity-capture engine</b>.</p>
+
+    <h3>Founder-led &amp; management track record</h3>
+    <p>ET is genuinely founder-led: <b>Kelcy Warren</b> built the company from a small intrastate pipeline operator into the largest diversified midstream platform in North America, and remains Executive Chairman and the dominant individual owner. Co-CEOs Tom Long and Mackie McCrea run operations with deep sector tenure. The reputation is hard-charging and acquisitive — historically a double-edged sword. The honest assessment: ET's management is <b>exceptional at building and integrating assets</b> (the deal machine that absorbed Sunoco Logistics, SemGroup, Enable, Crestwood, WTG, etc.) and historically <b>less disciplined on leverage and equity dilution</b> than the market wanted. The last two years show a real cultural correction — leverage targeted and hit, distribution rebuilt to record levels after the 2020 cut, and capital recycled into high-return organic projects rather than ego-driven M&amp;A.</p>
+
+    <h3>Capital allocation</h3>
+    <p>The current framework is the most shareholder-friendly in ET's history: maintain 4.0–4.5x leverage, fund $5.5–5.9B of organic growth capex at mid-teens returns and sub-6x build multiples, grow the distribution 3–5% annually, and opportunistically buy back units. The build-multiple discipline (paying &lt;6x for assets that the market values at ~7.5x+) is <b>value-accretive by construction</b> — every dollar of well-underwritten growth capex should create more than a dollar of equity value.</p>
+
+    <h3>Culture, ethics &amp; organizational traits</h3>
+    <p>ET's culture is best described as <b>aggressive, entrepreneurial, and decentralized</b> — a high-failure-tolerance, deal-hungry operator rather than a polished blue-chip bureaucracy. That has costs: ET has weathered litigation and regulatory friction (Dakota Access, environmental matters) and historically lower ESG scores than peers. Investors must underwrite a management team that prizes <b>commercial speed and idea meritocracy</b> (good engineers and dealmakers get capital) over institutional polish. Talent density on the commercial/engineering side is high; governance and optics are the weaker links. For a contrarian, that governance discount is part of why the asset is cheap — and part of why founder alignment (Warren's enormous personal stake) matters so much as the offsetting safeguard.</p>
+
+    <div class="callout">
+      <b>Systemic traits scorecard (FTA qualitative):</b> Customer obsession <b>Medium</b> · Innovation pace <b>Medium-High</b> (data-center pivot, NGL export buildout) · Failure tolerance <b>High</b> · Talent density <b>High (commercial/engineering)</b> · Idea meritocracy <b>High</b> · Decentralization <b>High</b> · Governance polish <b>Low-Medium</b>.
+    </div>
+  </div>
+</section>
+
+<!-- ============ SECTION 4 ============ -->
+<section class="card" id="s4">
+  <div class="sec-head"><div class="num">04</div><h2>Quantitative Analysis — Financial Deep Dive</h2><div class="chev">▾</div></div>
+  <div class="sec-body">
+    <p>The financial story is one of <b>scaling cash flow against a stabilizing share count and falling relative leverage</b>. Q1 2026 set the tone: Adjusted EBITDA of <b>$4.9B (+~19.5% YoY)</b>, <a href="#g-dcf" class="gref">distributable cash flow</a> attributable to partners of <b>$2.7B</b> (up from ~$2.3B), and record volumes across midstream gathering, NGL fractionation, NGL exports, and crude transport. Revenue of $27.77B beat estimates by ~8.7%; the headline EPS of $0.35 narrowly missed the $0.38 estimate, but for a capital-intensive MLP, GAAP EPS is heavily distorted by <a href="#g-da" class="gref">depreciation</a> and one-offs — DCF and EBITDA are the cash measures that matter.</p>
+
+    <div class="chart-grid">
+      <div class="chart-card"><div class="ctitle">Adjusted EBITDA trajectory <span class="zoom" data-c="ebitdaChart">⤢ enlarge</span></div><div class="chart-holder"><canvas id="ebitdaChart"></canvas></div><div class="cap">2026E reflects raised guidance midpoint of $18.4B.</div></div>
+      <div class="chart-card"><div class="ctitle">Revenue (annual, $B) <span class="zoom" data-c="revChart">⤢ enlarge</span></div><div class="chart-holder"><canvas id="revChart"></canvas></div><div class="cap">Revenue is commodity-sensitive; toll-based EBITDA is the cleaner signal.</div></div>
+    </div>
+    <div class="chart-grid">
+      <div class="chart-card"><div class="ctitle">Free Cash Flow ($B) <span class="zoom" data-c="fcfChart">⤢ enlarge</span></div><div class="chart-holder"><canvas id="fcfChart"></canvas></div><div class="cap">FCF rose ~29% in 2024 to $8.4B; heavy 2026 growth capex is a use of cash by choice.</div></div>
+      <div class="chart-card"><div class="ctitle">Distribution per unit ($/yr) <span class="zoom" data-c="distChart">⤢ enlarge</span></div><div class="chart-holder"><canvas id="distChart"></canvas></div><div class="cap">Rebuilt past pre-2020 levels; 3–5% annual growth guided.</div></div>
+    </div>
+
+    <h3>Revenue streams, explained simply</h3>
+    <p>Think of ET as five tollbooths. <b>NGL &amp; Refined Products</b> ($1.2B Q1 EBITDA, the largest) charges to separate, transport, store, fractionate and export the valuable liquids (propane, butane, ethane) pulled out of gas. <b>Midstream</b> ($0.89B) gathers and processes raw gas at the wellhead, growing fastest in the Permian (+8% volumes). <b>Crude Oil</b> ($0.87B) moves and stores oil and benefits as legacy contracts re-price higher. <b>Interstate</b> ($0.52B) and <b>Intrastate</b> ($0.44B) natural gas move gas across and within states on long-haul and Texas systems — the intrastate book got a ~$100M winter-storm boost. Crucially, the mix is <b>predominantly fee-based</b>: ET earns a toll on volume, not a bet on the commodity price, which is what makes the cash flows underwritable.</p>
+
+    <div class="chart-card"><div class="ctitle">Segment EBITDA: Q1'26 vs Q1'25 ($M) <span class="zoom" data-c="segCompare">⤢ enlarge</span></div><div class="chart-holder"><canvas id="segCompare"></canvas></div><div class="cap">Broad-based growth; only Midstream dipped YoY (timing / contract mix), offset by Permian volume strength.</div></div>
+
+    <h3>Margins, leverage &amp; the flywheel</h3>
+    <p>ET runs <a href="#g-netmargin" class="gref">net margins</a> in the mid-single-digits on gross revenue (again, pass-through distorted) but the relevant figure is the <b>EBITDA margin on retained fees, which is high and expanding</b> as new low-multiple assets ramp. <a href="#g-opcf" class="gref">Operating cash flow</a> comfortably funds both maintenance capex and the distribution, with growth capex the discretionary lever. The flywheel: long-term contracts → predictable EBITDA → investment-grade balance sheet → cheap debt → fund sub-6x organic projects at mid-teens returns → more contracted EBITDA → higher distribution and lower leverage → re-rating. Recent <b>$3.0B senior-note issuance in January 2026</b> (4.55%/5.35%/6.30% across 2031/2036/2056) at tight spreads is direct evidence the credit market rewards the improved profile.</p>
+
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Balance-sheet &amp; cash item</th><th class="mono">Q1 2026</th><th class="mono">Dec 2025</th></tr></thead>
+      <tbody>
+        <tr><td>Long-term debt (less current)</td><td class="mono">$69.3B</td><td class="mono">$68.3B</td></tr>
+        <tr><td>Total debt (approx.)</td><td class="mono">~$70.1B</td><td class="mono">—</td></tr>
+        <tr><td>Total assets</td><td class="mono">~$141.3B</td><td class="mono">—</td></tr>
+        <tr><td>Current assets</td><td class="mono">$22.3B</td><td class="mono">$18.2B</td></tr>
+        <tr><td>Revolver availability</td><td class="mono">$3.45B</td><td class="mono">—</td></tr>
+        <tr><td>Leverage (target band)</td><td class="mono">4.0–4.5x</td><td class="mono">in band</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="font-size:.8rem;color:var(--muted);">Dilution check: unit count has grown via M&amp;A historically, but the current framework emphasizes buybacks over issuance, and per-unit DCF growth is now outpacing unit growth — the metric that actually matters for owners.</p>
+  </div>
+</section>
+
+<!-- ============ SECTION 5 ============ -->
+<section class="card" id="s5">
+  <div class="sec-head"><div class="num">05</div><h2>Earnings Tracker — Management Credibility</h2><div class="chev">▾</div></div>
+  <div class="sec-body">
+    <p>ET's recent credibility pattern is strong on the cash metrics that matter (EBITDA, DCF, distribution, guidance raises) and mixed on GAAP EPS, which routinely whipsaws on non-cash items. Scores are FTA's qualitative read of "did management deliver what it implied."</p>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Quarter</th><th>Guidance / Promise</th><th>Actual result</th><th>Credibility</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">Q1 2026<br><span style="color:var(--muted)">May '26</span></td><td>Deliver record volumes; ramp growth projects</td><td>Record midstream/NGL/crude volumes; Adj. EBITDA $4.9B (+19.5%); <b>raised FY guide +$750M</b>; EPS $0.35 (slight miss)</td><td><span class="score s-hi">9</span></td></tr>
+        <tr><td class="mono">FY 2025<br><span style="color:var(--muted)">full year</span></td><td>~$15.3–15.5B+ EBITDA; 3–5% distn growth; hit leverage band</td><td>Delivered record annual EBITDA (~$16B+ area); distribution raised; leverage in band</td><td><span class="score s-hi">9</span></td></tr>
+        <tr><td class="mono">Q3 2025</td><td>Continued project ramps; volume growth</td><td>Solid EBITDA growth; net income $1.02B vs $1.18B PY (commodity/timing)</td><td><span class="score s-mid">7</span></td></tr>
+        <tr><td class="mono">Q2 2025</td><td>Permian &amp; NGL export ramp; capex on plan</td><td>Record NGL exports; on-plan execution</td><td><span class="score s-hi">8</span></td></tr>
+        <tr><td class="mono">Q1 2025</td><td>Strong start; integrate WTG/acquisitions</td><td>Net income $1.32B vs $1.24B PY; EBITDA ~$4.1B</td><td><span class="score s-hi">8</span></td></tr>
+        <tr><td class="mono">Q4 2024</td><td>Hit FY EBITDA guide; deleverage</td><td>Net income $1.08B; FY targets met; FCF +29% to $8.4B</td><td><span class="score s-hi">8</span></td></tr>
+        <tr><td class="mono">Q3 2024</td><td>Organic growth pipeline on track</td><td>Volumes/EBITDA growth on plan</td><td><span class="score s-mid">7</span></td></tr>
+        <tr><td class="mono">Q2 2024</td><td>Integrate Crestwood; raise capex returns</td><td>Synergies on track; guidance maintained/raised</td><td><span class="score s-hi">8</span></td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="callout green"><b>Read:</b> Average credibility ~8/10. Management consistently hits or raises the <b>cash</b> guidance it controls (EBITDA, DCF, distribution, leverage). The recurring soft spot is headline EPS, which is the least cash-relevant figure for an MLP. We weight delivery on EBITDA/DCF far more heavily.</div>
+  </div>
+</section>
+
+<!-- ============ SECTION 6 ============ -->
+<section class="card" id="s6">
+  <div class="sec-head"><div class="num">06</div><h2>Bull / Base / Bear Scenarios</h2><div class="chev">▾</div></div>
+  <div class="sec-body">
+    <p>Targets are total-return oriented (price + the ~6.6% annual distribution). Re-rating to peer multiples is the swing variable; the distribution provides a hard floor of return in every scenario.</p>
+
+    <h3>1-Year (mid-2027)</h3>
+    <div class="scen-grid">
+      <div class="scen bull"><h5>Bull · 30%</h5><div class="pt">$26</div><div class="prob">+27% price · re-rate to ~8.7x on data-center momentum &amp; guidance beats</div></div>
+      <div class="scen base"><h5>Base · 50%</h5><div class="pt">$23</div><div class="prob">+13% price · modest re-rate to ~8.0x; deliver $18.4B EBITDA</div></div>
+      <div class="scen bear"><h5>Bear · 20%</h5><div class="pt">$17</div><div class="prob">−17% price · energy selloff / rates spike compress multiple to ~6.8x</div></div>
+    </div>
+
+    <h3>3-Year (2029)</h3>
+    <div class="scen-grid">
+      <div class="scen bull"><h5>Bull · 30%</h5><div class="pt">$34</div><div class="prob">Data-center gas volumes ramp; EBITDA &gt;$21B; multiple to ~9x</div></div>
+      <div class="scen base"><h5>Base · 50%</h5><div class="pt">$28</div><div class="prob">Steady 5–7% EBITDA CAGR; multiple ~8.2x; distribution compounding</div></div>
+      <div class="scen bear"><h5>Bear · 20%</h5><div class="pt">$18</div><div class="prob">Demand disappoints / project delays; flat multiple, flat distribution</div></div>
+    </div>
+
+    <h3>5-Year (2031)</h3>
+    <div class="scen-grid">
+      <div class="scen bull"><h5>Bull · 30%</h5><div class="pt">$42</div><div class="prob">AI/LNG super-cycle; ET as core gas infrastructure; ~9.5x on $24B+ EBITDA</div></div>
+      <div class="scen base"><h5>Base · 50%</h5><div class="pt">$33</div><div class="prob">Reliable mid-single-digit growth + ~7% yield compounded</div></div>
+      <div class="scen bear"><h5>Bear · 20%</h5><div class="pt">$19</div><div class="prob">Secular gas demand stalls; capital intensity erodes per-unit value</div></div>
+    </div>
+
+    <div class="chart-card"><div class="ctitle">Probability-weighted price targets by horizon <span class="zoom" data-c="scenChart">⤢ enlarge</span></div><div class="chart-holder"><canvas id="scenChart"></canvas></div><div class="cap">Dashed line = current $20.42. Probability-weighted: ~$22.5 (1Y), ~$28 (3Y), ~$33 (5Y), before distributions.</div></div>
+  </div>
+</section>
+
+<!-- ============ SECTION 7 ============ -->
+<section class="card" id="s7">
+  <div class="sec-head"><div class="num">07</div><h2>Risks &amp; Anti-Thesis (Steelman the Bear)</h2><div class="chev">▾</div></div>
+  <div class="sec-body">
+    <p>If we were short ET, here is the case we would press — taken seriously, not as a checkbox.</p>
+
+    <div class="risk"><div class="rh">1. The discount is permanent, not temporary — it's a structural MLP penalty.</div>
+      <div class="rmeta"><span class="tag"><b>Prob:</b> Medium-High</span><span class="tag"><b>Impact:</b> High</span><span class="tag"><b>Priced in?</b> Partially</span></div>
+      <p>ET has traded cheap for years. The K-1 structure shrinks the buyer pool (no index/ETF inclusion at scale, UBTI issues), governance optics are weak, and the market may simply never award peer multiples. If 7.5x is the new normal, the entire re-rating thesis evaporates and you're left with a 6.6% yield and 3–5% growth — fine, but not alpha.</p></div>
+
+    <div class="risk"><div class="rh">2. The AI/data-center gas narrative is overhyped and front-run.</div>
+      <div class="rmeta"><span class="tag"><b>Prob:</b> Medium</span><span class="tag"><b>Impact:</b> Medium-High</span><span class="tag"><b>Priced in?</b> Increasingly</span></div>
+      <p>Deals like CloudBurst and Fermi are <b>contingent on customer FIDs</b> that may slip or fall through. Behind-the-meter power, nuclear/SMRs, and grid solutions compete for the same load. If data-center gas demand underdelivers, a key 2026 catalyst becomes a 2027 disappointment — and the stock has already begun pricing the optimism.</p></div>
+
+    <div class="risk"><div class="rh">3. Capital intensity is rising faster than returns.</div>
+      <div class="rmeta"><span class="tag"><b>Prob:</b> Medium</span><span class="tag"><b>Impact:</b> Medium</span><span class="tag"><b>Priced in?</b> No</span></div>
+      <p>Growth capex was just raised to $5.5–5.9B. If build multiples creep above 6x or projects run over budget, the "value-accretive by construction" claim breaks, FCF available for distribution and buybacks shrinks, and leverage drifts back up. ET's own history of aggressive spending is the cautionary precedent.</p></div>
+
+    <div class="risk"><div class="rh">4. Rates &amp; commodity cyclicality.</div>
+      <div class="rmeta"><span class="tag"><b>Prob:</b> Medium</span><span class="tag"><b>Impact:</b> Medium</span><span class="tag"><b>Priced in?</b> Partially</span></div>
+      <p>As a high-yield, debt-heavy ($70B) instrument, ET is sensitive to interest rates — higher-for-longer compresses the yield-based valuation and raises refinancing cost. And while mostly fee-based, a sharp drop in production volumes (low oil/gas prices curbing drilling) would still dent throughput and the commodity-linked slice of EBITDA.</p></div>
+
+    <div class="risk"><div class="rh">5. Governance, litigation &amp; key-man risk.</div>
+      <div class="rmeta"><span class="tag"><b>Prob:</b> Low-Medium</span><span class="tag"><b>Impact:</b> Medium</span><span class="tag"><b>Priced in?</b> Partially</span></div>
+      <p>ET carries ongoing environmental/legal exposure (Dakota Access legacy, permitting friction) and weaker ESG scores that exclude some institutional capital. The company is also deeply tied to Kelcy Warren; a change in his involvement, or a return to ego-driven M&amp;A, would reset the discipline narrative the bull case depends on.</p></div>
+
+    <div class="callout"><b>Net judgment:</b> The bear case is real and the structural-discount risk (#1) is the one that genuinely caps upside. But it is largely <b>priced</b>: you are buying at the cheapest multiple in the group with a covered yield, a deleveraged balance sheet, and a founder buying alongside you. The risks argue for position sizing and patience, not avoidance.</p></div>
+  </div>
+</section>
+
+<!-- ============ SECTION 8 ============ -->
+<section class="card" id="s8">
+  <div class="sec-head"><div class="num">08</div><h2>Catalyst Timeline</h2><div class="chev">▾</div></div>
+  <div class="sec-body">
+    <div class="timeline">
+      <div class="tl-item"><div class="date">Q3 2026</div><div class="ev">CloudBurst data center comes online (if FID reached)</div><div class="ds">Oasis Pipeline supplies up to 450,000 MMBtu/day — ET's first direct gas-to-data-center revenue.</div></div>
+      <div class="tl-item"><div class="date">Aug 5, 2026 (est.)</div><div class="ev">Q2 2026 earnings</div><div class="ds">Watch for another guidance raise, DCF coverage, and data-center deal progress. Consensus EPS ~$0.38.</div></div>
+      <div class="tl-item"><div class="date">2H 2026</div><div class="ev">Project ramps: Hugh Brinson Ph. I, Mustang Draw I/II, Nederland Flexport</div><div class="ds">New Permian processing &amp; NGL export capacity driving the guidance raise.</div></div>
+      <div class="tl-item"><div class="date">2H 2026</div><div class="ev">Additional data-center / power supply contracts</div><div class="ds">Fermi deal + pipeline of Texas data-center gas opportunities; each new contract is an incremental catalyst.</div></div>
+      <div class="tl-item"><div class="date">Ongoing</div><div class="ev">Lake Charles LNG — strategic re-evaluation</div><div class="ds">FID suspended (Dec 2025) in favor of data-center gas; resolution either way removes an overhang.</div></div>
+      <div class="tl-item"><div class="date">Quarterly</div><div class="ev">Distribution increases (3–5% target) &amp; potential buybacks</div><div class="ds">Each raise compounds the income thesis and signals DCF confidence.</div></div>
+      <div class="tl-item"><div class="date">Nov 2026</div><div class="ev">Q3 2026 earnings</div><div class="ds">Full-year guidance confirmation; leverage update from all three rating agencies.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SECTION 9 ============ -->
+<section class="card" id="s9">
+  <div class="sec-head"><div class="num">09</div><h2>Comparable Company Analysis</h2><div class="chev">▾</div></div>
+  <div class="sec-body">
+    <p>Against the large-cap midstream peer set, ET's profile is "most diversified, lowest multiple, high yield." The table makes the mispricing visible: ET earns a comparable or larger EBITDA base but trades several turns cheaper on EV/EBITDA than Williams and Kinder Morgan, and at a discount even to fellow MLP Enterprise.</p>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Company</th><th class="mono">Mkt Cap</th><th class="mono">Yield</th><th class="mono">EV/EBITDA</th><th>Profile</th></tr></thead>
+      <tbody>
+        <tr><td><b>ET</b> · Energy Transfer</td><td class="mono">$70.2B</td><td class="mono">6.6%</td><td class="mono pos">~7.5x</td><td>Most diversified; cheapest; MLP</td></tr>
+        <tr><td>EPD · Enterprise Products</td><td class="mono">~$81B</td><td class="mono">5.6%</td><td class="mono">~9.0–9.5x</td><td>Gold-standard MLP; premium for consistency</td></tr>
+        <tr><td>WMB · Williams</td><td class="mono">$88.5B</td><td class="mono">~3.4%</td><td class="mono">~11x</td><td>Gas-focused C-corp; growth premium</td></tr>
+        <tr><td>KMI · Kinder Morgan</td><td class="mono">$73.1B</td><td class="mono">~4%</td><td class="mono">~10–11x</td><td>Gas-heavy C-corp; index-eligible</td></tr>
+        <tr><td>MPLX · MPLX LP</td><td class="mono">$58.9B</td><td class="mono">~7.5%</td><td class="mono">~9.0x</td><td>High-yield MLP; Marathon-linked</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="chart-grid">
+      <div class="chart-card"><div class="ctitle">EV/EBITDA vs peers <span class="zoom" data-c="compEv">⤢ enlarge</span></div><div class="chart-holder"><canvas id="compEv"></canvas></div><div class="cap">ET is the clear multiple outlier to the downside.</div></div>
+      <div class="chart-card"><div class="ctitle">Distribution / dividend yield vs peers <span class="zoom" data-c="compYield">⤢ enlarge</span></div><div class="chart-holder"><canvas id="compYield"></canvas></div><div class="cap">ET pairs a top-tier yield with the lowest multiple — unusual.</div></div>
+    </div>
+    <p><b>Relative-value conclusion:</b> If ET closed even half the EV/EBITDA gap to the EPD/MPLX cluster (~9x), the implied equity would be meaningfully higher than today's price. The market is asking ET to <i>prove</i> the discipline is permanent; each in-band leverage quarter and each guidance raise chips away at the discount. C-corp peers (WMB/KMI) will likely retain a structural premium for index-eligibility, so EPD/MPLX are the fairer re-rating anchors.</p>
+  </div>
+</section>
+
+<!-- ============ SECTION 10 ============ -->
+<section class="card" id="s10">
+  <div class="sec-head"><div class="num">10</div><h2>First-Principles KPIs</h2><div class="chev">▾</div></div>
+  <div class="sec-body">
+    <p>Strip away the accounting and ET is a volume-and-spread business. These leading indicators tell you whether the thesis is working <i>before</i> it shows up in the distribution.</p>
+    <ol>
+      <li><b>DCF coverage ratio</b> — DCF ÷ distributions paid. Above ~1.7x means the payout is safe and the distribution can keep rising. (Currently ~1.8–2.0x.)</li>
+      <li><b>Leverage (Net Debt / EBITDA)</b> — the single variable that gates the re-rating. Staying inside 4.0–4.5x is the proof-of-discipline the market is waiting on.</li>
+      <li><b>Permian / midstream throughput volumes</b> — the physical demand signal; Permian volumes +8% in Q1'26 is the leading indicator of future fee revenue.</li>
+      <li><b>NGL export &amp; fractionation volumes</b> — ET's highest-margin growth engine; record levels = global market share gains.</li>
+      <li><b>Contracted data-center gas demand (MMBtu/day)</b> — the new optionality; every signed/FID'd deal converts the AI narrative into hard contracted EBITDA.</li>
+    </ol>
+    <div class="chart-grid">
+      <div class="chart-card"><div class="ctitle">KPI 1 — DCF coverage (x) <span class="zoom" data-c="kpiCov">⤢ enlarge</span></div><div class="chart-holder"><canvas id="kpiCov"></canvas></div><div class="cap">Comfortably above the 1.7x safety line.</div></div>
+      <div class="chart-card"><div class="ctitle">KPI 2 — Leverage vs target band <span class="zoom" data-c="kpiLev">⤢ enlarge</span></div><div class="chart-holder"><canvas id="kpiLev"></canvas></div><div class="cap">Now inside the 4.0–4.5x band — the unlock.</div></div>
+    </div>
+    <div class="chart-card"><div class="ctitle">KPI 3 — Quarterly growth capex deployment ($B) <span class="zoom" data-c="kpiCapex">⤢ enlarge</span></div><div class="chart-holder"><canvas id="kpiCapex"></canvas></div><div class="cap">$1.5B deployed in Q1'26; FY guide $5.5–5.9B funds the next leg of contracted EBITDA.</div></div>
+  </div>
+</section>
+
+<!-- ============ SECTION 11 ============ -->
+<section class="card" id="s11">
+  <div class="sec-head"><div class="num">11</div><h2>Glossary &amp; Methodology</h2><div class="chev">▾</div></div>
+  <div class="sec-body">
+    <p>Definitions for every linked term, with formula, why it matters, and a link back to where it appears.</p>
+    <dl class="gloss">
+      <dt id="g-adjebitda">Adjusted EBITDA</dt>
+      <dd>Earnings before interest, taxes, depreciation, depletion &amp; amortization, adjusted for non-cash and one-off items. <span class="formula">Adj. EBITDA = Net income + interest + taxes + D&amp;A ± non-cash/one-offs</span><br><i>Why it matters:</i> the cleanest proxy for the cash-earning power of pipeline assets, used by rating agencies for leverage. <span class="back"><a href="#s1">↩ back to §1</a></span></dd>
+
+      <dt id="g-dcf">Distributable Cash Flow (DCF)</dt>
+      <dd>The cash an MLP can actually pay out after maintenance capex and interest. <span class="formula">DCF ≈ Adj. EBITDA − interest − maintenance capex − taxes</span><br><i>Why it matters:</i> determines whether the distribution is safe and can grow; the true bottom line for an MLP. <span class="back"><a href="#s4">↩ back to §4</a></span></dd>
+
+      <dt id="g-evebitda">EV / EBITDA</dt>
+      <dd>Enterprise value (market cap + net debt) divided by EBITDA. <span class="formula">EV/EBITDA = (Mkt cap + debt − cash) ÷ EBITDA</span><br><i>Why it matters:</i> the capital-structure-neutral way to compare midstream operators; ET's low reading is the heart of the thesis. <span class="back"><a href="#s2">↩ back to §2</a></span></dd>
+
+      <dt id="g-ps">Price / Sales (P/S)</dt>
+      <dd>Market cap ÷ revenue. <span class="formula">P/S = Market cap ÷ TTM revenue</span> FTA scale: &gt;30 Euphoric · &gt;18 Excited · &gt;8 Optimistic · 4–8 Aware · &lt;4 Cautious · &lt;2 Pessimistic.<br><i>Why it matters:</i> a sentiment gauge — but low-signal for midstream because revenue includes commodity pass-throughs. <span class="back"><a href="#s2">↩ back to §2</a></span></dd>
+
+      <dt id="g-pe">Price / Earnings (P/E)</dt>
+      <dd>Price per unit ÷ earnings per unit. <span class="formula">P/E = Price ÷ EPS</span><br><i>Why it matters:</i> standard valuation yardstick, but distorted for capital-heavy MLPs by large depreciation charges. <span class="back"><a href="#s2">↩ back to §2</a></span></dd>
+
+      <dt id="g-netmargin">Net margin</dt>
+      <dd><span class="formula">Net margin = Net income ÷ revenue</span><br><i>Why it matters:</i> looks thin for ET because revenue is gross of pass-through commodity costs; EBITDA margin on retained fees is the better profitability lens. <span class="back"><a href="#s4">↩ back to §4</a></span></dd>
+
+      <dt id="g-opcf">Operating cash flow</dt>
+      <dd>Cash generated by core operations before investing/financing. <span class="formula">OCF = Net income + D&amp;A ± working-capital changes</span><br><i>Why it matters:</i> funds the distribution and maintenance capex; its stability is what makes the yield reliable. <span class="back"><a href="#s4">↩ back to §4</a></span></dd>
+
+      <dt id="g-da">Depreciation &amp; Amortization (D&amp;A)</dt>
+      <dd>Non-cash allocation of asset cost over its life. <i>Why it matters:</i> huge for a $140B asset base, which is why GAAP EPS understates ET's cash generation and why DCF/EBITDA are preferred. <span class="back"><a href="#s4">↩ back to §4</a></span></dd>
+
+      <dt id="g-k1">Schedule K-1</dt>
+      <dd>The tax form a partnership (MLP) issues to unitholders instead of a 1099-DIV. <i>Why it matters:</i> creates tax complexity (state filings, UBTI in IRAs) that shrinks ET's natural buyer base and contributes to the structural valuation discount. <span class="back"><a href="#s1">↩ back to §1</a></span></dd>
+    </dl>
+
+    <h3>Methodology &amp; sources</h3>
+    <p style="font-size:.85rem;">Financial data was retrieved from primary sources (Energy Transfer SEC filings — 8-K earnings releases, 10-Q, and the January 2026 outlook) and secondary aggregators (Yahoo Finance, WallStreetZen, MarketBeat, StockAnalysis, Macrotrends, Investing.com, Seeking Alpha) as of <b>May 21, 2026</b>, using the latest reported quarter (Q1 2026, reported ~May 5, 2026) and the May 19, 2026 closing area for price. Some historical figures and segment splits are rounded; multiples and yields are FTA estimates derived from the cited inputs. Scenario probabilities and credibility scores are analyst judgments, not facts. <b>This report is independent research for educational purposes and is not personalized investment, legal, or tax advice. ET is a partnership issuing a K-1; consult a tax professional. Do your own due diligence.</b></p>
+  </div>
+</section>
+
+</div><!-- /content -->
+
+<footer>
+  <b>Foundational Trading Academy — Deep Alpha Research Desk.</b> Energy Transfer LP (NYSE: ET) · Report generated May 21, 2026 · For educational purposes only; not investment advice. Data current to Q1 2026 / May 19 2026 pricing. Past performance and forward estimates are not guarantees of future results.
+</footer>
+</div><!-- /main -->
+</div><!-- /wrap -->
+
+<!-- modal for enlarging charts -->
+<div class="modal" id="modal">
+  <div class="box">
+    <button class="close" id="modalClose">✕</button>
+    <div class="mt" id="modalTitle">Chart</div>
+    <div class="mholder"><canvas id="modalCanvas"></canvas></div>
+  </div>
+</div>
+
+<script>
+/* ---------- collapsible ---------- */
+document.querySelectorAll('.sec-head').forEach(h=>{
+  h.addEventListener('click',()=>h.parentElement.classList.toggle('collapsed'));
+});
+
+/* ---------- chart theme ---------- */
+const GREEN='#1B6B2A', GREEN2='#2c8a3d', GOLD='#FCC55B', GOLDD='#e0a838', RED='#a8341f', INK='#23241f', MUT='#5d6155', LINE='#d8d1c4';
+Chart.defaults.font.family="'Quicksand', sans-serif";
+Chart.defaults.font.size=12;
+Chart.defaults.color=MUT;
+const palette=[GREEN,GOLD,GREEN2,GOLDD,'#7a9a52','#b07a2e'];
+
+/* registry of chart configs so we can re-render in modal */
+const CFG={};
+function mk(id,cfg){CFG[id]=cfg;const el=document.getElementById(id);if(el)new Chart(el,JSON.parse(JSON.stringify(cfg)).hasOwnProperty('_')?cfg:cfg);}
+function build(id,cfg){CFG[id]=cfg;const el=document.getElementById(id);if(el){new Chart(el.getContext('2d'),cfg);}}
+
+const moneyY={y:{ticks:{callback:v=>'$'+v},grid:{color:'rgba(0,0,0,.05)'}},x:{grid:{display:false}}};
+const noLegend={legend:{display:false}};
+
+/* 1. segment doughnut */
+build('segDoughnut',{type:'doughnut',
+ data:{labels:['NGL & Refined','Midstream','Crude Oil','Interstate NG','Intrastate NG'],
+   datasets:[{data:[1200,887,869,519,437],backgroundColor:palette,borderColor:'#fff',borderWidth:2}]},
+ options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right'},tooltip:{callbacks:{label:c=>c.label+': $'+c.parsed+'M'}}},cutout:'55%'}});
+
+/* 2. P/S gauge (horizontal bar marker) */
+build('psGauge',{type:'bar',
+ data:{labels:['Pessimistic\n<2','Cautious\n<4','Aware\n4-8','Optimistic\n>8','Excited\n>18','Euphoric\n>30'],
+   datasets:[{label:'Zone width',data:[2,2,4,10,12,10],backgroundColor:['#a8341f','#cc7a3a','#FCC55B','#7a9a52','#2c8a3d','#1B6B2A']}]},
+ options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+   plugins:{legend:{display:false},title:{display:true,text:'ET ≈ 0.8x P/S  →  Pessimistic zone',color:GREEN,font:{size:13}}},
+   scales:{x:{stacked:true,grid:{display:false}},y:{stacked:true,grid:{display:false}}}}});
+
+/* 3. analyst PT */
+build('ptChart',{type:'bar',
+ data:{labels:['Low PT','Avg PT','High PT'],
+  datasets:[{label:'1Y target',data:[21,21.67,25],backgroundColor:[GOLDD,GREEN,GREEN2]}]},
+ options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},
+   tooltip:{callbacks:{label:c=>'$'+c.parsed.y}}},
+   scales:{y:{min:18,ticks:{callback:v=>'$'+v},grid:{color:'rgba(0,0,0,.05)'}},x:{grid:{display:false}}}}});
+
+/* 4. EBITDA trajectory */
+build('ebitdaChart',{type:'bar',
+ data:{labels:['2022','2023','2024','2025','2026E'],
+  datasets:[{label:'Adj. EBITDA ($B)',data:[13.1,13.7,15.5,16.5,18.4],backgroundColor:GREEN,borderRadius:5}]},
+ options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},
+   tooltip:{callbacks:{label:c=>'$'+c.parsed.y+'B'}}},scales:moneyY}});
+
+/* 5. revenue */
+build('revChart',{type:'line',
+ data:{labels:['2022','2023','2024','2025'],
+  datasets:[{label:'Revenue ($B)',data:[89.9,78.6,82.7,85.5],borderColor:GOLDD,backgroundColor:'rgba(224,168,56,.15)',fill:true,tension:.35,pointBackgroundColor:GREEN,pointRadius:5}]},
+ options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},
+   tooltip:{callbacks:{label:c=>'$'+c.parsed.y+'B'}}},scales:moneyY}});
+
+/* 6. FCF */
+build('fcfChart',{type:'bar',
+ data:{labels:['2022','2023','2024'],
+  datasets:[{label:'Free Cash Flow ($B)',data:[5.75,6.46,8.35],backgroundColor:GREEN2,borderRadius:5}]},
+ options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},
+   tooltip:{callbacks:{label:c=>'$'+c.parsed.y+'B'}}},scales:moneyY}});
+
+/* 7. distribution */
+build('distChart',{type:'line',
+ data:{labels:['2022','2023','2024','2025','2026E'],
+  datasets:[{label:'Distribution ($/unit/yr)',data:[0.97,1.22,1.30,1.31,1.35],borderColor:GREEN,backgroundColor:'rgba(27,107,42,.12)',fill:true,tension:.3,pointBackgroundColor:GOLD,pointRadius:5}]},
+ options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},
+   tooltip:{callbacks:{label:c=>'$'+c.parsed.y.toFixed(2)}}},
+   scales:{y:{ticks:{callback:v=>'$'+v},grid:{color:'rgba(0,0,0,.05)'}},x:{grid:{display:false}}}}});
+
+/* 8. segment compare */
+build('segCompare',{type:'bar',
+ data:{labels:['NGL & Ref.','Midstream','Crude','Interstate','Intrastate'],
+  datasets:[
+   {label:'Q1 2025',data:[978,925,742,512,344],backgroundColor:GOLDD},
+   {label:'Q1 2026',data:[1200,887,869,519,437],backgroundColor:GREEN}]},
+ options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top'},
+   tooltip:{callbacks:{label:c=>c.dataset.label+': $'+c.parsed.y+'M'}}},
+   scales:{y:{ticks:{callback:v=>'$'+v+'M'},grid:{color:'rgba(0,0,0,.05)'}},x:{grid:{display:false}}}}});
+
+/* 9. scenario chart */
+build('scenChart',{type:'bar',
+ data:{labels:['1-Year','3-Year','5-Year'],
+  datasets:[
+   {label:'Bear',data:[17,18,19],backgroundColor:RED},
+   {label:'Base',data:[23,28,33],backgroundColor:GOLDD},
+   {label:'Bull',data:[26,34,42],backgroundColor:GREEN}]},
+ options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top'},
+   tooltip:{callbacks:{label:c=>c.dataset.label+': $'+c.parsed.y}}},
+   scales:{y:{ticks:{callback:v=>'$'+v},grid:{color:'rgba(0,0,0,.05)'},
+     afterDraw:()=>{}},x:{grid:{display:false}}}}});
+
+/* 10. comp EV/EBITDA */
+build('compEv',{type:'bar',
+ data:{labels:['ET','EPD','MPLX','KMI','WMB'],
+  datasets:[{label:'EV/EBITDA (x)',data:[7.5,9.2,9.0,10.5,11.0],
+   backgroundColor:['#1B6B2A','#7a9a52','#7a9a52','#cc7a3a','#cc7a3a'],borderRadius:5}]},
+ options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},
+   tooltip:{callbacks:{label:c=>c.parsed.y+'x'}}},
+   scales:{y:{ticks:{callback:v=>v+'x'},grid:{color:'rgba(0,0,0,.05)'}},x:{grid:{display:false}}}}});
+
+/* 11. comp yield */
+build('compYield',{type:'bar',
+ data:{labels:['ET','MPLX','EPD','KMI','WMB'],
+  datasets:[{label:'Yield (%)',data:[6.6,7.5,5.6,4.0,3.4],backgroundColor:GOLD,borderRadius:5}]},
+ options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},
+   tooltip:{callbacks:{label:c=>c.parsed.y+'%'}}},
+   scales:{y:{ticks:{callback:v=>v+'%'},grid:{color:'rgba(0,0,0,.05)'}},x:{grid:{display:false}}}}});
+
+/* 12. KPI coverage */
+build('kpiCov',{type:'line',
+ data:{labels:['Q1 25','Q2 25','Q3 25','Q4 25','Q1 26'],
+  datasets:[
+   {label:'DCF coverage (x)',data:[1.8,1.9,1.85,1.9,1.95],borderColor:GREEN,backgroundColor:'rgba(27,107,42,.12)',fill:true,tension:.3,pointBackgroundColor:GOLD,pointRadius:5},
+   {label:'Safety line 1.7x',data:[1.7,1.7,1.7,1.7,1.7],borderColor:RED,borderDash:[6,4],pointRadius:0,fill:false}]},
+ options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top'},
+   tooltip:{callbacks:{label:c=>c.dataset.label+': '+c.parsed.y+'x'}}},
+   scales:{y:{min:1.4,ticks:{callback:v=>v+'x'},grid:{color:'rgba(0,0,0,.05)'}},x:{grid:{display:false}}}}});
+
+/* 13. KPI leverage */
+build('kpiLev',{type:'line',
+ data:{labels:['2022','2023','2024','2025','Q1 26'],
+  datasets:[
+   {label:'Net Debt/EBITDA (x)',data:[5.2,4.8,4.5,4.3,4.2],borderColor:GREEN,backgroundColor:'rgba(27,107,42,.10)',fill:true,tension:.3,pointBackgroundColor:GOLD,pointRadius:5},
+   {label:'Target ceiling 4.5x',data:[4.5,4.5,4.5,4.5,4.5],borderColor:GOLDD,borderDash:[6,4],pointRadius:0,fill:false},
+   {label:'Target floor 4.0x',data:[4.0,4.0,4.0,4.0,4.0],borderColor:GOLDD,borderDash:[2,3],pointRadius:0,fill:false}]},
+ options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top'},
+   tooltip:{callbacks:{label:c=>c.dataset.label+': '+c.parsed.y+'x'}}},
+   scales:{y:{min:3.5,ticks:{callback:v=>v+'x'},grid:{color:'rgba(0,0,0,.05)'}},x:{grid:{display:false}}}}});
+
+/* 14. KPI capex */
+build('kpiCapex',{type:'bar',
+ data:{labels:['Q2 25','Q3 25','Q4 25','Q1 26','FY26E (qtr avg)'],
+  datasets:[{label:'Growth capex ($B)',data:[1.2,1.3,1.4,1.5,1.43],backgroundColor:[GREEN2,GREEN2,GREEN2,GREEN,GOLDD],borderRadius:5}]},
+ options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},
+   tooltip:{callbacks:{label:c=>'$'+c.parsed.y+'B'}}},scales:moneyY}});
+
+/* ---------- enlarge modal ---------- */
+const modal=document.getElementById('modal'),mTitle=document.getElementById('modalTitle'),mClose=document.getElementById('modalClose');
+let modalChart=null;
+function openModal(id,title){
+  const cfg=CFG[id];if(!cfg)return;
+  mTitle.textContent=title||'Chart';
+  modal.classList.add('open');
+  const ctx=document.getElementById('modalCanvas').getContext('2d');
+  if(modalChart)modalChart.destroy();
+  const clone=JSON.parse(JSON.stringify(cfg));
+  // restore callbacks lost in JSON clone by reusing original options where possible
+  clone.options=cfg.options;
+  modalChart=new Chart(ctx,clone);
+}
+function closeModal(){modal.classList.remove('open');if(modalChart){modalChart.destroy();modalChart=null;}}
+document.querySelectorAll('.zoom').forEach(z=>{
+  z.addEventListener('click',e=>{e.stopPropagation();openModal(z.dataset.c, z.closest('.chart-card').querySelector('.ctitle').childNodes[0].textContent.trim());});
+});
+document.querySelectorAll('.chart-holder').forEach(h=>{
+  h.addEventListener('click',()=>{const cv=h.querySelector('canvas');if(cv)openModal(cv.id, h.closest('.chart-card').querySelector('.ctitle').childNodes[0].textContent.trim());});
+});
+mClose.addEventListener('click',closeModal);
+modal.addEventListener('click',e=>{if(e.target===modal)closeModal();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+</script>
+</body>
+</html>
