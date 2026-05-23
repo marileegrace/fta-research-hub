@@ -518,13 +518,38 @@ async function fetchReportMeta(filename) {
     const revGrowthMatch = html.match(/(?:Revenue\s*Growth|Rev\s*Growth)[^\d+-]*([+-]?\d+[\d.]*%)/i);
     const revGrowth = revGrowthMatch ? revGrowthMatch[1] : null;
 
+    // Fallback metrics for non-standard companies (MLPs, REITs, etc.)
+    let altMetric = null;
+    let altMetricLabel = null;
+    if (!pe || !revGrowth) {
+      // Try Distribution/Dividend Yield
+      const yieldMatch = html.match(/(?:Distribution\s*Yield|Div(?:idend)?\s*Yield|Yield)[^\d]*([\d,.]+%)/i);
+      if (yieldMatch && !pe) { altMetric = yieldMatch[1]; altMetricLabel = 'YIELD'; }
+
+      // Try EV/EBITDA
+      const evMatch = html.match(/(?:EV\/EBITDA|EV\s*\/\s*EBITDA)[^\d]*([\d,.]+)\s*x?/i);
+      if (evMatch && !altMetric && !revGrowth) { altMetric = evMatch[1] + 'x'; altMetricLabel = 'EV/EBITDA'; }
+
+      // Try FCF Margin
+      if (!altMetric && !revGrowth) {
+        const fcfMatch = html.match(/(?:FCF\s*Margin)[^\d]*([\d,.]+%)/i);
+        if (fcfMatch) { altMetric = fcfMatch[1]; altMetricLabel = 'FCF MARGIN'; }
+      }
+
+      // Try P/S
+      if (!altMetric && !pe) {
+        const psMatch = html.match(/(?:P\/S|P\/S\s*Ratio)[^\d]*([\d,.]+)\s*x?/i);
+        if (psMatch) { altMetric = psMatch[1] + 'x'; altMetricLabel = 'P/S'; }
+      }
+    }
+
     // Try to find bull/bear thesis
     const thesisMatch = html.match(/\b(BULL|BEAR|NEUTRAL)\b/i);
     const thesis = thesisMatch ? thesisMatch[1].toUpperCase() : null;
 
     const sector = SECTOR_MAP[ticker] || 'other';
 
-    return { ticker, date, filename, company, conviction, price, mcap, pe, revGrowth, thesis, sector };
+    return { ticker, date, filename, company, conviction, price, mcap, pe, revGrowth, altMetric, altMetricLabel, thesis, sector };
   } catch (err) {
     console.warn(`Failed to fetch metadata for ${filename}:`, err);
     return null;
@@ -609,8 +634,18 @@ function renderReports() {
           html += `<div class="metrics">`;
           if (r.price) html += `<div class="metric"><div class="metric-label">PRICE</div><div class="metric-value">${r.price}</div></div>`;
           if (r.mcap) html += `<div class="metric"><div class="metric-label">MKT CAP</div><div class="metric-value">${r.mcap}</div></div>`;
-          if (r.pe) html += `<div class="metric"><div class="metric-label">P/E</div><div class="metric-value">${r.pe}</div></div>`;
-          if (r.revGrowth) html += `<div class="metric"><div class="metric-label">REV GROWTH</div><div class="metric-value green">${r.revGrowth}</div></div>`;
+          // 3rd metric: P/E or fallback alt metric
+          if (r.pe) {
+            html += `<div class="metric"><div class="metric-label">P/E</div><div class="metric-value">${r.pe}</div></div>`;
+          } else if (r.altMetric && !r.revGrowth) {
+            html += `<div class="metric"><div class="metric-label">${r.altMetricLabel}</div><div class="metric-value">${r.altMetric}</div></div>`;
+          }
+          // 4th metric: Rev Growth or fallback alt metric
+          if (r.revGrowth) {
+            html += `<div class="metric"><div class="metric-label">REV GROWTH</div><div class="metric-value green">${r.revGrowth}</div></div>`;
+          } else if (r.altMetric && r.pe) {
+            html += `<div class="metric"><div class="metric-label">${r.altMetricLabel}</div><div class="metric-value">${r.altMetric}</div></div>`;
+          }
           html += `</div>`;
           html += `<div class="card-footer">`;
           html += `<span class="date">${dateFormatted}</span>`;
