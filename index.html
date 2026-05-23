@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FTA Investment Research Hub — Foundational Trading Academy</title>
+<link href="https://fonts.googleapis.com/css2?family=Questrial&family=Quicksand:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --green: #145A22;
+  --dark-green: #0F4A1A;
+  --forest: #2F4A31;
+  --light-green: #f0faf2;
+  --gold: #FCC55B;
+  --gold-muted: #e8b84a;
+  --gold-light: #fffbf0;
+  --beige: #D9CEBD;
+  --beige-light: #EDE8E0;
+  --white: #FAFAF8;
+  --dark: #1a1a1a;
+  --red: #C0392B;
+  --blue: #2980B9;
+  --shadow: 0 1px 3px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+  --radius: 12px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 500;
+  color: var(--dark);
+  background: var(--beige-light);
+  line-height: 1.7;
+  font-size: 15px;
+}
+
+/* HERO */
+.hero {
+  background: linear-gradient(135deg, #0a3311 0%, #0F4A1A 30%, #1B6B2A 70%, #2F4A31 100%);
+  color: #fff;
+  padding: 60px 48px 50px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: radial-gradient(ellipse at 30% 50%, rgba(252,197,91,0.08) 0%, transparent 60%),
+              radial-gradient(ellipse at 70% 30%, rgba(252,197,91,0.05) 0%, transparent 50%);
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0; height: 4px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-muted), var(--gold));
+}
+.hero-content { position: relative; z-index: 1; }
+.hero-badge {
+  display: inline-block;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 13px;
+  color: var(--gold);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.hero h1 {
+  font-family: 'Questrial', sans-serif;
+  font-size: 44px;
+  font-weight: 400;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+.hero .subtitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 18px;
+  color: rgba(255,255,255,0.7);
+  margin-bottom: 24px;
+}
+.hero-stats {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-top: 28px;
+}
+.hero-stat {
+  text-align: center;
+}
+.hero-stat .num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--gold);
+}
+.hero-stat .label {
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+  margin-top: 4px;
+  font-weight: 600;
+}
+
+/* FILTER BAR */
+.filter-bar {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding: 24px 48px;
+  flex-wrap: wrap;
+  background: var(--white);
+  border-bottom: 1px solid var(--beige);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.filter-btn {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 8px 20px;
+  border-radius: 24px;
+  border: 1.5px solid var(--beige);
+  background: transparent;
+  color: var(--dark);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.filter-btn:hover {
+  border-color: var(--green);
+  color: var(--green);
+}
+.filter-btn.active {
+  background: var(--green);
+  border-color: var(--green);
+  color: #fff;
+}
+.filter-btn .count {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  background: rgba(0,0,0,0.1);
+  padding: 2px 6px;
+  border-radius: 10px;
+  margin-left: 6px;
+}
+.filter-btn.active .count {
+  background: rgba(255,255,255,0.2);
+}
+
+/* SECTORS */
+.sectors { padding: 32px 48px 80px; max-width: 1200px; margin: 0 auto; }
+
+.sector-group { margin-bottom: 48px; }
+.sector-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--beige);
+}
+.sector-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  background: var(--light-green);
+}
+.sector-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 600;
+  font-size: 28px;
+  color: var(--dark);
+}
+.sector-count {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--gold-muted);
+  background: var(--gold-light);
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-weight: 600;
+}
+
+/* REPORT CARDS */
+.report-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+}
+.report-card {
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 28px;
+  transition: all 0.25s;
+  text-decoration: none;
+  color: var(--dark);
+  display: block;
+  position: relative;
+  border: 1px solid transparent;
+}
+.report-card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-3px);
+  border-color: var(--gold);
+}
+.report-card .card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+.report-card .ticker {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--green);
+}
+.report-card .conviction {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 16px;
+}
+.conviction-high { background: #e6f7e9; color: var(--green); }
+.conviction-mid { background: var(--gold-light); color: #b8860b; }
+.conviction-low { background: #fde8e8; color: var(--red); }
+
+.report-card .company {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 17px;
+  color: #555;
+  margin-bottom: 14px;
+}
+.report-card .card-metrics {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.card-metric {
+  background: var(--beige-light);
+  border-radius: 8px;
+  padding: 8px 12px;
+}
+.card-metric .m-label {
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #999;
+  font-weight: 700;
+}
+.card-metric .m-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--dark);
+}
+.report-card .card-date {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: #bbb;
+  letter-spacing: 1px;
+}
+.report-card .card-arrow {
+  position: absolute;
+  bottom: 20px;
+  right: 24px;
+  font-size: 18px;
+  color: var(--beige);
+  transition: all 0.2s;
+}
+.report-card:hover .card-arrow {
+  color: var(--gold);
+  transform: translateX(4px);
+}
+
+/* EMPTY STATE */
+.sector-empty {
+  background: var(--white);
+  border: 2px dashed var(--beige);
+  border-radius: var(--radius);
+  padding: 40px;
+  text-align: center;
+  color: #bbb;
+}
+.sector-empty .empty-icon { font-size: 32px; margin-bottom: 8px; }
+.sector-empty p {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* FOOTER */
+.site-footer {
+  text-align: center;
+  padding: 40px 48px 24px;
+  border-top: 2px solid var(--beige);
+}
+.site-footer .brand {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 15px;
+  color: var(--green);
+  letter-spacing: 2px;
+}
+.site-footer .sub {
+  font-size: 11px;
+  color: #bbb;
+  margin-top: 6px;
+}
+.site-footer .disclaimer {
+  font-size: 10px;
+  color: #ccc;
+  margin-top: 16px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.6;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .hero { padding: 40px 24px 36px; }
+  .hero h1 { font-size: 28px; }
+  .hero-stats { gap: 24px; }
+  .hero-stat .num { font-size: 24px; }
+  .filter-bar { padding: 16px 20px; }
+  .sectors { padding: 20px 20px 60px; }
+  .report-grid { grid-template-columns: 1fr; }
+  .sector-title { font-size: 22px; }
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">Foundational Trading Academy</div>
+    <h1>Investment Research Hub</h1>
+    <div class="subtitle">Deep-Dive Analysis &middot; LUC Framework &middot; Institutional Grade</div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="num" id="totalReports">2</div>
+        <div class="label">Reports</div>
+      </div>
+      <div class="hero-stat">
+        <div class="num" id="totalSectors">6</div>
+        <div class="label">Sectors</div>
+      </div>
+      <div class="hero-stat">
+        <div class="num" id="totalTickers">40</div>
+        <div class="label">Ticker Queue</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- FILTER BAR -->
+<div class="filter-bar">
+  <button class="filter-btn active" onclick="filterSector('all')">All<span class="count" id="count-all">2</span></button>
+  <button class="filter-btn" onclick="filterSector('robotics')">Robotics<span class="count">1</span></button>
+  <button class="filter-btn" onclick="filterSector('software-ai')">Software / AI<span class="count">1</span></button>
+  <button class="filter-btn" onclick="filterSector('energy')">Energy<span class="count">0</span></button>
+  <button class="filter-btn" onclick="filterSector('data-centers')">Data Centers<span class="count">0</span></button>
+  <button class="filter-btn" onclick="filterSector('space-race')">Space Race<span class="count">0</span></button>
+  <button class="filter-btn" onclick="filterSector('healthcare')">Healthcare<span class="count">0</span></button>
+</div>
+
+<!-- SECTORS -->
+<main class="sectors">
+
+  <!-- ROBOTICS -->
+  <div class="sector-group" data-sector="robotics">
+    <div class="sector-header">
+      <div class="sector-icon">&#129302;</div>
+      <div>
+        <div class="sector-title">Robotics</div>
+      </div>
+      <div class="sector-count">1 / 11 tickers</div>
+    </div>
+    <div class="report-grid">
+      <a class="report-card" href="TER_Investment_Report_2026-05-19.html">
+        <div class="card-top">
+          <div class="ticker">TER</div>
+          <div class="conviction conviction-high">7/10</div>
+        </div>
+        <div class="company">Teradyne, Inc.</div>
+        <div class="card-metrics">
+          <div class="card-metric">
+            <div class="m-label">Price</div>
+            <div class="m-value">$319.19</div>
+          </div>
+          <div class="card-metric">
+            <div class="m-label">Mkt Cap</div>
+            <div class="m-value">$50.3B</div>
+          </div>
+          <div class="card-metric">
+            <div class="m-label">P/E</div>
+            <div class="m-value">115.75x</div>
+          </div>
+          <div class="card-metric">
+            <div class="m-label">Rev Growth</div>
+            <div class="m-value" style="color:#1B6B2A;">+87%</div>
+          </div>
+        </div>
+        <div class="card-date">May 19, 2026</div>
+        <div class="card-arrow">&rarr;</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- SOFTWARE / AI -->
+  <div class="sector-group" data-sector="software-ai">
+    <div class="sector-header">
+      <div class="sector-icon">&#128187;</div>
+      <div>
+        <div class="sector-title">Software / AI</div>
+      </div>
+      <div class="sector-count">1 / 12 tickers</div>
+    </div>
+    <div class="report-grid">
+      <a class="report-card" href="NOW_Investment_Report_2026-05-20.html">
+        <div class="card-top">
+          <div class="ticker">NOW</div>
+          <div class="conviction conviction-high">8/10</div>
+        </div>
+        <div class="company">ServiceNow, Inc.</div>
+        <div class="card-metrics">
+          <div class="card-metric">
+            <div class="m-label">Price</div>
+            <div class="m-value">~$101</div>
+          </div>
+          <div class="card-metric">
+            <div class="m-label">Mkt Cap</div>
+            <div class="m-value">~$105B</div>
+          </div>
+          <div class="card-metric">
+            <div class="m-label">P/E</div>
+            <div class="m-value">~60x</div>
+          </div>
+          <div class="card-metric">
+            <div class="m-label">Rev Growth</div>
+            <div class="m-value" style="color:#1B6B2A;">+22%</div>
+          </div>
+        </div>
+        <div class="card-date">May 20, 2026</div>
+        <div class="card-arrow">&rarr;</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- ENERGY -->
+  <div class="sector-group" data-sector="energy">
+    <div class="sector-header">
+      <div class="sector-icon">&#9889;</div>
+      <div>
+        <div class="sector-title">Energy</div>
+      </div>
+      <div class="sector-count">0 / 4 tickers</div>
+    </div>
+    <div class="report-grid">
+      <div class="sector-empty">
+        <div class="empty-icon">&#128203;</div>
+        <p>Reports coming soon</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- DATA CENTERS -->
+  <div class="sector-group" data-sector="data-centers">
+    <div class="sector-header">
+      <div class="sector-icon">&#127981;</div>
+      <div>
+        <div class="sector-title">Data Centers</div>
+      </div>
+      <div class="sector-count">0 / 4 tickers</div>
+    </div>
+    <div class="report-grid">
+      <div class="sector-empty">
+        <div class="empty-icon">&#128203;</div>
+        <p>Reports coming soon</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SPACE RACE -->
+  <div class="sector-group" data-sector="space-race">
+    <div class="sector-header">
+      <div class="sector-icon">&#128640;</div>
+      <div>
+        <div class="sector-title">Space Race</div>
+      </div>
+      <div class="sector-count">0 / 8 tickers</div>
+    </div>
+    <div class="report-grid">
+      <div class="sector-empty">
+        <div class="empty-icon">&#128203;</div>
+        <p>Reports coming soon</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- HEALTHCARE -->
+  <div class="sector-group" data-sector="healthcare">
+    <div class="sector-header">
+      <div class="sector-icon">&#129658;</div>
+      <div>
+        <div class="sector-title">Healthcare</div>
+      </div>
+      <div class="sector-count">0 / 4 tickers</div>
+    </div>
+    <div class="report-grid">
+      <div class="sector-empty">
+        <div class="empty-icon">&#128203;</div>
+        <p>Reports coming soon</p>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="brand">Foundational Trading Academy</div>
+  <div class="sub">Investment Research Hub &middot; LUC Advanced Analysis Framework</div>
+  <div class="disclaimer">
+    This site is for informational and educational purposes only and does not constitute investment advice.
+    Past performance is not indicative of future results. Always conduct your own due diligence.
+  </div>
+</footer>
+
+<script>
+function filterSector(sector) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  event.target.closest('.filter-btn').classList.add('active');
+
+  document.querySelectorAll('.sector-group').forEach(g => {
+    if (sector === 'all' || g.dataset.sector === sector) {
+      g.style.display = '';
+    } else {
+      g.style.display = 'none';
+    }
+  });
+}
+</script>
+</body>
+</html>

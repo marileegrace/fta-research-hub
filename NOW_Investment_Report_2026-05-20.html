@@ -1,0 +1,1425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NOW Investment Research Report — Foundational Trading Academy</title>
+<link href="https://fonts.googleapis.com/css2?family=Questrial&family=Quicksand:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+:root {
+  --green: #145A22;
+  --dark-green: #0A3A14;
+  --forest: #243D27;
+  --light-green: #f0faf2;
+  --gold: #FCC55B;
+  --gold-muted: #e8b84a;
+  --gold-light: #fffbf0;
+  --beige: #D9CEBD;
+  --beige-light: #EDE8E0;
+  --white: #FAFAF8;
+  --dark: #1a1a1a;
+  --red: #C0392B;
+  --blue: #2980B9;
+  --chart-pos: #4ade80;
+  --chart-neg: #f87171;
+  --shadow: 0 1px 3px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+  --radius: 12px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 500;
+  color: var(--dark);
+  background: var(--beige-light);
+  line-height: 1.7;
+  font-size: 15px;
+}
+
+/* SIDEBAR */
+.sidebar {
+  position: fixed; top: 0; left: 0; width: 260px; height: 100vh;
+  background: linear-gradient(180deg, #0a3311, #0F4A1A 40%, #1B6B2A);
+  z-index: 1000; overflow-y: auto; padding: 24px 0;
+  border-right: 3px solid var(--gold);
+}
+.sidebar::-webkit-scrollbar { width: 4px; }
+.sidebar::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 4px; }
+.sidebar-logo {
+  text-align: center; padding: 0 20px 20px; border-bottom: 1px solid rgba(252,197,91,0.2); margin-bottom: 12px;
+}
+.sidebar-logo h2 { font-family: 'Questrial', sans-serif; color: #fff; font-size: 15px; letter-spacing: 1px; }
+.sidebar-logo .gold-line { color: var(--gold); font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 12px; letter-spacing: 2px; }
+.sidebar-logo .ticker { font-family: 'JetBrains Mono', monospace; font-size: 28px; color: var(--gold); font-weight: 700; margin: 8px 0 2px; }
+.sidebar-logo .price { font-family: 'JetBrains Mono', monospace; font-size: 14px; color: rgba(255,255,255,0.7); }
+.sidebar nav { padding: 0 12px; }
+.sidebar nav a {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 16px; margin: 2px 0;
+  color: rgba(255,255,255,0.75); text-decoration: none;
+  font-family: 'Quicksand', sans-serif; font-size: 13px; font-weight: 500;
+  border-radius: 8px; transition: all 0.2s;
+}
+.sidebar nav a:hover, .sidebar nav a.active {
+  background: rgba(252,197,91,0.12); color: #fff;
+}
+.sidebar nav a .nav-num {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  color: var(--gold); min-width: 20px;
+}
+
+/* MAIN */
+.main { margin-left: 260px; padding: 0; }
+
+/* HEADER */
+.report-header {
+  background: linear-gradient(135deg, #0F4A1A, #1B6B2A);
+  color: #fff; padding: 48px 56px 40px; position: relative; overflow: hidden;
+}
+.report-header::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 4px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-muted), var(--gold));
+}
+.header-top { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 20px; }
+.header-left h1 { font-family: 'Questrial', sans-serif; font-size: 36px; font-weight: 400; letter-spacing: 0.5px; }
+.header-left .subtitle {
+  font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 13px;
+  color: var(--gold); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 6px;
+}
+.header-left .company-name {
+  font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 20px;
+  color: rgba(255,255,255,0.85); margin-top: 4px;
+}
+.header-right { text-align: right; }
+.header-right .price-big {
+  font-family: 'JetBrains Mono', monospace; font-size: 42px; font-weight: 700; color: var(--gold);
+}
+.header-right .meta { font-size: 12px; color: rgba(255,255,255,0.6); margin-top: 4px; }
+.header-badges { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+.badge {
+  display: inline-block; padding: 5px 16px;
+  font-family: 'Quicksand', sans-serif; font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 1.5px;
+  border-radius: 20px;
+}
+.badge-green { background: rgba(252,197,91,0.15); color: var(--gold); border: 1px solid rgba(252,197,91,0.3); }
+.badge-gold { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); }
+
+/* CONTENT */
+.content { padding: 32px 48px 80px; max-width: 1100px; }
+.section { margin-bottom: 40px; }
+.section-header {
+  cursor: pointer; display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 0 12px; border-bottom: 2px solid var(--beige); margin-bottom: 20px;
+  user-select: none;
+}
+.section-header:hover .section-title { color: var(--green); }
+.section-title {
+  font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 600;
+  font-size: 26px; color: var(--dark); transition: color 0.2s;
+}
+.section-subtitle {
+  font-family: 'Quicksand', sans-serif; font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 2.5px; color: var(--green);
+  font-variant: small-caps; margin-top: 2px;
+}
+.section-toggle {
+  font-family: 'JetBrains Mono', monospace; font-size: 18px; color: var(--beige);
+  transition: transform 0.3s;
+}
+.section-toggle.collapsed { transform: rotate(-90deg); }
+.section-body { overflow: hidden; transition: max-height 0.4s ease, opacity 0.3s ease; }
+.section-body.collapsed { max-height: 0 !important; opacity: 0; padding: 0; }
+
+/* CARDS */
+.card {
+  background: #fff; border-radius: var(--radius); box-shadow: var(--shadow);
+  padding: 28px; margin-bottom: 20px;
+}
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px; }
+.stat-card {
+  background: #fff; border-radius: var(--radius); box-shadow: var(--shadow);
+  padding: 20px 24px; text-align: center;
+}
+.stat-card .stat-label {
+  font-family: 'Quicksand', sans-serif; font-size: 11px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 1.5px; color: #888; margin-bottom: 6px;
+}
+.stat-card .stat-value {
+  font-family: 'JetBrains Mono', monospace; font-size: 26px; font-weight: 700; color: var(--dark);
+}
+.stat-card .stat-sub {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--green); margin-top: 4px;
+}
+
+/* CALLOUTS */
+.callout {
+  border-left: 4px solid var(--green); border-radius: 8px;
+  background: var(--light-green); padding: 20px 24px; margin: 16px 0;
+}
+.callout-gold { border-left-color: var(--gold); background: var(--gold-light); }
+.callout-red { border-left-color: var(--red); background: #fef2f1; }
+.callout-blue { border-left-color: var(--blue); background: #f0f7fd; }
+.callout-title {
+  font-family: 'Quicksand', sans-serif; font-size: 12px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 8px;
+}
+.callout .callout-title { color: var(--green); }
+.callout-gold .callout-title { color: var(--gold-muted); }
+.callout-red .callout-title { color: var(--red); }
+.callout-blue .callout-title { color: var(--blue); }
+
+/* CHART CONTAINERS */
+.chart-wrap {
+  background: #fff; border-radius: var(--radius); box-shadow: var(--shadow);
+  padding: 24px; margin: 20px 0; position: relative; cursor: pointer;
+  transition: box-shadow 0.2s;
+}
+.chart-wrap:hover { box-shadow: var(--shadow-md); }
+.chart-wrap .expand-hint {
+  position: absolute; top: 12px; right: 16px;
+  font-family: 'Quicksand', sans-serif; font-size: 10px; color: #bbb;
+  text-transform: uppercase; letter-spacing: 1px;
+}
+.chart-title {
+  font-family: 'Questrial', sans-serif; font-size: 16px; color: var(--dark); margin-bottom: 4px;
+}
+.chart-subtitle {
+  font-family: 'Quicksand', sans-serif; font-size: 11px; color: #999; margin-bottom: 16px;
+}
+
+/* CHART GRID (side-by-side) */
+.chart-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin: 20px 0;
+}
+.chart-row .chart-wrap { margin: 0; }
+
+/* MODAL */
+.chart-modal {
+  display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.7); z-index: 2000; justify-content: center; align-items: center;
+  padding: 40px;
+}
+.chart-modal.active { display: flex; }
+.chart-modal-inner {
+  background: #fff; border-radius: 16px; padding: 40px; width: 90%; max-width: 1000px;
+  max-height: 90vh; overflow: auto; position: relative;
+}
+.chart-modal-close {
+  position: absolute; top: 16px; right: 20px; cursor: pointer;
+  font-size: 28px; color: #999; background: none; border: none; font-family: 'JetBrains Mono', monospace;
+}
+.chart-modal-close:hover { color: var(--dark); }
+
+/* TABLES */
+.data-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 13px; }
+.data-table th {
+  font-family: 'Quicksand', sans-serif; font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 1.5px; color: var(--green);
+  padding: 12px 14px; text-align: left; border-bottom: 2px solid var(--beige);
+  background: var(--light-green);
+}
+.data-table td {
+  padding: 10px 14px; border-bottom: 1px solid #f0ede8;
+  font-family: 'Quicksand', sans-serif; font-size: 13px;
+}
+.data-table td.mono { font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+.data-table tr:hover td { background: var(--gold-light); }
+.beat { color: var(--green); font-weight: 700; }
+.met { color: var(--gold-muted); font-weight: 700; }
+.miss { color: var(--red); font-weight: 700; }
+.stars { color: var(--gold); }
+
+/* PROSE */
+.prose { line-height: 1.8; }
+.prose p { margin-bottom: 14px; }
+.prose strong { font-weight: 700; color: var(--dark); }
+
+/* GLOSSARY */
+.glossary-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+.glossary-item {
+  background: #fff; border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow);
+}
+.glossary-item .term {
+  font-family: 'Questrial', sans-serif; font-size: 14px; font-weight: 600; color: var(--green);
+  margin-bottom: 6px;
+}
+.glossary-item .def { font-size: 13px; color: #555; line-height: 1.6; }
+a.glossary-link { color: var(--green); text-decoration: underline dotted; text-underline-offset: 3px; cursor: help; }
+
+/* SCENARIO CARDS */
+.scenario-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin: 20px 0; }
+.scenario-card { border-radius: var(--radius); padding: 24px; }
+.scenario-card.bull { background: var(--light-green); border: 1px solid #c6e6cc; }
+.scenario-card.base { background: var(--gold-light); border: 1px solid #f0dfa8; }
+.scenario-card.bear { background: #fef2f1; border: 1px solid #f5c6c2; }
+.scenario-card h4 { font-family: 'Questrial', sans-serif; font-size: 15px; margin-bottom: 6px; }
+.scenario-card .prob { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #888; }
+.scenario-card .targets { margin-top: 12px; }
+.scenario-card .target-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid rgba(0,0,0,0.05); }
+.scenario-card .target-row span:last-child { font-family: 'JetBrains Mono', monospace; font-weight: 600; }
+
+/* RISK ITEM */
+.risk-item { display: flex; gap: 16px; margin-bottom: 16px; }
+.risk-num {
+  font-family: 'JetBrains Mono', monospace; font-size: 22px; font-weight: 700;
+  color: var(--red); min-width: 36px;
+}
+.risk-content h4 { font-family: 'Questrial', sans-serif; font-size: 15px; margin-bottom: 4px; }
+.risk-content p { font-size: 13px; color: #555; }
+
+/* CATALYST */
+.catalyst-item { display: flex; gap: 16px; align-items: flex-start; margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid #f0ede8; }
+.catalyst-date {
+  font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600;
+  color: var(--green); min-width: 100px; padding-top: 2px;
+}
+.catalyst-text h4 { font-family: 'Questrial', sans-serif; font-size: 14px; margin-bottom: 2px; }
+.catalyst-text p { font-size: 13px; color: #666; }
+
+/* CONVICTION */
+.conviction-bar { display: flex; gap: 3px; margin: 20px 0; }
+.conviction-seg { height: 36px; flex: 1; border-radius: 4px; transition: opacity 0.2s; }
+.conviction-seg.filled { background: var(--green); }
+.conviction-seg.empty { background: var(--beige); }
+.conviction-label {
+  display: flex; justify-content: space-between;
+  font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #888;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .sidebar { display: none; }
+  .main { margin-left: 0; }
+  .report-header { padding: 32px 24px; }
+  .content { padding: 24px 20px 60px; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .chart-row { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="gold-line">Foundational Trading Academy</div>
+    <div class="ticker">NOW</div>
+    <div class="price">~$101 &middot; May 20, 2026</div>
+  </div>
+  <nav>
+    <a href="#executive-summary"><span class="nav-num">01</span> Executive Summary</a>
+    <a href="#key-metrics"><span class="nav-num">02</span> Key Metrics</a>
+    <a href="#revenue-analysis"><span class="nav-num">03</span> Revenue Analysis</a>
+    <a href="#competitive-moat"><span class="nav-num">04</span> Competitive Moat</a>
+    <a href="#management"><span class="nav-num">05</span> Management</a>
+    <a href="#earnings-tracker"><span class="nav-num">06</span> Earnings Tracker</a>
+    <a href="#scenario-analysis"><span class="nav-num">07</span> Scenario Analysis</a>
+    <a href="#risk-assessment"><span class="nav-num">08</span> Risk Assessment</a>
+    <a href="#catalysts"><span class="nav-num">09</span> Catalysts</a>
+    <a href="#comparables"><span class="nav-num">10</span> Comparable Analysis</a>
+    <a href="#glossary"><span class="nav-num">11</span> Glossary</a>
+  </nav>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+
+<!-- HEADER -->
+<header class="report-header">
+  <div class="header-top">
+    <div class="header-left">
+      <div class="subtitle">Foundational Trading Academy &mdash; Investment Research</div>
+      <h1>ServiceNow, Inc.</h1>
+      <div class="company-name">NYSE: NOW &middot; Enterprise SaaS &amp; AI Workflow Automation</div>
+    </div>
+    <div class="header-right">
+      <div class="price-big">~$101</div>
+      <div class="meta">May 20, 2026 &middot; Market Cap ~$105B</div>
+    </div>
+  </div>
+  <div class="header-badges">
+    <span class="badge badge-green">Conviction 8/10 &mdash; Bullish</span>
+    <span class="badge badge-gold">Analyst Consensus: Strong Buy &middot; PT $143</span>
+    <span class="badge badge-gold">P/E ~60x &middot; P/S ~6.7x</span>
+  </div>
+</header>
+
+<div class="content">
+
+<!-- ============================================================ -->
+<!-- SECTION 1: EXECUTIVE SUMMARY -->
+<!-- ============================================================ -->
+<div class="section" id="executive-summary">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-title-group">
+      <div class="section-title">Executive Summary</div>
+      <div class="section-subtitle">Investment Thesis Overview</div>
+    </div>
+    <span class="section-toggle">&#9660;</span>
+  </div>
+  <div class="section-body">
+    <div class="card prose">
+      <p>ServiceNow is the undisputed platform of record for enterprise workflow automation and is rapidly positioning itself as the AI Control Tower for the modern enterprise. With Q1 2026 subscription revenue of $3.67 billion growing 22% year-over-year, a <a href="#glossary-fcf" class="glossary-link">free cash flow</a> margin of 44%, and a remaining performance obligation (RPO) backlog of $27.7 billion growing 25%, NOW operates one of the highest-quality recurring revenue businesses in all of software.</p>
+      <p>The stock has pulled back approximately 35% year-to-date, compressing the <a href="#glossary-pe" class="glossary-link">P/E</a> from its 12-month average of ~96x down to ~60x. This de-rating was driven by broader tech selling and concerns about the Iran conflict's impact on enterprise IT budgets &mdash; not by any deterioration in ServiceNow's fundamentals. The company beat Q1 guidance, raised full-year subscription revenue guidance to $15.74&ndash;$15.78 billion, and increased its AI annual contract value target to $1.5 billion for 2026. Management's $30 billion subscription revenue target by 2030 implies a tripling of the business in under five years.</p>
+      <p>The combination of a 42% market share moat in ITSM, a $275 billion and expanding <a href="#glossary-tam" class="glossary-link">TAM</a>, elite-tier FCF generation, and a management team with a decade-long track record of beat-and-raise execution makes this pullback an unusually attractive entry point. The risk is overpaying for a premium compounder; the opportunity is buying the dominant enterprise AI platform at a meaningful discount to its own historical multiple.</p>
+    </div>
+
+    <!-- Conviction Bar -->
+    <div class="card">
+      <div style="font-family:'Quicksand',sans-serif;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#888;margin-bottom:10px;">Conviction Rating</div>
+      <div class="conviction-bar">
+        <div class="conviction-seg filled"></div>
+        <div class="conviction-seg filled"></div>
+        <div class="conviction-seg filled"></div>
+        <div class="conviction-seg filled"></div>
+        <div class="conviction-seg filled"></div>
+        <div class="conviction-seg filled"></div>
+        <div class="conviction-seg filled"></div>
+        <div class="conviction-seg filled"></div>
+        <div class="conviction-seg empty"></div>
+        <div class="conviction-seg empty"></div>
+      </div>
+      <div class="conviction-label">
+        <span>Bearish</span>
+        <span style="color:var(--green);font-weight:700;">8 / 10 &mdash; Bullish</span>
+        <span>Very Bullish</span>
+      </div>
+    </div>
+
+    <div class="callout-gold callout">
+      <div class="callout-title">Key Takeaway</div>
+      ServiceNow at ~$101 and ~60x earnings represents the best risk/reward setup for this stock in over two years. The 35% YTD pullback has compressed multiples to a level that historically has marked excellent entry points for high-quality SaaS compounders. Accumulate aggressively on any further weakness below $95.
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 2: KEY METRICS -->
+<!-- ============================================================ -->
+<div class="section" id="key-metrics">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-title-group">
+      <div class="section-title">Key Metrics</div>
+      <div class="section-subtitle">Quantitative Snapshot</div>
+    </div>
+    <span class="section-toggle">&#9660;</span>
+  </div>
+  <div class="section-body">
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">Stock Price</div>
+        <div class="stat-value">~$101</div>
+        <div class="stat-sub">May 20, 2026</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Market Cap</div>
+        <div class="stat-value">~$105B</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">P/E (TTM)</div>
+        <div class="stat-value">~60x</div>
+        <div class="stat-sub" style="color:var(--red)">12mo avg: ~96x</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">P/S (TTM)</div>
+        <div class="stat-value">~6.7x</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Shares Outstanding</div>
+        <div class="stat-value">~1.03B</div>
+        <div class="stat-sub">Declining (buybacks)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Q1 2026 Revenue</div>
+        <div class="stat-value">$3.77B</div>
+        <div class="stat-sub">+22% YoY</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Q1 2026 Sub Revenue</div>
+        <div class="stat-value">$3.67B</div>
+        <div class="stat-sub">97% of total</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">FCF Q1 2026</div>
+        <div class="stat-value">$1.67B</div>
+        <div class="stat-sub">FCF Margin 44%</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">RPO Backlog</div>
+        <div class="stat-value">$27.7B</div>
+        <div class="stat-sub">+25% YoY</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Analyst Consensus</div>
+        <div class="stat-value" style="font-size:20px;">Strong Buy</div>
+        <div class="stat-sub">Avg PT $143</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">FY2026 Sub Rev Guide</div>
+        <div class="stat-value" style="font-size:18px;">$15.74B+</div>
+        <div class="stat-sub">Raised guidance</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">AI ACV Target</div>
+        <div class="stat-value">$1.5B</div>
+        <div class="stat-sub">+50% vs. prior target</div>
+      </div>
+    </div>
+
+    <div class="card prose">
+      <p>ServiceNow's financial profile is elite-tier among large-cap SaaS companies. The 97% subscription revenue mix provides exceptional visibility, while the $27.7 billion RPO backlog (growing 25% YoY) essentially pre-books multiple years of revenue growth. <a href="#glossary-fcf" class="glossary-link">Free cash flow</a> generation at 44% margins in Q1 2026 demonstrates the operating leverage inherent in the platform model. The company repurchased 20.1 million shares in Q1 alone &mdash; more than double all of 2025 &mdash; funded by a new $5 billion buyback authorization. The <a href="#glossary-pe" class="glossary-link">P/E</a> compression from ~96x to ~60x represents the most significant valuation reset since the 2022 tech selloff.</p>
+    </div>
+
+    <!-- Ownership Breakdown Chart -->
+    <div class="chart-wrap" onclick="openModal('ownershipModal')" style="max-width:420px;">
+      <span class="expand-hint">Click to expand</span>
+      <div class="chart-title">Ownership Breakdown</div>
+      <div class="chart-subtitle">Top Institutional Holders: Vanguard, BlackRock, State Street</div>
+      <canvas id="ownershipChart" height="160"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 3: REVENUE ANALYSIS -->
+<!-- ============================================================ -->
+<div class="section" id="revenue-analysis">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-title-group">
+      <div class="section-title">Revenue Analysis</div>
+      <div class="section-subtitle">Quarterly Trends &amp; Segment Breakdown</div>
+    </div>
+    <span class="section-toggle">&#9660;</span>
+  </div>
+  <div class="section-body">
+    <div class="card prose">
+      <p>ServiceNow's revenue engine is remarkably consistent. The company has delivered 20%+ subscription revenue growth for over 40 consecutive quarters &mdash; a feat virtually unmatched among companies at this scale. Q1 2026 total revenue of $3.77 billion represented 22% growth, with subscription revenue of $3.67 billion also growing 22% (19% in constant currency). Professional services and other revenue contributed the remaining ~$100 million.</p>
+      <p>The subscription revenue dominance (97% of total) is a structural advantage: it creates extreme visibility, high retention rates (net retention consistently above 120%), and a compounding flywheel where each new customer and each expansion deal builds on a growing base of recurring revenue. The <a href="#glossary-cagr" class="glossary-link">revenue CAGR</a> over the past five years has been approximately 22&ndash;24%, and management's $30 billion subscription revenue target by 2030 implies sustaining high-teens to low-twenties growth for the next four years.</p>
+      <p>Revenue can be understood across four workflow categories: Technology Workflows (the original ITSM core, still the largest), Employee Workflows (HR service delivery), Customer Workflows (customer service management), and Creator Workflows (low-code app development). The AI overlay &mdash; branded as Now Assist &mdash; is being embedded across all four, with AI-specific ACV now tracking toward $1.5 billion in 2026. The Armis acquisition (cybersecurity) adds a fifth vector into security operations, expanding the platform's reach into an adjacent $30+ billion market.</p>
+    </div>
+
+    <div class="chart-row">
+      <!-- Revenue Trend Chart -->
+      <div class="chart-wrap" onclick="openModal('revModal')">
+        <span class="expand-hint">Click to expand</span>
+        <div class="chart-title">Quarterly Revenue Trend</div>
+        <div class="chart-subtitle">Q1 2024 through Q1 2026 ($ millions)</div>
+        <canvas id="revChart" height="160"></canvas>
+      </div>
+      <!-- Segment Breakdown -->
+      <div class="chart-wrap" onclick="openModal('segModal')">
+        <span class="expand-hint">Click to expand</span>
+        <div class="chart-title">Revenue Mix: Subscription vs. Services</div>
+        <div class="chart-subtitle">Q1 2026 — 97% subscription</div>
+        <canvas id="segChart" height="160"></canvas>
+      </div>
+    </div>
+
+    <!-- FCF Trend -->
+    <div class="chart-wrap" onclick="openModal('fcfModal')">
+      <span class="expand-hint">Click to expand</span>
+      <div class="chart-title">Free Cash Flow Trend</div>
+      <div class="chart-subtitle">Quarterly FCF ($ millions) — consistently expanding</div>
+      <canvas id="fcfChart" height="160"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 4: COMPETITIVE MOAT -->
+<!-- ============================================================ -->
+<div class="section" id="competitive-moat">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-title-group">
+      <div class="section-title">Competitive Moat</div>
+      <div class="section-subtitle">Durable Advantages &amp; Market Position</div>
+    </div>
+    <span class="section-toggle">&#9660;</span>
+  </div>
+  <div class="section-body">
+    <div class="card prose">
+      <p>ServiceNow's moat is one of the widest in enterprise software. At 42% market share in IT Service Management &mdash; nearly triple its nearest competitor &mdash; the company has achieved a level of dominance that creates self-reinforcing network effects, massive switching costs, and a platform gravity that pulls adjacent workflows into its orbit.</p>
+      <p><strong>Switching Costs:</strong> ServiceNow implementations are deeply embedded in enterprise operations. A typical deployment touches IT, HR, customer service, security operations, and custom applications. The platform becomes the system of record for critical business processes &mdash; incident management, change management, employee onboarding, case management. Ripping it out requires re-implementing dozens of workflows, retraining thousands of employees, and rebuilding years of institutional knowledge encoded in the platform. Migration projects typically take 12&ndash;24 months and cost millions. This creates net retention rates consistently above 120%.</p>
+      <p><strong>Platform Gravity:</strong> The Now Platform creates a flywheel: each new workflow module (HR, Customer, Security, Creator) is built on the same underlying platform architecture, sharing the same data model, automation engine, and AI capabilities. This means every new module is easier to adopt for existing customers and harder for competitors to replicate piecemeal. A customer using ServiceNow for ITSM can add HR service delivery in weeks rather than months because the platform infrastructure is already deployed.</p>
+      <p><strong>AI as Moat Amplifier:</strong> The Now Assist AI layer leverages the massive volume of enterprise workflow data flowing through the platform to train and improve AI models. This data advantage compounds over time &mdash; the more workflows a customer runs on ServiceNow, the better the AI becomes, which drives more workflows onto the platform. No competitor has access to this breadth of cross-functional enterprise workflow data.</p>
+    </div>
+
+    <div class="callout">
+      <div class="callout-title">Moat Rating: Very Wide</div>
+      42% ITSM market share (3x nearest competitor), massive switching costs (12&ndash;24 month migrations), platform flywheel across 4 workflow categories, net retention &gt;120%, and a proprietary AI data advantage from cross-functional workflow telemetry. The moat is widening as AI deepens platform lock-in.
+    </div>
+
+    <!-- TAM Chart -->
+    <div class="chart-wrap" onclick="openModal('tamModal')">
+      <span class="expand-hint">Click to expand</span>
+      <div class="chart-title">Total Addressable Market Expansion</div>
+      <div class="chart-subtitle">ServiceNow TAM growing from $220B (2025) toward $600B (2028)</div>
+      <canvas id="tamChart" height="160"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 5: MANAGEMENT -->
+<!-- ============================================================ -->
+<div class="section" id="management">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-title-group">
+      <div class="section-title">Management Assessment</div>
+      <div class="section-subtitle">Leadership &amp; Capital Allocation</div>
+    </div>
+    <span class="section-toggle">&#9660;</span>
+  </div>
+  <div class="section-body">
+    <div class="card prose">
+      <p>ServiceNow is not founder-led (founder Fred Luddy stepped back in 2014), but CEO Bill McDermott has established himself as one of the most effective enterprise software executives of his generation. McDermott took the helm in late 2019 and has presided over a tripling of the company's revenue, from approximately $3.5 billion to a run rate approaching $16 billion. His contract extension through 2030 signals long-term commitment and alignment with the $30 billion revenue target.</p>
+      <p>McDermott's leadership style is relentlessly customer-obsessed and growth-oriented. He came from SAP where he served as CEO for nearly a decade, giving him deep relationships across the Fortune 500 and an intuitive understanding of enterprise sales cycles. His hallmark is the "people before profits" philosophy, which has translated into consistently high employee satisfaction (4.2/5.0 on Glassdoor, 81% recommend to a friend) and a culture of execution that has delivered beat-and-raise quarters with near-perfect consistency.</p>
+      <p><strong>Capital Allocation:</strong> Management has become significantly more aggressive on capital returns. The $5 billion buyback authorization and the Q1 2026 repurchase of 20.1 million shares (including an $2.2 billion accelerated share repurchase) demonstrates confidence in the stock's value at current levels. For a company generating $4.6+ billion in annual FCF, this buyback pace is both sustainable and accretive. The Armis acquisition ($6+ billion) shows willingness to deploy capital into strategic adjacencies, though the near-term margin headwind (~200bps to FCF margin) bears monitoring.</p>
+    </div>
+
+    <div class="callout-blue callout">
+      <div class="callout-title">Management Scorecard</div>
+      <strong>Execution:</strong> A+ (8+ consecutive beat-and-raise quarters) &middot; <strong>Capital Allocation:</strong> A (aggressive buybacks + strategic M&A) &middot; <strong>Vision:</strong> A+ ($30B by 2030, AI Control Tower) &middot; <strong>Culture:</strong> A (4.2 Glassdoor, 81% recommend) &middot; <strong>Alignment:</strong> A- (contract through 2030, though insider ownership is modest)
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 6: EARNINGS TRACKER -->
+<!-- ============================================================ -->
+<div class="section" id="earnings-tracker">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-title-group">
+      <div class="section-title">Earnings Credibility Tracker</div>
+      <div class="section-subtitle">Promises vs. Results</div>
+    </div>
+    <span class="section-toggle">&#9660;</span>
+  </div>
+  <div class="section-body">
+    <div class="card prose">
+      <p>ServiceNow's earnings credibility is among the highest in all of enterprise software. The company has delivered a near-unbroken streak of beat-and-raise quarters stretching back years. Management consistently guides conservatively and then exceeds its own targets, a pattern that builds significant investor confidence and lowers the effective discount rate on forward estimates. The Q1 2026 result &mdash; $0.97 EPS versus a $0.80 estimate (a 21% beat) &mdash; is emblematic of this approach.</p>
+    </div>
+
+    <div class="card" style="overflow-x:auto;">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Quarter</th>
+            <th>Promise / Guidance</th>
+            <th>Actual Result</th>
+            <th>Verdict</th>
+            <th>Score</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="mono">Q2 2024</td>
+            <td>Standard sub rev guidance</td>
+            <td>Rev $2.63B, beat on all metrics, raised FY</td>
+            <td><span class="beat">BEAT</span></td>
+            <td class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</td>
+          </tr>
+          <tr>
+            <td class="mono">Q3 2024</td>
+            <td>Standard guidance</td>
+            <td>Rev $2.80B, raised FY guidance again</td>
+            <td><span class="beat">BEAT</span></td>
+            <td class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</td>
+          </tr>
+          <tr>
+            <td class="mono">Q4 2024</td>
+            <td>Standard guidance</td>
+            <td>Rev $2.96B, exceeded expectations</td>
+            <td><span class="beat">BEAT</span></td>
+            <td class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</td>
+          </tr>
+          <tr>
+            <td class="mono">Q1 2025</td>
+            <td>Standard guidance</td>
+            <td>Rev $3.09B, exceeded cRPO by 250bps</td>
+            <td><span class="beat">BEAT</span></td>
+            <td class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</td>
+          </tr>
+          <tr>
+            <td class="mono">Q2 2025</td>
+            <td>Standard guidance</td>
+            <td>Sub rev $3.11B, +22.5% YoY, raised FY</td>
+            <td><span class="beat">BEAT</span></td>
+            <td class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</td>
+          </tr>
+          <tr>
+            <td class="mono">Q3 2025</td>
+            <td>Standard guidance</td>
+            <td>Sub rev $3.30B, +21.5% YoY, raised FY</td>
+            <td><span class="beat">BEAT</span></td>
+            <td class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</td>
+          </tr>
+          <tr>
+            <td class="mono">Q4 2025</td>
+            <td>Strong FY close guidance</td>
+            <td>Sub rev $3.47B, +21%, exceptional FY2026 guide</td>
+            <td><span class="beat">BEAT</span></td>
+            <td class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</td>
+          </tr>
+          <tr>
+            <td class="mono">Q1 2026</td>
+            <td>Sub rev guide ~$3.6B, EPS ~$0.80</td>
+            <td>Sub rev $3.67B, EPS $0.97 (+21% beat)</td>
+            <td><span class="beat">BEAT</span></td>
+            <td class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Earnings Beat Chart -->
+    <div class="chart-wrap" onclick="openModal('earningsModal')">
+      <span class="expand-hint">Click to expand</span>
+      <div class="chart-title">Earnings: Estimate vs. Actual EPS</div>
+      <div class="chart-subtitle">Consistent beat pattern — Q1 2026 was a 21% EPS surprise</div>
+      <canvas id="earningsChart" height="160"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 7: SCENARIO ANALYSIS -->
+<!-- ============================================================ -->
+<div class="section" id="scenario-analysis">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-title-group">
+      <div class="section-title">Scenario Analysis</div>
+      <div class="section-subtitle">Bull, Base &amp; Bear Cases</div>
+    </div>
+    <span class="section-toggle">&#9660;</span>
+  </div>
+  <div class="section-body">
+    <div class="card prose">
+      <p>Our probability-weighted expected value at the 1-year horizon: (30% x $155) + (45% x $130) + (25% x $78) = <strong>$124.50</strong>, representing approximately 23% upside from the current ~$101 price. This asymmetric payoff profile &mdash; more upside in the bull and base cases than downside in the bear &mdash; supports our 8/10 conviction rating.</p>
+    </div>
+
+    <div class="scenario-grid">
+      <div class="scenario-card bull">
+        <h4 style="color:var(--green);">Bull Case</h4>
+        <div class="prob">30% Probability</div>
+        <div class="targets">
+          <div class="target-row"><span>1-Year Target</span><span style="color:var(--green);">$155</span></div>
+          <div class="target-row"><span>3-Year Target</span><span style="color:var(--green);">$220</span></div>
+          <div class="target-row"><span>5-Year Target</span><span style="color:var(--green);">$350</span></div>
+        </div>
+        <p style="margin-top:12px;font-size:13px;color:#555;">AI monetization accelerates faster than expected. $30B sub rev achieved ahead of 2030. P/E re-rates to 80x+ on sustained 25%+ growth. Armis integration adds security TAM without diluting margins.</p>
+      </div>
+      <div class="scenario-card base">
+        <h4 style="color:var(--gold-muted);">Base Case</h4>
+        <div class="prob">45% Probability</div>
+        <div class="targets">
+          <div class="target-row"><span>1-Year Target</span><span style="color:var(--gold-muted);">$130</span></div>
+          <div class="target-row"><span>3-Year Target</span><span style="color:var(--gold-muted);">$180</span></div>
+          <div class="target-row"><span>5-Year Target</span><span style="color:var(--gold-muted);">$260</span></div>
+        </div>
+        <p style="margin-top:12px;font-size:13px;color:#555;">Steady 20%+ sub rev growth. P/E stabilizes at 55&ndash;65x. AI adds incremental revenue but doesn't change the growth rate materially. Buybacks offset SBC dilution.</p>
+      </div>
+      <div class="scenario-card bear">
+        <h4 style="color:var(--red);">Bear Case</h4>
+        <div class="prob">25% Probability</div>
+        <div class="targets">
+          <div class="target-row"><span>1-Year Target</span><span style="color:var(--red);">$78</span></div>
+          <div class="target-row"><span>3-Year Target</span><span style="color:var(--red);">$95</span></div>
+          <div class="target-row"><span>5-Year Target</span><span style="color:var(--red);">$140</span></div>
+        </div>
+        <p style="margin-top:12px;font-size:13px;color:#555;">Growth decelerates to mid-teens. P/E compresses to 35&ndash;40x. Enterprise IT budgets contract. Microsoft Copilot captures ITSM share. Armis integration stumbles.</p>
+      </div>
+    </div>
+
+    <!-- Scenario Chart -->
+    <div class="chart-wrap" onclick="openModal('scenarioModal')">
+      <span class="expand-hint">Click to expand</span>
+      <div class="chart-title">Price Target Scenarios</div>
+      <div class="chart-subtitle">1-Year, 3-Year, and 5-Year targets by scenario</div>
+      <canvas id="scenarioChart" height="160"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 8: RISK ASSESSMENT -->
+<!-- ============================================================ -->
+<div class="section" id="risk-assessment">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-title-group">
+      <div class="section-title">Risk Assessment</div>
+      <div class="section-subtitle">Anti-Thesis &amp; Key Risks</div>
+    </div>
+    <span class="section-toggle">&#9660;</span>
+  </div>
+  <div class="section-body">
+    <div class="card prose">
+      <p>Despite the strong fundamental thesis, several material risks deserve serious consideration. We steelman the bear case below.</p>
+    </div>
+
+    <div class="card">
+      <div class="risk-item">
+        <div class="risk-num">01</div>
+        <div class="risk-content">
+          <h4>Microsoft Copilot & Platform Encroachment</h4>
+          <p>Microsoft's integration of Copilot across Dynamics 365 and the Power Platform poses the most credible competitive threat. With 400 million+ Office 365 seats, Microsoft can bundle ITSM-adjacent capabilities at effectively zero marginal cost. If enterprise buyers decide "good enough" AI-powered workflow automation from Microsoft eliminates the need for a purpose-built platform, ServiceNow's premium pricing power could erode. This risk is not priced in at 60x earnings.</p>
+        </div>
+      </div>
+      <div class="risk-item">
+        <div class="risk-num">02</div>
+        <div class="risk-content">
+          <h4>Growth Deceleration to Mid-Teens</h4>
+          <p>The law of large numbers is real. At a $16 billion revenue run rate, sustaining 20%+ growth requires adding $3+ billion in incremental revenue annually. The bears argue that growth will inevitably decelerate to 15&ndash;17% by 2028&ndash;2029 as the ITSM core matures and newer workflow categories prove harder to scale. If the market anticipates this deceleration, a P/E compression from 60x to 35x on slower growth could mean significant downside even if the business continues performing well.</p>
+        </div>
+      </div>
+      <div class="risk-item">
+        <div class="risk-num">03</div>
+        <div class="risk-content">
+          <h4>Acquisition Integration Risk (Armis)</h4>
+          <p>The Armis acquisition represents ServiceNow's largest M&A bet. At $6+ billion, it's a material transaction that introduces execution risk: integrating a cybersecurity company's product, engineering culture, and go-to-market into ServiceNow's platform model is non-trivial. Management has already guided for a 200bps headwind to FCF margin and 125bps to operating margin in Q2. If the integration stumbles or the security TAM proves harder to penetrate than expected, it could weigh on margins and distract management.</p>
+        </div>
+      </div>
+      <div class="risk-item">
+        <div class="risk-num">04</div>
+        <div class="risk-content">
+          <h4>Macro / Enterprise IT Budget Sensitivity</h4>
+          <p>The 35% YTD stock decline already reflects macro anxiety (Iran conflict, interest rate uncertainty). While ServiceNow's subscription model provides resilience, a prolonged enterprise spending freeze could compress deal sizes, elongate sales cycles, and delay expansions. Government contracts &mdash; a growing revenue stream &mdash; face particular risk from geopolitical budget re-prioritization.</p>
+        </div>
+      </div>
+      <div class="risk-item">
+        <div class="risk-num">05</div>
+        <div class="risk-content">
+          <h4>Valuation Still Premium Despite Pullback</h4>
+          <p>At ~60x earnings, ServiceNow still trades at more than double the US Software industry average of ~28x. The stock requires continued 20%+ growth execution to justify this multiple. Any quarter where growth dips below 20% could trigger a further de-rating, and the stock has limited valuation support until P/E compresses to the 35&ndash;40x range.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout-red callout">
+      <div class="callout-title">Risk Summary</div>
+      The Microsoft platform threat is the most structurally dangerous risk; the others are more cyclical or execution-dependent. The 35% YTD decline has partially de-risked the valuation, but NOW still trades at a premium that requires sustained execution. Position sizing should reflect this: this is a high-conviction accumulation, not a table-pounding all-in.
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 9: CATALYSTS -->
+<!-- ============================================================ -->
+<div class="section" id="catalysts">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-title-group">
+      <div class="section-title">Catalyst Timeline</div>
+      <div class="section-subtitle">Upcoming Events &amp; Inflection Points</div>
+    </div>
+    <span class="section-toggle">&#9660;</span>
+  </div>
+  <div class="section-body">
+    <div class="card prose">
+      <p>The next 12 months feature a dense catalyst calendar. The Financial Analyst Day on May 4 already provided updated long-term targets; the key now is whether Q2 2026 earnings confirm the trajectory or show early signs of macro headwinds. The Armis integration timeline and AI ACV ramp will be closely watched as proof points.</p>
+    </div>
+
+    <div class="card">
+      <div class="catalyst-item">
+        <div class="catalyst-date">May 2026</div>
+        <div class="catalyst-text">
+          <h4>Financial Analyst Day (Completed May 4)</h4>
+          <p>Updated $30B sub rev by 2030 target. Raised AI ACV target to $1.5B for 2026. Introduced "Rule of 55+" framework. Market digesting implications.</p>
+        </div>
+      </div>
+      <div class="catalyst-item">
+        <div class="catalyst-date">Jul 2026</div>
+        <div class="catalyst-text">
+          <h4>Q2 2026 Earnings</h4>
+          <p>First full quarter with Armis contribution. Critical test of whether subscription revenue guidance holds and AI ACV trajectory is on track. Margin impact from Armis will be scrutinized.</p>
+        </div>
+      </div>
+      <div class="catalyst-item">
+        <div class="catalyst-date">Oct 2026</div>
+        <div class="catalyst-text">
+          <h4>Q3 2026 Earnings</h4>
+          <p>Seasonally important for large enterprise renewals. FY2027 preliminary outlook typically teased. Key indicator of whether 20%+ growth trajectory sustains.</p>
+        </div>
+      </div>
+      <div class="catalyst-item">
+        <div class="catalyst-date">H2 2026</div>
+        <div class="catalyst-text">
+          <h4>Now Assist AI Product Expansion</h4>
+          <p>New agentic AI capabilities across all workflow categories. Success here validates the AI Control Tower thesis and supports the $1.5B AI ACV target.</p>
+        </div>
+      </div>
+      <div class="catalyst-item">
+        <div class="catalyst-date">2026&ndash;2027</div>
+        <div class="catalyst-text">
+          <h4>Armis Integration Milestones</h4>
+          <p>Full product integration into Now Platform. Security Operations workflow expansion. Cross-sell into existing ServiceNow customer base. Revenue synergy realization.</p>
+        </div>
+      </div>
+      <div class="catalyst-item" style="border-bottom:none;">
+        <div class="catalyst-date">Ongoing</div>
+        <div class="catalyst-text">
+          <h4>Share Buyback Execution</h4>
+          <p>$5B authorization being deployed aggressively at depressed prices. 20M shares repurchased in Q1 alone. Continued buybacks at ~$100 levels would be highly accretive.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Catalyst Timeline Chart -->
+    <div class="chart-wrap" onclick="openModal('catalystModal')">
+      <span class="expand-hint">Click to expand</span>
+      <div class="chart-title">Catalyst Impact Assessment</div>
+      <div class="chart-subtitle">Estimated impact and timing of upcoming events</div>
+      <canvas id="catalystChart" height="160"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 10: COMPARABLES -->
+<!-- ============================================================ -->
+<div class="section" id="comparables">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-title-group">
+      <div class="section-title">Comparable Company Analysis</div>
+      <div class="section-subtitle">Peer Benchmarking &amp; First-Principles KPIs</div>
+    </div>
+    <span class="section-toggle">&#9660;</span>
+  </div>
+  <div class="section-body">
+    <div class="card prose">
+      <p>ServiceNow stands out as the only large-cap SaaS company achieving the "Rule of 55+" &mdash; revenue growth rate plus profit margin exceeding 55%. Salesforce has a larger revenue base but grows at less than half NOW's rate. Workday operates in a narrower market. Microsoft is the existential competitor but trades at a similar premium. SAP has accelerated its cloud transition but remains far behind in growth rate and platform modernity.</p>
+    </div>
+
+    <div class="card" style="overflow-x:auto;">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Metric</th>
+            <th>NOW</th>
+            <th>CRM (Salesforce)</th>
+            <th>WDAY (Workday)</th>
+            <th>MSFT</th>
+            <th>SAP</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Market Cap</td>
+            <td class="mono">~$105B</td><td class="mono">~$200B</td><td class="mono">~$55B</td><td class="mono">~$3.1T</td><td class="mono">~$300B</td>
+          </tr>
+          <tr>
+            <td>Revenue TTM</td>
+            <td class="mono">~$15B</td><td class="mono">~$38B</td><td class="mono">~$8B</td><td class="mono">~$260B</td><td class="mono">~$38B</td>
+          </tr>
+          <tr>
+            <td>Rev Growth YoY</td>
+            <td class="mono" style="color:var(--green);font-weight:700;">22%</td><td class="mono">~10%</td><td class="mono">~15%</td><td class="mono">~13%</td><td class="mono">~11%</td>
+          </tr>
+          <tr>
+            <td>P/E</td>
+            <td class="mono">~60x</td><td class="mono">~28x</td><td class="mono">~30x</td><td class="mono">~32x</td><td class="mono">~35x</td>
+          </tr>
+          <tr>
+            <td>P/S</td>
+            <td class="mono">~6.7x</td><td class="mono">~5.3x</td><td class="mono">~6.9x</td><td class="mono">~12x</td><td class="mono">~7.9x</td>
+          </tr>
+          <tr>
+            <td>FCF Margin</td>
+            <td class="mono" style="color:var(--green);font-weight:700;">~36%</td><td class="mono">~33%</td><td class="mono">~25%</td><td class="mono">~35%</td><td class="mono">~25%</td>
+          </tr>
+          <tr>
+            <td>Net Margin</td>
+            <td class="mono">~14%</td><td class="mono">~16%</td><td class="mono">~5%</td><td class="mono">~36%</td><td class="mono">~15%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- KPI Section -->
+    <h3 style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:22px;margin:32px 0 16px;">First-Principles KPIs</h3>
+    <div class="card prose">
+      <p>We track five first-principles KPIs that serve as leading indicators for ServiceNow's business health and stock trajectory:</p>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">cRPO Growth</div>
+        <div class="stat-value">22.5%</div>
+        <div class="stat-sub">Leading revenue indicator</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Net Retention Rate</div>
+        <div class="stat-value">&gt;120%</div>
+        <div class="stat-sub">Platform stickiness</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">AI ACV Run Rate</div>
+        <div class="stat-value">$1.5B</div>
+        <div class="stat-sub">2026 target (+50%)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">FCF Margin</div>
+        <div class="stat-value">36%</div>
+        <div class="stat-sub">FY2026 guide (expanding)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Rule of 55+</div>
+        <div class="stat-value">~54%</div>
+        <div class="stat-sub">Growth + margin benchmark</div>
+      </div>
+    </div>
+
+    <div class="chart-row">
+      <!-- Comp Chart -->
+      <div class="chart-wrap" onclick="openModal('compModal')">
+        <span class="expand-hint">Click to expand</span>
+        <div class="chart-title">Peer Comparison: Key Metrics</div>
+        <div class="chart-subtitle">Revenue Growth, Net Margin, FCF Margin</div>
+        <canvas id="compChart" height="160"></canvas>
+      </div>
+      <!-- KPI Trend Chart -->
+      <div class="chart-wrap" onclick="openModal('kpiModal')">
+        <span class="expand-hint">Click to expand</span>
+        <div class="chart-title">KPI Trend: Subscription Revenue</div>
+        <div class="chart-subtitle">Quarterly subscription revenue ($ millions)</div>
+        <canvas id="kpiChart" height="160"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 11: GLOSSARY -->
+<!-- ============================================================ -->
+<div class="section" id="glossary">
+  <div class="section-header" onclick="toggleSection(this)">
+    <div class="section-title-group">
+      <div class="section-title">Glossary</div>
+      <div class="section-subtitle">Key Financial Terms &amp; Definitions</div>
+    </div>
+    <span class="section-toggle">&#9660;</span>
+  </div>
+  <div class="section-body">
+    <div class="glossary-grid">
+      <div class="glossary-item" id="glossary-fcf">
+        <div class="term">Free Cash Flow (FCF)</div>
+        <div class="def">Operating cash flow minus capital expenditures. ServiceNow Q1 2026: $1.67B (44% margin). FY2026 guide: 36% margin. <a href="#key-metrics">Return to text &uarr;</a></div>
+      </div>
+      <div class="glossary-item" id="glossary-pe">
+        <div class="term">P/E Ratio (Price-to-Earnings)</div>
+        <div class="def">Stock price divided by EPS. NOW TTM: ~60x (down from 12mo avg of ~96x). Industry avg: ~28x. <a href="#key-metrics">Return to text &uarr;</a></div>
+      </div>
+      <div class="glossary-item" id="glossary-tam">
+        <div class="term">TAM (Total Addressable Market)</div>
+        <div class="def">Total revenue opportunity. NOW TAM: $275B (2026), expanding toward $600B by 2028 via AI and workflow adjacencies. <a href="#competitive-moat">Return to text &uarr;</a></div>
+      </div>
+      <div class="glossary-item" id="glossary-cagr">
+        <div class="term">CAGR (Compound Annual Growth Rate)</div>
+        <div class="def">Mean annual growth rate over a multi-year period. NOW 5yr revenue CAGR: ~22&ndash;24%. <a href="#revenue-analysis">Return to text &uarr;</a></div>
+      </div>
+      <div class="glossary-item" id="glossary-rpo">
+        <div class="term">RPO (Remaining Performance Obligation)</div>
+        <div class="def">Total contracted revenue not yet recognized. NOW RPO: $27.7B (+25% YoY). cRPO (current, &lt;12 months): $12.64B (+22.5%). A leading indicator of future revenue. <a href="#key-metrics">Return to text &uarr;</a></div>
+      </div>
+      <div class="glossary-item" id="glossary-nrr">
+        <div class="term">Net Retention Rate (NRR)</div>
+        <div class="def">Revenue from existing customers in the current period vs. the same cohort in the prior period. Includes upsells, cross-sells, contractions, and churn. NOW: &gt;120% (elite-tier). <a href="#comparables">Return to text &uarr;</a></div>
+      </div>
+      <div class="glossary-item" id="glossary-acv">
+        <div class="term">ACV (Annual Contract Value)</div>
+        <div class="def">The annualized value of a customer contract. NOW AI ACV target: $1.5B for 2026, with 30% of total ACV from AI by 2030. <a href="#key-metrics">Return to text &uarr;</a></div>
+      </div>
+      <div class="glossary-item" id="glossary-rule55">
+        <div class="term">Rule of 55+</div>
+        <div class="def">ServiceNow's benchmark: revenue growth rate + profit margin &gt; 55%. NOW: ~22% growth + ~36% FCF margin = ~58%. Only company in its peer group exceeding this threshold. <a href="#comparables">Return to text &uarr;</a></div>
+      </div>
+      <div class="glossary-item" id="glossary-sbc">
+        <div class="term">Stock-Based Compensation (SBC)</div>
+        <div class="def">Non-cash compensation via stock options/RSUs. A key concern for SaaS valuations as it dilutes shareholders if not offset by buybacks. NOW is aggressively buying back to manage dilution. <a href="#management">Return to text &uarr;</a></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div style="text-align:center;padding:40px 0 20px;border-top:2px solid var(--beige);margin-top:40px;">
+  <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:14px;color:var(--green);letter-spacing:2px;">Foundational Trading Academy</div>
+  <div style="font-family:'Quicksand',sans-serif;font-size:11px;color:#999;margin-top:8px;">Investment Research Report &middot; NOW &middot; May 20, 2026</div>
+  <div style="font-family:'Quicksand',sans-serif;font-size:10px;color:#bbb;margin-top:12px;max-width:600px;margin-left:auto;margin-right:auto;">
+    This report is for informational purposes only and does not constitute investment advice. Past performance is not indicative of future results. Always conduct your own due diligence before making investment decisions.
+  </div>
+</div>
+
+</div><!-- /content -->
+</div><!-- /main -->
+
+<!-- CHART MODAL -->
+<div class="chart-modal" id="chartModal" onclick="closeModal(event)">
+  <div class="chart-modal-inner" onclick="event.stopPropagation()">
+    <button class="chart-modal-close" onclick="closeModalDirect()">&times;</button>
+    <canvas id="modalChart"></canvas>
+  </div>
+</div>
+
+<script>
+// =============================================
+// SECTION COLLAPSE
+// =============================================
+function toggleSection(header) {
+  const body = header.nextElementSibling;
+  const toggle = header.querySelector('.section-toggle');
+  body.classList.toggle('collapsed');
+  toggle.classList.toggle('collapsed');
+}
+
+// =============================================
+// CHART MODAL
+// =============================================
+let modalChartInstance = null;
+const chartConfigs = {};
+
+function openModal(configKey) {
+  const modal = document.getElementById('chartModal');
+  const canvas = document.getElementById('modalChart');
+  modal.classList.add('active');
+  if (modalChartInstance) { modalChartInstance.destroy(); }
+  const cfg = chartConfigs[configKey];
+  if (cfg) {
+    canvas.style.maxHeight = '70vh';
+    modalChartInstance = new Chart(canvas, JSON.parse(JSON.stringify(cfg)));
+  }
+}
+function closeModal(e) {
+  if (e.target.id === 'chartModal') { document.getElementById('chartModal').classList.remove('active'); }
+}
+function closeModalDirect() { document.getElementById('chartModal').classList.remove('active'); }
+
+// =============================================
+// SIDEBAR ACTIVE STATE
+// =============================================
+const sections = document.querySelectorAll('.section');
+const navLinks = document.querySelectorAll('.sidebar nav a');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 120) current = s.id; });
+  navLinks.forEach(a => {
+    a.classList.remove('active');
+    if (a.getAttribute('href') === '#' + current) a.classList.add('active');
+  });
+});
+
+// =============================================
+// CHART DEFAULTS
+// =============================================
+Chart.defaults.font.family = "'Quicksand', sans-serif";
+Chart.defaults.font.size = 12;
+Chart.defaults.color = '#666';
+
+// =============================================
+// CHART 1: QUARTERLY REVENUE
+// =============================================
+const revConfig = {
+  type: 'bar',
+  data: {
+    labels: ['Q1\'24','Q2\'24','Q3\'24','Q4\'24','Q1\'25','Q2\'25','Q3\'25','Q4\'25','Q1\'26'],
+    datasets: [{
+      label: 'Revenue ($M)',
+      data: [2603,2627,2797,2957,3089,3215,3399,3561,3770],
+      backgroundColor: [
+        '#1B6B2A','#1B6B2A','#1B6B2A','#1B6B2A',
+        '#2F4A31','#2F4A31','#2F4A31','#2F4A31','#FCC55B'
+      ],
+      borderRadius: 6,
+      borderSkipped: false,
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => '$' + ctx.raw + 'M' } }
+    },
+    scales: {
+      y: { beginAtZero: false, min: 2000, ticks: { callback: v => '$'+v+'M', font: { family: "'JetBrains Mono', monospace", size: 10 } }, grid: { color: '#f0ede8' } },
+      x: { grid: { display: false }, ticks: { font: { family: "'JetBrains Mono', monospace", size: 10 } } }
+    }
+  }
+};
+chartConfigs.revModal = revConfig;
+new Chart(document.getElementById('revChart'), JSON.parse(JSON.stringify(revConfig)));
+
+// =============================================
+// CHART 2: REVENUE MIX (DOUGHNUT)
+// =============================================
+const segConfig = {
+  type: 'doughnut',
+  data: {
+    labels: ['Subscription ($3,671M)','Professional Services ($99M)'],
+    datasets: [{
+      data: [3671, 99],
+      backgroundColor: ['#1B6B2A','#D9CEBD'],
+      borderWidth: 3,
+      borderColor: '#fff',
+    }]
+  },
+  options: {
+    responsive: true,
+    cutout: '55%',
+    plugins: {
+      legend: { position: 'bottom', labels: { padding: 16, usePointStyle: true, font: { size: 11 } } },
+      tooltip: { callbacks: { label: ctx => ctx.label + ' (' + Math.round(ctx.raw/37.7) + '%)' } }
+    }
+  }
+};
+chartConfigs.segModal = segConfig;
+new Chart(document.getElementById('segChart'), JSON.parse(JSON.stringify(segConfig)));
+
+// =============================================
+// CHART 3: FCF TREND
+// =============================================
+const fcfConfig = {
+  type: 'line',
+  data: {
+    labels: ['Q1\'25','Q2\'25','Q3\'25','Q4\'25','Q1\'26'],
+    datasets: [{
+      label: 'Free Cash Flow ($M)',
+      data: [1220, 680, 595, 2105, 1670],
+      borderColor: '#1B6B2A',
+      backgroundColor: 'rgba(27,107,42,0.1)',
+      fill: true,
+      tension: 0.3,
+      pointRadius: 5,
+      pointBackgroundColor: '#1B6B2A',
+      pointBorderColor: '#fff',
+      pointBorderWidth: 2,
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => '$' + ctx.raw + 'M' } }
+    },
+    scales: {
+      y: { beginAtZero: true, ticks: { callback: v => '$'+v+'M', font: { family: "'JetBrains Mono', monospace", size: 10 } }, grid: { color: '#f0ede8' } },
+      x: { grid: { display: false }, ticks: { font: { family: "'JetBrains Mono', monospace", size: 10 } } }
+    }
+  }
+};
+chartConfigs.fcfModal = fcfConfig;
+new Chart(document.getElementById('fcfChart'), JSON.parse(JSON.stringify(fcfConfig)));
+
+// =============================================
+// CHART 4: OWNERSHIP (DOUGHNUT)
+// =============================================
+const ownConfig = {
+  type: 'doughnut',
+  data: {
+    labels: ['Institutional (~87%)','Insider (~1%)','Retail (~12%)'],
+    datasets: [{
+      data: [87, 1, 12],
+      backgroundColor: ['#1B6B2A','#FCC55B','#D9CEBD'],
+      borderWidth: 3,
+      borderColor: '#fff',
+    }]
+  },
+  options: {
+    responsive: true,
+    cutout: '55%',
+    plugins: {
+      legend: { position: 'bottom', labels: { padding: 16, usePointStyle: true } },
+    }
+  }
+};
+chartConfigs.ownershipModal = ownConfig;
+new Chart(document.getElementById('ownershipChart'), JSON.parse(JSON.stringify(ownConfig)));
+
+// =============================================
+// CHART 5: EARNINGS BEAT TRACKER
+// =============================================
+const earningsConfig = {
+  type: 'bar',
+  data: {
+    labels: ['Q2\'24','Q3\'24','Q4\'24','Q1\'25','Q2\'25','Q3\'25','Q4\'25','Q1\'26'],
+    datasets: [
+      {
+        label: 'Estimate EPS',
+        data: [0.58, 0.62, 0.65, 0.68, 0.72, 0.74, 0.35, 0.80],
+        backgroundColor: 'rgba(217,206,189,0.7)',
+        borderRadius: 4,
+      },
+      {
+        label: 'Actual EPS',
+        data: [0.65, 0.70, 0.72, 0.76, 0.79, 0.81, 0.39, 0.97],
+        backgroundColor: '#1B6B2A',
+        borderRadius: 4,
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { position: 'top', labels: { usePointStyle: true, padding: 12, font: { size: 11 } } },
+      tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': $' + ctx.raw } }
+    },
+    scales: {
+      y: { beginAtZero: true, ticks: { callback: v => '$'+v.toFixed(2), font: { family: "'JetBrains Mono', monospace", size: 10 } }, grid: { color: '#f0ede8' } },
+      x: { grid: { display: false }, ticks: { font: { family: "'JetBrains Mono', monospace", size: 10 } } }
+    }
+  }
+};
+chartConfigs.earningsModal = earningsConfig;
+new Chart(document.getElementById('earningsChart'), JSON.parse(JSON.stringify(earningsConfig)));
+
+// =============================================
+// CHART 6: SCENARIO ANALYSIS
+// =============================================
+const scenarioConfig = {
+  type: 'bar',
+  data: {
+    labels: ['1-Year','3-Year','5-Year'],
+    datasets: [
+      { label: 'Bull (30%)', data: [155, 220, 350], backgroundColor: '#4ade80', borderRadius: 4 },
+      { label: 'Base (45%)', data: [130, 180, 260], backgroundColor: '#FCC55B', borderRadius: 4 },
+      { label: 'Bear (25%)', data: [78, 95, 140], backgroundColor: '#f87171', borderRadius: 4 }
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { position: 'top', labels: { usePointStyle: true, padding: 12, font: { size: 11 } } },
+      tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': $' + ctx.raw } }
+    },
+    scales: {
+      y: { beginAtZero: true, ticks: { callback: v => '$'+v, font: { family: "'JetBrains Mono', monospace", size: 10 } }, grid: { color: '#f0ede8' } },
+      x: { grid: { display: false } }
+    }
+  }
+};
+chartConfigs.scenarioModal = scenarioConfig;
+new Chart(document.getElementById('scenarioChart'), JSON.parse(JSON.stringify(scenarioConfig)));
+
+// =============================================
+// CHART 7: TAM GROWTH
+// =============================================
+const tamConfig = {
+  type: 'bar',
+  data: {
+    labels: ['2025','2026','2027','2028','2030'],
+    datasets: [
+      { label: 'Workflow TAM ($B)', data: [220, 275, 400, 600, 450], backgroundColor: '#1B6B2A', borderRadius: 4 },
+      { label: 'NOW Revenue ($B)', data: [13.3, 15.8, 19, 23, 30], backgroundColor: '#FCC55B', borderRadius: 4 }
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { position: 'top', labels: { usePointStyle: true, padding: 12, font: { size: 11 } } },
+      tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': $' + ctx.raw + 'B' } }
+    },
+    scales: {
+      y: { beginAtZero: true, ticks: { callback: v => '$'+v+'B', font: { family: "'JetBrains Mono', monospace", size: 10 } }, grid: { color: '#f0ede8' } },
+      x: { grid: { display: false } }
+    }
+  }
+};
+chartConfigs.tamModal = tamConfig;
+new Chart(document.getElementById('tamChart'), JSON.parse(JSON.stringify(tamConfig)));
+
+// =============================================
+// CHART 8: COMP CHART
+// =============================================
+const compConfig = {
+  type: 'bar',
+  data: {
+    labels: ['NOW','CRM','WDAY','MSFT','SAP'],
+    datasets: [
+      { label: 'Rev Growth YoY (%)', data: [22, 10, 15, 13, 11], backgroundColor: '#1B6B2A', borderRadius: 4 },
+      { label: 'FCF Margin (%)', data: [36, 33, 25, 35, 25], backgroundColor: '#FCC55B', borderRadius: 4 },
+      { label: 'Net Margin (%)', data: [14, 16, 5, 36, 15], backgroundColor: '#D9CEBD', borderRadius: 4 }
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { position: 'top', labels: { usePointStyle: true, padding: 12, font: { size: 11 } } },
+      tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': ' + ctx.raw + '%' } }
+    },
+    scales: {
+      y: { beginAtZero: true, ticks: { callback: v => v + '%', font: { family: "'JetBrains Mono', monospace", size: 10 } }, grid: { color: '#f0ede8' } },
+      x: { grid: { display: false } }
+    }
+  }
+};
+chartConfigs.compModal = compConfig;
+new Chart(document.getElementById('compChart'), JSON.parse(JSON.stringify(compConfig)));
+
+// =============================================
+// CHART 9: KPI TREND (SUB REVENUE)
+// =============================================
+const kpiConfig = {
+  type: 'line',
+  data: {
+    labels: ['Q1\'24','Q2\'24','Q3\'24','Q4\'24','Q1\'25','Q2\'25','Q3\'25','Q4\'25','Q1\'26'],
+    datasets: [{
+      label: 'Subscription Revenue ($M)',
+      data: [2523, 2542, 2715, 2866, 3005, 3113, 3299, 3466, 3671],
+      borderColor: '#FCC55B',
+      backgroundColor: 'rgba(252,197,91,0.1)',
+      fill: true,
+      tension: 0.3,
+      pointRadius: 4,
+      pointBackgroundColor: '#FCC55B',
+      pointBorderColor: '#fff',
+      pointBorderWidth: 2,
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => '$' + ctx.raw + 'M' } }
+    },
+    scales: {
+      y: { beginAtZero: false, min: 2200, ticks: { callback: v => '$'+v+'M', font: { family: "'JetBrains Mono', monospace", size: 10 } }, grid: { color: '#f0ede8' } },
+      x: { grid: { display: false }, ticks: { font: { family: "'JetBrains Mono', monospace", size: 10 } } }
+    }
+  }
+};
+chartConfigs.kpiModal = kpiConfig;
+new Chart(document.getElementById('kpiChart'), JSON.parse(JSON.stringify(kpiConfig)));
+
+// =============================================
+// CHART 10: CATALYST IMPACT
+// =============================================
+const catalystConfig = {
+  type: 'bar',
+  data: {
+    labels: ['Analyst Day (May)','Q2 Earnings (Jul)','Q3 Earnings (Oct)','AI Product Launch (H2)','Armis Integration (26-27)','Buyback Execution'],
+    datasets: [{
+      label: 'Estimated Impact (1-10)',
+      data: [8, 9, 8, 10, 7, 7],
+      backgroundColor: ['#2F4A31','#1B6B2A','#1B6B2A','#FCC55B','#0F4A1A','#1B6B2A'],
+      borderRadius: 4,
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { beginAtZero: true, max: 10, ticks: { font: { family: "'JetBrains Mono', monospace", size: 10 } }, grid: { color: '#f0ede8' } },
+      y: { grid: { display: false }, ticks: { font: { size: 10 } } }
+    }
+  }
+};
+chartConfigs.catalystModal = catalystConfig;
+new Chart(document.getElementById('catalystChart'), JSON.parse(JSON.stringify(catalystConfig)));
+
+</script>
+</body>
+</html>
