@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AMD Investment Report — FTA Research Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Questrial&family=Quicksand:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root {
+  --gold: #FCC55B;
+  --beige: #EDE8E0;
+  --green: #145A22;
+  --dark-green: #0A3A14;
+  --forest: #243D27;
+  --white: #FFFFFF;
+  --text: #2D2D2D;
+  --text-light: #555;
+  --border: #D4CFC7;
+  --card-bg: #F7F4EF;
+  --shadow: rgba(0,0,0,0.08);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Quicksand',sans-serif; background:var(--beige); color:var(--text); line-height:1.7; font-weight:400; }
+/* Sidebar */
+.sidebar {
+  position:fixed; top:0; left:0; width:260px; height:100vh;
+  background:linear-gradient(180deg,#071f0b,#0A3A14 40%,#145A22);
+  padding:30px 20px; overflow-y:auto; z-index:100;
+  scrollbar-width:thin; scrollbar-color:var(--gold) transparent;
+}
+.sidebar-logo { color:var(--gold); font-family:'Questrial',sans-serif; font-size:1.1rem; letter-spacing:2px; margin-bottom:6px; }
+.sidebar-sub { color:rgba(255,255,255,0.5); font-size:0.7rem; letter-spacing:1px; margin-bottom:30px; font-family:'JetBrains Mono',monospace; }
+.sidebar a {
+  display:block; color:rgba(255,255,255,0.75); text-decoration:none;
+  padding:8px 12px; margin-bottom:2px; border-radius:6px;
+  font-size:0.82rem; transition:all 0.2s; font-weight:500;
+}
+.sidebar a:hover, .sidebar a.active { background:rgba(252,197,91,0.15); color:var(--gold); }
+.sidebar a .num { font-family:'JetBrains Mono',monospace; font-size:0.7rem; color:var(--gold); margin-right:6px; opacity:0.7; }
+/* Main */
+.main { margin-left:260px; padding:0; }
+.header {
+  background:linear-gradient(135deg,#0A3A14,#145A22);
+  padding:50px 60px 40px; color:var(--white); position:relative; overflow:hidden;
+}
+.header::after {
+  content:''; position:absolute; top:-50%; right:-10%; width:400px; height:400px;
+  background:radial-gradient(circle,rgba(252,197,91,0.12) 0%,transparent 70%);
+  border-radius:50%;
+}
+.header .ticker-badge {
+  display:inline-block; background:var(--gold); color:var(--dark-green);
+  padding:6px 18px; border-radius:20px; font-family:'JetBrains Mono',monospace;
+  font-weight:700; font-size:0.9rem; margin-bottom:16px;
+}
+.header h1 { font-family:'Questrial',sans-serif; font-size:2.6rem; margin-bottom:8px; font-weight:400; }
+.header .subtitle { opacity:0.8; font-size:0.95rem; margin-bottom:20px; }
+.header-stats { display:flex; gap:30px; flex-wrap:wrap; }
+.header-stat { text-align:center; }
+.header-stat .val { font-family:'JetBrains Mono',monospace; font-size:1.5rem; font-weight:700; color:var(--gold); }
+.header-stat .lbl { font-size:0.72rem; opacity:0.6; text-transform:uppercase; letter-spacing:1px; }
+.content { max-width:1100px; margin:0 auto; padding:40px 60px 80px; }
+/* Section */
+.section { margin-bottom:40px; }
+.section-header {
+  display:flex; align-items:center; cursor:pointer; padding:16px 20px;
+  background:var(--white); border-radius:10px; border:1px solid var(--border);
+  margin-bottom:0; transition:all 0.2s; user-select:none;
+}
+.section-header:hover { box-shadow:0 2px 12px var(--shadow); }
+.section-header .sec-num {
+  font-family:'JetBrains Mono',monospace; font-size:0.75rem; color:var(--gold);
+  background:var(--dark-green); padding:4px 10px; border-radius:12px; margin-right:14px; white-space:nowrap;
+}
+.section-header h2 {
+  font-family:'Cormorant Garamond',serif; font-style:italic; font-size:1.35rem;
+  font-weight:600; color:var(--dark-green); flex:1;
+}
+.section-header .toggle { font-size:1.2rem; color:var(--green); transition:transform 0.3s; }
+.section-header.open .toggle { transform:rotate(180deg); }
+.section-body {
+  background:var(--white); border:1px solid var(--border); border-top:none;
+  border-radius:0 0 10px 10px; padding:24px; display:none; animation:fadeIn 0.3s;
+}
+.section-header.open { border-radius:10px 10px 0 0; }
+.section-header.open + .section-body { display:block; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(-8px)} to{opacity:1;transform:translateY(0)} }
+/* Typography inside sections */
+.section-body h3 { font-family:'Questrial',sans-serif; font-size:1.05rem; color:var(--dark-green); margin:20px 0 10px; }
+.section-body h3:first-child { margin-top:0; }
+.section-body p { margin-bottom:12px; font-size:0.92rem; color:var(--text); }
+.section-body ul { margin:0 0 12px 20px; }
+.section-body li { margin-bottom:6px; font-size:0.9rem; }
+.stat-val { font-family:'JetBrains Mono',monospace; font-weight:600; color:var(--dark-green); }
+.gold-val { font-family:'JetBrains Mono',monospace; font-weight:700; color:#B8860B; }
+/* Cards & Tables */
+.metric-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:16px; margin:16px 0; }
+.metric-card {
+  background:var(--card-bg); border-radius:8px; padding:16px; text-align:center;
+  border:1px solid var(--border);
+}
+.metric-card .mc-val { font-family:'JetBrains Mono',monospace; font-size:1.3rem; font-weight:700; color:var(--dark-green); }
+.metric-card .mc-lbl { font-size:0.75rem; color:var(--text-light); margin-top:4px; text-transform:uppercase; letter-spacing:0.5px; }
+table { width:100%; border-collapse:collapse; margin:16px 0; font-size:0.85rem; }
+th { background:var(--dark-green); color:var(--white); padding:10px 12px; text-align:left; font-family:'Questrial',sans-serif; font-weight:400; font-size:0.8rem; letter-spacing:0.5px; }
+td { padding:10px 12px; border-bottom:1px solid var(--border); }
+tr:nth-child(even) { background:var(--card-bg); }
+.badge-bull { background:#d4edda; color:#155724; padding:2px 10px; border-radius:10px; font-size:0.75rem; font-weight:600; }
+.badge-bear { background:#f8d7da; color:#721c24; padding:2px 10px; border-radius:10px; font-size:0.75rem; font-weight:600; }
+.badge-base { background:#fff3cd; color:#856404; padding:2px 10px; border-radius:10px; font-size:0.75rem; font-weight:600; }
+.badge-beat { background:#d4edda; color:#155724; padding:2px 10px; border-radius:10px; font-size:0.75rem; font-weight:600; }
+.badge-miss { background:#f8d7da; color:#721c24; padding:2px 10px; border-radius:10px; font-size:0.75rem; font-weight:600; }
+/* Charts */
+.chart-wrap { background:var(--card-bg); border-radius:10px; padding:16px; margin:16px 0; border:1px solid var(--border); cursor:pointer; position:relative; }
+.chart-wrap canvas { max-height:160px; }
+.chart-wrap .chart-title { font-family:'Questrial',sans-serif; font-size:0.85rem; color:var(--dark-green); margin-bottom:10px; text-align:center; }
+.chart-row { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin:16px 0; }
+.chart-row .chart-wrap { margin:0; }
+.doughnut-solo { max-width:420px; }
+.doughnut-solo canvas { max-height:200px; }
+/* Glossary */
+.glossary-term {
+  color:var(--green); border-bottom:1px dashed var(--green); cursor:help;
+  text-decoration:none; font-weight:500;
+}
+.glossary-term:hover { color:var(--gold); }
+.glossary-entry { padding:12px 0; border-bottom:1px solid var(--border); }
+.glossary-entry:last-child { border-bottom:none; }
+.glossary-entry h4 { font-family:'Questrial',sans-serif; color:var(--dark-green); margin-bottom:4px; }
+.glossary-entry p { font-size:0.88rem; margin-bottom:4px; }
+.back-link { font-size:0.8rem; color:var(--green); }
+/* Conviction */
+.conviction-bar { display:flex; align-items:center; gap:4px; margin:12px 0; }
+.conviction-bar .dot {
+  width:28px; height:28px; border-radius:50%; border:2px solid var(--border);
+  display:flex; align-items:center; justify-content:center;
+  font-family:'JetBrains Mono',monospace; font-size:0.65rem; font-weight:700; color:var(--white);
+}
+.conviction-bar .dot.filled { background:var(--green); border-color:var(--green); }
+.conviction-bar .dot.empty { background:transparent; color:var(--border); }
+/* Timeline */
+.timeline { position:relative; padding-left:30px; margin:16px 0; }
+.timeline::before { content:''; position:absolute; left:10px; top:0; bottom:0; width:3px; background:linear-gradient(to bottom,var(--gold),var(--green)); border-radius:2px; }
+.timeline-item { position:relative; margin-bottom:20px; }
+.timeline-item::before {
+  content:''; position:absolute; left:-24px; top:6px; width:12px; height:12px;
+  border-radius:50%; background:var(--gold); border:3px solid var(--dark-green);
+}
+.timeline-item .tl-date { font-family:'JetBrains Mono',monospace; font-size:0.75rem; color:var(--green); font-weight:600; }
+.timeline-item .tl-text { font-size:0.88rem; }
+/* Modal */
+.chart-modal {
+  display:none; position:fixed; top:0; left:0; width:100%; height:100%;
+  background:rgba(0,0,0,0.7); z-index:200; align-items:center; justify-content:center;
+}
+.chart-modal.active { display:flex; }
+.chart-modal-inner { background:var(--white); border-radius:12px; padding:30px; max-width:800px; width:90%; max-height:90vh; position:relative; }
+.chart-modal-close { position:absolute; top:10px; right:16px; font-size:1.5rem; cursor:pointer; color:var(--text-light); background:none; border:none; }
+.chart-modal-inner canvas { max-height:400px!important; }
+/* Footer */
+.footer { background:var(--dark-green); color:rgba(255,255,255,0.5); text-align:center; padding:30px; font-size:0.75rem; }
+.footer span { color:var(--gold); }
+/* Responsive */
+@media(max-width:900px) {
+  .sidebar { display:none; }
+  .main { margin-left:0; }
+  .header { padding:30px 20px; }
+  .header h1 { font-size:1.8rem; }
+  .content { padding:20px; }
+  .chart-row { grid-template-columns:1fr; }
+  .header-stats { gap:16px; }
+}
+/* Scrollbar */
+::-webkit-scrollbar { width:6px; }
+::-webkit-scrollbar-track { background:transparent; }
+::-webkit-scrollbar-thumb { background:var(--border); border-radius:3px; }
+html { scroll-behavior:smooth; }
+</style>
+</head>
+<body>
+
+<!-- Sidebar Navigation -->
+<nav class="sidebar">
+  <div class="sidebar-logo">FTA RESEARCH HUB</div>
+  <div class="sidebar-sub">FOUNDATIONAL TRADING ACADEMY</div>
+  <a href="#sec1"><span class="num">01</span> Executive Summary</a>
+  <a href="#sec2"><span class="num">02</span> Micro & Valuation</a>
+  <a href="#sec3"><span class="num">03</span> Moat & Management</a>
+  <a href="#sec4"><span class="num">04</span> Financial Deep Dive</a>
+  <a href="#sec5"><span class="num">05</span> Earnings Tracker</a>
+  <a href="#sec6"><span class="num">06</span> Scenario Analysis</a>
+  <a href="#sec7"><span class="num">07</span> Risks & Anti-Thesis</a>
+  <a href="#sec8"><span class="num">08</span> Catalyst Timeline</a>
+  <a href="#sec9"><span class="num">09</span> Comparable Analysis</a>
+  <a href="#sec10"><span class="num">10</span> First-Principles KPIs</a>
+  <a href="#sec11"><span class="num">11</span> Glossary</a>
+</nav>
+
+<!-- Main Content -->
+<div class="main">
+
+<!-- Header -->
+<div class="header">
+  <div class="ticker-badge">NASDAQ: AMD</div>
+  <h1>Advanced Micro Devices, Inc.</h1>
+  <p class="subtitle">Deep-Dive Investment Analysis &bull; May 23, 2026</p>
+  <div class="header-stats">
+    <div class="header-stat"><div class="val">$467.51</div><div class="lbl">Current Price</div></div>
+    <div class="header-stat"><div class="val">$762B</div><div class="lbl">Market Cap</div></div>
+    <div class="header-stat"><div class="val">$10.3B</div><div class="lbl">Q1 2026 Rev</div></div>
+    <div class="header-stat"><div class="val">$1.37</div><div class="lbl">Q1 Non-GAAP EPS</div></div>
+    <div class="header-stat"><div class="val">+38%</div><div class="lbl">YoY Rev Growth</div></div>
+    <div class="header-stat"><div class="val">8/10</div><div class="lbl">Conviction</div></div>
+  </div>
+</div>
+
+<div class="content">
+
+<!-- ============ SECTION 1 ============ -->
+<div class="section" id="sec1">
+  <div class="section-header open" onclick="toggleSection(this)">
+    <span class="sec-num">01</span>
+    <h2>Executive Summary & Investment Thesis</h2>
+    <span class="toggle">&#9660;</span>
+  </div>
+  <div class="section-body" style="display:block">
+    <h3>Thesis: BULLISH — AMD Is the Best-Positioned #2 in the Most Important Market of the Decade</h3>
+    <p>AMD is not trying to dethrone NVIDIA — it is building the inevitable alternative that every hyperscaler, sovereign AI program, and cost-conscious enterprise needs. In a market racing toward $500B+ in annual AI infrastructure spend, the #2 supplier with credible silicon earns a structural share premium that the market is only beginning to price. With the MI400 launching on TSMC 2nm (ahead of NVIDIA's Rubin), EPYC Venice redefining server CPU <a href="#g-tam" class="glossary-term">TAM</a> at $120B, and OpenAI/Oracle/Meta locked into multi-year GPU commitments, AMD's Data Center revenue is inflecting from "strong growth" to "structural re-rating."</p>
+
+    <div class="metric-grid">
+      <div class="metric-card"><div class="mc-val">$467.51</div><div class="mc-lbl">Price (May 22, 2026)</div></div>
+      <div class="metric-card"><div class="mc-val">$762B</div><div class="mc-lbl">Market Cap</div></div>
+      <div class="metric-card"><div class="mc-val">Semiconductors</div><div class="mc-lbl">Sector</div></div>
+      <div class="metric-card"><div class="mc-val">1.63B</div><div class="mc-lbl">Shares Outstanding</div></div>
+      <div class="metric-card"><div class="mc-val">~121x</div><div class="mc-lbl"><a href="#g-pe" class="glossary-term">P/E</a> (TTM)</div></div>
+      <div class="metric-card"><div class="mc-val">~17x</div><div class="mc-lbl"><a href="#g-ps" class="glossary-term">P/S</a> (TTM)</div></div>
+      <div class="metric-card"><div class="mc-val">$2.57B</div><div class="mc-lbl">Q1 2026 <a href="#g-fcf" class="glossary-term">FCF</a></div></div>
+      <div class="metric-card"><div class="mc-val">+109%</div><div class="mc-lbl">1-Year Return</div></div>
+    </div>
+
+    <h3>Conviction Rating: 8 / 10</h3>
+    <div class="conviction-bar">
+      <div class="dot filled">1</div><div class="dot filled">2</div><div class="dot filled">3</div><div class="dot filled">4</div>
+      <div class="dot filled">5</div><div class="dot filled">6</div><div class="dot filled">7</div><div class="dot filled">8</div>
+      <div class="dot empty">9</div><div class="dot empty">10</div>
+    </div>
+    <p><strong>Why 8 and not 10:</strong> The CUDA ecosystem lock-in is real and quantifiable. AMD's inference story is compelling, but training workloads — the highest-margin segment — remain NVIDIA-dominated. Valuation at 121x trailing P/E requires near-flawless execution. The two missing points reflect execution risk on MI400 ramp and the possibility that hyperscaler capex cycles could pause, not just slow.</p>
+  </div>
+</div>
+
+<!-- ============ SECTION 2 ============ -->
+<div class="section" id="sec2">
+  <div class="section-header" onclick="toggleSection(this)">
+    <span class="sec-num">02</span>
+    <h2>Microeconomic & Valuation Analysis</h2>
+    <span class="toggle">&#9660;</span>
+  </div>
+  <div class="section-body">
+    <h3>Total Addressable Market</h3>
+    <p>AMD's CEO Lisa Su doubled the long-term server CPU <a href="#g-tam" class="glossary-term">TAM</a> forecast to over <span class="stat-val">$120B by 2030</span>, up from ~$60B just five months prior. The driver: agentic AI workloads are shifting CPU-to-GPU ratios from 1:8 toward 1:1, dramatically expanding CPU demand per AI cluster. The AI accelerator TAM is projected at $400B+ by 2028, with AMD guiding Data Center revenue to grow 60%+ annually over the next 3-5 years.</p>
+
+    <div class="chart-row">
+      <div class="chart-wrap" onclick="enlargeChart('tamChart')">
+        <div class="chart-title">Server CPU TAM Evolution ($B)</div>
+        <canvas id="tamChart"></canvas>
+      </div>
+      <div class="chart-wrap" onclick="enlargeChart('revGrowthChart')">
+        <div class="chart-title">AMD Revenue Growth YoY (%)</div>
+        <canvas id="revGrowthChart"></canvas>
+      </div>
+    </div>
+
+    <h3>Valuation Analysis</h3>
+    <p>At a <a href="#g-ps" class="glossary-term">P/S</a> of <span class="stat-val">~17x</span>, AMD sits firmly in the "Excited" range on our P/S scale (>18 = Euphoric, >8 = Optimistic). This is elevated but defensible given 38% revenue growth and accelerating margins. The trailing <a href="#g-pe" class="glossary-term">P/E</a> of ~121x looks extreme, but the forward P/E on 2027 consensus earnings (~$14.50 EPS) drops to ~32x — reasonable for a company growing earnings at 40%+.</p>
+
+    <div class="metric-grid">
+      <div class="metric-card"><div class="mc-val" style="color:#B8860B">~17x</div><div class="mc-lbl">P/S — "Excited"</div></div>
+      <div class="metric-card"><div class="mc-val">~121x</div><div class="mc-lbl">Trailing P/E</div></div>
+      <div class="metric-card"><div class="mc-val">~32x</div><div class="mc-lbl">Forward P/E (CY2027)</div></div>
+      <div class="metric-card"><div class="mc-val">38%</div><div class="mc-lbl">Revenue Growth YoY</div></div>
+    </div>
+
+    <h3>Institutional & Insider Ownership</h3>
+    <p>Institutional ownership stands at <span class="stat-val">67.9%</span>, with insiders holding ~0.9%. Insider selling has been modest — $1.4M in the last 3 months (Mark Papermaster, $607K on Mar 4, 2026). No insider buying. This is typical for a company at this valuation; insiders are not rushing for the exits. The Teacher Retirement System of Texas bought 107,511 shares in March 2026, signaling long-term institutional confidence.</p>
+
+    <h3>Analyst Consensus</h3>
+    <p>Consensus: <span class="badge-bull">Strong Buy</span> across 34-51 analysts. Average price target: <span class="stat-val">$405–$472</span>. High: $579 (Evercore ISI, May 19). Low: $248 (Citigroup, Apr 6). Goldman Sachs upgraded shares post-Q1 earnings, calling AMD's CPU story "underappreciated." DA Davidson reset targets citing AI capex durability.</p>
+  </div>
+</div>
+
+<!-- ============ SECTION 3 ============ -->
+<div class="section" id="sec3">
+  <div class="section-header" onclick="toggleSection(this)">
+    <span class="sec-num">03</span>
+    <h2>Qualitative Analysis — Moat, Management & Culture</h2>
+    <span class="toggle">&#9660;</span>
+  </div>
+  <div class="section-body">
+    <h3>Competitive Moat — A Systems-Level Challenger</h3>
+    <p>AMD's moat is not a single advantage but a <strong>compounding platform</strong> assembled over a decade. The x86 license (one of only two companies globally) creates an irreplaceable duopoly with Intel. The Xilinx acquisition ($50B, 2022) added adaptive compute (FPGAs) and the embedded segment. The ZT Systems acquisition ($4.9B, completed 2025) transformed AMD from a chip vendor into a full-stack AI infrastructure provider. This gives AMD something NVIDIA's competitors lack: the ability to sell an entire rack — CPU, GPU, networking, cooling, power delivery — as a single validated system (the Helios platform).</p>
+    <p>The moat deepens through AMD's deliberate embrace of open ecosystems: ROCm (open-source GPU compute), UALink (open interconnect consortium), and Ultra Ethernet. Hyperscalers like Meta, Microsoft, and Oracle prefer open standards because they reduce vendor lock-in. AMD is positioning itself as the anti-NVIDIA — not necessarily better, but more <em>controllable</em>. In enterprise procurement, that matters enormously.</p>
+
+    <h3>Management — Lisa Su's Under-Promise, Over-Deliver Playbook</h3>
+    <p>Dr. Lisa Su (CEO since 2014) is widely regarded as one of the most effective leaders in global technology. When she took over, AMD was a $2 stock on the brink of irrelevance. Her strategic clarity — abandon low-margin mobile, double down on high-performance compute — turned AMD into a $762B company. Her leadership team includes Victor Peng (President, ex-Xilinx CEO) running AI/embedded strategy, and CFO Jean Hu driving disciplined capital allocation. The board is technically deep and operationally credible.</p>
+
+    <h3>Culture & Organizational Traits</h3>
+    <div class="metric-grid">
+      <div class="metric-card"><div class="mc-val" style="font-size:1rem">✓ Founder-Led Energy</div><div class="mc-lbl">Lisa Su acts like a founder</div></div>
+      <div class="metric-card"><div class="mc-val" style="font-size:1rem">✓ Innovation Pace</div><div class="mc-lbl">Annual product cadence</div></div>
+      <div class="metric-card"><div class="mc-val" style="font-size:1rem">✓ Talent Density</div><div class="mc-lbl">Top silicon engineers</div></div>
+      <div class="metric-card"><div class="mc-val" style="font-size:1rem">✓ Customer Obsession</div><div class="mc-lbl">Co-design with hyperscalers</div></div>
+    </div>
+    <p>AMD's culture has shifted from scrappy underdog to confident challenger. The company maintains a rapid product cadence (Zen 4 → Zen 5 → Zen 6, CDNA 3 → CDNA 4 → CDNA 5) that keeps pressure on both Intel and NVIDIA. Strategic acquisitions (Pensando, Xilinx, ZT Systems) show a willingness to buy capability gaps rather than build everything internally — a sign of strategic maturity.</p>
+  </div>
+</div>
+
+<!-- ============ SECTION 4 ============ -->
+<div class="section" id="sec4">
+  <div class="section-header" onclick="toggleSection(this)">
+    <span class="sec-num">04</span>
+    <h2>Quantitative Analysis — Financial Deep Dive</h2>
+    <span class="toggle">&#9660;</span>
+  </div>
+  <div class="section-body">
+    <h3>Revenue Trajectory</h3>
+    <p>AMD delivered <span class="stat-val">$10.3B</span> in Q1 2026 revenue, up 38% YoY. Full-year 2025 revenue was a record $34.6B (+34% YoY). The Data Center segment alone generated $5.8B in Q1 2026 (+57% YoY), now representing 56% of total revenue — up from 42% in Q1 2024.</p>
+
+    <div class="chart-row">
+      <div class="chart-wrap" onclick="enlargeChart('revChart')">
+        <div class="chart-title">Quarterly Revenue Trend ($B)</div>
+        <canvas id="revChart"></canvas>
+      </div>
+      <div class="chart-wrap" onclick="enlargeChart('segmentChart')">
+        <div class="chart-title">Q1 2026 Revenue Segments</div>
+        <canvas id="segmentChart"></canvas>
+      </div>
+    </div>
+
+    <h3>Segment Revenue Trends</h3>
+    <table>
+      <tr><th>Segment</th><th>Q1 2025</th><th>Q2 2025</th><th>Q3 2025</th><th>Q4 2025</th><th>Q1 2026</th><th>YoY</th></tr>
+      <tr><td>Data Center</td><td class="stat-val">$3.7B</td><td class="stat-val">$3.5B</td><td class="stat-val">$4.1B</td><td class="stat-val">$5.4B</td><td class="stat-val">$5.8B</td><td>+57%</td></tr>
+      <tr><td>Client</td><td class="stat-val">$2.3B</td><td class="stat-val">$2.3B</td><td class="stat-val">$2.7B</td><td class="stat-val">$3.1B</td><td class="stat-val">$2.9B</td><td>+26%</td></tr>
+      <tr><td>Gaming</td><td class="stat-val">$647M</td><td class="stat-val">$650M</td><td class="stat-val">$780M</td><td class="stat-val">$843M</td><td class="stat-val">$720M</td><td>+11%</td></tr>
+      <tr><td>Embedded</td><td class="stat-val">$823M</td><td class="stat-val">$862M</td><td class="stat-val">$927M</td><td class="stat-val">$950M</td><td class="stat-val">$873M</td><td>+6%</td></tr>
+    </table>
+
+    <h3>Margins & Profitability</h3>
+    <div class="chart-row">
+      <div class="chart-wrap" onclick="enlargeChart('marginChart')">
+        <div class="chart-title">Margin Expansion (Non-GAAP)</div>
+        <canvas id="marginChart"></canvas>
+      </div>
+      <div class="chart-wrap" onclick="enlargeChart('fcfChart')">
+        <div class="chart-title">Free Cash Flow Quarterly ($B)</div>
+        <canvas id="fcfChart"></canvas>
+      </div>
+    </div>
+
+    <h3>Free Cash Flow & Capital Efficiency</h3>
+    <p>Q1 2026 <a href="#g-fcf" class="glossary-term">FCF</a> was a record <span class="stat-val">$2.57B</span> (25% margin), a massive step-up from full-year 2025 FCF of $2.1B. This single quarter exceeded the entire prior year, reflecting the operating leverage inherent in AMD's fabless model as higher-margin Data Center revenue scales. <a href="#g-fcf-share" class="glossary-term">FCF/share</a> TTM was approximately $2.48 as of mid-2025 and is inflecting sharply higher.</p>
+
+    <h3>Balance Sheet</h3>
+    <div class="metric-grid">
+      <div class="metric-card"><div class="mc-val">$10.6B</div><div class="mc-lbl">Cash & Investments</div></div>
+      <div class="metric-card"><div class="mc-val">2.74x</div><div class="mc-lbl">Cash-to-Debt</div></div>
+      <div class="metric-card"><div class="mc-val">0.05</div><div class="mc-lbl">Debt/Equity</div></div>
+      <div class="metric-card"><div class="mc-val">Fortress</div><div class="mc-lbl">Balance Sheet Grade</div></div>
+    </div>
+    <p>AMD's balance sheet is a fortress. With $10.6B in cash against minimal debt (D/E of 0.05), the company has ample capacity for R&D investment, strategic acquisitions, and share buybacks. The cash-to-debt ratio of 2.74x means AMD could eliminate all debt from cash on hand — twice over.</p>
+
+    <h3>Revenue CAGR</h3>
+    <table>
+      <tr><th>Period</th><th>AMD CAGR</th><th>Industry Average</th><th>Verdict</th></tr>
+      <tr><td>5-Year (2020→2025)</td><td class="stat-val">~28%</td><td>~12%</td><td><span class="badge-bull">Outperforming</span></td></tr>
+      <tr><td>3-Year (2022→2025)</td><td class="stat-val">~15%</td><td>~8%</td><td><span class="badge-bull">Outperforming</span></td></tr>
+      <tr><td>Forward (2025→2028E)</td><td class="stat-val">~35%</td><td>~15%</td><td><span class="badge-bull">Accelerating</span></td></tr>
+    </table>
+
+    <h3>Flywheel Analysis</h3>
+    <p>AMD's flywheel: <strong>Better silicon → Hyperscaler wins → Revenue scale → R&D reinvestment → Better silicon.</strong> The ZT Systems acquisition adds a second loop: <strong>Full-stack systems → Easier deployment → More customers → More data on workloads → Better-optimized systems.</strong> Each MI-generation GPU win with OpenAI or Meta creates reference architectures that pull in enterprise customers. The flywheel is accelerating — Q1 2026 was the first quarter where the compounding became visible in both revenue and FCF simultaneously.</p>
+  </div>
+</div>
+
+<!-- ============ SECTION 5 ============ -->
+<div class="section" id="sec5">
+  <div class="section-header" onclick="toggleSection(this)">
+    <span class="sec-num">05</span>
+    <h2>Earnings Tracker — Management Credibility</h2>
+    <span class="toggle">&#9660;</span>
+  </div>
+  <div class="section-body">
+    <p>Lisa Su's management team has established a pattern of guiding conservatively and delivering upside. Below is a tracker of recent quarterly guidance versus actual results.</p>
+    <table>
+      <tr><th>Quarter</th><th>Revenue Guidance</th><th>Actual Revenue</th><th>EPS Est.</th><th>Actual EPS</th><th>Result</th></tr>
+      <tr><td>Q2 2024</td><td>$5.7B ±$300M</td><td>$5.84B</td><td>$0.68</td><td>$0.69</td><td><span class="badge-beat">Beat</span></td></tr>
+      <tr><td>Q3 2024</td><td>$6.7B ±$300M</td><td>$6.82B</td><td>$0.92</td><td>$0.92</td><td><span class="badge-beat">In-Line</span></td></tr>
+      <tr><td>Q4 2024</td><td>$7.5B ±$300M</td><td>$7.66B</td><td>$1.07</td><td>$1.09</td><td><span class="badge-beat">Beat</span></td></tr>
+      <tr><td>Q1 2025</td><td>$7.1B ±$300M</td><td>$7.44B</td><td>$0.93</td><td>$0.96</td><td><span class="badge-beat">Beat</span></td></tr>
+      <tr><td>Q2 2025</td><td>$7.4B ±$300M</td><td>$7.69B</td><td>$0.49</td><td>$0.48*</td><td><span class="badge-miss">Miss*</span></td></tr>
+      <tr><td>Q3 2025</td><td>$9.0B ±$300M</td><td>$9.25B</td><td>$1.16</td><td>$1.20</td><td><span class="badge-beat">Beat</span></td></tr>
+      <tr><td>Q4 2025</td><td>$9.7B ±$300M</td><td>$10.27B</td><td>$1.40</td><td>$1.53</td><td><span class="badge-beat">Beat</span></td></tr>
+      <tr><td>Q1 2026</td><td>$10.0B ±$300M</td><td>$10.25B</td><td>$1.25</td><td>$1.37</td><td><span class="badge-beat">Beat</span></td></tr>
+    </table>
+    <p style="font-size:0.82rem;color:var(--text-light);">*Q2 2025 EPS miss was due to $800M one-time inventory charges from U.S. export control restrictions on MI308 GPUs — a non-recurring event. Revenue still beat guidance. Excluding charges, underlying EPS beat.</p>
+
+    <div class="chart-wrap" onclick="enlargeChart('epsChart')">
+      <div class="chart-title">Non-GAAP EPS Trend (Last 8 Quarters)</div>
+      <canvas id="epsChart"></canvas>
+    </div>
+
+    <h3>Management Credibility Score: 9/10</h3>
+    <p>Seven out of eight quarters delivered upside on revenue. The single EPS miss (Q2 2025) was driven by a government-imposed export control charge — entirely outside management's control. The Q4 2025 beat was particularly impressive: revenue came in $570M above the midpoint of guidance (+5.9%), with EPS beating by $0.13. Lisa Su's guidance discipline creates a trust premium that lowers the risk of holding through volatility.</p>
+  </div>
+</div>
+
+<!-- ============ SECTION 6 ============ -->
+<div class="section" id="sec6">
+  <div class="section-header" onclick="toggleSection(this)">
+    <span class="sec-num">06</span>
+    <h2>Bull / Bear / Base Case Scenarios</h2>
+    <span class="toggle">&#9660;</span>
+  </div>
+  <div class="section-body">
+    <table>
+      <tr><th>Scenario</th><th>1-Year Target</th><th>3-Year Target</th><th>5-Year Target</th><th>Probability</th></tr>
+      <tr><td><span class="badge-bull">Bull</span></td><td class="stat-val">$620</td><td class="stat-val">$950</td><td class="stat-val">$1,400</td><td>30%</td></tr>
+      <tr><td><span class="badge-base">Base</span></td><td class="stat-val">$520</td><td class="stat-val">$720</td><td class="stat-val">$1,000</td><td>45%</td></tr>
+      <tr><td><span class="badge-bear">Bear</span></td><td class="stat-val">$310</td><td class="stat-val">$350</td><td class="stat-val">$450</td><td>25%</td></tr>
+    </table>
+
+    <h3>Bull Case Assumptions (30%)</h3>
+    <p>MI400 ramp exceeds expectations; AMD captures 15%+ AI GPU market share by 2028. EPYC Venice drives server CPU share above 40%. Data Center revenue reaches $40B+ by FY2028. <a href="#g-fcf" class="glossary-term">FCF</a> margins expand to 30%+. Multiple re-rates as market recognizes AMD as a durable #2 in AI compute. OpenAI and Meta deployments expand beyond initial commitments.</p>
+
+    <h3>Base Case Assumptions (45%)</h3>
+    <p>MI400 ramps on schedule; AMD captures 8-12% AI GPU share. EPYC server CPU share reaches 30-35%. Data Center revenue grows ~50% annually to ~$30B by FY2028. Margins expand steadily. Valuation remains at ~25-30x forward earnings. Competition from NVIDIA Rubin and custom ASICs limits upside.</p>
+
+    <h3>Bear Case Assumptions (25%)</h3>
+    <p>MI400 delayed or underperforms vs. NVIDIA Rubin/Vera. CUDA lock-in proves more durable than expected. Hyperscaler capex cycle peaks and declines. Custom silicon (Google TPU, Amazon Trainium, Microsoft Maia) erodes AMD's addressable market. Export controls tighten again, creating inventory risk. Multiple compresses to 20x forward as growth decelerates.</p>
+
+    <div class="chart-wrap" onclick="enlargeChart('scenarioChart')">
+      <div class="chart-title">Probability-Weighted Price Targets</div>
+      <canvas id="scenarioChart"></canvas>
+    </div>
+
+    <h3>Expected Value Analysis</h3>
+    <p>Probability-weighted 1-year target: <span class="stat-val">$498</span> (30%×$620 + 45%×$520 + 25%×$310). This implies ~6.5% upside from the current price — modest, but the convexity of the bull case (where returns could be 2-3x) makes the risk/reward asymmetrically favorable for long-term holders.</p>
+  </div>
+</div>
+
+<!-- ============ SECTION 7 ============ -->
+<div class="section" id="sec7">
+  <div class="section-header" onclick="toggleSection(this)">
+    <span class="sec-num">07</span>
+    <h2>Risks & Anti-Thesis (Steelman the Bear Case)</h2>
+    <span class="toggle">&#9660;</span>
+  </div>
+  <div class="section-body">
+    <p>If you were short AMD, these would be your five strongest arguments:</p>
+
+    <h3>1. CUDA Ecosystem Lock-In Is a Fortress, Not a Fence</h3>
+    <p><strong>Probability: 70% | Impact: High | Priced In: Partially</strong></p>
+    <p>NVIDIA's CUDA ecosystem has 15+ years of developer momentum, millions of lines of optimized code, and near-universal adoption in AI training. ROCm is improving but remains a distant second in library coverage, debugging tools, and enterprise support. While inference workloads can abstract away CUDA (via vLLM, ONNX Runtime), training — the highest-margin segment — remains firmly NVIDIA territory. If training remains the dominant GPU workload, AMD's addressable market within AI GPUs is structurally limited.</p>
+
+    <h3>2. Custom Silicon Erosion (TPU, Trainium, Maia)</h3>
+    <p><strong>Probability: 50% | Impact: Medium-High | Priced In: No</strong></p>
+    <p>Google's TPUs, Amazon's Trainium 3, and Microsoft's Maia 100 represent a growing trend of hyperscalers building their own AI chips. If custom silicon captures 30-40% of the total AI accelerator market by 2028, both NVIDIA and AMD lose addressable market. AMD is more vulnerable because it's fighting for the #2 merchant silicon slot — custom chips directly cannibalize that position.</p>
+
+    <h3>3. Valuation Assumes Perfection</h3>
+    <p><strong>Probability: 60% | Impact: Medium | Priced In: No</strong></p>
+    <p>At 121x trailing P/E, any execution stumble — a product delay, a guidance miss, a key customer loss — triggers a violent de-rating. AMD traded at $90 just 18 months ago. The stock has priced in a world where everything goes right: MI400 ships on time, OpenAI scales AMD GPUs, EPYC takes 35%+ server share. Reality rarely cooperates fully with the best-case narrative.</p>
+
+    <h3>4. Export Control Whiplash</h3>
+    <p><strong>Probability: 40% | Impact: Medium | Priced In: Partially</strong></p>
+    <p>The January 2026 loosening of China export controls could be reversed. The Q2 2025 $800M inventory charge (MI308 export restriction) demonstrated how quickly government action can destroy quarterly results. China represents billions in potential GPU revenue. Policy uncertainty creates an unhedgeable risk that sits outside AMD's control.</p>
+
+    <h3>5. NVIDIA's Execution Machine Accelerates</h3>
+    <p><strong>Probability: 65% | Impact: High | Priced In: Partially</strong></p>
+    <p>NVIDIA is not standing still. Blackwell → Rubin → Vera represents a relentless cadence. NVIDIA's NVLink networking, which AMD counters with UALink (open standard, but less mature), creates switching costs at the rack and cluster level. If NVIDIA's Rubin matches or exceeds MI400 specs while maintaining the CUDA advantage, AMD's window to gain share narrows. NVIDIA's $81.6B quarterly revenue (Q1 FY2027) dwarfs AMD's data center segment, giving NVIDIA ~10x the R&D firepower in AI silicon.</p>
+  </div>
+</div>
+
+<!-- ============ SECTION 8 ============ -->
+<div class="section" id="sec8">
+  <div class="section-header" onclick="toggleSection(this)">
+    <span class="sec-num">08</span>
+    <h2>Catalyst Timeline</h2>
+    <span class="toggle">&#9660;</span>
+  </div>
+  <div class="section-body">
+    <div class="chart-wrap" onclick="enlargeChart('catalystChart')">
+      <div class="chart-title">Upcoming Catalysts (2026–2027)</div>
+      <canvas id="catalystChart"></canvas>
+    </div>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="tl-date">Q2 2026 (Guidance: ~$11.2B Revenue)</div>
+        <div class="tl-text">Q2 earnings report (est. Aug 2026). Key watch: MI400 pre-orders, Venice sampling updates, Data Center revenue trajectory toward $6B+.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="tl-date">Q3 2026 — MI400 & Venice Launch Window</div>
+        <div class="tl-text">Instinct MI400 series (MI450, MI455X) production launch on TSMC 2nm. EPYC Venice (Zen 6, up to 256 cores) begins shipping. Helios rack-scale platform (72 MI455X GPUs, 4,600+ cores) available. This is the most critical product cycle in AMD's history.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="tl-date">Q3 2026 — Oracle MI450 Deployment</div>
+        <div class="tl-text">Oracle deploys tens of thousands of MI450 GPUs across Oracle Cloud Infrastructure as lead launch partner.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="tl-date">Q3-Q4 2026 — OpenAI Ramp</div>
+        <div class="tl-text">OpenAI begins scaling AMD Instinct GPU deployments as part of the 6GW multi-year commitment (1GW of MI450s). Revenue impact starts appearing in quarterly results.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="tl-date">H2 2026 — Meta Deployment</div>
+        <div class="tl-text">Meta's multi-year AMD GPU deployment (up to 6GW equivalent, ~$60B total value) continues scaling. This provides multi-year revenue visibility.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="tl-date">Nov 11, 2026 — Analyst Day (New York)</div>
+        <div class="tl-text">Multi-year product and financial roadmap updates. Expected: MI500 preview, 2027-2028 revenue targets, long-term margin expansion guidance.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="tl-date">2027 — MI500 & Next-Gen Roadmap</div>
+        <div class="tl-text">AMD has previewed MI500 claiming 1,000x AI performance improvement. If credible, this anchors AMD's relevance in the 2027-2028 AI infrastructure cycle.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SECTION 9 ============ -->
+<div class="section" id="sec9">
+  <div class="section-header" onclick="toggleSection(this)">
+    <span class="sec-num">09</span>
+    <h2>Comparable Company Analysis</h2>
+    <span class="toggle">&#9660;</span>
+  </div>
+  <div class="section-body">
+    <table>
+      <tr><th>Metric</th><th>AMD</th><th>NVIDIA</th><th>Broadcom</th><th>Intel</th><th>Qualcomm</th></tr>
+      <tr><td>Market Cap</td><td class="stat-val">$762B</td><td class="stat-val">$5,215B</td><td class="stat-val">$1,958B</td><td class="stat-val">$597B</td><td class="stat-val">$251B</td></tr>
+      <tr><td>Revenue TTM</td><td class="stat-val">~$40B</td><td class="stat-val">~$210B</td><td class="stat-val">~$62B</td><td class="stat-val">~$57B</td><td class="stat-val">~$42B</td></tr>
+      <tr><td>Rev Growth YoY</td><td class="stat-val">38%</td><td class="stat-val">85%</td><td class="stat-val">~25%</td><td class="stat-val">~7%</td><td class="stat-val">~12%</td></tr>
+      <tr><td>P/E (TTM)</td><td class="stat-val">~121x</td><td class="stat-val">~46x</td><td class="stat-val">~43x</td><td class="stat-val">N/A</td><td class="stat-val">~23x</td></tr>
+      <tr><td>P/S (TTM)</td><td class="stat-val">~17x</td><td class="stat-val">~27x</td><td class="stat-val">~32x</td><td class="stat-val">~8.7x</td><td class="stat-val">~6x</td></tr>
+      <tr><td>Gross Margin</td><td class="stat-val">55%</td><td class="stat-val">~78%</td><td class="stat-val">~77%</td><td class="stat-val">~42%</td><td class="stat-val">~57%</td></tr>
+      <tr><td>Net Margin</td><td class="stat-val">~12.5%</td><td class="stat-val">~56%</td><td class="stat-val">~30%</td><td class="stat-val">Negative</td><td class="stat-val">~25%</td></tr>
+    </table>
+
+    <div class="chart-wrap" onclick="enlargeChart('compChart')">
+      <div class="chart-title">Peer Comparison — P/S vs Revenue Growth</div>
+      <canvas id="compChart"></canvas>
+    </div>
+
+    <h3>Relative Valuation Assessment</h3>
+    <p>AMD trades at a P/S discount to both NVIDIA (27x) and Broadcom (32x) despite growing revenue faster than Broadcom and approaching NVIDIA's growth trajectory. The P/E premium (121x vs. NVIDIA's 46x) reflects AMD's current margin disadvantage — NVIDIA's 56% net margin vs. AMD's 12.5% means NVIDIA converts more revenue to earnings. The key question: as AMD's margins expand (guided by increasing Data Center mix and operating leverage), does the P/E compress toward NVIDIA's level? If AMD achieves 20%+ net margins by 2028 (plausible given the FCF trajectory), the trailing P/E at current prices would drop to ~50-60x — much more reasonable for a 35%+ grower.</p>
+  </div>
+</div>
+
+<!-- ============ SECTION 10 ============ -->
+<div class="section" id="sec10">
+  <div class="section-header" onclick="toggleSection(this)">
+    <span class="sec-num">10</span>
+    <h2>First-Principles KPIs</h2>
+    <span class="toggle">&#9660;</span>
+  </div>
+  <div class="section-body">
+    <p>These are the fundamental metrics that tell you whether AMD's thesis is working before the stock price confirms it. Track these quarterly.</p>
+
+    <h3>KPI 1: Data Center Revenue as % of Total</h3>
+    <p>This measures AMD's transformation from a PC chip company to an AI infrastructure company. Rising share = higher margins, stickier revenue, and structural re-rating potential. Target: >60% by Q4 2026.</p>
+
+    <h3>KPI 2: Non-GAAP Gross Margin Trend</h3>
+    <p>Gross margin reflects product mix (Data Center GPUs/CPUs carry higher margins than Gaming/Client). Expanding margins confirm that AMD is moving up the value chain. Target: 58%+ by FY2027.</p>
+
+    <h3>KPI 3: Quarterly FCF Margin</h3>
+    <p><a href="#g-fcf" class="glossary-term">FCF</a> margin is the ultimate proof of <a href="#g-op-leverage" class="glossary-term">operating leverage</a>. AMD's Q1 2026 FCF margin of 25% was a breakthrough. Sustained 20%+ FCF margins validate the thesis that AMD's fabless model scales profitably. Target: 22%+ sustained.</p>
+
+    <h3>KPI 4: EPYC Server CPU Market Share</h3>
+    <p>AMD's x86 server CPU share is the most durable revenue driver. Each point of share represents ~$1.2B in annual revenue at current TAM. AMD currently holds approximately 25-30% and is targeting 35%+ with Venice.</p>
+
+    <h3>KPI 5: Instinct GPU Revenue Run Rate</h3>
+    <p>GPU revenue within Data Center is the highest-growth, highest-margin line. Track Instinct GPU revenue quarterly to gauge AMD's competitiveness against NVIDIA and custom silicon. Q4 2025 Instinct revenue was ~$2.65B.</p>
+
+    <div class="chart-row">
+      <div class="chart-wrap" onclick="enlargeChart('kpiDCChart')">
+        <div class="chart-title">KPI: Data Center % of Total Revenue</div>
+        <canvas id="kpiDCChart"></canvas>
+      </div>
+      <div class="chart-wrap" onclick="enlargeChart('kpiGMChart')">
+        <div class="chart-title">KPI: Non-GAAP Gross Margin Trend</div>
+        <canvas id="kpiGMChart"></canvas>
+      </div>
+    </div>
+    <div class="chart-row">
+      <div class="chart-wrap" onclick="enlargeChart('kpiFCFChart')">
+        <div class="chart-title">KPI: Quarterly FCF Margin (%)</div>
+        <canvas id="kpiFCFChart"></canvas>
+      </div>
+      <div class="chart-wrap" onclick="enlargeChart('kpiGPUChart')">
+        <div class="chart-title">KPI: Instinct GPU Revenue ($B, est.)</div>
+        <canvas id="kpiGPUChart"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SECTION 11 ============ -->
+<div class="section" id="sec11">
+  <div class="section-header" onclick="toggleSection(this)">
+    <span class="sec-num">11</span>
+    <h2>Glossary & Methodology</h2>
+    <span class="toggle">&#9660;</span>
+  </div>
+  <div class="section-body">
+    <div class="glossary-entry" id="g-tam">
+      <h4>TAM (Total Addressable Market)</h4>
+      <p>The total revenue opportunity available for a product or service if 100% market share were achieved. AMD uses TAM to frame the size of the opportunity in server CPUs ($120B by 2030) and AI accelerators ($400B+). TAM estimates drive conviction about growth runways but should be treated skeptically — they're forward projections, not guarantees.</p>
+      <a href="#sec2" class="back-link">↑ Back to Section 2</a>
+    </div>
+    <div class="glossary-entry" id="g-pe">
+      <h4>P/E Ratio (Price-to-Earnings)</h4>
+      <p><strong>Formula:</strong> Stock Price ÷ Earnings Per Share (EPS). Tells you how many dollars investors pay per dollar of earnings. AMD's trailing P/E of ~121x means investors pay $121 for every $1 of current earnings — high, but justified if earnings are growing rapidly. Forward P/E (using projected earnings) provides a better gauge for growth companies.</p>
+      <a href="#sec2" class="back-link">↑ Back to Section 2</a>
+    </div>
+    <div class="glossary-entry" id="g-ps">
+      <h4>P/S Ratio (Price-to-Sales) & FTA Scale</h4>
+      <p><strong>Formula:</strong> Market Cap ÷ Trailing 12-Month Revenue. Useful when earnings are volatile or companies are reinvesting aggressively. <strong>FTA P/S Scale:</strong> >30 Euphoric | >18 Excited | >8 Optimistic | 4-8 Aware | <4 Cautious | <2 Pessimistic. AMD at ~17x = "Excited" — not cheap, but below Euphoric.</p>
+      <a href="#sec2" class="back-link">↑ Back to Section 2</a>
+    </div>
+    <div class="glossary-entry" id="g-fcf">
+      <h4>FCF (Free Cash Flow)</h4>
+      <p><strong>Formula:</strong> Operating Cash Flow − Capital Expenditures. FCF represents the cash a business generates after maintaining/expanding its asset base. It's the purest measure of a company's ability to create shareholder value because it can't be manipulated by accounting choices. AMD's record Q1 2026 FCF of $2.57B shows the business is generating real cash, not just paper profits.</p>
+      <a href="#sec4" class="back-link">↑ Back to Section 4</a>
+    </div>
+    <div class="glossary-entry" id="g-fcf-share">
+      <h4>FCF/Share (Free Cash Flow Per Share)</h4>
+      <p><strong>Formula:</strong> Free Cash Flow ÷ Diluted Shares Outstanding. Tracks per-share cash generation, accounting for dilution. Rising FCF/share with stable or declining share count is the ideal scenario — it means each shareholder's claim on the company's cash generation is increasing.</p>
+      <a href="#sec4" class="back-link">↑ Back to Section 4</a>
+    </div>
+    <div class="glossary-entry" id="g-op-leverage">
+      <h4>Operating Leverage</h4>
+      <p>The degree to which a company can increase profits faster than it increases revenue. AMD's fabless model (TSMC manufactures the chips) means fixed costs grow slowly while revenue scales with demand. Result: each additional dollar of revenue drops more profit to the bottom line. AMD's net margin doubling from 6.4% → 12.3% in one year is operating leverage in action.</p>
+      <a href="#sec10" class="back-link">↑ Back to Section 10</a>
+    </div>
+    <div class="glossary-entry" id="g-cagr">
+      <h4>CAGR (Compound Annual Growth Rate)</h4>
+      <p><strong>Formula:</strong> (Ending Value / Beginning Value)^(1/n) − 1. Smooths out year-to-year volatility to show the annualized growth rate over a period. AMD's 5-year revenue CAGR of ~28% means revenue grew at an average of 28% per year from 2020 to 2025.</p>
+      <a href="#sec4" class="back-link">↑ Back to Section 4</a>
+    </div>
+    <div class="glossary-entry" id="g-ev-ebitda">
+      <h4>EV/EBITDA (Enterprise Value to EBITDA)</h4>
+      <p><strong>Formula:</strong> (Market Cap + Debt − Cash) ÷ EBITDA. A valuation multiple that accounts for capital structure. Lower = cheaper. Useful for comparing companies with different debt levels. More comprehensive than P/E because it normalizes for financing decisions.</p>
+      <a href="#sec9" class="back-link">↑ Back to Section 9</a>
+    </div>
+  </div>
+</div>
+
+</div><!-- end content -->
+
+<!-- Footer -->
+<div class="footer">
+  <p><span>FTA Research Hub</span> &bull; Foundational Trading Academy &bull; Report generated May 23, 2026</p>
+  <p style="margin-top:6px;">This report is for educational purposes only. Not financial advice. Always do your own due diligence.</p>
+</div>
+
+</div><!-- end main -->
+
+<!-- Chart Modal -->
+<div class="chart-modal" id="chartModal">
+  <div class="chart-modal-inner">
+    <button class="chart-modal-close" onclick="closeModal()">&times;</button>
+    <canvas id="modalCanvas"></canvas>
+  </div>
+</div>
+
+<script>
+// Section toggle
+function toggleSection(el) {
+  el.classList.toggle('open');
+}
+
+// Chart modal
+let chartConfigs = {};
+let modalChart = null;
+function enlargeChart(chartId) {
+  const modal = document.getElementById('chartModal');
+  const canvas = document.getElementById('modalCanvas');
+  modal.classList.add('active');
+  if(modalChart) modalChart.destroy();
+  const cfg = chartConfigs[chartId];
+  if(cfg) {
+    const newCfg = JSON.parse(JSON.stringify(cfg));
+    modalChart = new Chart(canvas, newCfg);
+  }
+}
+function closeModal() {
+  document.getElementById('chartModal').classList.remove('active');
+  if(modalChart) { modalChart.destroy(); modalChart=null; }
+}
+document.getElementById('chartModal').addEventListener('click', function(e) {
+  if(e.target === this) closeModal();
+});
+
+// Color palette
+const gold = '#FCC55B';
+const green = '#145A22';
+const darkGreen = '#0A3A14';
+const forest = '#243D27';
+const beige = '#EDE8E0';
+
+// Chart defaults
+Chart.defaults.font.family = "'Quicksand', sans-serif";
+Chart.defaults.font.size = 11;
+Chart.defaults.color = '#555';
+
+function createChart(id, config) {
+  chartConfigs[id] = JSON.parse(JSON.stringify(config));
+  return new Chart(document.getElementById(id), config);
+}
+
+// TAM Chart
+createChart('tamChart', {
+  type:'bar',
+  data:{
+    labels:['2023','2024','2025E','2026E','2028E','2030E'],
+    datasets:[{
+      label:'Server CPU TAM ($B)',
+      data:[35,42,55,70,95,120],
+      backgroundColor:[green,green,green,gold,gold,gold],
+      borderRadius:4,
+      barThickness:24
+    }]
+  },
+  options:{ responsive:true, plugins:{ legend:{display:false} }, scales:{ y:{beginAtZero:true, ticks:{callback:v=>'$'+v+'B'}} } }
+});
+
+// Revenue Growth Chart
+createChart('revGrowthChart', {
+  type:'line',
+  data:{
+    labels:['Q2\'24','Q3\'24','Q4\'24','Q1\'25','Q2\'25','Q3\'25','Q4\'25','Q1\'26'],
+    datasets:[{
+      label:'YoY Revenue Growth %',
+      data:[9,18,24,36,34,36,34,38],
+      borderColor:gold,
+      backgroundColor:'rgba(252,197,91,0.15)',
+      fill:true,
+      tension:0.4,
+      pointBackgroundColor:gold,
+      pointRadius:4,
+      borderWidth:2
+    }]
+  },
+  options:{ responsive:true, plugins:{ legend:{display:false} }, scales:{ y:{ticks:{callback:v=>v+'%'}} } }
+});
+
+// Revenue Chart
+createChart('revChart', {
+  type:'bar',
+  data:{
+    labels:['Q2\'24','Q3\'24','Q4\'24','Q1\'25','Q2\'25','Q3\'25','Q4\'25','Q1\'26'],
+    datasets:[{
+      label:'Revenue ($B)',
+      data:[5.84,6.82,7.66,7.44,7.69,9.25,10.27,10.25],
+      backgroundColor:[forest,forest,forest,green,green,green,darkGreen,gold],
+      borderRadius:4,
+      barThickness:28
+    }]
+  },
+  options:{ responsive:true, plugins:{ legend:{display:false} }, scales:{ y:{beginAtZero:true, ticks:{callback:v=>'$'+v+'B'}} } }
+});
+
+// Segment Doughnut
+createChart('segmentChart', {
+  type:'doughnut',
+  data:{
+    labels:['Data Center','Client','Gaming','Embedded'],
+    datasets:[{
+      data:[5800,2900,720,873],
+      backgroundColor:[darkGreen,green,gold,'#B8860B'],
+      borderWidth:2,
+      borderColor:'#fff'
+    }]
+  },
+  options:{ responsive:true, plugins:{ legend:{ position:'bottom', labels:{boxWidth:12,padding:10} } } }
+});
+
+// Margin Chart
+createChart('marginChart', {
+  type:'line',
+  data:{
+    labels:['Q2\'24','Q3\'24','Q4\'24','Q1\'25','Q2\'25','Q3\'25','Q4\'25','Q1\'26'],
+    datasets:[
+      { label:'Gross Margin %', data:[49,50,51,50,49,52,57,55], borderColor:gold, backgroundColor:'transparent', tension:0.3, pointRadius:3, borderWidth:2 },
+      { label:'Operating Margin %', data:[8,11,11,11,6,15,28,22], borderColor:green, backgroundColor:'transparent', tension:0.3, pointRadius:3, borderWidth:2 },
+      { label:'Net Margin %', data:[5,9,7,8,2,12,15,12.5], borderColor:darkGreen, backgroundColor:'transparent', tension:0.3, pointRadius:3, borderWidth:2, borderDash:[5,3] }
+    ]
+  },
+  options:{ responsive:true, plugins:{ legend:{ position:'bottom', labels:{boxWidth:12,padding:8,font:{size:10}} } }, scales:{ y:{ticks:{callback:v=>v+'%'}} } }
+});
+
+// FCF Chart
+createChart('fcfChart', {
+  type:'bar',
+  data:{
+    labels:['Q2\'24','Q3\'24','Q4\'24','Q1\'25','Q2\'25','Q3\'25','Q4\'25','Q1\'26'],
+    datasets:[{
+      label:'Free Cash Flow ($B)',
+      data:[0.44,0.50,0.68,0.35,1.18,1.53,0.80,2.57],
+      backgroundColor:[forest,forest,forest,green,green,green,green,gold],
+      borderRadius:4,
+      barThickness:28
+    }]
+  },
+  options:{ responsive:true, plugins:{ legend:{display:false} }, scales:{ y:{beginAtZero:true, ticks:{callback:v=>'$'+v+'B'}} } }
+});
+
+// EPS Chart
+createChart('epsChart', {
+  type:'bar',
+  data:{
+    labels:['Q2\'24','Q3\'24','Q4\'24','Q1\'25','Q2\'25','Q3\'25','Q4\'25','Q1\'26'],
+    datasets:[
+      { label:'Actual EPS', data:[0.69,0.92,1.09,0.96,0.48,1.20,1.53,1.37], backgroundColor:gold, borderRadius:4, barThickness:22 },
+      { label:'Estimate', data:[0.68,0.92,1.07,0.93,0.49,1.16,1.40,1.25], backgroundColor:'rgba(20,90,34,0.4)', borderRadius:4, barThickness:22 }
+    ]
+  },
+  options:{ responsive:true, plugins:{ legend:{ position:'bottom', labels:{boxWidth:12} } }, scales:{ y:{beginAtZero:true, ticks:{callback:v=>'$'+v}} } }
+});
+
+// Scenario Chart
+createChart('scenarioChart', {
+  type:'bar',
+  data:{
+    labels:['1-Year','3-Year','5-Year'],
+    datasets:[
+      { label:'Bull (30%)', data:[620,950,1400], backgroundColor:'rgba(20,90,34,0.8)', borderRadius:4 },
+      { label:'Base (45%)', data:[520,720,1000], backgroundColor:gold, borderRadius:4 },
+      { label:'Bear (25%)', data:[310,350,450], backgroundColor:'rgba(178,34,34,0.5)', borderRadius:4 }
+    ]
+  },
+  options:{ responsive:true, plugins:{ legend:{ position:'bottom', labels:{boxWidth:12} } }, scales:{ y:{beginAtZero:true, ticks:{callback:v=>'$'+v}} } }
+});
+
+// Comp Chart (Bubble)
+createChart('compChart', {
+  type:'bubble',
+  data:{
+    datasets:[
+      { label:'AMD', data:[{x:38,y:17,r:14}], backgroundColor:'rgba(252,197,91,0.7)', borderColor:gold },
+      { label:'NVIDIA', data:[{x:85,y:27,r:25}], backgroundColor:'rgba(20,90,34,0.5)', borderColor:green },
+      { label:'Broadcom', data:[{x:25,y:32,r:18}], backgroundColor:'rgba(10,58,20,0.5)', borderColor:darkGreen },
+      { label:'Intel', data:[{x:7,y:8.7,r:12}], backgroundColor:'rgba(178,34,34,0.3)', borderColor:'firebrick' },
+      { label:'Qualcomm', data:[{x:12,y:6,r:8}], backgroundColor:'rgba(36,61,39,0.5)', borderColor:forest }
+    ]
+  },
+  options:{
+    responsive:true,
+    plugins:{ legend:{ position:'bottom', labels:{boxWidth:12,font:{size:10}} } },
+    scales:{
+      x:{ title:{display:true,text:'Revenue Growth YoY (%)',font:{size:10}}, ticks:{callback:v=>v+'%'} },
+      y:{ title:{display:true,text:'P/S Ratio (TTM)',font:{size:10}}, ticks:{callback:v=>v+'x'} }
+    }
+  }
+});
+
+// Catalyst Timeline (Horizontal Bar)
+createChart('catalystChart', {
+  type:'bar',
+  data:{
+    labels:['Q2 Earnings','MI400 Launch','Oracle Deploy','OpenAI Ramp','Meta Deploy','Analyst Day','MI500 Preview'],
+    datasets:[{
+      label:'Expected Impact (1-10)',
+      data:[7,10,8,9,9,7,8],
+      backgroundColor:[green,gold,green,gold,green,darkGreen,forest],
+      borderRadius:4,
+      barThickness:18
+    }]
+  },
+  options:{ indexAxis:'y', responsive:true, plugins:{ legend:{display:false} }, scales:{ x:{beginAtZero:true,max:10} } }
+});
+
+// KPI Charts
+createChart('kpiDCChart', {
+  type:'line',
+  data:{
+    labels:['Q2\'24','Q3\'24','Q4\'24','Q1\'25','Q2\'25','Q3\'25','Q4\'25','Q1\'26'],
+    datasets:[{
+      label:'DC % of Total',
+      data:[48,49,50,50,46,44,53,57],
+      borderColor:gold, backgroundColor:'rgba(252,197,91,0.15)', fill:true, tension:0.3, pointRadius:4, borderWidth:2,
+      pointBackgroundColor:gold
+    }]
+  },
+  options:{ responsive:true, plugins:{ legend:{display:false}, annotation:{ annotations:{ target:{ type:'line', yMin:60, yMax:60, borderColor:'rgba(20,90,34,0.5)', borderDash:[6,4], label:{content:'Target: 60%',display:true} } } } } },
+});
+
+createChart('kpiGMChart', {
+  type:'line',
+  data:{
+    labels:['Q2\'24','Q3\'24','Q4\'24','Q1\'25','Q2\'25','Q3\'25','Q4\'25','Q1\'26'],
+    datasets:[{
+      label:'Non-GAAP Gross Margin %',
+      data:[53,54,54,54,49,54,57,55],
+      borderColor:green, backgroundColor:'rgba(20,90,34,0.1)', fill:true, tension:0.3, pointRadius:4, borderWidth:2,
+      pointBackgroundColor:green
+    }]
+  },
+  options:{ responsive:true, plugins:{ legend:{display:false} }, scales:{ y:{min:45,max:62, ticks:{callback:v=>v+'%'}} } }
+});
+
+createChart('kpiFCFChart', {
+  type:'bar',
+  data:{
+    labels:['Q2\'24','Q3\'24','Q4\'24','Q1\'25','Q2\'25','Q3\'25','Q4\'25','Q1\'26'],
+    datasets:[{
+      label:'FCF Margin %',
+      data:[7.5,7.3,8.9,4.7,15.3,16.5,7.8,25.1],
+      backgroundColor:[forest,forest,forest,green,green,green,green,gold],
+      borderRadius:4,
+      barThickness:22
+    }]
+  },
+  options:{ responsive:true, plugins:{ legend:{display:false} }, scales:{ y:{beginAtZero:true, ticks:{callback:v=>v+'%'}} } }
+});
+
+createChart('kpiGPUChart', {
+  type:'bar',
+  data:{
+    labels:['Q2\'24','Q3\'24','Q4\'24','Q1\'25','Q2\'25','Q3\'25','Q4\'25','Q1\'26'],
+    datasets:[{
+      label:'Instinct GPU Revenue ($B, est.)',
+      data:[1.0,1.3,1.5,1.6,1.4,1.8,2.65,2.8],
+      backgroundColor:[forest,forest,forest,green,green,green,darkGreen,gold],
+      borderRadius:4,
+      barThickness:22
+    }]
+  },
+  options:{ responsive:true, plugins:{ legend:{display:false} }, scales:{ y:{beginAtZero:true, ticks:{callback:v=>'$'+v+'B'}} } }
+});
+
+// Sidebar active state
+const sections = document.querySelectorAll('.section');
+const sideLinks = document.querySelectorAll('.sidebar a');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting) {
+      const id = entry.target.id;
+      sideLinks.forEach(l => l.classList.remove('active'));
+      const active = document.querySelector('.sidebar a[href="#'+id+'"]');
+      if(active) active.classList.add('active');
+    }
+  });
+}, { rootMargin:'-20% 0px -70% 0px' });
+sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
