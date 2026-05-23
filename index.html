@@ -8,18 +8,20 @@
 <style>
 :root {
   --green: #145A22;
-  --dark-green: #0F4A1A;
-  --forest: #2F4A31;
+  --dark-green: #0A3A14;
+  --forest: #243D27;
   --light-green: #f0faf2;
   --gold: #FCC55B;
   --gold-muted: #e8b84a;
   --gold-light: #fffbf0;
   --beige: #D9CEBD;
   --beige-light: #EDE8E0;
+  --beige-card: #f6f3ed;
   --white: #FAFAF8;
   --dark: #1a1a1a;
+  --muted: #5d6155;
   --red: #C0392B;
-  --blue: #2980B9;
+  --line: #d8d1c4;
   --shadow: 0 1px 3px rgba(0,0,0,0.06);
   --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
   --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
@@ -38,7 +40,7 @@ body {
 
 /* HERO */
 .hero {
-  background: linear-gradient(135deg, #0a3311 0%, #0F4A1A 30%, #1B6B2A 70%, #2F4A31 100%);
+  background: linear-gradient(135deg, #071f0b 0%, #0A3A14 30%, #145A22 70%, #243D27 100%);
   color: #fff;
   padding: 60px 48px 50px;
   text-align: center;
@@ -60,298 +62,306 @@ body {
 }
 .hero-content { position: relative; z-index: 1; }
 .hero-badge {
-  display: inline-block;
-  font-family: 'Cormorant Garamond', serif;
-  font-style: italic;
-  font-size: 13px;
-  color: var(--gold);
-  letter-spacing: 3px;
+  font-family: 'Questrial', sans-serif;
+  letter-spacing: 0.3em;
   text-transform: uppercase;
-  margin-bottom: 16px;
+  font-size: 0.7rem;
+  color: var(--gold);
+  margin-bottom: 12px;
 }
 .hero h1 {
-  font-family: 'Questrial', sans-serif;
-  font-size: 44px;
-  font-weight: 400;
-  letter-spacing: 1px;
-  margin-bottom: 8px;
-}
-.hero .subtitle {
   font-family: 'Cormorant Garamond', serif;
   font-style: italic;
-  font-size: 18px;
+  font-weight: 700;
+  font-size: 3.2rem;
+  line-height: 1.1;
+  margin-bottom: 8px;
+}
+.subtitle {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 0.95rem;
   color: rgba(255,255,255,0.7);
-  margin-bottom: 24px;
+  font-style: italic;
+  margin-bottom: 28px;
 }
 .hero-stats {
   display: flex;
   justify-content: center;
-  gap: 40px;
-  margin-top: 28px;
-}
-.hero-stat {
-  text-align: center;
+  gap: 48px;
 }
 .hero-stat .num {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 32px;
+  font-size: 2.2rem;
   font-weight: 700;
   color: var(--gold);
 }
 .hero-stat .label {
-  font-size: 11px;
-  letter-spacing: 2px;
+  font-family: 'Questrial', sans-serif;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.5);
-  margin-top: 4px;
-  font-weight: 600;
+  font-size: 0.65rem;
+  color: rgba(255,255,255,0.6);
+  margin-top: 2px;
 }
 
 /* FILTER BAR */
 .filter-bar {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  padding: 24px 48px;
-  flex-wrap: wrap;
-  background: var(--white);
-  border-bottom: 1px solid var(--beige);
   position: sticky;
   top: 0;
-  z-index: 100;
+  z-index: 50;
+  background: var(--beige-light);
+  border-bottom: 1px solid var(--line);
+  padding: 14px 48px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 .filter-btn {
-  font-family: 'Quicksand', sans-serif;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 1px;
+  font-family: 'Questrial', sans-serif;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  padding: 8px 20px;
-  border-radius: 24px;
-  border: 1.5px solid var(--beige);
-  background: transparent;
+  font-size: 0.72rem;
+  padding: 8px 18px;
+  border-radius: 30px;
+  border: 1px solid var(--line);
+  background: var(--white);
   color: var(--dark);
   cursor: pointer;
   transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
-.filter-btn:hover {
-  border-color: var(--green);
-  color: var(--green);
-}
+.filter-btn:hover { border-color: var(--green); color: var(--green); }
 .filter-btn.active {
-  background: var(--green);
-  border-color: var(--green);
+  background: var(--dark-green);
   color: #fff;
+  border-color: var(--dark-green);
 }
 .filter-btn .count {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
+  font-size: 0.62rem;
   background: rgba(0,0,0,0.1);
-  padding: 2px 6px;
+  padding: 1px 6px;
   border-radius: 10px;
-  margin-left: 6px;
 }
 .filter-btn.active .count {
   background: rgba(255,255,255,0.2);
 }
 
-/* SECTORS */
-.sectors { padding: 32px 48px 80px; max-width: 1200px; margin: 0 auto; }
+/* CONTENT */
+.content { max-width: 1100px; margin: 0 auto; padding: 30px 48px 80px; }
 
-.sector-group { margin-bottom: 48px; }
+/* SECTOR GROUP */
+.sector-group { margin: 32px 0; }
+.sector-group.hidden { display: none; }
 .sector-header {
   display: flex;
   align-items: center;
-  gap: 16px;
-  margin-bottom: 20px;
+  gap: 12px;
+  margin-bottom: 16px;
   padding-bottom: 12px;
-  border-bottom: 2px solid var(--beige);
+  border-bottom: 1px solid var(--line);
 }
-.sector-icon {
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 22px;
-  background: var(--light-green);
-}
+.sector-icon { font-size: 1.5rem; }
 .sector-title {
   font-family: 'Cormorant Garamond', serif;
   font-style: italic;
-  font-weight: 600;
-  font-size: 28px;
-  color: var(--dark);
+  font-weight: 700;
+  font-size: 1.6rem;
+  color: var(--dark-green);
 }
 .sector-count {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  color: var(--gold-muted);
-  background: var(--gold-light);
+  font-size: 0.7rem;
+  color: var(--green);
+  background: var(--light-green);
   padding: 3px 10px;
-  border-radius: 12px;
-  font-weight: 600;
+  border-radius: 20px;
+  margin-left: 8px;
 }
 
-/* REPORT CARDS */
+/* REPORT GRID */
 .report-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 20px;
 }
+
+/* REPORT CARD */
 .report-card {
   background: var(--white);
+  border: 1px solid var(--line);
   border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  padding: 28px;
-  transition: all 0.25s;
+  padding: 24px;
   text-decoration: none;
   color: var(--dark);
-  display: block;
-  position: relative;
-  border: 1px solid transparent;
+  transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow);
 }
 .report-card:hover {
   box-shadow: var(--shadow-lg);
-  transform: translateY(-3px);
+  transform: translateY(-2px);
   border-color: var(--gold);
 }
-.report-card .card-top {
+.card-top {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 12px;
+  margin-bottom: 6px;
 }
-.report-card .ticker {
+.card-top .ticker {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 24px;
+  font-size: 1.5rem;
   font-weight: 700;
-  color: var(--green);
+  color: var(--dark-green);
 }
-.report-card .conviction {
+.card-top .conviction {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
+  font-size: 0.78rem;
   font-weight: 700;
-  padding: 4px 10px;
-  border-radius: 16px;
+  background: var(--dark-green);
+  color: #fff;
+  padding: 3px 10px;
+  border-radius: 20px;
 }
-.conviction-high { background: #e6f7e9; color: var(--green); }
-.conviction-mid { background: var(--gold-light); color: #b8860b; }
-.conviction-low { background: #fde8e8; color: var(--red); }
-
-.report-card .company {
-  font-family: 'Cormorant Garamond', serif;
+.card-top .conviction.high { background: var(--green); }
+.company {
+  font-family: 'Quicksand', sans-serif;
   font-style: italic;
-  font-size: 17px;
-  color: #555;
+  color: var(--muted);
+  font-size: 0.88rem;
   margin-bottom: 14px;
 }
-.report-card .card-metrics {
+.metrics {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 8px;
   margin-bottom: 14px;
 }
-.card-metric {
+.metric {
   background: var(--beige-light);
+  padding: 8px 10px;
   border-radius: 8px;
-  padding: 8px 12px;
 }
-.card-metric .m-label {
-  font-size: 9px;
-  letter-spacing: 1.5px;
+.metric-label {
+  font-family: 'Questrial', sans-serif;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #999;
-  font-weight: 700;
+  font-size: 0.58rem;
+  color: var(--muted);
 }
-.card-metric .m-value {
+.metric-value {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 14px;
+  font-size: 0.95rem;
   font-weight: 700;
   color: var(--dark);
 }
-.report-card .card-date {
+.metric-value.green { color: var(--green); }
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+}
+.card-footer .date {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: #bbb;
-  letter-spacing: 1px;
+  font-size: 0.72rem;
+  color: var(--muted);
 }
-.report-card .card-arrow {
-  position: absolute;
-  bottom: 20px;
-  right: 24px;
-  font-size: 18px;
-  color: var(--beige);
-  transition: all 0.2s;
+.card-footer .arrow {
+  color: var(--gold-muted);
+  font-size: 1.1rem;
+  transition: transform 0.2s;
 }
-.report-card:hover .card-arrow {
-  color: var(--gold);
-  transform: translateX(4px);
+.report-card:hover .arrow { transform: translateX(4px); }
+
+/* SECTOR EMPTY */
+.sector-empty {
+  text-align: center;
+  padding: 30px;
+  color: var(--muted);
+  font-style: italic;
+  font-size: 0.9rem;
+}
+.sector-empty .empty-icon { font-size: 2rem; margin-bottom: 8px; opacity: 0.4; }
+
+/* LOADING */
+.loading {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--muted);
+}
+.loading .spinner {
+  width: 36px; height: 36px;
+  border: 3px solid var(--line);
+  border-top-color: var(--green);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto 16px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-text {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 0.9rem;
 }
 
-/* EMPTY STATE */
-.sector-empty {
-  background: var(--white);
-  border: 2px dashed var(--beige);
-  border-radius: var(--radius);
-  padding: 40px;
+/* ERROR */
+.error-msg {
   text-align: center;
-  color: #bbb;
-}
-.sector-empty .empty-icon { font-size: 32px; margin-bottom: 8px; }
-.sector-empty p {
-  font-family: 'Quicksand', sans-serif;
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 1px;
-  text-transform: uppercase;
+  padding: 40px 20px;
+  color: var(--red);
+  font-size: 0.9rem;
 }
 
 /* FOOTER */
 .site-footer {
+  background: var(--dark-green);
+  color: rgba(255,255,255,0.6);
   text-align: center;
-  padding: 40px 48px 24px;
-  border-top: 2px solid var(--beige);
+  padding: 30px 48px;
+  font-size: 0.75rem;
 }
 .site-footer .brand {
   font-family: 'Cormorant Garamond', serif;
   font-style: italic;
-  font-size: 15px;
-  color: var(--green);
-  letter-spacing: 2px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--gold);
+  margin-bottom: 4px;
 }
 .site-footer .sub {
-  font-size: 11px;
-  color: #bbb;
-  margin-top: 6px;
+  font-family: 'Questrial', sans-serif;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-size: 0.6rem;
+  margin-bottom: 12px;
 }
 .site-footer .disclaimer {
-  font-size: 10px;
-  color: #ccc;
-  margin-top: 16px;
   max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-  line-height: 1.6;
+  margin: 0 auto;
+  line-height: 1.5;
 }
 
-/* RESPONSIVE */
 @media (max-width: 768px) {
-  .hero { padding: 40px 24px 36px; }
-  .hero h1 { font-size: 28px; }
+  .hero { padding: 40px 20px 36px; }
+  .hero h1 { font-size: 2.2rem; }
   .hero-stats { gap: 24px; }
-  .hero-stat .num { font-size: 24px; }
-  .filter-bar { padding: 16px 20px; }
-  .sectors { padding: 20px 20px 60px; }
+  .hero-stat .num { font-size: 1.6rem; }
+  .filter-bar { padding: 12px 16px; }
+  .content { padding: 20px 16px 60px; }
   .report-grid { grid-template-columns: 1fr; }
-  .sector-title { font-size: 22px; }
+  .site-footer { padding: 24px 20px; }
 }
 </style>
 </head>
 <body>
 
-<!-- HERO -->
 <header class="hero">
   <div class="hero-content">
     <div class="hero-badge">Foundational Trading Academy</div>
@@ -359,199 +369,32 @@ body {
     <div class="subtitle">Deep-Dive Analysis &middot; FTA Framework &middot; Institutional Grade</div>
     <div class="hero-stats">
       <div class="hero-stat">
-        <div class="num" id="totalReports">3</div>
+        <div class="num" id="totalReports">—</div>
         <div class="label">Reports</div>
       </div>
       <div class="hero-stat">
-        <div class="num" id="totalSectors">6</div>
+        <div class="num" id="totalSectors">—</div>
         <div class="label">Sectors</div>
       </div>
       <div class="hero-stat">
-        <div class="num" id="totalTickers">40</div>
+        <div class="num" id="totalTickers">41</div>
         <div class="label">Ticker Queue</div>
       </div>
     </div>
   </div>
 </header>
 
-<!-- FILTER BAR -->
-<div class="filter-bar">
-  <button class="filter-btn active" onclick="filterSector('all')">All<span class="count" id="count-all">3</span></button>
-  <button class="filter-btn" onclick="filterSector('robotics')">Robotics<span class="count">1</span></button>
-  <button class="filter-btn" onclick="filterSector('software-ai')">Software / AI<span class="count">1</span></button>
-  <button class="filter-btn" onclick="filterSector('energy')">Energy<span class="count">1</span></button>
-  <button class="filter-btn" onclick="filterSector('data-centers')">Data Centers<span class="count">0</span></button>
-  <button class="filter-btn" onclick="filterSector('space-race')">Space Race<span class="count">0</span></button>
-  <button class="filter-btn" onclick="filterSector('healthcare')">Healthcare<span class="count">0</span></button>
+<div class="filter-bar" id="filterBar">
+  <!-- Populated by JS -->
 </div>
 
-<!-- SECTORS -->
-<main class="sectors">
-
-  <!-- ROBOTICS -->
-  <div class="sector-group" data-sector="robotics">
-    <div class="sector-header">
-      <div class="sector-icon">&#129302;</div>
-      <div>
-        <div class="sector-title">Robotics</div>
-      </div>
-      <div class="sector-count">1 / 11 tickers</div>
-    </div>
-    <div class="report-grid">
-      <a class="report-card" href="TER_Investment_Report_2026-05-19.html">
-        <div class="card-top">
-          <div class="ticker">TER</div>
-          <div class="conviction conviction-high">7/10</div>
-        </div>
-        <div class="company">Teradyne, Inc.</div>
-        <div class="card-metrics">
-          <div class="card-metric">
-            <div class="m-label">Price</div>
-            <div class="m-value">$319.19</div>
-          </div>
-          <div class="card-metric">
-            <div class="m-label">Mkt Cap</div>
-            <div class="m-value">$50.3B</div>
-          </div>
-          <div class="card-metric">
-            <div class="m-label">P/E</div>
-            <div class="m-value">115.75x</div>
-          </div>
-          <div class="card-metric">
-            <div class="m-label">Rev Growth</div>
-            <div class="m-value" style="color:#1B6B2A;">+87%</div>
-          </div>
-        </div>
-        <div class="card-date">May 19, 2026</div>
-        <div class="card-arrow">&rarr;</div>
-      </a>
-    </div>
+<main class="content" id="mainContent">
+  <div class="loading" id="loadingState">
+    <div class="spinner"></div>
+    <div class="loading-text">Loading reports from GitHub...</div>
   </div>
-
-  <!-- SOFTWARE / AI -->
-  <div class="sector-group" data-sector="software-ai">
-    <div class="sector-header">
-      <div class="sector-icon">&#128187;</div>
-      <div>
-        <div class="sector-title">Software / AI</div>
-      </div>
-      <div class="sector-count">1 / 12 tickers</div>
-    </div>
-    <div class="report-grid">
-      <a class="report-card" href="NOW_Investment_Report_2026-05-20.html">
-        <div class="card-top">
-          <div class="ticker">NOW</div>
-          <div class="conviction conviction-high">8/10</div>
-        </div>
-        <div class="company">ServiceNow, Inc.</div>
-        <div class="card-metrics">
-          <div class="card-metric">
-            <div class="m-label">Price</div>
-            <div class="m-value">~$101</div>
-          </div>
-          <div class="card-metric">
-            <div class="m-label">Mkt Cap</div>
-            <div class="m-value">~$105B</div>
-          </div>
-          <div class="card-metric">
-            <div class="m-label">P/E</div>
-            <div class="m-value">~60x</div>
-          </div>
-          <div class="card-metric">
-            <div class="m-label">Rev Growth</div>
-            <div class="m-value" style="color:#1B6B2A;">+22%</div>
-          </div>
-        </div>
-        <div class="card-date">May 20, 2026</div>
-        <div class="card-arrow">&rarr;</div>
-      </a>
-    </div>
-  </div>
-
-  <!-- ENERGY -->
-  <div class="sector-group" data-sector="energy">
-    <div class="sector-header">
-      <div class="sector-icon">&#9889;</div>
-      <div>
-        <div class="sector-title">Energy</div>
-      </div>
-      <div class="sector-count">1 / 4 tickers</div>
-    </div>
-    <div class="report-grid">
-      <a href="ET_Investment_Report_2026-05-21.html" class="report-card">
-        <div class="card-top">
-          <div class="ticker">ET</div>
-          <div class="conviction">7.5/10</div>
-        </div>
-        <div class="company">Energy Transfer LP</div>
-        <div class="metrics">
-          <div class="metric"><div class="metric-label">PRICE</div><div class="metric-value">$20.42</div></div>
-          <div class="metric"><div class="metric-label">MKT CAP</div><div class="metric-value">$70.2B</div></div>
-          <div class="metric"><div class="metric-label">EV/EBITDA</div><div class="metric-value">~7.5x</div></div>
-          <div class="metric"><div class="metric-label">YIELD</div><div class="metric-value green">6.6%</div></div>
-        </div>
-        <div class="card-footer">
-          <span class="date">May 21, 2026</span>
-          <span class="arrow">&rarr;</span>
-        </div>
-      </a>
-    </div>
-  </div>
-
-  <!-- DATA CENTERS -->
-  <div class="sector-group" data-sector="data-centers">
-    <div class="sector-header">
-      <div class="sector-icon">&#127981;</div>
-      <div>
-        <div class="sector-title">Data Centers</div>
-      </div>
-      <div class="sector-count">0 / 4 tickers</div>
-    </div>
-    <div class="report-grid">
-      <div class="sector-empty">
-        <div class="empty-icon">&#128203;</div>
-        <p>Reports coming soon</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- SPACE RACE -->
-  <div class="sector-group" data-sector="space-race">
-    <div class="sector-header">
-      <div class="sector-icon">&#128640;</div>
-      <div>
-        <div class="sector-title">Space Race</div>
-      </div>
-      <div class="sector-count">0 / 8 tickers</div>
-    </div>
-    <div class="report-grid">
-      <div class="sector-empty">
-        <div class="empty-icon">&#128203;</div>
-        <p>Reports coming soon</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- HEALTHCARE -->
-  <div class="sector-group" data-sector="healthcare">
-    <div class="sector-header">
-      <div class="sector-icon">&#129658;</div>
-      <div>
-        <div class="sector-title">Healthcare</div>
-      </div>
-      <div class="sector-count">0 / 4 tickers</div>
-    </div>
-    <div class="report-grid">
-      <div class="sector-empty">
-        <div class="empty-icon">&#128203;</div>
-        <p>Reports coming soon</p>
-      </div>
-    </div>
-  </div>
-
 </main>
 
-<!-- FOOTER -->
 <footer class="site-footer">
   <div class="brand">Foundational Trading Academy</div>
   <div class="sub">Investment Research Hub &middot; FTA Advanced Analysis Framework</div>
@@ -562,18 +405,260 @@ body {
 </footer>
 
 <script>
+// ==================== CONFIGURATION ====================
+const REPO = 'marileegrace/fta-research-hub';
+const API_URL = `https://api.github.com/repos/${REPO}/contents/`;
+const RAW_URL = `https://raw.githubusercontent.com/${REPO}/main/`;
+
+// Ticker → Sector mapping
+const SECTOR_MAP = {
+  // Robotics
+  TER:'robotics', AMBA:'robotics', CGNX:'robotics', MBLY:'robotics', ZBRA:'robotics',
+  SYNA:'robotics', ALNT:'robotics', OUST:'robotics', NOVT:'robotics', PATH:'robotics', ZETA:'robotics',
+  // Software / AI
+  NOW:'software-ai', AMD:'software-ai', ORCL:'software-ai', AMZN:'software-ai', CRDO:'software-ai',
+  TSLA:'software-ai', NBIS:'software-ai', VRT:'software-ai', SATS:'software-ai',
+  TEM:'software-ai', HIMS:'software-ai', LMND:'software-ai', PGY:'software-ai',
+  // Energy
+  ET:'energy', FSLR:'energy', WULF:'energy', NXT:'energy', RUN:'energy',
+  // Data Centers
+  CORZ:'data-centers', APLD:'data-centers', IREN:'data-centers',
+  // Space Race
+  ASTS:'space-race', PL:'space-race', RDW:'space-race', FLY:'space-race',
+  BKSY:'space-race', SATL:'space-race',
+  // Healthcare
+  PRME:'healthcare', ABCL:'healthcare',
+};
+
+const SECTOR_META = {
+  'robotics':     { icon: '🤖', title: 'Robotics',      order: 1 },
+  'software-ai':  { icon: '💻', title: 'Software / AI',  order: 2 },
+  'energy':       { icon: '⚡', title: 'Energy',         order: 3 },
+  'data-centers': { icon: '🏗️', title: 'Data Centers',   order: 4 },
+  'space-race':   { icon: '🚀', title: 'Space Race',     order: 5 },
+  'healthcare':   { icon: '🧬', title: 'Healthcare',     order: 6 },
+};
+
+// ==================== MAIN ====================
+let allReports = [];
+let activeSector = 'all';
+
+async function init() {
+  try {
+    // 1. Fetch repo file list
+    const res = await fetch(API_URL);
+    if (!res.ok) throw new Error(`GitHub API error: ${res.status}`);
+    const files = await res.json();
+
+    // 2. Filter for report HTML files
+    const reportFiles = files.filter(f =>
+      f.name.match(/^[A-Z]+_Investment_Report_\d{4}-\d{2}-\d{2}\.html$/)
+    );
+
+    if (reportFiles.length === 0) {
+      showEmpty();
+      return;
+    }
+
+    // 3. Fetch metadata from each report (first 3KB is enough)
+    const promises = reportFiles.map(f => fetchReportMeta(f.name));
+    allReports = (await Promise.all(promises)).filter(Boolean);
+
+    // Sort by date descending
+    allReports.sort((a, b) => b.date.localeCompare(a.date));
+
+    // 4. Render
+    renderStats();
+    renderFilters();
+    renderReports();
+
+  } catch (err) {
+    console.error(err);
+    document.getElementById('mainContent').innerHTML =
+      `<div class="error-msg">Could not load reports. Please refresh the page.<br><small>${err.message}</small></div>`;
+  }
+}
+
+async function fetchReportMeta(filename) {
+  try {
+    const res = await fetch(RAW_URL + filename);
+    const html = await res.text();
+
+    // Parse ticker and date from filename
+    const parts = filename.match(/^([A-Z]+)_Investment_Report_(\d{4}-\d{2}-\d{2})\.html$/);
+    if (!parts) return null;
+    const ticker = parts[1];
+    const date = parts[2];
+
+    // Extract metadata from HTML content
+    const company = extractBetween(html, '<h1>', '</h1>')
+      ?.replace(/<[^>]+>/g, '')
+      ?.replace(/\s*\([A-Z]+\)\s*/, '')
+      ?.trim() || ticker;
+
+    // Try to find conviction from verdict div or other patterns
+    const convictionMatch = html.match(/(?:Conviction|conviction)[^\d]*(\d+\.?\d*)\s*[\/\\]\s*10/i);
+    const conviction = convictionMatch ? convictionMatch[1] : null;
+
+    // Try to find price
+    const priceMatch = html.match(/(?:Price|price)[^$]*\$(\d+[\d,.]*)/i)
+      || html.match(/class="val">\$(\d+[\d,.]*)/);
+    const price = priceMatch ? '$' + priceMatch[1] : null;
+
+    // Try to find market cap
+    const mcapMatch = html.match(/(?:Market\s*Cap|market\s*cap|Mkt\s*Cap)[^$]*\$?([\d,.]+\s*[BMT])/i)
+      || html.match(/Market Cap<\/div><div class="val">\$?([\d,.]+[BMT]?)/i);
+    const mcap = mcapMatch ? '$' + mcapMatch[1].trim() : null;
+
+    // Try to find P/E
+    const peMatch = html.match(/(?:P\/E|P\/E\s*Ratio)[^\d]*([\d,.]+)\s*x?/i);
+    const pe = peMatch ? peMatch[1] + 'x' : null;
+
+    // Try to find revenue growth
+    const revGrowthMatch = html.match(/(?:Revenue\s*Growth|Rev\s*Growth)[^\d+-]*([+-]?\d+[\d.]*%)/i);
+    const revGrowth = revGrowthMatch ? revGrowthMatch[1] : null;
+
+    // Try to find bull/bear thesis
+    const thesisMatch = html.match(/\b(BULL|BEAR|NEUTRAL)\b/i);
+    const thesis = thesisMatch ? thesisMatch[1].toUpperCase() : null;
+
+    const sector = SECTOR_MAP[ticker] || 'other';
+
+    return { ticker, date, filename, company, conviction, price, mcap, pe, revGrowth, thesis, sector };
+  } catch (err) {
+    console.warn(`Failed to fetch metadata for ${filename}:`, err);
+    return null;
+  }
+}
+
+function extractBetween(str, start, end) {
+  const i = str.indexOf(start);
+  if (i === -1) return null;
+  const j = str.indexOf(end, i + start.length);
+  if (j === -1) return null;
+  return str.substring(i + start.length, j);
+}
+
+// ==================== RENDERING ====================
+function renderStats() {
+  document.getElementById('totalReports').textContent = allReports.length;
+  const sectors = new Set(allReports.map(r => r.sector));
+  document.getElementById('totalSectors').textContent = sectors.size;
+}
+
+function renderFilters() {
+  const bar = document.getElementById('filterBar');
+  const sectorCounts = {};
+  allReports.forEach(r => {
+    sectorCounts[r.sector] = (sectorCounts[r.sector] || 0) + 1;
+  });
+
+  let html = `<button class="filter-btn active" onclick="filterSector('all')">All<span class="count">${allReports.length}</span></button>`;
+
+  Object.entries(SECTOR_META)
+    .sort((a, b) => a[1].order - b[1].order)
+    .forEach(([key, meta]) => {
+      const count = sectorCounts[key] || 0;
+      html += `<button class="filter-btn" onclick="filterSector('${key}')">${meta.title}<span class="count">${count}</span></button>`;
+    });
+
+  bar.innerHTML = html;
+}
+
+function renderReports() {
+  const main = document.getElementById('mainContent');
+
+  // Group by sector
+  const grouped = {};
+  allReports.forEach(r => {
+    if (!grouped[r.sector]) grouped[r.sector] = [];
+    grouped[r.sector].push(r);
+  });
+
+  let html = '';
+
+  Object.entries(SECTOR_META)
+    .sort((a, b) => a[1].order - b[1].order)
+    .forEach(([key, meta]) => {
+      const reports = grouped[key] || [];
+      const totalInSector = Object.keys(SECTOR_MAP).filter(t => SECTOR_MAP[t] === key).length;
+      const isHidden = activeSector !== 'all' && activeSector !== key;
+
+      html += `<div class="sector-group${isHidden ? ' hidden' : ''}" data-sector="${key}">`;
+      html += `<div class="sector-header">`;
+      html += `<div class="sector-icon">${meta.icon}</div>`;
+      html += `<div><div class="sector-title">${meta.title}</div></div>`;
+      html += `<div class="sector-count">${reports.length} / ${totalInSector} tickers</div>`;
+      html += `</div>`;
+      html += `<div class="report-grid">`;
+
+      if (reports.length === 0) {
+        html += `<div class="sector-empty"><div class="empty-icon">📋</div><p>Reports coming soon</p></div>`;
+      } else {
+        reports.forEach(r => {
+          const convictionNum = parseFloat(r.conviction) || 0;
+          const convictionClass = convictionNum >= 7 ? ' high' : '';
+          const dateFormatted = formatDate(r.date);
+
+          html += `<a href="${r.filename}" class="report-card">`;
+          html += `<div class="card-top">`;
+          html += `<div class="ticker">${r.ticker}</div>`;
+          if (r.conviction) html += `<div class="conviction${convictionClass}">${r.conviction}/10</div>`;
+          html += `</div>`;
+          html += `<div class="company">${r.company}</div>`;
+          html += `<div class="metrics">`;
+          if (r.price) html += `<div class="metric"><div class="metric-label">PRICE</div><div class="metric-value">${r.price}</div></div>`;
+          if (r.mcap) html += `<div class="metric"><div class="metric-label">MKT CAP</div><div class="metric-value">${r.mcap}</div></div>`;
+          if (r.pe) html += `<div class="metric"><div class="metric-label">P/E</div><div class="metric-value">${r.pe}</div></div>`;
+          if (r.revGrowth) html += `<div class="metric"><div class="metric-label">REV GROWTH</div><div class="metric-value green">${r.revGrowth}</div></div>`;
+          html += `</div>`;
+          html += `<div class="card-footer">`;
+          html += `<span class="date">${dateFormatted}</span>`;
+          html += `<span class="arrow">&rarr;</span>`;
+          html += `</div>`;
+          html += `</a>`;
+        });
+      }
+
+      html += `</div></div>`;
+    });
+
+  main.innerHTML = html;
+}
+
 function filterSector(sector) {
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  activeSector = sector;
+
+  // Update buttons
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent.includes(sector === 'all' ? 'All' :
+      SECTOR_META[sector]?.title || ''));
+  });
+
+  // Re-render (simplest approach)
+  // Update active state on buttons properly
+  const btns = document.querySelectorAll('.filter-btn');
+  btns.forEach(btn => btn.classList.remove('active'));
   event.target.closest('.filter-btn').classList.add('active');
 
+  // Show/hide sectors
   document.querySelectorAll('.sector-group').forEach(g => {
-    if (sector === 'all' || g.dataset.sector === sector) {
-      g.style.display = '';
+    if (sector === 'all') {
+      g.classList.remove('hidden');
     } else {
-      g.style.display = 'none';
+      g.classList.toggle('hidden', g.dataset.sector !== sector);
     }
   });
 }
+
+function formatDate(dateStr) {
+  const d = new Date(dateStr + 'T00:00:00');
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+// ==================== INIT ====================
+init();
 </script>
+
 </body>
 </html>
