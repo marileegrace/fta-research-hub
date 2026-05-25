@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FSLR — First Solar | FTA Investment Research</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Questrial&family=Quicksand:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  --green:#145A22; --dark-green:#0A3A14; --forest:#243D27;
+  --gold:#FCC55B; --gold-deep:#e0a838;
+  --beige:#EDE8E0; --beige-card:#f6f3ed;
+  --ink:#23241f; --muted:#5d6155;
+  --red:#a8341f; --line:#d8d1c4;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Quicksand',sans-serif;background:var(--beige);color:var(--ink);line-height:1.6;font-weight:400}
+a{color:var(--green);text-decoration:none}
+a:hover{color:var(--gold-deep)}
+
+/* ---------- LAYOUT ---------- */
+.layout{display:flex;min-height:100vh}
+.sidebar{
+  width:262px;flex-shrink:0;position:sticky;top:0;align-self:flex-start;height:100vh;
+  background:linear-gradient(180deg,#071f0b,#0A3A14 40%,#145A22);
+  border-right:2px solid var(--gold);
+  color:var(--beige);padding:26px 20px;overflow-y:auto;
+}
+.brand{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:1.55rem;color:var(--gold);line-height:1.1;letter-spacing:.3px}
+.brand small{display:block;font-family:'Questrial',sans-serif;font-style:normal;font-size:.56rem;letter-spacing:3px;color:var(--beige);text-transform:uppercase;margin-top:6px;opacity:.8}
+.ticker-box{margin:22px 0;padding:14px;background:rgba(255,255,255,.06);border:1px solid rgba(252,197,91,.35);border-radius:10px}
+.ticker-box .sym{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:1.5rem;color:#fff;letter-spacing:1px}
+.ticker-box .nm{font-size:.72rem;color:var(--beige);opacity:.8;margin-bottom:8px}
+.ticker-box .px{font-family:'JetBrains Mono',monospace;font-size:1.35rem;color:var(--gold);font-weight:700}
+.ticker-box .chg{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:#9fd6a4;margin-top:2px}
+.nav-label{font-family:'Questrial',sans-serif;font-size:.6rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);opacity:.85;margin:18px 0 10px}
+.nav a{display:flex;gap:9px;align-items:baseline;color:var(--beige);font-size:.82rem;padding:6px 8px;border-radius:7px;transition:background .15s;margin-bottom:1px}
+.nav a:hover{background:rgba(252,197,91,.14);color:#fff}
+.nav a .num{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--gold);min-width:18px}
+.disclaimer-side{margin-top:20px;font-size:.6rem;line-height:1.5;color:var(--beige);opacity:.55}
+
+.main{flex:1;min-width:0}
+.content{max-width:1080px;margin:0 auto;padding:0 48px 80px}
+
+/* ---------- HERO ---------- */
+.hero{
+  position:relative;overflow:hidden;
+  background:linear-gradient(120deg,var(--dark-green),var(--green) 60%);
+  color:var(--beige);padding:46px 48px 40px;
+}
+.hero::after{content:"";position:absolute;right:-120px;top:-120px;width:420px;height:420px;border-radius:50%;
+  background:radial-gradient(circle,rgba(252,197,91,.28),rgba(252,197,91,0) 70%);pointer-events:none}
+.hero .eyebrow{font-family:'Questrial',sans-serif;letter-spacing:4px;text-transform:uppercase;font-size:.66rem;color:var(--gold)}
+.hero h1{font-family:'Cormorant Garamond',serif;font-weight:700;font-size:2.9rem;line-height:1.05;margin:8px 0 4px}
+.hero h1 .tk{font-family:'JetBrains Mono',monospace;color:var(--gold);font-size:2.1rem;letter-spacing:1px}
+.hero .sub{font-size:.95rem;max-width:640px;opacity:.92}
+.verdict{display:inline-flex;align-items:center;gap:14px;margin-top:20px;flex-wrap:wrap}
+.pill{display:inline-flex;align-items:center;gap:8px;background:var(--gold);color:var(--dark-green);
+  font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1.5px;font-size:.78rem;font-weight:bold;
+  padding:9px 18px;border-radius:30px}
+.pill.bull{background:var(--gold)}
+.conv{display:inline-flex;align-items:center;gap:9px;background:rgba(255,255,255,.1);border:1px solid rgba(252,197,91,.5);
+  padding:8px 16px;border-radius:30px;font-size:.78rem;letter-spacing:.5px}
+.conv b{font-family:'JetBrains Mono',monospace;color:var(--gold);font-size:1.05rem}
+.hero .date{margin-top:16px;font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--beige);opacity:.7}
+
+/* ---------- KPI STRIP ---------- */
+.kpi-strip{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:var(--line);border-bottom:1px solid var(--line)}
+.kpi{background:var(--beige-card);padding:16px 14px}
+.kpi .lab{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1.2px;font-size:.58rem;color:var(--muted)}
+.kpi .val{font-family:'JetBrains Mono',monospace;font-size:1.32rem;font-weight:700;color:var(--green);margin-top:6px;line-height:1.1}
+.kpi .st{font-size:.64rem;color:var(--muted);margin-top:3px}
+
+/* ---------- CARDS ---------- */
+.card{background:var(--beige-card);border:1px solid var(--line);border-radius:14px;margin-top:26px;overflow:hidden}
+.card-head{display:flex;align-items:center;gap:14px;padding:18px 22px;cursor:pointer;border-left:5px solid var(--green);background:linear-gradient(90deg,rgba(20,90,34,.06),transparent 40%)}
+.badge{flex-shrink:0;width:34px;height:34px;border-radius:9px;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;
+  font-family:'JetBrains Mono',monospace;font-weight:700;font-size:1rem}
+.card-head h2{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:1.6rem;color:var(--dark-green);flex:1;line-height:1.15}
+.chev{font-size:1rem;color:var(--green);transition:transform .25s}
+.card.collapsed .chev{transform:rotate(-90deg)}
+.card-body{padding:6px 24px 26px}
+.card.collapsed .card-body{display:none}
+.card-body p{margin:12px 0;font-size:.95rem}
+.card-body h3{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1.5px;font-size:.74rem;color:var(--green);margin:22px 0 8px}
+.card-body ul{margin:10px 0 10px 4px;padding-left:18px}
+.card-body li{margin:6px 0;font-size:.92rem}
+.card-body strong{color:var(--dark-green)}
+
+/* ---------- THESIS ---------- */
+.thesis{font-family:'Cormorant Garamond',serif;font-size:1.5rem;line-height:1.4;color:var(--dark-green);
+  border-left:4px solid var(--gold);padding:6px 0 6px 22px;margin:10px 0 8px;font-weight:500}
+.thesis em{color:var(--green)}
+
+/* ---------- CHIPS ---------- */
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0}
+.chip{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;min-width:120px}
+.chip .lab{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:.56rem;color:var(--muted)}
+.chip .val{font-family:'JetBrains Mono',monospace;font-size:1.18rem;font-weight:700;color:var(--green);margin-top:4px}
+.chip .val.red{color:var(--red)}
+
+/* ---------- CALLOUTS ---------- */
+.callout{border-radius:10px;padding:14px 18px;margin:18px 0;font-size:.9rem}
+.callout.gold{background:rgba(252,197,91,.16);border:1px solid var(--gold)}
+.callout.note{background:rgba(20,90,34,.07);border:1px solid rgba(20,90,34,.3)}
+.callout b{color:var(--dark-green)}
+
+/* ---------- TABLES ---------- */
+.tbl-wrap{overflow-x:auto;margin:16px 0;border:1px solid var(--line);border-radius:10px}
+table{width:100%;border-collapse:collapse;font-size:.85rem;background:#fff}
+thead th{background:var(--green);color:#fff;font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:.6px;font-size:.66rem;padding:11px 12px;text-align:left;font-weight:400}
+tbody td{padding:10px 12px;border-top:1px solid var(--line)}
+tbody tr:nth-child(even){background:var(--beige-card)}
+tbody tr:hover{background:rgba(252,197,91,.14)}
+td.num,th.num{font-family:'JetBrains Mono',monospace;text-align:right}
+.pos{color:var(--green);font-weight:600}
+.neg{color:var(--red);font-weight:600}
+td.metric{font-weight:600;color:var(--dark-green)}
+
+/* ---------- SCENARIO ---------- */
+.scen-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:18px 0}
+.scen{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px;border-top:4px solid var(--muted)}
+.scen.bull{border-top-color:var(--green)}
+.scen.base{border-top-color:var(--gold)}
+.scen.bear{border-top-color:var(--red)}
+.scen .tag{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1.5px;font-size:.66rem;color:var(--muted)}
+.scen .pt{font-family:'JetBrains Mono',monospace;font-size:1.7rem;font-weight:700;margin:4px 0}
+.scen.bull .pt{color:var(--green)} .scen.base .pt{color:var(--gold-deep)} .scen.bear .pt{color:var(--red)}
+.prob{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:.66rem;padding:3px 9px;border-radius:20px;background:var(--beige);color:var(--ink);margin-bottom:8px}
+.scen ul{list-style:none;padding:0;margin:6px 0 0}
+.scen li{font-size:.78rem;padding:4px 0 4px 15px;position:relative;color:var(--muted)}
+.scen li::before{content:"▸";position:absolute;left:0;color:var(--gold-deep)}
+.horizon-label{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:2px;font-size:.7rem;color:var(--green);margin:22px 0 2px;padding-top:6px;border-top:1px dashed var(--line)}
+
+/* ---------- RISK ---------- */
+.risk{background:#fff;border:1px solid var(--line);border-left:4px solid var(--red);border-radius:10px;padding:16px 18px;margin:14px 0}
+.risk h4{font-family:'Questrial',sans-serif;color:var(--red);font-size:.92rem;letter-spacing:.4px;text-transform:none;margin-bottom:6px}
+.risk p{font-size:.86rem;margin:6px 0}
+.risk-meta{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+.rmeta{font-family:'JetBrains Mono',monospace;font-size:.6rem;padding:3px 9px;border-radius:20px;border:1px solid var(--line);background:var(--beige-card);color:var(--ink)}
+.rmeta b{color:var(--dark-green)}
+
+/* ---------- TIMELINE ---------- */
+.timeline{position:relative;margin:20px 0 6px;padding-left:26px}
+.timeline::before{content:"";position:absolute;left:6px;top:4px;bottom:4px;width:3px;border-radius:2px;background:linear-gradient(180deg,var(--green),var(--gold))}
+.tl-item{position:relative;margin-bottom:18px}
+.tl-item::before{content:"";position:absolute;left:-26px;top:3px;width:13px;height:13px;border-radius:50%;background:var(--gold);border:3px solid var(--green);box-shadow:0 0 0 3px var(--beige-card)}
+.tl-date{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--green);font-weight:700}
+.tl-title{font-weight:600;color:var(--dark-green);font-size:.93rem}
+.tl-desc{font-size:.82rem;color:var(--muted)}
+
+/* ---------- CHARTS ---------- */
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0}
+.chart-box{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px}
+.chart-box.solo{max-width:420px;margin:18px auto}
+.chart-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.chart-title{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1.2px;font-size:.66rem;color:var(--green)}
+.zoom-btn{font-family:'Questrial',sans-serif;font-size:.56rem;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);
+  background:var(--beige-card);border:1px solid var(--line);border-radius:6px;padding:3px 8px;cursor:pointer}
+.zoom-btn:hover{background:var(--gold);color:var(--dark-green)}
+.canvas-holder{position:relative;height:158px}
+
+/* ---------- MODAL ---------- */
+.modal{display:none;position:fixed;inset:0;background:rgba(7,20,10,.82);z-index:100;align-items:center;justify-content:center;padding:30px}
+.modal.open{display:flex}
+.modal-box{background:var(--beige-card);border:2px solid var(--gold);border-radius:16px;padding:22px;width:min(900px,94vw);max-height:88vh}
+.modal-box .chart-title{font-size:.8rem;margin-bottom:14px}
+.modal-canvas{position:relative;height:min(62vh,520px)}
+.modal-close{float:right;cursor:pointer;font-family:'JetBrains Mono',monospace;color:var(--red);font-weight:700;font-size:1.1rem;border:none;background:none}
+
+.foot{margin-top:40px;padding-top:20px;border-top:1px solid var(--line);font-size:.72rem;color:var(--muted)}
+
+/* ---------- GLOSSARY ---------- */
+.gl{margin:14px 0;padding:14px 16px;background:#fff;border:1px solid var(--line);border-radius:10px}
+.gl h4{font-family:'JetBrains Mono',monospace;color:var(--dark-green);font-size:.86rem;margin-bottom:4px}
+.gl .formula{font-family:'JetBrains Mono',monospace;font-size:.74rem;background:var(--beige-card);border:1px solid var(--line);border-radius:6px;padding:6px 10px;margin:6px 0;color:var(--green)}
+.gl p{font-size:.84rem;margin:5px 0}
+.gl .back{font-size:.7rem}
+.deftag{border-bottom:1px dotted var(--gold-deep);cursor:help}
+
+/* ---------- RESPONSIVE ---------- */
+@media(max-width:880px){
+  .chart-grid{grid-template-columns:1fr}
+  .scen-grid{grid-template-columns:1fr}
+}
+@media(max-width:780px){
+  .sidebar{display:none}
+  .content{padding:0 20px 60px}
+  .hero{padding:32px 22px}
+  .hero h1{font-size:2.1rem}
+  .kpi-strip{grid-template-columns:repeat(3,1fr)}
+}
+</style>
+</head>
+<body>
+<div class="layout">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar">
+    <div class="brand">Foundational<br>Trading Academy<small>Investment Research Hub</small></div>
+    <div class="ticker-box">
+      <div class="sym">FSLR</div>
+      <div class="nm">First Solar, Inc. · NASDAQ</div>
+      <div class="px">$257.88</div>
+      <div class="chg">52-wk: $135.50 – $285.99</div>
+    </div>
+    <div class="nav-label">Report Sections</div>
+    <nav class="nav">
+      <a href="#s1"><span class="num">01</span> Executive Summary &amp; Thesis</a>
+      <a href="#s2"><span class="num">02</span> Micro &amp; Valuation</a>
+      <a href="#s3"><span class="num">03</span> Moat, Management &amp; Culture</a>
+      <a href="#s4"><span class="num">04</span> Financial Deep Dive</a>
+      <a href="#s5"><span class="num">05</span> Earnings Tracker</a>
+      <a href="#s6"><span class="num">06</span> Bull / Base / Bear</a>
+      <a href="#s7"><span class="num">07</span> Risks &amp; Anti-Thesis</a>
+      <a href="#s8"><span class="num">08</span> Catalyst Timeline</a>
+      <a href="#s9"><span class="num">09</span> Comparable Companies</a>
+      <a href="#s10"><span class="num">10</span> First-Principles KPIs</a>
+      <a href="#s11"><span class="num">11</span> Glossary &amp; Methodology</a>
+    </nav>
+    <div class="disclaimer-side">Educational research only. Not investment advice. Data compiled from primary filings &amp; public sources, May 2026.</div>
+  </aside>
+
+  <!-- ============ MAIN ============ -->
+  <main class="main">
+
+    <!-- HERO -->
+    <header class="hero">
+      <div class="eyebrow">FTA Advanced Analysis Framework · Deep-Dive</div>
+      <h1><span class="tk">FSLR</span> · First Solar, Inc.</h1>
+      <p class="sub">The most profitable, most policy-advantaged solar manufacturer in America — priced as if its record margins are a one-off, not a contracted, multi-year fact.</p>
+      <div class="verdict">
+        <span class="pill bull">▲ Bullish — Mispriced Compounder</span>
+        <span class="conv">Conviction <b>8 / 10</b></span>
+      </div>
+      <div class="date">Report date: 2026-05-25 (Mon) · Sector: Renewable Energy — Solar Manufacturing</div>
+    </header>
+
+    <!-- KPI STRIP -->
+    <section class="kpi-strip">
+      <div class="kpi"><div class="lab">Price</div><div class="val">$257.88</div><div class="st">as of May 22, 2026</div></div>
+      <div class="kpi"><div class="lab">Market Cap</div><div class="val">$27.7B</div><div class="st">107.5M shares</div></div>
+      <div class="kpi"><div class="lab">Rev Growth (FY25)</div><div class="val">+24%</div><div class="st">$5.2B net sales</div></div>
+      <div class="kpi"><div class="lab">Adj. EBITDA (FY26E)</div><div class="val">$2.7B</div><div class="st">~54% margin guide</div></div>
+      <div class="kpi"><div class="lab">Fwd P/E (FY26E)</div><div class="val">14.8x</div><div class="st">10.6x on FY27E</div></div>
+      <div class="kpi"><div class="lab">Analyst PT</div><div class="val">$238</div><div class="st">Buy · 30B/5H/1S</div></div>
+    </section>
+
+    <div class="content">
+
+      <!-- ===================== SECTION 1 ===================== -->
+      <section id="s1" class="card">
+        <div class="card-head"><div class="badge">1</div><h2>Executive Summary &amp; Investment Thesis</h2><span class="chev">▾</span></div>
+        <div class="card-body">
+          <p class="thesis">First Solar is a <em>cash-generative, policy-fortified industrial compounder</em> sitting on a <em>47.9 GW / $14.4B contracted backlog through 2030</em>, trading at ~15× forward earnings — a valuation that prices in the bears' "bookings gap" fear while ignoring the structural moat that the One Big Beautiful Bill just handed it.</p>
+
+          <p>First Solar (FSLR) is the only at-scale U.S. solar manufacturer whose entire supply chain sits outside China — a fact that went from "nice ESG story" to "hard economic moat" the moment the <span class="deftag" title="Section 45X advanced manufacturing production credit">OBBBA</span> preserved the Section 45X manufacturing credit for solar while disqualifying components made with "material assistance from prohibited foreign entities." The market, fixated on a soft quarter of new bookings, is valuing the company on trailing optics rather than its contracted, multi-year earnings stream.</p>
+
+          <div class="chips">
+            <div class="chip"><div class="lab">Current Price</div><div class="val">$257.88</div></div>
+            <div class="chip"><div class="lab">Market Cap</div><div class="val">$27.7B</div></div>
+            <div class="chip"><div class="lab">Backlog</div><div class="val">47.9 GW</div></div>
+            <div class="chip"><div class="lab">Backlog Value</div><div class="val">$14.4B</div></div>
+            <div class="chip"><div class="lab">FY26 EPS (cons.)</div><div class="val">$17.40</div></div>
+            <div class="chip"><div class="lab">FY27 EPS (cons.)</div><div class="val">$24.24</div></div>
+          </div>
+
+          <h3>The thesis in five beats</h3>
+          <ul>
+            <li><strong>Contracted, not hoped-for.</strong> 47.9 GW is already signed at a $14.4B aggregate transaction price with deliveries scheduled through 2030 — roughly 2.7 years of production locked in before a single new order.</li>
+            <li><strong>Margins are structural, not cyclical.</strong> Q1 2026 gross margin hit 47% and adjusted EBITDA margin 50%, driven by <span class="deftag" title="Section 45X production credit">45X</span> credits, U.S. mix, and falling freight — not a price spike that mean-reverts.</li>
+            <li><strong>Policy moved from risk to moat.</strong> OBBBA (signed July 4, 2025) kept 45X for solar and added "material assistance" rules that penalize China-linked supply chains — First Solar's competitive kryptonite turned into its shield.</li>
+            <li><strong>Valuation is asymmetric.</strong> ~14.8× FY26E and ~10.6× FY27E earnings, ~10× EV/EBITDA (below its 12.5× decade median), with a fortress balance sheet (~$2.4B cash).</li>
+            <li><strong>The honest catch.</strong> ~$2.1B of the ~$2.7B FY26 adjusted EBITDA <em>is</em> the 45X credit. This is the central debate, and we steelman it hard in Section 7.</li>
+          </ul>
+
+          <div class="callout gold"><b>Conviction 8/10.</b> High because the backlog and policy create a rare margin-of-safety + optionality combination at a value multiple. Held back from 9–10 by the genuine 45X dependence and a bookings cadence that must reaccelerate to justify the 2027+ growth the Street already models.</div>
+        </div>
+      </section>
+
+      <!-- ===================== SECTION 2 ===================== -->
+      <section id="s2" class="card">
+        <div class="card-head"><div class="badge">2</div><h2>Microeconomic &amp; Valuation Analysis</h2><span class="chev">▾</span></div>
+        <div class="card-body">
+          <h3>Industry &amp; TAM</h3>
+          <p>Global solar is the fastest-scaling source of new electricity generation on Earth, with annual deployments measured in the hundreds of gigawatts and a long runway from data-center load growth, electrification, and grid build-out. Industry forecasters generally model global PV demand compounding at a <strong>high-single to low-double-digit CAGR</strong> through 2030. First Solar plays a deliberately narrow slice — <strong>U.S. and India utility-scale</strong> — where its <span class="deftag" title="Cadmium telluride thin-film">CdTe</span> thin-film and domestic-content advantage matter most and where it avoids head-to-head commodity combat with Chinese crystalline-silicon.</p>
+
+          <div class="chart-grid">
+            <div class="chart-box">
+              <div class="chart-head"><span class="chart-title">Revenue Trajectory ($B)</span><button class="zoom-btn" data-c="cRev">⤢ expand</button></div>
+              <div class="canvas-holder"><canvas id="cRev"></canvas></div>
+            </div>
+            <div class="chart-box">
+              <div class="chart-head"><span class="chart-title">Valuation Multiples vs Peers</span><button class="zoom-btn" data-c="cVal">⤢ expand</button></div>
+              <div class="canvas-holder"><canvas id="cVal"></canvas></div>
+            </div>
+          </div>
+
+          <h3>P/E &amp; P/S read</h3>
+          <p>On a trailing-twelve-month EPS of ~$15.52, FSLR trades at ~16.6× earnings; on consensus FY26E ($17.40) it is ~14.8×, and on FY27E ($24.24) just ~10.6× — unusually cheap for a business guiding to 54% EBITDA margins. The price-to-sales ratio is ~5.3× (market cap $27.7B / FY25 sales $5.2B).</p>
+
+          <div class="callout note"><b>FTA P/S scale read — 5.3× = "Aware."</b> On the FTA scale (&gt;30 Euphoric · &gt;18 Excited · &gt;8 Optimistic · 4–8 <b>Aware</b> · &lt;4 Cautious · &lt;2 Pessimistic), the market is alert to First Solar's growth but is far from euphoric — consistent with a name being doubted, not chased.</p></div>
+
+          <div class="chips">
+            <div class="chip"><div class="lab">P/E (TTM)</div><div class="val">16.6x</div></div>
+            <div class="chip"><div class="lab">P/E (FY26E)</div><div class="val">14.8x</div></div>
+            <div class="chip"><div class="lab">P/E (FY27E)</div><div class="val">10.6x</div></div>
+            <div class="chip"><div class="lab">P/S</div><div class="val">5.3x</div></div>
+            <div class="chip"><div class="lab">EV/EBITDA</div><div class="val">~10x</div></div>
+            <div class="chip"><div class="lab">Inst. Ownership</div><div class="val">94%</div></div>
+          </div>
+
+          <h3>Ownership &amp; insider signal</h3>
+          <p>Institutions hold ~94% of the float (Vanguard ~7.3%), confirming this is an institutionally-followed name where edge comes from a differentiated <em>view</em>, not information asymmetry. Insider activity is a mild negative: over the past year there were <strong>0 insider buys and 67 sells</strong>, including CEO Mark Widmar trimming ~4,815 shares at ~$240–257 in late May under a pre-set 10b5-1 plan. We read this as routine, scheduled diversification rather than a directional call, but it is not the conviction-buy signal a bull would prefer.</p>
+
+          <h3>Analyst estimates</h3>
+          <p>Consensus is <strong>Buy</strong> (roughly 30 Buy / 5 Hold / 1 Sell), with an average target near $238 (range ~$150–$303). The Street models EPS growth of +22.5% in FY26 and +39.3% in FY27 — a steep ramp that depends on the backlog converting and capacity ramping as planned.</p>
+        </div>
+      </section>
+
+      <!-- ===================== SECTION 3 ===================== -->
+      <section id="s3" class="card">
+        <div class="card-head"><div class="badge">3</div><h2>Qualitative — Moat, Management &amp; Culture</h2><span class="chev">▾</span></div>
+        <div class="card-body">
+          <h3>The moat, viewed systemically</h3>
+          <p>First Solar's moat is not one wall but three reinforcing ones. First, a <strong>technology moat</strong>: it is the only company manufacturing <span class="deftag" title="Cadmium telluride thin-film">cadmium-telluride (CdTe) thin-film</span> at scale, a fundamentally different physics from the crystalline-silicon panels every Chinese rival makes — which means it does not compete on the same cost curve and is not exposed to polysilicon spot cycles. Second, a <strong>policy/supply-chain moat</strong>: a fully vertically integrated, non-China supply chain that uniquely qualifies for the richest 45X credits while competitors trip over "material assistance" disqualifiers. Third, a <strong>contractual moat</strong>: multi-year, take-or-pay-style utility contracts that convert the first two advantages into visible, bankable cash flows.</p>
+
+          <div class="callout gold">Think of it as a <b>regulatory-physics flywheel</b>: differentiated physics → U.S. manufacturability → policy reward → premium ASPs → reinvestment into more U.S. capacity → deeper policy and cost advantage. Each turn widens the gap that a silicon importer cannot cross.</div>
+
+          <h3>Founder-led?</h3>
+          <p>No. First Solar is professionally managed, not founder-run. It traces to Solar Cells Inc. and the Walton family's early backing, but is today led by long-tenured CEO <strong>Mark Widmar</strong> (CEO since 2016, previously CFO). The absence of a charismatic founder is offset by deep operational continuity and a board steeped in manufacturing and energy.</p>
+
+          <h3>Capital allocation &amp; culture</h3>
+          <p>Management's capital allocation has been disciplined and counter-cyclical: it built U.S. capacity ahead of the demand wave (Ohio → Alabama → Louisiana → South Carolina), funded largely from operating cash and a debt-light balance sheet, and has resisted the temptation to chase low-margin commodity volume. The culture skews engineering-first and conservative — a "make the number, don't over-promise" cadence that shows up in a strong guidance track record (Section 5).</p>
+
+          <h3>Organizational &amp; structural traits</h3>
+          <ul>
+            <li><strong>Innovation pace:</strong> Steady and compounding rather than flashy — the CuRe (CURE) technology launch at Perrysburg lifts efficiency and unlocks up to ~$600M of incremental revenue (mostly 2027–2028).</li>
+            <li><strong>Failure tolerance:</strong> Tempered by safety/quality stakes; the company has historically taken warranty hits seriously (legacy Series 4 issues), which keeps a healthy paranoia about quality.</li>
+            <li><strong>Talent density &amp; decentralization:</strong> Concentrated R&amp;D in Ohio/California with a deliberately centralized technology roadmap — a single-technology bet executed with focus rather than a sprawling product portfolio.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===================== SECTION 4 ===================== -->
+      <section id="s4" class="card">
+        <div class="card-head"><div class="badge">4</div><h2>Quantitative — Financial Deep Dive</h2><span class="chev">▾</span></div>
+        <div class="card-body">
+          <p>The financial story is one of <strong>margin expansion outrunning revenue</strong>. FY25 net sales of $5.2B (+24% YoY) carried a 40.4% gross margin; FY26 guidance holds revenue roughly flat ($4.9–5.2B) but lifts adjusted EBITDA to $2.6–2.8B as the U.S./45X mix deepens — a textbook case of <span class="deftag" title="Profit growing faster than revenue as fixed costs are spread">operating leverage</span>.</p>
+
+          <div class="chart-grid">
+            <div class="chart-box">
+              <div class="chart-head"><span class="chart-title">Quarterly EPS & Gross Margin</span><button class="zoom-btn" data-c="cEps">⤢ expand</button></div>
+              <div class="canvas-holder"><canvas id="cEps"></canvas></div>
+            </div>
+            <div class="chart-box">
+              <div class="chart-head"><span class="chart-title">FY26E Adj. EBITDA Bridge ($B)</span><button class="zoom-btn" data-c="cEbitda">⤢ expand</button></div>
+              <div class="canvas-holder"><canvas id="cEbitda"></canvas></div>
+            </div>
+          </div>
+
+          <h3>Cash flow, working capital &amp; the balance sheet</h3>
+          <p>Trailing free cash flow is roughly $1.2B (operating cash flow ~$2.06B less ~$0.87B capex). The cadence is lumpy: Q1 2026 operating cash flow was <span class="neg">−$214.9M</span> as receivables, inventory, and government-grant receivables built ahead of second-half deliveries — normal for a manufacturer front-loading a back-half-weighted year. The balance sheet is a genuine fortress: ~$2.4B cash against modest debt, with management guiding to a <strong>$1.7–2.3B year-end net cash</strong> position even after $0.8–1.0B of capex.</p>
+
+          <div class="chips">
+            <div class="chip"><div class="lab">FY25 Net Sales</div><div class="val">$5.2B</div></div>
+            <div class="chip"><div class="lab">FY25 Gross Margin</div><div class="val">40.4%</div></div>
+            <div class="chip"><div class="lab">Q1'26 Gross Margin</div><div class="val">47%</div></div>
+            <div class="chip"><div class="lab">FCF (TTM)</div><div class="val">~$1.2B</div></div>
+            <div class="chip"><div class="lab">Cash</div><div class="val">$2.4B</div></div>
+            <div class="chip"><div class="lab">Net Margin (FY25)</div><div class="val">~29%</div></div>
+          </div>
+
+          <h3>Revenue streams, explained simply</h3>
+          <p>Strip away the jargon and First Solar makes money two ways. <strong>(1) It sells solar modules</strong> — physical panels — to large utility and developer customers, mostly in the U.S. and increasingly India (Q1 2026 set an India sales record). <strong>(2) It collects a U.S. government manufacturing credit (45X)</strong> for every watt it produces domestically. Module sales are the engine; the 45X credit is a turbocharger bolted on by policy. A smaller systems/legacy line rounds it out.</p>
+
+          <div class="callout note"><b>The number that matters most:</b> FY26 guidance assumes <b>$2.10–2.19B of 45X credits</b> against $2.6–2.8B of adjusted EBITDA. The credit is the dominant driver of reported profitability — a strength while the law stands and the central vulnerability if it changes (see Section 7).</div>
+
+          <h3>Dilution &amp; the flywheel</h3>
+          <p>Share count is well controlled at ~107.5M — there is no dilution problem; growth is funded from internal cash, not equity issuance. The flywheel: domestic capacity (≈14 GW U.S. today, &gt;17 GW by 2027, ~25 GW global by end-2026) → more 45X-eligible watts → more cash → more capacity, all while ASP discipline (embedding the technology premium into a higher base price) protects unit economics.</p>
+
+          <div class="chart-grid">
+            <div class="chart-box">
+              <div class="chart-head"><span class="chart-title">Nameplate Capacity Ramp (GW)</span><button class="zoom-btn" data-c="cCap">⤢ expand</button></div>
+              <div class="canvas-holder"><canvas id="cCap"></canvas></div>
+            </div>
+            <div class="chart-box">
+              <div class="chart-head"><span class="chart-title">Gross Margin Expansion (%)</span><button class="zoom-btn" data-c="cGm">⤢ expand</button></div>
+              <div class="canvas-holder"><canvas id="cGm"></canvas></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== SECTION 5 ===================== -->
+      <section id="s5" class="card">
+        <div class="card-head"><div class="badge">5</div><h2>Earnings Tracker — Management Credibility</h2><span class="chev">▾</span></div>
+        <div class="card-body">
+          <p>First Solar's guidance is given as volumes, EBITDA, and 45X credits rather than tidy EPS targets, so credibility is best judged on whether the company hits the operational and profit markers it sets. The recent record is strong: a string of revenue beats, a Q1 2026 that came in <strong>above the top end of its own EBITDA preview</strong>, and full-year guidance reaffirmed under policy uncertainty.</p>
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>Quarter</th><th>Specific Promise / Guidance</th><th>Actual Result</th><th class="num">Credibility</th></tr></thead>
+              <tbody>
+                <tr><td class="metric">Q2 2024</td><td>Reaffirm FY24 ~$4.4–4.6B sales; 45X ramp</td><td>On track; volumes met</td><td class="num pos">8/10</td></tr>
+                <tr><td class="metric">Q3 2024</td><td>FY24 volume &amp; margin targets</td><td>Met; backlog grew</td><td class="num pos">8/10</td></tr>
+                <tr><td class="metric">Q4 2024</td><td>FY24 sales ~$4.2B; issue FY25 guide</td><td>Delivered $4.2B; EPS miss on warranty/charges</td><td class="num">6/10</td></tr>
+                <tr><td class="metric">Q1 2025</td><td>FY25 sales/EBITDA framework</td><td>Revenue beat; reaffirmed</td><td class="num pos">8/10</td></tr>
+                <tr><td class="metric">Q2 2025</td><td>FY25 volume &amp; 45X targets</td><td>Beat; Louisiana ramp on schedule</td><td class="num pos">8/10</td></tr>
+                <tr><td class="metric">Q3 2025</td><td>Updated FY25 guide; revenue beat</td><td>Revenue beat; guidance tightened up</td><td class="num pos">9/10</td></tr>
+                <tr><td class="metric">Q4 2025</td><td>FY25 sales $5.2B; FY26 guide</td><td>Delivered $5.2B / $14.21 EPS; FY26 guide seen light → stock −10%</td><td class="num">6/10</td></tr>
+                <tr><td class="metric">Q1 2026</td><td>Preview EBITDA; reaffirm FY26</td><td>$520M EBITDA <em>above</em> preview top end; reaffirmed</td><td class="num pos">9/10</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="callout gold"><b>Credibility verdict: high but not flawless.</b> Operational execution and revenue guidance are reliably met or beaten; the two weak prints (Q4'24 warranty charges, a Q4'25 FY26 guide the Street found conservative) reflect conservatism and one-off charges rather than a pattern of over-promising. Average credibility ≈ <b>7.8/10</b>.</div>
+        </div>
+      </section>
+
+      <!-- ===================== SECTION 6 ===================== -->
+      <section id="s6" class="card">
+        <div class="card-head"><div class="badge">6</div><h2>Bull / Base / Bear Scenarios</h2><span class="chev">▾</span></div>
+        <div class="card-body">
+          <p>Targets below are <strong>illustrative analytical scenarios</strong> for education, not price predictions. Each horizon blends an earnings path with a plausible multiple, then probability-weights to an expected value. Current price: $257.88.</p>
+
+          <div class="chart-box">
+            <div class="chart-head"><span class="chart-title">Probability-Weighted Price Targets by Horizon</span><button class="zoom-btn" data-c="cScen">⤢ expand</button></div>
+            <div class="canvas-holder" style="height:185px"><canvas id="cScen"></canvas></div>
+          </div>
+
+          <div class="horizon-label">1-Year Horizon (≈ mid-2027) · PW ≈ $293</div>
+          <div class="scen-grid">
+            <div class="scen bull"><div class="tag">Bull</div><div class="pt">$360</div><span class="prob">P = 30%</span><ul><li>Bookings reaccelerate &gt;4 GW/qtr</li><li>45X clarity removes overhang</li><li>~15× on $24 FY27E EPS</li></ul></div>
+            <div class="scen base"><div class="tag">Base</div><div class="pt">$300</div><span class="prob">P = 50%</span><ul><li>Backlog converts on plan</li><li>Modest re-rate to ~12.5×</li><li>+16% from spot</li></ul></div>
+            <div class="scen bear"><div class="tag">Bear</div><div class="pt">$175</div><span class="prob">P = 20%</span><ul><li>Bookings-gap fears dominate</li><li>ASP/policy headlines weigh</li><li>De-rate to ~11× on softer EPS</li></ul></div>
+          </div>
+
+          <div class="horizon-label">3-Year Horizon (≈ 2029) · PW ≈ $416</div>
+          <div class="scen-grid">
+            <div class="scen bull"><div class="tag">Bull</div><div class="pt">$560</div><span class="prob">P = 35%</span><ul><li>CuRe premium + higher base ASP</li><li>25+ GW capacity fully utilized</li><li>EPS ~$33 × ~17×</li></ul></div>
+            <div class="scen base"><div class="tag">Base</div><div class="pt">$400</div><span class="prob">P = 45%</span><ul><li>Steady backlog execution</li><li>EPS ~$28 × ~14×</li><li>45X intact pre-phase-down</li></ul></div>
+            <div class="scen bear"><div class="tag">Bear</div><div class="pt">$200</div><span class="prob">P = 20%</span><ul><li>Backlog runs off un-replenished</li><li>Margin normalization begins</li><li>Multiple compresses</li></ul></div>
+          </div>
+
+          <div class="horizon-label">5-Year Horizon (≈ 2031) · PW ≈ $553</div>
+          <div class="scen-grid">
+            <div class="scen bull"><div class="tag">Bull</div><div class="pt">$780</div><span class="prob">P = 35%</span><ul><li>Durable U.S. energy-infra premium</li><li>Sustained ~$45 EPS</li><li>Share gains in domestic content</li></ul></div>
+            <div class="scen base"><div class="tag">Base</div><div class="pt">$520</div><span class="prob">P = 45%</span><ul><li>~$38 EPS × ~14×</li><li>45X phase-down offset by scale/ASP</li></ul></div>
+            <div class="scen bear"><div class="tag">Bear</div><div class="pt">$230</div><span class="prob">P = 20%</span><ul><li>Policy reversal / oversupply</li><li>Thin-film loses relative ground</li><li>Earnings power resets lower</li></ul></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== SECTION 7 ===================== -->
+      <section id="s7" class="card">
+        <div class="card-head"><div class="badge">7</div><h2>Risks &amp; Anti-Thesis (Steelman the Bear)</h2><span class="chev">▾</span></div>
+        <div class="card-body">
+          <p>If we were short FSLR, here is the case we would press — engaged seriously, not as a strawman.</p>
+
+          <div class="risk">
+            <h4>1 · The 45X dependence: this is a subsidized earnings stream, not an industrial one</h4>
+            <p>FY26 guidance leans on $2.10–2.19B of 45X credits against $2.6–2.8B of adjusted EBITDA. Ex-credit, the underlying manufacturing economics are far thinner. You are paying ~15× earnings for a profit pool that is ~80% a government check whose size is set by Congress, not by customers.</p>
+            <div class="risk-meta"><span class="rmeta">Probability <b>High</b></span><span class="rmeta">Impact <b>Severe</b></span><span class="rmeta">Priced in? <b>Partially</b></span></div>
+          </div>
+
+          <div class="risk">
+            <h4>2 · The bookings gap: the backlog is being consumed faster than it is refilled</h4>
+            <p>Q1 2026 gross bookings were just 1.7 GW against ~17–18 GW of annual production. At that pace the pipeline does not replenish; the company is, for now, living off a backlog built in prior years. If bookings do not reaccelerate, the 2027+ growth the Street already models is at risk.</p>
+            <div class="risk-meta"><span class="rmeta">Probability <b>High</b></span><span class="rmeta">Impact <b>High</b></span><span class="rmeta">Priced in? <b>Partially</b></span></div>
+          </div>
+
+          <div class="risk">
+            <h4>3 · Tariff-contingent backlog can evaporate</h4>
+            <p>Roughly 13.9 GW of the backlog is forward contracts for international product delivered into the U.S. with provisions allowing termination if tariff shifts erode gross margins. A chunk of the "contracted" comfort is conditional, and India already saw ~2.4 GW of 2024 terminations.</p>
+            <div class="risk-meta"><span class="rmeta">Probability <b>Medium</b></span><span class="rmeta">Impact <b>Med-High</b></span><span class="rmeta">Priced in? <b>Low</b></span></div>
+          </div>
+
+          <div class="risk">
+            <h4>4 · ASP compression from global oversupply</h4>
+            <p>The world is awash in cheap Chinese crystalline-silicon. India bookings at ~$0.20/W show where unsubsidized global pricing sits versus ~$0.34–0.35/W U.S. utility deals. If domestic-content premiums narrow, First Solar's pricing umbrella shrinks.</p>
+            <div class="risk-meta"><span class="rmeta">Probability <b>Medium</b></span><span class="rmeta">Impact <b>Medium</b></span><span class="rmeta">Priced in? <b>Partially</b></span></div>
+          </div>
+
+          <div class="risk">
+            <h4>5 · Single-technology &amp; execution risk</h4>
+            <p>CdTe is one bet. A quality/warranty event, a CuRe ramp stumble, or delays at the new South Carolina and India lines would hit a company with no crystalline-silicon hedge. History (legacy Series-4 warranty costs) shows the tail is real.</p>
+            <div class="risk-meta"><span class="rmeta">Probability <b>Low-Med</b></span><span class="rmeta">Impact <b>Medium</b></span><span class="rmeta">Priced in? <b>Low</b></span></div>
+          </div>
+
+          <div class="callout note"><b>Our rebuttal, in brief:</b> Risks 1 and 2 are the real ones. On 45X — the law was just reaffirmed by OBBBA with a phase-down that does not bite until ~2030, giving years of visibility, and the "material assistance" rules actively widen First Solar's edge. On bookings — a soft quarter at higher embedded ASPs (the company is deliberately repricing for 2029+ delivery) is different from absent demand. We size these as real but believe the ~15× multiple already pays the bear most of what it is owed.</div>
+        </div>
+      </section>
+
+      <!-- ===================== SECTION 8 ===================== -->
+      <section id="s8" class="card">
+        <div class="card-head"><div class="badge">8</div><h2>Catalyst Timeline</h2><span class="chev">▾</span></div>
+        <div class="card-body">
+          <div class="timeline">
+            <div class="tl-item"><div class="tl-date">Late Jul 2026</div><div class="tl-title">Q2 2026 Earnings</div><div class="tl-desc">Guided 3.4–4.0 GW volume and $400–500M adjusted EBITDA. First read on whether bookings reaccelerate.</div></div>
+            <div class="tl-item"><div class="tl-date">H2 2026</div><div class="tl-title">South Carolina finishing facility opens</div><div class="tl-desc">Sixth U.S. site; pushes domestic nameplate toward &gt;17 GW once ramped in 2027.</div></div>
+            <div class="tl-item"><div class="tl-date">2026 (ongoing)</div><div class="tl-title">Treasury / IRS 45X "material assistance" (MACR) implementation</div><div class="tl-desc">Notice 2026-15 guidance — clarity here can re-rate the durability of the credit stream.</div></div>
+            <div class="tl-item"><div class="tl-date">Late Oct 2026</div><div class="tl-title">Q3 2026 Earnings</div><div class="tl-desc">Key bookings checkpoint; seasonally heavy delivery quarter for U.S. utility-scale.</div></div>
+            <div class="tl-item"><div class="tl-date">2026–2028</div><div class="tl-title">CuRe (CURE) fleet ramp</div><div class="tl-desc">Efficiency upgrade unlocking up to ~$600M incremental revenue, majority in 2027–2028.</div></div>
+            <div class="tl-item"><div class="tl-date">Feb 2027</div><div class="tl-title">Q4 / FY2026 results + FY2027 guide</div><div class="tl-desc">The step-up year: Street models EPS ~$24 (+39%) as capacity and ASP gains land.</div></div>
+            <div class="tl-item"><div class="tl-date">Ongoing</div><div class="tl-title">U.S. AD/CVD &amp; tariff decisions on SE-Asia imports</div><div class="tl-desc">Each ruling shifts the domestic-content premium that underpins First Solar's pricing.</div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== SECTION 9 ===================== -->
+      <section id="s9" class="card">
+        <div class="card-head"><div class="badge">9</div><h2>Comparable Company Analysis</h2><span class="chev">▾</span></div>
+        <div class="card-body">
+          <p>First Solar is best compared to other U.S.-listed solar value-chain names. The peer set splits into module makers (FSLR, Canadian Solar), trackers/balance-of-system (Nextracker), and residential power electronics (Enphase, SolarEdge). The contrast is stark: First Solar pairs the highest margins with one of the lowest multiples.</p>
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>Company</th><th class="num">Mkt Cap</th><th class="num">Rev (TTM)</th><th class="num">Rev Gr. YoY</th><th class="num">P/E</th><th class="num">P/S</th><th class="num">Net Margin</th><th class="num">EV/EBITDA</th></tr></thead>
+              <tbody>
+                <tr><td class="metric">First Solar (FSLR)</td><td class="num">$27.7B</td><td class="num">~$5.4B</td><td class="num pos">+24%</td><td class="num">16.6x</td><td class="num">5.3x</td><td class="num pos">~29%</td><td class="num">~10x</td></tr>
+                <tr><td class="metric">Nextracker (NXT)</td><td class="num">$18.9B</td><td class="num">~$3.1B</td><td class="num pos">+13%</td><td class="num">33x</td><td class="num">6.1x</td><td class="num pos">~17%</td><td class="num">~20x</td></tr>
+                <tr><td class="metric">Enphase (ENPH)</td><td class="num">$8.4B</td><td class="num">~$1.4B</td><td class="num neg">recovering</td><td class="num">63x*</td><td class="num">~6x</td><td class="num">low</td><td class="num">~25x</td></tr>
+                <tr><td class="metric">SolarEdge (SEDG)</td><td class="num">~$3.6B</td><td class="num">~$1.1B</td><td class="num pos">+42%</td><td class="num">n/m</td><td class="num">~3x</td><td class="num neg">~breakeven</td><td class="num">n/m</td></tr>
+                <tr><td class="metric">Canadian Solar (CSIQ)</td><td class="num">~$1.5B</td><td class="num">~$7.5B</td><td class="num neg">−10%</td><td class="num">n/m</td><td class="num neg">0.2x</td><td class="num neg">thin/neg</td><td class="num">n/m</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p style="font-size:.74rem;color:var(--muted)">*Enphase P/E reflects temporarily depressed trailing earnings (forward P/E ~17×). "n/m" = not meaningful at current profitability. Figures approximate, May 2026.</p>
+
+          <div class="chart-grid">
+            <div class="chart-box">
+              <div class="chart-head"><span class="chart-title">Net Margin vs Peers (%)</span><button class="zoom-btn" data-c="cPeerMargin">⤢ expand</button></div>
+              <div class="canvas-holder"><canvas id="cPeerMargin"></canvas></div>
+            </div>
+            <div class="chart-box">
+              <div class="chart-head"><span class="chart-title">P/E vs Net Margin Map</span><button class="zoom-btn" data-c="cPeerScatter">⤢ expand</button></div>
+              <div class="canvas-holder"><canvas id="cPeerScatter"></canvas></div>
+            </div>
+          </div>
+
+          <div class="callout gold"><b>Relative-value conclusion:</b> First Solar earns the fattest margins in the group yet trades at a lower P/E and EV/EBITDA than Nextracker or Enphase. The market is awarding premium multiples to balance-of-system and residential names while discounting the highest-margin, policy-favored manufacturer — the core of the mispricing.</div>
+        </div>
+      </section>
+
+      <!-- ===================== SECTION 10 ===================== -->
+      <section id="s10" class="card">
+        <div class="card-head"><div class="badge">10</div><h2>First-Principles KPIs</h2><span class="chev">▾</span></div>
+        <div class="card-body">
+          <p>Forget the income statement for a moment. Five leading indicators tell you whether the thesis is intact long before EPS prints.</p>
+          <ul>
+            <li><strong>1 · Quarterly gross bookings (GW) &amp; book-to-bill.</strong> The single most important signal — must climb back above ~4 GW/quarter to sustain the growth narrative.</li>
+            <li><strong>2 · New-booking ASP ($/W), U.S. vs India.</strong> Tracks whether the domestic-content premium is durable (~$0.34–0.35 U.S.) or compressing toward global levels (~$0.20 India).</li>
+            <li><strong>3 · 45X credits as % of EBITDA.</strong> Measures policy dependence — the bear's core concern; ~80% today.</li>
+            <li><strong>4 · Domestic nameplate capacity &amp; utilization.</strong> 14 GW → &gt;17 GW (2027); capacity that is contracted, not speculative.</li>
+            <li><strong>5 · Backlog coverage (years of production).</strong> ~47.9 GW ÷ ~18 GW ≈ 2.7 years — the cushion the bookings gap is slowly drawing down.</li>
+          </ul>
+          <div class="chart-grid">
+            <div class="chart-box">
+              <div class="chart-head"><span class="chart-title">KPI 1 — Quarterly Gross Bookings (GW)</span><button class="zoom-btn" data-c="cBookings">⤢ expand</button></div>
+              <div class="canvas-holder"><canvas id="cBookings"></canvas></div>
+            </div>
+            <div class="chart-box">
+              <div class="chart-head"><span class="chart-title">KPI 3 — 45X Credits as % of EBITDA</span><button class="zoom-btn" data-c="cDependence">⤢ expand</button></div>
+              <div class="canvas-holder"><canvas id="cDependence"></canvas></div>
+            </div>
+          </div>
+          <div class="chart-box solo">
+            <div class="chart-head"><span class="chart-title">KPI 2 — New-Booking ASP ($/W)</span><button class="zoom-btn" data-c="cAsp">⤢ expand</button></div>
+            <div class="canvas-holder"><canvas id="cAsp"></canvas></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== SECTION 11 ===================== -->
+      <section id="s11" class="card">
+        <div class="card-head"><div class="badge">11</div><h2>Glossary &amp; Methodology</h2><span class="chev">▾</span></div>
+        <div class="card-body">
+          <p>Definitions for the linked terms used above, with formulas and why each matters.</p>
+
+          <div class="gl">
+            <h4>Section 45X (Advanced Manufacturing Production Credit)</h4>
+            <p>A per-unit U.S. federal tax credit (from the Inflation Reduction Act, preserved by the 2025 OBBBA) paid to domestic manufacturers of solar components, batteries, inverters, wind parts, and critical minerals.</p>
+            <p><b>Why it matters:</b> It is the dominant driver of First Solar's reported profitability (~$2.1B of ~$2.7B FY26 EBITDA) and, via "material assistance" rules, a competitive moat against China-linked supply chains. <span class="back"><a href="#s1">↩ back to thesis</a></span></p>
+          </div>
+
+          <div class="gl">
+            <h4>OBBBA (One Big Beautiful Bill Act)</h4>
+            <p>U.S. budget-reconciliation law signed July 4, 2025. It largely preserved 45X for solar and batteries (phasing out wind), did not accelerate the phase-down, and added "prohibited foreign entity / material assistance" guardrails.</p>
+            <p><b>Why it matters:</b> It converted First Solar's biggest policy risk into a structural advantage. <span class="back"><a href="#s1">↩ back to thesis</a></span></p>
+          </div>
+
+          <div class="gl">
+            <h4>CdTe Thin-Film (Cadmium Telluride)</h4>
+            <p>First Solar's proprietary panel technology, chemically and economically distinct from the crystalline-silicon used by nearly all rivals.</p>
+            <p><b>Why it matters:</b> It sidesteps polysilicon cost cycles and Chinese commodity competition, underpinning the technology moat. <span class="back"><a href="#s3">↩ back to moat</a></span></p>
+          </div>
+
+          <div class="gl">
+            <h4>P/S — Price-to-Sales Ratio</h4>
+            <div class="formula">P/S = Market Cap ÷ Trailing Revenue</div>
+            <p>FSLR: $27.7B ÷ $5.2B ≈ 5.3×. On the FTA scale, 4–8 = "Aware."</p>
+            <p><b>Why it matters:</b> A revenue-based valuation gauge useful when margins are shifting; the FTA scale frames market sentiment. <span class="back"><a href="#s2">↩ back to valuation</a></span></p>
+          </div>
+
+          <div class="gl">
+            <h4>P/E — Price-to-Earnings Ratio</h4>
+            <div class="formula">P/E = Price ÷ Earnings per Share</div>
+            <p>FSLR: ~16.6× trailing, ~14.8× FY26E, ~10.6× FY27E.</p>
+            <p><b>Why it matters:</b> The headline value gauge; the gap between trailing and forward multiples captures the expected earnings ramp. <span class="back"><a href="#s2">↩ back to valuation</a></span></p>
+          </div>
+
+          <div class="gl">
+            <h4>EV/EBITDA</h4>
+            <div class="formula">EV/EBITDA = (Mkt Cap + Debt − Cash) ÷ EBITDA</div>
+            <p>FSLR ≈ 10× vs a ~12.5× decade median.</p>
+            <p><b>Why it matters:</b> Capital-structure-neutral; rewards First Solar's net-cash balance sheet and shows it is cheap versus its own history. <span class="back"><a href="#s2">↩ back to valuation</a></span></p>
+          </div>
+
+          <div class="gl">
+            <h4>Operating Leverage</h4>
+            <p>The phenomenon where profit grows faster than revenue because fixed costs are spread over more units.</p>
+            <p><b>Why it matters:</b> Explains how FY26 EBITDA rises to $2.6–2.8B on roughly flat sales. <span class="back"><a href="#s4">↩ back to financials</a></span></p>
+          </div>
+
+          <div class="gl">
+            <h4>Backlog Coverage</h4>
+            <div class="formula">Coverage (yrs) = Contracted Backlog (GW) ÷ Annual Production (GW)</div>
+            <p>FSLR ≈ 47.9 GW ÷ ~18 GW ≈ 2.7 years.</p>
+            <p><b>Why it matters:</b> Quantifies revenue visibility and how long the company can sustain output even if new bookings stay soft. <span class="back"><a href="#s10">↩ back to KPIs</a></span></p>
+          </div>
+
+          <div class="gl">
+            <h4>ASP — Average Selling Price ($/Watt)</h4>
+            <p>Revenue per watt of module sold; ~$0.34–0.35 on recent U.S. utility bookings vs ~$0.20 in India.</p>
+            <p><b>Why it matters:</b> The cleanest read on pricing power and the durability of the domestic-content premium. <span class="back"><a href="#s10">↩ back to KPIs</a></span></p>
+          </div>
+
+          <h3>Methodology &amp; Sources</h3>
+          <p>Financial data was compiled from First Solar's Q1 2026 results and SEC filings (8-K/10-Q), the Q4 2025 release and FY2026 guidance, the Q1 2026 earnings call, and secondary aggregators (Yahoo Finance, stockanalysis.com, MarketBeat, Simply Wall St, PV-Tech, Seeking Alpha). Peer figures are approximate as of May 2026. Scenario price targets are illustrative analytical constructs, not forecasts.</p>
+
+          <div class="foot">
+            <b>Foundational Trading Academy — Investment Research Hub.</b> This report is for informational and educational purposes only and does not constitute investment, legal, or tax advice. It is not a recommendation to buy or sell any security. Past performance is not indicative of future results. The author may have no position. Figures are approximate and drawn from public sources that may contain errors. Always conduct your own due diligence and consult a licensed professional. Generated 2026-05-25.
+          </div>
+        </div>
+      </section>
+
+    </div><!-- /content -->
+  </main>
+</div>
+
+<!-- ============ MODAL ============ -->
+<div class="modal" id="modal">
+  <div class="modal-box">
+    <button class="modal-close" id="modalClose">✕ close</button>
+    <div class="chart-title" id="modalTitle">Chart</div>
+    <div class="modal-canvas"><canvas id="modalCanvas"></canvas></div>
+  </div>
+</div>
+
+<script>
+/* ---------- Collapsible cards ---------- */
+document.querySelectorAll('.card-head').forEach(h=>{
+  h.addEventListener('click',()=>h.parentElement.classList.toggle('collapsed'));
+});
+
+/* ---------- Chart.js global theme ---------- */
+const GREEN='#145A22',DGREEN='#0A3A14',GOLD='#FCC55B',GOLDD='#e0a838',RED='#a8341f',MUTED='#5d6155',LINE='#d8d1c4';
+Chart.defaults.font.family="'Quicksand', sans-serif";
+Chart.defaults.font.size=10;
+Chart.defaults.color=MUTED;
+Chart.defaults.plugins.legend.labels.boxWidth=10;
+Chart.defaults.plugins.legend.labels.font={size:9};
+
+const charts={};
+const cfg={};
+
+/* deep clone that PRESERVES functions (formatter callbacks) */
+function clone(o){
+  if(Array.isArray(o))return o.map(clone);
+  if(o&&typeof o==='object')return Object.fromEntries(Object.entries(o).map(([k,v])=>[k,clone(v)]));
+  return o; // primitives and functions pass through
+}
+function mk(id,c){cfg[id]=c;const el=document.getElementById(id);if(el)charts[id]=new Chart(el,clone(c));}
+
+/* 1. Revenue trajectory */
+mk('cRev',{type:'bar',data:{labels:['2021','2022','2023','2024','2025','2026E'],
+ datasets:[{label:'Net Sales ($B)',data:[2.92,2.62,3.32,4.21,5.2,5.05],backgroundColor:[GREEN,GREEN,GREEN,GREEN,GREEN,GOLD],borderRadius:4}]},
+ options:{plugins:{legend:{display:false}},scales:{y:{grid:{color:LINE},ticks:{callback:v=>'$'+v+'B'}},x:{grid:{display:false}}}}});
+
+/* 2. Valuation multiples vs peers (P/E) */
+mk('cVal',{type:'bar',data:{labels:['FSLR','NXT','ENPH*','Median'],
+ datasets:[{label:'P/E (x)',data:[16.6,33,63,33],backgroundColor:[GREEN,MUTED,MUTED,GOLD],borderRadius:4}]},
+ options:{plugins:{legend:{display:false}},scales:{y:{grid:{color:LINE},ticks:{callback:v=>v+'x'}},x:{grid:{display:false}}}}});
+
+/* 3. Quarterly EPS & gross margin */
+mk('cEps',{type:'bar',data:{labels:['Q1·25','Q2·25','Q3·25','Q4·25','Q1·26'],
+ datasets:[
+  {type:'bar',label:'Diluted EPS ($)',data:[2.0,3.18,4.55,4.48,3.22],backgroundColor:GREEN,borderRadius:4,yAxisID:'y'},
+  {type:'line',label:'Gross Margin (%)',data:[37,42,43,41,47],borderColor:GOLDD,backgroundColor:GOLD,tension:.3,yAxisID:'y1',pointRadius:3}
+ ]},
+ options:{scales:{y:{position:'left',grid:{color:LINE},ticks:{callback:v=>'$'+v}},y1:{position:'right',grid:{display:false},min:30,max:55,ticks:{callback:v=>v+'%'}},x:{grid:{display:false}}}}});
+
+/* 4. FY26 EBITDA bridge */
+mk('cEbitda',{type:'bar',data:{labels:['Module/ops EBITDA','45X credits','FY26E Adj. EBITDA'],
+ datasets:[{label:'$B',data:[0.6,2.15,2.7],backgroundColor:[MUTED,GOLD,GREEN],borderRadius:4}]},
+ options:{plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>'$'+c.raw+'B'}}},scales:{y:{grid:{color:LINE},ticks:{callback:v=>'$'+v+'B'}},x:{grid:{display:false}}}}});
+
+/* 5. Capacity ramp */
+mk('cCap',{type:'bar',data:{labels:['2023','2024','2025','2026E','2027E'],
+ datasets:[
+  {label:'U.S. (GW)',data:[6.3,9.5,14,14,17],backgroundColor:GREEN,borderRadius:3,stack:'s'},
+  {label:'Intl (GW)',data:[6,8,9.5,11,11],backgroundColor:GOLD,borderRadius:3,stack:'s'}
+ ]},
+ options:{scales:{y:{stacked:true,grid:{color:LINE},ticks:{callback:v=>v+' GW'}},x:{stacked:true,grid:{display:false}}}}});
+
+/* 6. Gross margin expansion */
+mk('cGm',{type:'line',data:{labels:['2022','2023','2024','2025','2026E'],
+ datasets:[{label:'Gross Margin %',data:[27,37,44,40.4,49],borderColor:GREEN,backgroundColor:'rgba(20,90,34,.12)',fill:true,tension:.3,pointRadius:3,pointBackgroundColor:GOLD}]},
+ options:{plugins:{legend:{display:false}},scales:{y:{grid:{color:LINE},min:20,max:55,ticks:{callback:v=>v+'%'}},x:{grid:{display:false}}}}});
+
+/* 7. Scenario chart */
+mk('cScen',{type:'bar',data:{labels:['1-Year','3-Year','5-Year'],
+ datasets:[
+  {label:'Bear',data:[175,200,230],backgroundColor:RED,borderRadius:3},
+  {label:'Base',data:[300,400,520],backgroundColor:GOLD,borderRadius:3},
+  {label:'Bull',data:[360,560,780],backgroundColor:GREEN,borderRadius:3}
+ ]},
+ options:{plugins:{tooltip:{callbacks:{label:c=>c.dataset.label+': $'+c.raw}}},scales:{y:{grid:{color:LINE},ticks:{callback:v=>'$'+v}},x:{grid:{display:false}}}}});
+
+/* 8. Peer net margin */
+mk('cPeerMargin',{type:'bar',data:{labels:['FSLR','NXT','ENPH','SEDG','CSIQ'],
+ datasets:[{label:'Net Margin %',data:[29,17,4,-2,1],backgroundColor:[GREEN,MUTED,MUTED,RED,MUTED],borderRadius:4}]},
+ options:{plugins:{legend:{display:false}},scales:{y:{grid:{color:LINE},ticks:{callback:v=>v+'%'}},x:{grid:{display:false}}}}});
+
+/* 9. Peer scatter P/E vs margin */
+mk('cPeerScatter',{type:'scatter',data:{datasets:[
+  {label:'FSLR',data:[{x:29,y:16.6}],backgroundColor:GREEN,pointRadius:8},
+  {label:'NXT',data:[{x:17,y:33}],backgroundColor:GOLDD,pointRadius:7},
+  {label:'ENPH',data:[{x:4,y:63}],backgroundColor:MUTED,pointRadius:7}
+ ]},
+ options:{plugins:{tooltip:{callbacks:{label:c=>c.dataset.label+' — margin '+c.raw.x+'%, P/E '+c.raw.y+'x'}}},
+  scales:{x:{title:{display:true,text:'Net Margin %'},grid:{color:LINE},ticks:{callback:v=>v+'%'}},y:{title:{display:true,text:'P/E'},grid:{color:LINE},ticks:{callback:v=>v+'x'}}}}});
+
+/* 10. Bookings KPI */
+mk('cBookings',{type:'bar',data:{labels:['Q1·25','Q2·25','Q3·25','Q4·25','Q1·26'],
+ datasets:[{label:'Gross Bookings (GW)',data:[2.9,4.4,2.3,1.5,1.7],backgroundColor:[GREEN,GREEN,GOLD,RED,RED],borderRadius:4}]},
+ options:{plugins:{legend:{display:false}},scales:{y:{grid:{color:LINE},ticks:{callback:v=>v+' GW'}},x:{grid:{display:false}}}}});
+
+/* 11. 45X dependence doughnut */
+mk('cDependence',{type:'doughnut',data:{labels:['45X credits','Underlying ops'],
+ datasets:[{data:[80,20],backgroundColor:[GOLD,GREEN],borderColor:'#fff',borderWidth:2}]},
+ options:{plugins:{legend:{position:'bottom'},tooltip:{callbacks:{label:c=>c.label+': '+c.raw+'% of EBITDA'}}},cutout:'62%'}});
+
+/* 12. ASP KPI */
+mk('cAsp',{type:'bar',data:{labels:['U.S. utility (Q1·26)','India (Q1·26)','U.S. since call'],
+ datasets:[{label:'ASP ($/W)',data:[0.34,0.20,0.35],backgroundColor:[GREEN,MUTED,GREEN],borderRadius:4}]},
+ options:{plugins:{legend:{display:false}},scales:{y:{grid:{color:LINE},ticks:{callback:v=>'$'+v.toFixed(2)}},x:{grid:{display:false}}}}});
+
+/* ---------- Modal expand ---------- */
+const modal=document.getElementById('modal'),modalTitle=document.getElementById('modalTitle');
+let modalChart=null;
+document.querySelectorAll('.zoom-btn').forEach(b=>{
+  b.addEventListener('click',()=>{
+    const id=b.getAttribute('data-c');
+    const title=b.closest('.chart-head').querySelector('.chart-title').textContent;
+    modalTitle.textContent=title;
+    modal.classList.add('open');
+    if(modalChart)modalChart.destroy();
+    const c=clone(cfg[id]);
+    if(c.options)c.options.maintainAspectRatio=false;
+    modalChart=new Chart(document.getElementById('modalCanvas'),c);
+  });
+});
+function closeModal(){modal.classList.remove('open');if(modalChart){modalChart.destroy();modalChart=null;}}
+document.getElementById('modalClose').addEventListener('click',closeModal);
+modal.addEventListener('click',e=>{if(e.target===modal)closeModal();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+</script>
+</body>
+</html>
