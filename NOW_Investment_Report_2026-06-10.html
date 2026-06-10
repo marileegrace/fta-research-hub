@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ServiceNow (NOW) — FTA Investment Report</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Questrial&family=Quicksand:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  --green:#145A22; --dark-green:#0A3A14; --forest:#243D27; --gold:#FCC55B; --gold-deep:#e0a838;
+  --beige:#EDE8E0; --beige-card:#f6f3ed; --ink:#23241f; --muted:#5d6155; --red:#a8341f; --line:#d8d1c4;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Quicksand',sans-serif;background:var(--beige);color:var(--ink);line-height:1.6;display:flex}
+a{color:var(--green);text-decoration:none}
+a:hover{text-decoration:underline}
+.sidebar{position:sticky;top:0;width:262px;min-width:262px;height:100vh;overflow-y:auto;background:linear-gradient(180deg,#071f0b,#0A3A14 40%,#145A22);border-right:2px solid var(--gold);color:#e9e4d8;padding:26px 20px}
+.brand{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:1.7rem;color:var(--gold);line-height:1.1;margin-bottom:4px}
+.brand-sub{font-family:'Questrial',sans-serif;font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:#b9c8b3;margin-bottom:20px}
+.ticker-box{background:rgba(0,0,0,.25);border:1px solid rgba(252,197,91,.35);border-radius:12px;padding:14px;margin-bottom:22px}
+.ticker-box .tk{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:1.5rem;color:#fff}
+.ticker-box .px{font-family:'JetBrains Mono',monospace;font-size:1.15rem;color:var(--gold);margin-top:2px}
+.ticker-box .chg{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:#8fd19e;margin-top:2px}
+.ticker-box .meta{font-size:.66rem;color:#a9b8a3;margin-top:6px;text-transform:uppercase;letter-spacing:1px}
+.nav a{display:block;color:#dfe7d8;font-size:.82rem;padding:7px 8px;border-radius:7px;margin-bottom:2px}
+.nav a:hover{background:rgba(252,197,91,.16);text-decoration:none;color:#fff}
+.nav a .num{font-family:'JetBrains Mono',monospace;color:var(--gold);font-size:.72rem;margin-right:8px}
+.disclaimer{font-size:.6rem;color:#8fa089;margin-top:20px;line-height:1.4}
+.main{flex:1;min-width:0}
+.hero{position:relative;overflow:hidden;background:linear-gradient(120deg,var(--dark-green),var(--green) 60%);color:#fff;padding:40px 48px}
+.hero::after{content:"";position:absolute;top:-120px;right:-80px;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,rgba(252,197,91,.30),rgba(252,197,91,0) 70%)}
+.hero .eyebrow{font-family:'Questrial',sans-serif;letter-spacing:3px;text-transform:uppercase;font-size:.72rem;color:var(--gold)}
+.hero h1{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:2.9rem;line-height:1.05;margin:6px 0 4px}
+.hero .sub{font-size:1rem;color:#d7e4ce;max-width:680px}
+.verdict{display:inline-flex;align-items:center;gap:10px;margin-top:16px;background:rgba(252,197,91,.16);border:1px solid var(--gold);border-radius:30px;padding:8px 18px}
+.verdict .pill{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:2px;font-size:.8rem;color:var(--gold)}
+.verdict .rate{font-family:'JetBrains Mono',monospace;font-weight:700;color:#fff;font-size:.95rem}
+.kpi-strip{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:var(--line);border-bottom:1px solid var(--line)}
+.kpi{background:var(--beige-card);padding:14px 16px}
+.kpi .lab{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:.6rem;color:var(--muted)}
+.kpi .val{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:1.18rem;color:var(--green);margin-top:3px}
+.kpi .vsub{font-size:.62rem;color:var(--muted);margin-top:1px}
+.content{max-width:1080px;margin:0 auto;padding:34px 48px 80px}
+.card{background:var(--beige-card);border:1px solid var(--line);border-radius:14px;margin-bottom:24px;overflow:hidden}
+.card-head{display:flex;align-items:center;gap:14px;padding:18px 22px;border-left:5px solid var(--green);cursor:pointer;background:#fff}
+.badge{font-family:'JetBrains Mono',monospace;font-weight:700;color:#fff;background:var(--green);width:34px;height:34px;min-width:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.95rem}
+.card-head h2{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:1.5rem;color:var(--ink);flex:1}
+.chev{font-family:'JetBrains Mono',monospace;color:var(--muted);transition:transform .2s}
+.card.collapsed .chev{transform:rotate(-90deg)}
+.card-body{padding:8px 24px 24px}
+.card.collapsed .card-body{display:none}
+.card-body p{margin:10px 0}
+.card-body h3{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:.82rem;color:var(--green);margin:18px 0 6px}
+.thesis{font-family:'Cormorant Garamond',serif;font-size:1.45rem;line-height:1.4;border-left:4px solid var(--gold);padding:8px 0 8px 20px;margin:6px 0 14px;color:var(--forest)}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0}
+.chip{background:#fff;border:1px solid var(--line);border-radius:10px;padding:9px 13px;min-width:120px}
+.chip .lab{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:.58rem;color:var(--muted)}
+.chip .val{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:1.1rem;color:var(--green);margin-top:2px}
+.callout{background:rgba(252,197,91,.14);border:1px solid var(--gold);border-radius:10px;padding:13px 16px;margin:14px 0;font-size:.95rem}
+.note{background:rgba(20,90,34,.07);border:1px solid rgba(20,90,34,.25);border-radius:10px;padding:13px 16px;margin:14px 0;font-size:.92rem}
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:.86rem;background:#fff;border-radius:10px;overflow:hidden}
+thead th{background:var(--green);color:#fff;font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:.5px;font-size:.72rem;padding:10px 12px;text-align:left}
+tbody td{padding:9px 12px;border-bottom:1px solid var(--line)}
+tbody tr:nth-child(even){background:var(--beige-card)}
+tbody tr:hover{background:rgba(252,197,91,.13)}
+.num{font-family:'JetBrains Mono',monospace}
+.pos{color:var(--green);font-weight:700}
+.neg{color:var(--red);font-weight:700}
+.scen-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:14px 0}
+.scen{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px;border-top:5px solid var(--muted)}
+.scen.bull{border-top-color:var(--green)}.scen.base{border-top-color:var(--gold)}.scen.bear{border-top-color:var(--red)}
+.scen h4{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:.8rem;margin-bottom:4px}
+.scen.bull h4{color:var(--green)}.scen.base h4{color:var(--gold-deep)}.scen.bear h4{color:var(--red)}
+.scen .pt{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:1.6rem;color:var(--ink)}
+.scen .prob{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:.7rem;background:var(--beige);border:1px solid var(--line);border-radius:20px;padding:2px 10px;margin:6px 0}
+.scen ul{list-style:none;font-size:.8rem;color:var(--muted);margin-top:6px}
+.scen li{padding:3px 0 3px 14px;position:relative}
+.scen li::before{content:"›";position:absolute;left:0;color:var(--gold-deep);font-weight:700}
+.horizon-label{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:2px;font-size:.78rem;color:var(--forest);margin:18px 0 2px;border-bottom:1px solid var(--line);padding-bottom:4px}
+.risk{background:#fff;border-left:4px solid var(--red);border-top:1px solid var(--line);border-right:1px solid var(--line);border-bottom:1px solid var(--line);border-radius:8px;padding:14px 16px;margin:12px 0}
+.risk h4{color:var(--red);font-family:'Questrial',sans-serif;font-size:.92rem;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.risk .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.risk .tag{font-family:'JetBrains Mono',monospace;font-size:.66rem;background:var(--beige);border:1px solid var(--line);border-radius:20px;padding:3px 10px}
+.timeline{position:relative;margin:18px 0 4px;padding-left:28px}
+.timeline::before{content:"";position:absolute;left:7px;top:4px;bottom:4px;width:3px;background:linear-gradient(var(--green),var(--gold))}
+.tl-item{position:relative;margin-bottom:18px}
+.tl-item::before{content:"";position:absolute;left:-25px;top:3px;width:13px;height:13px;border-radius:50%;background:var(--gold);border:2px solid var(--green)}
+.tl-date{font-family:'JetBrains Mono',monospace;font-size:.74rem;color:var(--gold-deep);font-weight:700}
+.tl-title{font-weight:700;font-size:.92rem}
+.tl-desc{font-size:.82rem;color:var(--muted)}
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}
+.chart-box{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.chart-box.solo{max-width:420px;margin:16px auto}
+.chart-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.chart-title{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:.72rem;color:var(--forest)}
+.zoom-btn{font-family:'Questrial',sans-serif;font-size:.6rem;text-transform:uppercase;letter-spacing:1px;color:var(--muted);background:var(--beige);border:1px solid var(--line);border-radius:14px;padding:3px 9px;cursor:pointer}
+.zoom-btn:hover{background:var(--gold);color:var(--ink)}
+.canvas-wrap{position:relative;height:160px}
+.modal{display:none;position:fixed;inset:0;background:rgba(10,30,15,.82);z-index:50;align-items:center;justify-content:center;padding:30px}
+.modal.open{display:flex}
+.modal-box{background:var(--beige-card);border:2px solid var(--gold);border-radius:14px;padding:20px;width:min(900px,94vw)}
+.modal-box .canvas-wrap{height:min(70vh,520px)}
+.modal-close{float:right;cursor:pointer;font-family:'JetBrains Mono',monospace;color:var(--red);font-weight:700}
+footer{background:var(--dark-green);color:#cdd8c4;padding:24px 48px;font-size:.78rem}
+@media(max-width:880px){.chart-grid,.scen-grid{grid-template-columns:1fr}.kpi-strip{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:780px){.sidebar{display:none}.content,.hero,footer{padding-left:20px;padding-right:20px}.kpi-strip{grid-template-columns:repeat(3,1fr)}}
+</style>
+</head>
+<body>
+<aside class="sidebar">
+  <div class="brand">Foundational<br>Trading Academy</div>
+  <div class="brand-sub">Investment Research Hub</div>
+  <div class="ticker-box">
+    <div class="tk">NOW</div>
+    <div class="px">$114.19</div>
+    <div class="chg">post 5:1 split</div>
+    <div class="meta">NYSE · Enterprise Software / SaaS</div>
+  </div>
+  <nav class="nav">
+    <a href="#s1"><span class="num">01</span>Executive Summary</a>
+    <a href="#s2"><span class="num">02</span>Micro & Valuation</a>
+    <a href="#s3"><span class="num">03</span>Moat & Management</a>
+    <a href="#s4"><span class="num">04</span>Financial Deep Dive</a>
+    <a href="#s5"><span class="num">05</span>Earnings Tracker</a>
+    <a href="#s6"><span class="num">06</span>Bull / Base / Bear</a>
+    <a href="#s7"><span class="num">07</span>Risks & Anti-Thesis</a>
+    <a href="#s8"><span class="num">08</span>Catalyst Timeline</a>
+    <a href="#s9"><span class="num">09</span>Comparables</a>
+    <a href="#s10"><span class="num">10</span>First-Principles KPIs</a>
+    <a href="#s11"><span class="num">11</span>Glossary & Method</a>
+  </nav>
+  <div class="disclaimer">For educational purposes only. Not investment advice. Data via ServiceNow Q1'26 8-K &amp; public sources, as of June 10, 2026.</div>
+</aside>
+
+<div class="main">
+  <header class="hero">
+    <div class="eyebrow">FTA Advanced Analysis Framework · Equity Deep Dive</div>
+    <h1>ServiceNow, Inc. (NOW)</h1>
+    <div class="sub">The enterprise "AI control tower": 20%+ growth, 44% free-cash-flow margins, and a credible agentic-AI ramp — now trading at a multi-year-low sales multiple.</div>
+    <div class="verdict"><span class="pill">Verdict · BULL</span><span class="rate">Conviction 8 / 10</span></div>
+  </header>
+
+  <div class="kpi-strip">
+    <div class="kpi"><div class="lab">Price</div><div class="val">$114.19</div><div class="vsub">5:1 split Dec'25</div></div>
+    <div class="kpi"><div class="lab">Market Cap</div><div class="val">~$117B</div><div class="vsub">~1.04B shares</div></div>
+    <div class="kpi"><div class="lab">Sub. Rev Growth</div><div class="val">+22%</div><div class="vsub">Q1'26 YoY</div></div>
+    <div class="kpi"><div class="lab">FCF Margin</div><div class="val">44%</div><div class="vsub">Q1'26</div></div>
+    <div class="kpi"><div class="lab">P/S (FY26E)</div><div class="val">~7.3x</div><div class="vsub">"Aware" — low for NOW</div></div>
+    <div class="kpi"><div class="lab">cRPO</div><div class="val">$12.64B</div><div class="vsub">+22.5%</div></div>
+  </div>
+
+  <div class="content">
+
+  <section id="s1" class="card">
+    <div class="card-head"><div class="badge">1</div><h2>Executive Summary &amp; Investment Thesis</h2><div class="chev">▾</div></div>
+    <div class="card-body">
+      <div class="thesis">ServiceNow is the highest-quality compounder of this trio — and, after a 5-for-1 split and a market de-rating, the most reasonably priced. A 20%+ grower with 44% free-cash-flow margins, ~98% renewal economics, and a genuinely monetizing agentic-AI layer, trading at ~7x sales, is an unusual combination. We are <strong>bullish, conviction 8/10</strong>: the cleanest business at the most defensible valuation.</div>
+      <p>ServiceNow sells a single cloud platform that automates enterprise workflows — IT, HR, customer service, security — now repositioned as "the <a href="#g-controltower">AI control tower</a> for business reinvention." Q1 2026 (ended March 31) beat the high end of guidance across the board: subscription revenue <strong>$3,671M (+22%)</strong>, total revenue $3,770M, <a href="#g-crpo">cRPO</a> <strong>$12.64B (+22.5%)</strong>, non-GAAP operating margin <strong>32%</strong>, and free cash flow of $1,665M (<strong>44% margin</strong>).</p>
+      <p>The bull case: a deeply entrenched system-of-action platform with rising switching costs, a land-and-expand motion (630 customers now &gt;$5M ACV, +22%), and a real AI monetization signal — customers spending &gt;$1M on Now Assist grew <strong>+130% YoY</strong>. The valuation is the kicker: at ~7x forward sales, NOW trades well below its own historical 12–18x range. The bear flags: very heavy stock-based compensation (~15% of revenue) flatters non-GAAP optics and dilutes holders, the GAAP multiple is still rich, and the agentic-AI shift must offset any pressure on seat-based pricing.</p>
+      <div class="chips">
+        <div class="chip"><div class="lab">Sector</div><div class="val">SaaS</div></div>
+        <div class="chip"><div class="lab">Q1 Total Rev</div><div class="val">$3.77B</div></div>
+        <div class="chip"><div class="lab">NG Op Margin</div><div class="val">32%</div></div>
+        <div class="chip"><div class="lab">FY26 Sub Guide</div><div class="val">~$15.75B</div></div>
+        <div class="chip"><div class="lab">Conviction</div><div class="val">8 / 10</div></div>
+      </div>
+      <div class="callout"><strong>Why 8:</strong> the business quality is a 9 (durable growth, elite FCF, expanding TAM via security acquisitions). The one-notch haircut is for the heavy SBC and a GAAP valuation that still demands continued 20% execution. Best risk/reward of the three names reviewed.</div>
+    </div>
+  </section>
+
+  <section id="s2" class="card">
+    <div class="card-head"><div class="badge">2</div><h2>Microeconomic &amp; Valuation Analysis</h2><div class="chev">▾</div></div>
+    <div class="card-body">
+      <h3>Industry &amp; TAM</h3>
+      <p>ServiceNow sits at the convergence of IT service management, workflow automation, security operations, and now agentic AI — a combined addressable market well above $300B and expanding as the company adds adjacencies (the Armis, Veza and Moveworks acquisitions push it into security and AI-native search). Management frames the platform as the orchestration layer that "integrates with any cloud, any model, any data" — a deliberately model-agnostic bet that benefits regardless of which foundation model wins.</p>
+      <div class="chart-grid">
+        <div class="chart-box"><div class="chart-head"><span class="chart-title">Subscription Revenue ($M/qtr)</span><button class="zoom-btn" onclick="zoom('cSub')">⤢ expand</button></div><div class="canvas-wrap"><canvas id="cSub"></canvas></div></div>
+        <div class="chart-box"><div class="chart-head"><span class="chart-title">cRPO &amp; RPO ($B)</span><button class="zoom-btn" onclick="zoom('cRpo')">⤢ expand</button></div><div class="canvas-wrap"><canvas id="cRpo"></canvas></div></div>
+      </div>
+      <h3>Valuation</h3>
+      <p>At $114.19 and ~$117B market cap, NOW trades at ~7.3x FY26E sales (~$16.2B total) and ~29x forward non-GAAP earnings (~57x GAAP). On the FTA P/S scale, 7.3x falls in the <strong>"Aware"</strong> band (4–8) — notably <em>cheap relative to ServiceNow's own history</em> (it routinely commanded 12–18x sales). For a company still growing subscription revenue 22% with 44% FCF margins and rising AI attach, that re-rating is the heart of the opportunity. The post-split share count (~1.04B) and ongoing buybacks ($2.2B in Q1, mostly to offset dilution) round out the picture.</p>
+      <div class="chips">
+        <div class="chip"><div class="lab">P/E (fwd NG)</div><div class="val">~29x</div></div>
+        <div class="chip"><div class="lab">P/S (FY26E)</div><div class="val">~7.3x</div></div>
+        <div class="chip"><div class="lab">P/E (GAAP)</div><div class="val">~57x</div></div>
+        <div class="chip"><div class="lab">Net Cash</div><div class="val">~$6.4B</div></div>
+        <div class="chip"><div class="lab">Renewal Rate</div><div class="val">~98%</div></div>
+      </div>
+      <div class="note">The split (5:1, effective Dec 17, 2025) is cosmetic for value but improves optical accessibility. The real story is multiple compression meeting sustained fundamentals — a classic setup if growth holds.</div>
+    </div>
+  </section>
+
+  <section id="s3" class="card">
+    <div class="card-head"><div class="badge">3</div><h2>Qualitative Analysis — Moat, Management &amp; Culture</h2><div class="chev">▾</div></div>
+    <div class="card-body">
+      <h3>The Moat, Systemically</h3>
+      <p>ServiceNow's moat is <em>becoming the system of action across departments</em>. Where Salesforce owns the customer record and Workday owns the employee record, ServiceNow owns the <em>workflows that connect every system</em> — the connective tissue. Once an enterprise routes IT, HR, security and customer-service processes through ServiceNow, ripping it out means re-plumbing the whole company. That produces ~98% renewal rates and a powerful land-and-expand motion: customers start in one workflow and expand to many. The "single platform, single data model" architecture is the structural source of this stickiness.</p>
+      <p>Agentic AI deepens the moat rather than threatening it. Because ServiceNow holds the workflow context (the Context Engine: which approval chain, which asset, which precedent), it is uniquely positioned to <em>execute</em> AI decisions, not just generate text. AI that can act needs governed workflows — exactly what ServiceNow sells.</p>
+      <h3>Management &amp; Capital Allocation</h3>
+      <p>CEO Bill McDermott (ex-SAP) is one of enterprise software's best operators; CFO Gina Mastantuono has a strong execution record. The team has guided above plan and beaten for many consecutive quarters. Capital allocation is disciplined: tuck-in M&A into security/AI (Armis, Veza, Moveworks) that expands TAM, plus buybacks calibrated to offset dilution rather than financial engineering. Not founder-led today (founder Fred Luddy stepped back years ago), but the operating culture remains product-intense.</p>
+      <h3>Culture &amp; Organizational Traits</h3>
+      <p>High talent density, fast innovation cadence (multiple AI product categories launched in a single quarter), and demonstrated "Now on Now" dogfooding — using its own platform/AI internally to drive efficiency, which it markets as proof. Recognition (Most Ethical Companies, Best Places to Work in AI) supports a healthy employer brand that aids talent acquisition.</p>
+      <div class="callout"><strong>Moat verdict:</strong> Wide and widening. The workflow-orchestration position is hard to dislodge, and agentic AI is more tailwind than threat. The main quality caveat is the magnitude of stock-based pay used to attract that talent.</div>
+    </div>
+  </section>
+
+  <section id="s4" class="card">
+    <div class="card-head"><div class="badge">4</div><h2>Quantitative Analysis — Financial Deep Dive</h2><div class="chev">▾</div></div>
+    <div class="card-body">
+      <p>Q1 2026 (ended March 31, 2026): subscription revenue $3,671M (+22%, +19% cc); total revenue $3,770M. GAAP operating income $503M (13.5% margin); non-GAAP operating income $1,199M (<strong>32%</strong>). GAAP net income $469M (EPS $0.45); non-GAAP net income $1,012M (EPS $0.97). Operating cash flow $1,670M; free cash flow $1,665M (<strong>44% margin</strong>). Non-GAAP subscription gross margin a best-in-class 81.5%.</p>
+      <div class="chart-grid">
+        <div class="chart-box"><div class="chart-head"><span class="chart-title">GAAP vs Non-GAAP Op Margin (%)</span><button class="zoom-btn" onclick="zoom('cMargin')">⤢ expand</button></div><div class="canvas-wrap"><canvas id="cMargin"></canvas></div></div>
+        <div class="chart-box"><div class="chart-head"><span class="chart-title">Large Customers (&gt;$5M ACV)</span><button class="zoom-btn" onclick="zoom('cCust')">⤢ expand</button></div><div class="canvas-wrap"><canvas id="cCust"></canvas></div></div>
+      </div>
+      <h3>Revenue Streams, Plainly</h3>
+      <p>ServiceNow is overwhelmingly a <strong>subscription</strong> business — $3,671M of the $3,770M total (97%), recurring and high-margin. Professional services ($99M) is a thin, deliberately low-margin enablement arm. Within subscriptions, growth comes from (1) new logos, (2) seat/workflow expansion in existing accounts, and (3) increasingly AI/Now Assist attach. The recurring mix is why cRPO ($12.64B) — contracted revenue due in the next 12 months — is the cleanest forward indicator.</p>
+      <h3>The SBC Caveat — Read This Twice</h3>
+      <p>The flip side of 32% non-GAAP operating margin is a 13.5% <em>GAAP</em> margin. The gap is mostly <strong>stock-based compensation of ~$558M in the quarter — roughly 15% of revenue</strong>. SBC is a real economic cost (it dilutes owners); ServiceNow spends ~$2B+/year on buybacks largely just to keep the share count flat. The business is genuinely cash-generative (FCF is real cash), but non-GAAP profitability flatters the true owner-economics. We weight GAAP and dilution heavily in the conviction score.</p>
+      <table>
+        <thead><tr><th>Metric</th><th>Q1 2026</th><th>YoY</th></tr></thead>
+        <tbody>
+          <tr><td>Subscription revenue</td><td class="num">$3,671M</td><td class="num pos">+22%</td></tr>
+          <tr><td>cRPO</td><td class="num">$12.64B</td><td class="num pos">+22.5%</td></tr>
+          <tr><td>RPO</td><td class="num">$27.7B</td><td class="num pos">+25%</td></tr>
+          <tr><td>Non-GAAP op margin</td><td class="num">32%</td><td class="num pos">+~100bps</td></tr>
+          <tr><td>Free cash flow</td><td class="num">$1,665M</td><td class="num">44% margin</td></tr>
+          <tr><td>Customers &gt;$5M ACV</td><td class="num">630</td><td class="num pos">+22%</td></tr>
+          <tr><td>SBC</td><td class="num neg">~$558M</td><td class="num neg">~15% of rev</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="s5" class="card">
+    <div class="card-head"><div class="badge">5</div><h2>Earnings Tracker — Management Credibility</h2><div class="chev">▾</div></div>
+    <div class="card-body">
+      <p>ServiceNow has one of the most reliable guide-and-beat records in software, anchored on subscription revenue and cRPO growth. Q1'26 is exact from the 8-K; prior quarters reflect its documented streak of beating the high end. Credibility scores are FTA judgments.</p>
+      <table>
+        <thead><tr><th>Quarter</th><th>Sub. rev guide</th><th>Actual</th><th>Result</th><th>Credibility</th></tr></thead>
+        <tbody>
+          <tr><td>Q2'25</td><td class="num">~$2.99B</td><td class="num">~$3.0B</td><td class="pos">Beat</td><td class="num">9/10</td></tr>
+          <tr><td>Q3'25</td><td class="num">~$3.1B</td><td class="num">~$3.15B</td><td class="pos">Beat</td><td class="num">9/10</td></tr>
+          <tr><td>Q4'25</td><td class="num">~$3.3B</td><td class="num">~$3.35B</td><td class="pos">Beat</td><td class="num">9/10</td></tr>
+          <tr><td>Q1'26</td><td class="num">~$3.63B</td><td class="num">$3.671B</td><td class="pos">Beat high end</td><td class="num">10/10</td></tr>
+          <tr><td>Q2'26</td><td class="num">$3.815–3.820B</td><td class="num">Reports late Jul</td><td class="num">TBD</td><td class="num">—</td></tr>
+        </tbody>
+      </table>
+      <div class="note">The streak is real: ServiceNow "beat the high end of guidance once again" in Q1'26 and <em>raised</em> its FY26 subscription outlook to $15.735–15.775B. A ~75bps Middle East deal-timing headwind was the only blemish, and management built it into a prudent forward view rather than hiding it — a credibility positive.</div>
+    </div>
+  </section>
+
+  <section id="s6" class="card">
+    <div class="card-head"><div class="badge">6</div><h2>Bull / Base / Bear Scenarios</h2><div class="chev">▾</div></div>
+    <div class="card-body">
+      <p>Anchored to ~$114 (post-split). Targets are probability-weighted.</p>
+      <div class="horizon-label">1-Year Horizon</div>
+      <div class="scen-grid">
+        <div class="scen bull"><h4>Bull</h4><div class="pt">$155</div><span class="prob">P = 35%</span><ul><li>AI attach accelerates; cRPO re-accelerates</li><li>Re-rate toward ~10x sales</li><li>Armis/Veza expand TAM cleanly</li></ul></div>
+        <div class="scen base"><h4>Base</h4><div class="pt">$130</div><span class="prob">P = 45%</span><ul><li>Durable ~20% growth, margins expand</li><li>Multiple holds ~7–8x sales</li><li>FCF compounds</li></ul></div>
+        <div class="scen bear"><h4>Bear</h4><div class="pt">$90</div><span class="prob">P = 20%</span><ul><li>Growth decelerates toward mid-teens</li><li>SBC/dilution scrutiny; GAAP de-rate</li><li>Macro/IT-budget softness</li></ul></div>
+      </div>
+      <div class="chart-box solo"><div class="chart-head"><span class="chart-title">1-Yr Scenario Targets ($)</span><button class="zoom-btn" onclick="zoom('cScen')">⤢ expand</button></div><div class="canvas-wrap"><canvas id="cScen"></canvas></div></div>
+      <div class="horizon-label">3-Year Horizon</div>
+      <div class="scen-grid">
+        <div class="scen bull"><h4>Bull</h4><div class="pt">$220</div><span class="prob">P = 35%</span><ul><li>Agentic AI becomes a second growth engine</li><li>Revenue compounds ~20%+</li></ul></div>
+        <div class="scen base"><h4>Base</h4><div class="pt">$165</div><span class="prob">P = 45%</span><ul><li>High-teens growth; margin expansion</li><li>Steady FCF compounding</li></ul></div>
+        <div class="scen bear"><h4>Bear</h4><div class="pt">$100</div><span class="prob">P = 20%</span><ul><li>Seat-pricing pressure from AI</li><li>Multiple compresses on slower growth</li></ul></div>
+      </div>
+      <div class="horizon-label">5-Year Horizon</div>
+      <div class="scen-grid">
+        <div class="scen bull"><h4>Bull</h4><div class="pt">$320</div><span class="prob">P = 35%</span><ul><li>~$30B+ revenue; platform consolidation</li><li>AI control-tower category leader</li></ul></div>
+        <div class="scen base"><h4>Base</h4><div class="pt">$230</div><span class="prob">P = 45%</span><ul><li>Mid-teens durable compounding</li><li>FCF margins toward 35%+</li></ul></div>
+        <div class="scen bear"><h4>Bear</h4><div class="pt">$120</div><span class="prob">P = 20%</span><ul><li>AI commoditizes workflow value</li><li>Growth matures to GDP-plus</li></ul></div>
+      </div>
+      <div class="callout">Probability-weighted 1-yr ≈ <strong>$131</strong> (~15% upside). The distribution is tighter and more favorably skewed than ORCL's — reflecting a self-funding, FCF-positive model with less tail risk.</div>
+    </div>
+  </section>
+
+  <section id="s7" class="card">
+    <div class="card-head"><div class="badge">7</div><h2>Risks &amp; Anti-Thesis (Steelman the Bear)</h2><div class="chev">▾</div></div>
+    <div class="card-body">
+      <p>If we were short NOW, here is the most honest case.</p>
+      <div class="risk"><h4>1 · Stock-based compensation is enormous</h4><p>~$558M/quarter (~15% of revenue) is the gap between a 32% non-GAAP and 13.5% GAAP operating margin. Buybacks largely just neutralize dilution. Bears argue the "real" owner economics are far less impressive than the non-GAAP highlight reel.</p><div class="meta"><span class="tag">Prob: Med-High</span><span class="tag">Impact: Medium</span><span class="tag">Priced in: Partly</span></div></div>
+      <div class="risk"><h4>2 · Agentic AI could erode seat-based pricing</h4><p>ServiceNow has historically monetized per-seat. If AI agents replace human seats, the legacy pricing base could shrink even as workflows grow. The company is shifting to consumption/value-based AI pricing (Now Assist), but that transition must out-run the seat erosion.</p><div class="meta"><span class="tag">Prob: Medium</span><span class="tag">Impact: High</span><span class="tag">Priced in: No</span></div></div>
+      <div class="risk"><h4>3 · GAAP valuation still demands perfection</h4><p>~57x GAAP earnings leaves little room for a growth stumble. A deceleration from 22% toward mid-teens — natural at this scale — could compress the multiple even if the business is fine.</p><div class="meta"><span class="tag">Prob: Medium</span><span class="tag">Impact: Medium</span><span class="tag">Priced in: Partly</span></div></div>
+      <div class="risk"><h4>4 · Acquisition integration &amp; margin drag</h4><p>Armis, Veza and Moveworks expand TAM but carry integration risk and near-term margin headwinds (management flagged ~75bps to FY26 operating margin and ~200bps to FCF margin from Armis alone). Serial M&A can mask organic deceleration.</p><div class="meta"><span class="tag">Prob: Medium</span><span class="tag">Impact: Medium</span><span class="tag">Priced in: Partly</span></div></div>
+      <div class="risk"><h4>5 · Macro / large-deal lumpiness &amp; geopolitics</h4><p>ServiceNow sells big, complex deals to enterprises and governments; budget tightening or deal slippage (e.g. the cited Middle East delays) can dent a quarter. Public-sector exposure adds procurement and political risk.</p><div class="meta"><span class="tag">Prob: Medium</span><span class="tag">Impact: Medium</span><span class="tag">Priced in: Partly</span></div></div>
+      <div class="note">Synthesis: the risks are real but mostly <em>quality-of-earnings</em> and valuation issues, not existential threats to the franchise. That's why this clears an 8 where ORCL (existential funding/concentration risk) clears a 6.</div>
+    </div>
+  </section>
+
+  <section id="s8" class="card">
+    <div class="card-head"><div class="badge">8</div><h2>Catalyst Timeline</h2><div class="chev">▾</div></div>
+    <div class="card-body">
+      <div class="timeline">
+        <div class="tl-item"><div class="tl-date">Jun 3, 2026</div><div class="tl-title">Investor conferences (BofA, William Blair, Evercore)</div><div class="tl-desc">CFO/CPO fireside chats — incremental commentary on AI monetization and pipeline (recently passed / ongoing).</div></div>
+        <div class="tl-item"><div class="tl-date">Late Jul 2026</div><div class="tl-title">Q2 FY26 Earnings</div><div class="tl-desc">Guide is $3.815–3.820B subscription rev. Watch cRPO growth, Now Assist attach, and Armis contribution vs margin drag.</div></div>
+        <div class="tl-item"><div class="tl-date">2H 2026</div><div class="tl-title">Armis / Veza / Moveworks integration</div><div class="tl-desc">Security + AI-search expansion; proof points on cross-sell and the unified security stack narrative.</div></div>
+        <div class="tl-item"><div class="tl-date">Ongoing 2026</div><div class="tl-title">Autonomous Workforce / Now Assist adoption</div><div class="tl-desc">The agentic-AI monetization ramp — the single most important medium-term driver.</div></div>
+        <div class="tl-item"><div class="tl-date">Oct 2026</div><div class="tl-title">Q3 FY26 Earnings</div><div class="tl-desc">Confirms whether AI attach is compounding and FY26 raise is intact.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="s9" class="card">
+    <div class="card-head"><div class="badge">9</div><h2>Comparable Company Analysis</h2><div class="chev">▾</div></div>
+    <div class="card-body">
+      <p>Best-of-breed enterprise-software peer set. Peer figures other than ServiceNow's are best-estimate approximations from public data and should be confirmed against latest filings.</p>
+      <table>
+        <thead><tr><th>Company</th><th>Mkt Cap</th><th>Rev TTM</th><th>Rev Gr YoY</th><th>P/E (fwd)</th><th>P/S</th><th>FCF Mgn</th><th>NG Op Mgn</th><th>Rule of 40</th></tr></thead>
+        <tbody>
+          <tr><td><strong>ServiceNow (NOW)</strong></td><td class="num">~$117B</td><td class="num">~$14.5B</td><td class="num pos">+22%</td><td class="num">~29x</td><td class="num">7.3x</td><td class="num">~31%*</td><td class="num">32%</td><td class="num pos">~53</td></tr>
+          <tr><td>Salesforce (CRM)†</td><td class="num">~$250B</td><td class="num">~$40B</td><td class="num pos">~+9%</td><td class="num">~22x</td><td class="num">~6x</td><td class="num">~30%</td><td class="num">~33%</td><td class="num pos">~39</td></tr>
+          <tr><td>Workday (WDAY)†</td><td class="num">~$60B</td><td class="num">~$9.5B</td><td class="num pos">~+14%</td><td class="num">~25x</td><td class="num">~6.3x</td><td class="num">~28%</td><td class="num">~26%</td><td class="num pos">~42</td></tr>
+          <tr><td>Adobe (ADBE)†</td><td class="num">~$180B</td><td class="num">~$23B</td><td class="num pos">~+10%</td><td class="num">~20x</td><td class="num">~7.8x</td><td class="num">~38%</td><td class="num">~45%</td><td class="num pos">~48</td></tr>
+          <tr><td>Atlassian (TEAM)†</td><td class="num">~$50B</td><td class="num">~$5.5B</td><td class="num pos">~+19%</td><td class="num">~45x</td><td class="num">~9x</td><td class="num">~28%</td><td class="num">~24%</td><td class="num pos">~47</td></tr>
+        </tbody>
+      </table>
+      <p>*Full-year FCF margin guide 35%; TTM ~31%. †Estimated. <strong>Relative read:</strong> ServiceNow screens as the <em>best Rule-of-40 in the group (~53)</em> — the strongest combination of growth + profitability — yet trades at a P/S only modestly above slower-growing Salesforce and Workday and below faster-but-smaller Atlassian. On growth-adjusted multiples (P/S ÷ growth, or PEG), NOW looks reasonably-to-attractively valued versus peers. The quality-vs-price tension that usually penalizes ServiceNow has narrowed sharply after the de-rating — the core of our 8/10.</p>
+    </div>
+  </section>
+
+  <section id="s10" class="card">
+    <div class="card-head"><div class="badge">10</div><h2>First-Principles KPIs</h2><div class="chev">▾</div></div>
+    <div class="card-body">
+      <p>The leading indicators that actually predict the trajectory:</p>
+      <div class="chart-grid">
+        <div class="chart-box"><div class="chart-head"><span class="chart-title">Now Assist &gt;$1M ACV Customers (YoY)</span><button class="zoom-btn" onclick="zoom('cAi')">⤢ expand</button></div><div class="canvas-wrap"><canvas id="cAi"></canvas></div></div>
+        <div class="chart-box"><div class="chart-head"><span class="chart-title">FCF Margin vs Sub. Gross Margin (%)</span><button class="zoom-btn" onclick="zoom('cFcf')">⤢ expand</button></div><div class="canvas-wrap"><canvas id="cFcf"></canvas></div></div>
+      </div>
+      <p><strong>KPI 1 — cRPO ($12.64B, +22.5%).</strong> The cleanest 12-month forward demand gauge; tracks contracted-but-unrecognized subscription revenue.</p>
+      <p><strong>KPI 2 — Now Assist &gt;$1M ACV customers (+130% YoY).</strong> The direct proof that agentic AI is monetizing, not just a demo. The most important secular signal.</p>
+      <p><strong>KPI 3 — Customers &gt;$5M ACV (630, +22%).</strong> Large-enterprise penetration and land-and-expand health; high-value accounts drive the model.</p>
+      <p><strong>KPI 4 — FCF margin (44% in Q1; 35% FY guide).</strong> Cash quality — what separates NOW from cash-burning growth names.</p>
+      <p><strong>KPI 5 — SBC as % of revenue (~15%).</strong> The dilution watch — a deliberately included <em>negative</em> KPI to keep the quality picture honest.</p>
+    </div>
+  </section>
+
+  <section id="s11" class="card">
+    <div class="card-head"><div class="badge">11</div><h2>Glossary &amp; Methodology</h2><div class="chev">▾</div></div>
+    <div class="card-body">
+      <p id="g-controltower"><strong>AI Control Tower</strong> — ServiceNow's positioning as the governed orchestration layer that connects AI models, data and systems to execute enterprise work. <em>Why it matters:</em> "AI that acts" needs governed workflows — ServiceNow's home turf. <a href="#s1">↩ back</a></p>
+      <p id="g-crpo"><strong>cRPO (current Remaining Performance Obligations)</strong> — Contracted subscription revenue to be recognized within the next 12 months. <em>Why it matters:</em> the cleanest near-term forward indicator for a subscription business; less noisy than total RPO. <a href="#s1">↩ back</a></p>
+      <p><strong>ACV (Annual Contract Value)</strong> — The annualized value of a customer contract. <em>Why it matters:</em> "&gt;$5M ACV" customer counts track large-enterprise penetration and expansion. <a href="#s4">↩ back</a></p>
+      <p><strong>SBC (Stock-Based Compensation)</strong> — Equity paid to employees; excluded from non-GAAP profit but a real dilution cost. <em>Why it matters:</em> the main gap between NOW's GAAP and non-GAAP margins. <a href="#s4">↩ back</a></p>
+      <p><strong>FCF (Free Cash Flow)</strong> — Operating cash flow − capex (ServiceNow adds back certain M&A costs). <em>Why it matters:</em> real cash generation; NOW's 44% margin is elite. <a href="#s4">↩ back</a></p>
+      <p><strong>Rule of 40</strong> — Revenue growth % + profit margin %; &gt;40 signals a healthy software model. NOW ≈ 53. <em>Why it matters:</em> balances growth and profitability in one number. <a href="#s9">↩ back</a></p>
+      <p><strong>P/S (Price-to-Sales)</strong> — Market cap ÷ revenue. FTA scale: &gt;30 Euphoric, &gt;18 Excited, &gt;8 Optimistic, 4–8 Aware, &lt;4 Cautious, &lt;2 Pessimistic. NOW ≈ 7.3x ("Aware"). <a href="#s2">↩ back</a></p>
+      <h3>Methodology</h3>
+      <p>Subject-company financials are from ServiceNow's Q1 2026 8-K/earnings release (April 22, 2026); price/market-cap from public market data as of June 9, 2026 (post the 5-for-1 split effective Dec 17, 2025). Peer figures other than market cap are approximations and labeled as such. Scenario targets are FTA probability-weighted judgments, not guarantees. Educational research only; not investment advice.</p>
+    </div>
+  </section>
+
+  </div>
+  <footer>
+    <strong>Foundational Trading Academy · Investment Research Hub</strong><br>
+    NOW deep dive · Generated June 10, 2026 · FTA Advanced Analysis Framework.<br>
+    For informational and educational purposes only; not investment advice. Past performance is not indicative of future results. Always conduct your own due diligence.
+  </footer>
+</div>
+
+<div class="modal" id="modal" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="modal-box"><span class="modal-close" onclick="document.getElementById('modal').classList.remove('open')">✕ close</span><div class="canvas-wrap"><canvas id="modalCanvas"></canvas></div></div>
+</div>
+
+<script>
+document.querySelectorAll('.card-head').forEach(h=>h.addEventListener('click',()=>h.parentElement.classList.toggle('collapsed')));
+const GREEN='#145A22',GOLD='#FCC55B',RED='#a8341f',FOREST='#243D27',MUT='#5d6155';
+Chart.defaults.font.family="'JetBrains Mono', monospace";Chart.defaults.font.size=10;Chart.defaults.color=MUT;
+const charts={};
+function mk(id,cfg){const el=document.getElementById(id);if(!el)return;charts[id]=new Chart(el,cfg);}
+const noLeg={plugins:{legend:{display:false}}};
+mk('cSub',{type:'bar',data:{labels:["Q1'25","Q2'25e","Q3'25e","Q4'25e","Q1'26","Q2'26E"],datasets:[{data:[3005,3110,3220,3350,3671,3817],backgroundColor:[FOREST,FOREST,FOREST,FOREST,GREEN,GOLD]}]},options:{...noLeg,maintainAspectRatio:false,scales:{y:{beginAtZero:true}}}});
+mk('cRpo',{type:'bar',data:{labels:['cRPO','RPO'],datasets:[{data:[12.64,27.7],backgroundColor:[GREEN,FOREST]}]},options:{...noLeg,maintainAspectRatio:false,scales:{y:{beginAtZero:true}}}});
+mk('cMargin',{type:'bar',data:{labels:['GAAP Op Mgn','Non-GAAP Op Mgn'],datasets:[{data:[13.5,32],backgroundColor:[RED,GREEN]}]},options:{...noLeg,maintainAspectRatio:false,scales:{y:{beginAtZero:true,suggestedMax:40}}}});
+mk('cCust',{type:'line',data:{labels:["Q1'25","Q1'26"],datasets:[{data:[517,630],borderColor:GREEN,backgroundColor:'rgba(20,90,34,.18)',fill:true,tension:.3}]},options:{...noLeg,maintainAspectRatio:false}});
+mk('cScen',{type:'bar',data:{labels:['Bear','Base','Bull'],datasets:[{data:[90,130,155],backgroundColor:[RED,GOLD,GREEN]}]},options:{...noLeg,maintainAspectRatio:false,scales:{y:{suggestedMin:60}}}});
+mk('cAi',{type:'bar',data:{labels:['Now Assist >$1M ACV custs'],datasets:[{label:'YoY growth %',data:[130],backgroundColor:GOLD}]},options:{...noLeg,maintainAspectRatio:false,scales:{y:{beginAtZero:true,suggestedMax:150}}}});
+mk('cFcf',{type:'bar',data:{labels:['FCF Margin','Sub. Gross Margin'],datasets:[{data:[44,81.5],backgroundColor:[GREEN,FOREST]}]},options:{...noLeg,maintainAspectRatio:false,scales:{y:{beginAtZero:true,suggestedMax:100}}}});
+let modalChart=null;
+function zoom(id){const src=charts[id];if(!src)return;document.getElementById('modal').classList.add('open');if(modalChart)modalChart.destroy();const cfg=JSON.parse(JSON.stringify(src.config._config));cfg.options=cfg.options||{};cfg.options.maintainAspectRatio=false;modalChart=new Chart(document.getElementById('modalCanvas'),cfg);}
+</script>
+</body>
+</html>

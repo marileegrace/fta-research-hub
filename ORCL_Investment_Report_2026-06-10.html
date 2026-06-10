@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oracle (ORCL) — FTA Investment Report</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Questrial&family=Quicksand:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  --green:#145A22; --dark-green:#0A3A14; --forest:#243D27; --gold:#FCC55B; --gold-deep:#e0a838;
+  --beige:#EDE8E0; --beige-card:#f6f3ed; --ink:#23241f; --muted:#5d6155; --red:#a8341f; --line:#d8d1c4;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Quicksand',sans-serif;background:var(--beige);color:var(--ink);line-height:1.6;display:flex}
+a{color:var(--green);text-decoration:none}
+a:hover{text-decoration:underline}
+.sidebar{position:sticky;top:0;width:262px;min-width:262px;height:100vh;overflow-y:auto;background:linear-gradient(180deg,#071f0b,#0A3A14 40%,#145A22);border-right:2px solid var(--gold);color:#e9e4d8;padding:26px 20px}
+.brand{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:1.7rem;color:var(--gold);line-height:1.1;margin-bottom:4px}
+.brand-sub{font-family:'Questrial',sans-serif;font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:#b9c8b3;margin-bottom:20px}
+.ticker-box{background:rgba(0,0,0,.25);border:1px solid rgba(252,197,91,.35);border-radius:12px;padding:14px;margin-bottom:22px}
+.ticker-box .tk{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:1.5rem;color:#fff}
+.ticker-box .px{font-family:'JetBrains Mono',monospace;font-size:1.15rem;color:var(--gold);margin-top:2px}
+.ticker-box .chg{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:#8fd19e;margin-top:2px}
+.ticker-box .meta{font-size:.66rem;color:#a9b8a3;margin-top:6px;text-transform:uppercase;letter-spacing:1px}
+.nav a{display:block;color:#dfe7d8;font-size:.82rem;padding:7px 8px;border-radius:7px;margin-bottom:2px}
+.nav a:hover{background:rgba(252,197,91,.16);text-decoration:none;color:#fff}
+.nav a .num{font-family:'JetBrains Mono',monospace;color:var(--gold);font-size:.72rem;margin-right:8px}
+.disclaimer{font-size:.6rem;color:#8fa089;margin-top:20px;line-height:1.4}
+.main{flex:1;min-width:0}
+.hero{position:relative;overflow:hidden;background:linear-gradient(120deg,var(--dark-green),var(--green) 60%);color:#fff;padding:40px 48px}
+.hero::after{content:"";position:absolute;top:-120px;right:-80px;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,rgba(252,197,91,.30),rgba(252,197,91,0) 70%)}
+.hero .eyebrow{font-family:'Questrial',sans-serif;letter-spacing:3px;text-transform:uppercase;font-size:.72rem;color:var(--gold)}
+.hero h1{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:2.9rem;line-height:1.05;margin:6px 0 4px}
+.hero .sub{font-size:1rem;color:#d7e4ce;max-width:680px}
+.verdict{display:inline-flex;align-items:center;gap:10px;margin-top:16px;background:rgba(252,197,91,.16);border:1px solid var(--gold);border-radius:30px;padding:8px 18px}
+.verdict .pill{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:2px;font-size:.8rem;color:var(--gold)}
+.verdict .rate{font-family:'JetBrains Mono',monospace;font-weight:700;color:#fff;font-size:.95rem}
+.kpi-strip{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:var(--line);border-bottom:1px solid var(--line)}
+.kpi{background:var(--beige-card);padding:14px 16px}
+.kpi .lab{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:.6rem;color:var(--muted)}
+.kpi .val{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:1.18rem;color:var(--green);margin-top:3px}
+.kpi .vsub{font-size:.62rem;color:var(--muted);margin-top:1px}
+.content{max-width:1080px;margin:0 auto;padding:34px 48px 80px}
+.card{background:var(--beige-card);border:1px solid var(--line);border-radius:14px;margin-bottom:24px;overflow:hidden}
+.card-head{display:flex;align-items:center;gap:14px;padding:18px 22px;border-left:5px solid var(--green);cursor:pointer;background:#fff}
+.badge{font-family:'JetBrains Mono',monospace;font-weight:700;color:#fff;background:var(--green);width:34px;height:34px;min-width:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.95rem}
+.card-head h2{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:1.5rem;color:var(--ink);flex:1}
+.chev{font-family:'JetBrains Mono',monospace;color:var(--muted);transition:transform .2s}
+.card.collapsed .chev{transform:rotate(-90deg)}
+.card-body{padding:8px 24px 24px}
+.card.collapsed .card-body{display:none}
+.card-body p{margin:10px 0}
+.card-body h3{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:.82rem;color:var(--green);margin:18px 0 6px}
+.thesis{font-family:'Cormorant Garamond',serif;font-size:1.45rem;line-height:1.4;border-left:4px solid var(--gold);padding:8px 0 8px 20px;margin:6px 0 14px;color:var(--forest)}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0}
+.chip{background:#fff;border:1px solid var(--line);border-radius:10px;padding:9px 13px;min-width:120px}
+.chip .lab{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:.58rem;color:var(--muted)}
+.chip .val{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:1.1rem;color:var(--green);margin-top:2px}
+.callout{background:rgba(252,197,91,.14);border:1px solid var(--gold);border-radius:10px;padding:13px 16px;margin:14px 0;font-size:.95rem}
+.note{background:rgba(20,90,34,.07);border:1px solid rgba(20,90,34,.25);border-radius:10px;padding:13px 16px;margin:14px 0;font-size:.92rem}
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:.86rem;background:#fff;border-radius:10px;overflow:hidden}
+thead th{background:var(--green);color:#fff;font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:.5px;font-size:.72rem;padding:10px 12px;text-align:left}
+tbody td{padding:9px 12px;border-bottom:1px solid var(--line)}
+tbody tr:nth-child(even){background:var(--beige-card)}
+tbody tr:hover{background:rgba(252,197,91,.13)}
+.num{font-family:'JetBrains Mono',monospace}
+.pos{color:var(--green);font-weight:700}
+.neg{color:var(--red);font-weight:700}
+.scen-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:14px 0}
+.scen{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px;border-top:5px solid var(--muted)}
+.scen.bull{border-top-color:var(--green)}.scen.base{border-top-color:var(--gold)}.scen.bear{border-top-color:var(--red)}
+.scen h4{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:.8rem;margin-bottom:4px}
+.scen.bull h4{color:var(--green)}.scen.base h4{color:var(--gold-deep)}.scen.bear h4{color:var(--red)}
+.scen .pt{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:1.6rem;color:var(--ink)}
+.scen .prob{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:.7rem;background:var(--beige);border:1px solid var(--line);border-radius:20px;padding:2px 10px;margin:6px 0}
+.scen ul{list-style:none;font-size:.8rem;color:var(--muted);margin-top:6px}
+.scen li{padding:3px 0 3px 14px;position:relative}
+.scen li::before{content:"›";position:absolute;left:0;color:var(--gold-deep);font-weight:700}
+.horizon-label{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:2px;font-size:.78rem;color:var(--forest);margin:18px 0 2px;border-bottom:1px solid var(--line);padding-bottom:4px}
+.risk{background:#fff;border-left:4px solid var(--red);border-top:1px solid var(--line);border-right:1px solid var(--line);border-bottom:1px solid var(--line);border-radius:8px;padding:14px 16px;margin:12px 0}
+.risk h4{color:var(--red);font-family:'Questrial',sans-serif;font-size:.92rem;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.risk .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.risk .tag{font-family:'JetBrains Mono',monospace;font-size:.66rem;background:var(--beige);border:1px solid var(--line);border-radius:20px;padding:3px 10px}
+.timeline{position:relative;margin:18px 0 4px;padding-left:28px}
+.timeline::before{content:"";position:absolute;left:7px;top:4px;bottom:4px;width:3px;background:linear-gradient(var(--green),var(--gold))}
+.tl-item{position:relative;margin-bottom:18px}
+.tl-item::before{content:"";position:absolute;left:-25px;top:3px;width:13px;height:13px;border-radius:50%;background:var(--gold);border:2px solid var(--green)}
+.tl-date{font-family:'JetBrains Mono',monospace;font-size:.74rem;color:var(--gold-deep);font-weight:700}
+.tl-title{font-weight:700;font-size:.92rem}
+.tl-desc{font-size:.82rem;color:var(--muted)}
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}
+.chart-box{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.chart-box.solo{max-width:420px;margin:16px auto}
+.chart-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.chart-title{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:.72rem;color:var(--forest)}
+.zoom-btn{font-family:'Questrial',sans-serif;font-size:.6rem;text-transform:uppercase;letter-spacing:1px;color:var(--muted);background:var(--beige);border:1px solid var(--line);border-radius:14px;padding:3px 9px;cursor:pointer}
+.zoom-btn:hover{background:var(--gold);color:var(--ink)}
+.canvas-wrap{position:relative;height:160px}
+.modal{display:none;position:fixed;inset:0;background:rgba(10,30,15,.82);z-index:50;align-items:center;justify-content:center;padding:30px}
+.modal.open{display:flex}
+.modal-box{background:var(--beige-card);border:2px solid var(--gold);border-radius:14px;padding:20px;width:min(900px,94vw)}
+.modal-box .canvas-wrap{height:min(70vh,520px)}
+.modal-close{float:right;cursor:pointer;font-family:'JetBrains Mono',monospace;color:var(--red);font-weight:700}
+footer{background:var(--dark-green);color:#cdd8c4;padding:24px 48px;font-size:.78rem}
+@media(max-width:880px){.chart-grid,.scen-grid{grid-template-columns:1fr}.kpi-strip{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:780px){.sidebar{display:none}.content,.hero,footer{padding-left:20px;padding-right:20px}.kpi-strip{grid-template-columns:repeat(3,1fr)}}
+</style>
+</head>
+<body>
+<aside class="sidebar">
+  <div class="brand">Foundational<br>Trading Academy</div>
+  <div class="brand-sub">Investment Research Hub</div>
+  <div class="ticker-box">
+    <div class="tk">ORCL</div>
+    <div class="px">~$206</div>
+    <div class="chg">Q4 prints today</div>
+    <div class="meta">NYSE · Enterprise Software / Cloud</div>
+  </div>
+  <nav class="nav">
+    <a href="#s1"><span class="num">01</span>Executive Summary</a>
+    <a href="#s2"><span class="num">02</span>Micro & Valuation</a>
+    <a href="#s3"><span class="num">03</span>Moat & Management</a>
+    <a href="#s4"><span class="num">04</span>Financial Deep Dive</a>
+    <a href="#s5"><span class="num">05</span>Earnings Tracker</a>
+    <a href="#s6"><span class="num">06</span>Bull / Base / Bear</a>
+    <a href="#s7"><span class="num">07</span>Risks & Anti-Thesis</a>
+    <a href="#s8"><span class="num">08</span>Catalyst Timeline</a>
+    <a href="#s9"><span class="num">09</span>Comparables</a>
+    <a href="#s10"><span class="num">10</span>First-Principles KPIs</a>
+    <a href="#s11"><span class="num">11</span>Glossary & Method</a>
+  </nav>
+  <div class="disclaimer">For educational purposes only. Not investment advice. Data via Oracle Q3 FY26 release &amp; public sources, as of June 10, 2026.</div>
+</aside>
+
+<div class="main">
+  <header class="hero">
+    <div class="eyebrow">FTA Advanced Analysis Framework · Equity Deep Dive</div>
+    <h1>Oracle Corporation (ORCL)</h1>
+    <div class="sub">The neutral landlord of the AI build-out: a legacy database giant reborn as the #4 hyperscaler, sitting on a $553B backlog — financed by a historic debt-and-capex wager.</div>
+    <div class="verdict"><span class="pill">Verdict · CAUTIOUS BULL</span><span class="rate">Conviction 6 / 10</span></div>
+  </header>
+
+  <div class="kpi-strip">
+    <div class="kpi"><div class="lab">Price</div><div class="val">~$206</div><div class="vsub">~2.87B shares</div></div>
+    <div class="kpi"><div class="lab">Market Cap</div><div class="val">~$592B</div><div class="vsub">NYSE: ORCL</div></div>
+    <div class="kpi"><div class="lab">RPO (Backlog)</div><div class="val">$553B</div><div class="vsub">+325% YoY</div></div>
+    <div class="kpi"><div class="lab">OCI Growth</div><div class="val">+84%</div><div class="vsub">Q3 IaaS YoY</div></div>
+    <div class="kpi"><div class="lab">P/S (FY26E)</div><div class="val">~8.8x</div><div class="vsub">"Optimistic"</div></div>
+    <div class="kpi"><div class="lab">FY26 Capex</div><div class="val">$50B</div><div class="vsub">FCF negative</div></div>
+  </div>
+
+  <div class="content">
+
+  <section id="s1" class="card">
+    <div class="card-head"><div class="badge">1</div><h2>Executive Summary &amp; Investment Thesis</h2><div class="chev">▾</div></div>
+    <div class="card-body">
+      <div class="thesis">Oracle has pulled off one of the great corporate re-inventions: from aging database vendor to the preferred <em>neutral</em> compute landlord for the AI era. A $553B <a href="#g-rpo">RPO</a> backlog (+325%) all but pre-sells years of growth. The catch: that growth is bought with a historic debt-and-capex binge that drives free cash flow deeply negative and concentrates risk in a handful of AI mega-customers. We are <strong>cautiously bullish</strong> — the strategic prize is real, but so is the balance-sheet tail.</div>
+      <p>Oracle sells enterprise software (databases, Fusion/NetSuite cloud apps) and, increasingly, raw AI cloud infrastructure (<a href="#g-oci">OCI</a>). Q3 FY26 (ended Feb 2026) was, in management's words, "exceptional": total revenue <strong>$17.2B (+22%)</strong>, cloud revenue <strong>$8.9B (+44%)</strong>, and OCI/IaaS <strong>$4.9B (+84%)</strong>. The headline number is the backlog: RPO of <strong>$553B</strong>, fed by multi-billion-dollar OCI contracts with names like OpenAI, Meta, NVIDIA, Lockheed Martin and Air France-KLM.</p>
+      <p>The bull case: a credible #4 hyperscaler with a structurally advantaged multicloud database (running inside AWS/Azure/Google), exploding OCI demand, and a backlog that de-risks the revenue line through FY27's raised $90B target. The bear case — which we take seriously — is that RPO is not revenue, that $50B of FY26 capex against $23.5B of operating cash flow means Oracle is <strong>burning cash and levering up dramatically</strong>, and that a large slice of the backlog depends on the future solvency of a few AI labs.</p>
+      <div class="chips">
+        <div class="chip"><div class="lab">Sector</div><div class="val">Cloud / SW</div></div>
+        <div class="chip"><div class="lab">Q3 Revenue</div><div class="val">$17.2B</div></div>
+        <div class="chip"><div class="lab">Non-GAAP EPS</div><div class="val">$1.79</div></div>
+        <div class="chip"><div class="lab">FY26 Rev Guide</div><div class="val">$67B</div></div>
+        <div class="chip"><div class="lab">Conviction</div><div class="val">6 / 10</div></div>
+      </div>
+      <div class="callout"><strong>Today is binary.</strong> Oracle reports Q4 FY26 on/around June 10–11, 2026 — the first real conversion test of the $553B backlog. A strong OCI revenue ramp validates the thesis; any capex/margin or RPO-conversion disappointment hits a stock priced for perfection.</div>
+    </div>
+  </section>
+
+  <section id="s2" class="card">
+    <div class="card-head"><div class="badge">2</div><h2>Microeconomic &amp; Valuation Analysis</h2><div class="chev">▾</div></div>
+    <div class="card-body">
+      <h3>Industry &amp; TAM</h3>
+      <p>Oracle plays in two huge pools: enterprise software (databases + ERP/SaaS, a slow-growth but sticky multi-hundred-billion market) and cloud infrastructure (the hyperscale IaaS market, growing &gt;20% as AI training/inference demand outstrips supply). Management explicitly says AI cloud demand "continues to grow faster than supply" — the rare position of a capacity-constrained seller. Oracle's edge is neutrality (it will run your database anywhere) and speed of bespoke GPU-cluster build-out.</p>
+      <div class="chart-grid">
+        <div class="chart-box"><div class="chart-head"><span class="chart-title">RPO Backlog ($B)</span><button class="zoom-btn" onclick="zoom('cRpo')">⤢ expand</button></div><div class="canvas-wrap"><canvas id="cRpo"></canvas></div></div>
+        <div class="chart-box"><div class="chart-head"><span class="chart-title">Q3 Revenue Mix ($B)</span><button class="zoom-btn" onclick="zoom('cMix')">⤢ expand</button></div><div class="canvas-wrap"><canvas id="cMix"></canvas></div></div>
+      </div>
+      <h3>Valuation</h3>
+      <p>At ~$206 and ~$592B market cap, ORCL trades at ~8.8x FY26E sales ($67B) — the <strong>"Optimistic"</strong> band on the FTA P/S scale — and ~29x forward non-GAAP earnings (~41x GAAP). For a company half of whose growth is lower-margin, capital-intensive cloud infrastructure, that is a full multiple that prices in flawless backlog conversion. The complication: net debt is large and rising (a $50B financing program; $30B already raised in bonds + mandatory converts), so EV materially exceeds market cap and the equity is increasingly levered to execution.</p>
+      <div class="chips">
+        <div class="chip"><div class="lab">P/E (fwd NG)</div><div class="val">~29x</div></div>
+        <div class="chip"><div class="lab">P/S (FY26E)</div><div class="val">~8.8x</div></div>
+        <div class="chip"><div class="lab">Div Yield</div><div class="val">~1.0%</div></div>
+        <div class="chip"><div class="lab">FY27 Rev Guide</div><div class="val">$90B</div></div>
+        <div class="chip"><div class="lab">Op CF (TTM)</div><div class="val">$23.5B</div></div>
+      </div>
+      <div class="note">Founder/insider Larry Ellison (Chairman &amp; CTO) remains the largest shareholder (~40%+), which aligns incentives but concentrates control. Analyst sentiment is broadly constructive on the AI-cloud story, though targets vary widely with the capex/cash-burn debate.</div>
+    </div>
+  </section>
+
+  <section id="s3" class="card">
+    <div class="card-head"><div class="badge">3</div><h2>Qualitative Analysis — Moat, Management &amp; Culture</h2><div class="chev">▾</div></div>
+    <div class="card-body">
+      <h3>The Moat, Systemically</h3>
+      <p>Oracle's classic moat is <em>data gravity plus switching cost</em>: mission-critical databases that enterprises will not rip out because the cost of being wrong is catastrophic. That moat is durable but slow-growing. The new, more interesting moat is <em>positioning as the neutral arms dealer</em> of AI compute. By running its database inside competitors' clouds (multicloud, +531% YoY) and building dedicated GPU clusters faster than rivals will for a single tenant, Oracle occupies a structural niche the bigger hyperscalers are conflicted about serving. Whether that niche is a moat or merely a temporary capacity arbitrage is the central debate.</p>
+      <h3>Management &amp; Capital Allocation</h3>
+      <p>This is a high-conviction, founder-driven bet. Larry Ellison and CEO Safra Catz have committed Oracle to an aggressive, debt-funded capacity build — the antithesis of the cautious, FCF-disciplined Oracle of the 2010s. Catz has even published a multi-year OCI trajectory ($18B → $32B → $73B → $114B → $144B), an unusually specific public commitment that sharply raises accountability. Capital allocation has flipped from buybacks/dividends toward capex; the dividend ($0.50/qtr) is now a rounding error against the build.</p>
+      <h3>Culture &amp; Organizational Traits</h3>
+      <p>Oracle is famously top-down and sales-driven, not a decentralized idea-meritocracy. The notable cultural shift is its embrace of AI code generation to "build more SaaS with fewer people" — a genuine margin and productivity lever if it works. The risk is that a centralized, debt-financed mega-bet leaves little tolerance for the demand or financing assumptions being wrong.</p>
+      <div class="callout"><strong>Moat verdict:</strong> Wide and durable in core database; <em>contested and capital-intensive</em> in AI cloud. The equity is a leveraged call on the second moat proving as durable as the first.</div>
+    </div>
+  </section>
+
+  <section id="s4" class="card">
+    <div class="card-head"><div class="badge">4</div><h2>Quantitative Analysis — Financial Deep Dive</h2><div class="chev">▾</div></div>
+    <div class="card-body">
+      <p>Q3 FY26 was the first quarter in 15+ years with organic revenue <em>and</em> non-GAAP EPS both growing 20%+ in USD. Total revenue $17.2B (+22%); GAAP operating income $5.5B; non-GAAP operating income $7.4B (+19%); GAAP net income $3.7B (EPS $1.27); non-GAAP net income $5.2B (EPS $1.79). Trailing-twelve-month operating cash flow was $23.5B (+13%).</p>
+      <div class="chart-grid">
+        <div class="chart-box"><div class="chart-head"><span class="chart-title">Cloud Revenue Growth (YoY %)</span><button class="zoom-btn" onclick="zoom('cCloud')">⤢ expand</button></div><div class="canvas-wrap"><canvas id="cCloud"></canvas></div></div>
+        <div class="chart-box"><div class="chart-head"><span class="chart-title">Op Cash Flow vs Capex ($B)</span><button class="zoom-btn" onclick="zoom('cCash')">⤢ expand</button></div><div class="canvas-wrap"><canvas id="cCash"></canvas></div></div>
+      </div>
+      <h3>Revenue Streams, Plainly</h3>
+      <p><strong>OCI / Cloud Infrastructure (IaaS) — $4.9B, +84%:</strong> renting GPU/CPU compute and storage; the AI growth engine. <strong>Cloud Applications (SaaS) — $4.0B, +13%:</strong> Fusion ERP ($1.1B, +17%) and NetSuite ($1.1B, +14%), sticky business software. <strong>Software (license + support) — $6.1B, +3%:</strong> the legacy database cash cow that funds the build. Cloud (IaaS+SaaS) is now ~52% of revenue and growing far faster than the rest.</p>
+      <h3>The FCF Problem — Read This Twice</h3>
+      <p>Here is the crux the bulls gloss over. FY26 guidance is <strong>$50B of capex</strong> against ~$23.5B of TTM operating cash flow. That means free cash flow is <strong>deeply negative</strong> — Oracle is spending roughly twice its operating cash to build AI capacity, funding the gap with debt and equity. Management argues much of the AI equipment is "funded upfront via customer prepayments" or customer-supplied GPUs, which would soften the cash strain — a claim the market will scrutinize closely at Q4 and beyond.</p>
+      <table>
+        <thead><tr><th>Metric</th><th>Q3 FY26</th><th>Note</th></tr></thead>
+        <tbody>
+          <tr><td>Total revenue</td><td class="num">$17.2B</td><td class="num">+22% USD</td></tr>
+          <tr><td>Cloud revenue (IaaS+SaaS)</td><td class="num">$8.9B</td><td class="num">+44%</td></tr>
+          <tr><td>Non-GAAP op income</td><td class="num">$7.4B</td><td class="num">42.9% margin</td></tr>
+          <tr><td>Non-GAAP EPS</td><td class="num">$1.79</td><td class="num">+21%</td></tr>
+          <tr><td>RPO</td><td class="num">$553B</td><td class="num">+325%; +$29B QoQ</td></tr>
+          <tr><td>TTM operating cash flow</td><td class="num">$23.5B</td><td class="num">+13%</td></tr>
+          <tr><td>FY26 capex (guide)</td><td class="num neg">$50B</td><td class="num neg">FCF negative</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="s5" class="card">
+    <div class="card-head"><div class="badge">5</div><h2>Earnings Tracker — Management Credibility</h2><div class="chev">▾</div></div>
+    <div class="card-body">
+      <p>Oracle guides revenue-growth ranges and non-GAAP EPS one quarter out. Through FY26 it has generally hit or beat, with the OCI backlog repeatedly surprising to the upside. Older lines are approximate; Q3 FY26 is exact from the release.</p>
+      <table>
+        <thead><tr><th>Quarter</th><th>Guidance focus</th><th>Actual</th><th>Result</th><th>Credibility</th></tr></thead>
+        <tbody>
+          <tr><td>Q1 FY26</td><td class="num">Rev +12–14% cc</td><td class="num">In-line; RPO surge begins</td><td class="pos">Met</td><td class="num">8/10</td></tr>
+          <tr><td>Q2 FY26</td><td class="num">Cloud accel; capex up</td><td class="num">Cloud strong; FCF pressured</td><td class="pos">Met</td><td class="num">7/10</td></tr>
+          <tr><td>Q3 FY26</td><td class="num">Cloud high-end; EPS guide</td><td class="num">Rev $17.2B; EPS $1.79</td><td class="pos">Beat (above USD guide)</td><td class="num">9/10</td></tr>
+          <tr><td>Q4 FY26</td><td class="num">Rev +19–21%; EPS $1.96–2.00</td><td class="num">Reports today</td><td class="num">TBD</td><td class="num">—</td></tr>
+        </tbody>
+      </table>
+      <div class="note">Credibility nuance: Oracle has been <em>accurate on revenue and EPS</em> but its multi-year OCI ramp targets and capex/cash assumptions are far more speculative. The published $18B→$144B OCI path is a bold, falsifiable commitment — high reward if hit, high reputational cost if missed.</div>
+    </div>
+  </section>
+
+  <section id="s6" class="card">
+    <div class="card-head"><div class="badge">6</div><h2>Bull / Base / Bear Scenarios</h2><div class="chev">▾</div></div>
+    <div class="card-body">
+      <p>Anchored to ~$206. Targets are probability-weighted; the wide spread reflects genuine binary risk around backlog conversion and funding.</p>
+      <div class="horizon-label">1-Year Horizon</div>
+      <div class="scen-grid">
+        <div class="scen bull"><h4>Bull</h4><div class="pt">$280</div><span class="prob">P = 30%</span><ul><li>OCI ramps on schedule; FY27 $90B credible</li><li>Backlog converts; capex "self-funded"</li><li>Multiple holds on growth</li></ul></div>
+        <div class="scen base"><h4>Base</h4><div class="pt">$225</div><span class="prob">P = 45%</span><ul><li>Strong cloud, but FCF stays negative</li><li>Market tolerates leverage for growth</li><li>Modest re-rate</li></ul></div>
+        <div class="scen bear"><h4>Bear</h4><div class="pt">$150</div><span class="prob">P = 25%</span><ul><li>Capex/cash-burn fear; AI-capex wobble</li><li>RPO-conversion or customer doubt</li><li>De-rate to ~6x sales</li></ul></div>
+      </div>
+      <div class="chart-box solo"><div class="chart-head"><span class="chart-title">1-Yr Scenario Targets ($)</span><button class="zoom-btn" onclick="zoom('cScen')">⤢ expand</button></div><div class="canvas-wrap"><canvas id="cScen"></canvas></div></div>
+      <div class="horizon-label">3-Year Horizon</div>
+      <div class="scen-grid">
+        <div class="scen bull"><h4>Bull</h4><div class="pt">$400</div><span class="prob">P = 30%</span><ul><li>OCI hits ~$73B path; margins prove out</li><li>FCF inflects positive</li></ul></div>
+        <div class="scen base"><h4>Base</h4><div class="pt">$290</div><span class="prob">P = 45%</span><ul><li>Revenue ~$90–110B; leverage manageable</li><li>Cloud-infra margins below software</li></ul></div>
+        <div class="scen bear"><h4>Bear</h4><div class="pt">$160</div><span class="prob">P = 25%</span><ul><li>AI-capex digestion; backlog slips</li><li>Debt load weighs on equity</li></ul></div>
+      </div>
+      <div class="horizon-label">5-Year Horizon</div>
+      <div class="scen-grid">
+        <div class="scen bull"><h4>Bull</h4><div class="pt">$550</div><span class="prob">P = 30%</span><ul><li>Oracle a durable top-tier AI cloud</li><li>FCF compounding; debt paid down</li></ul></div>
+        <div class="scen base"><h4>Base</h4><div class="pt">$360</div><span class="prob">P = 45%</span><ul><li>Solid but capital-heavy compounder</li><li>Mid-teens earnings growth</li></ul></div>
+        <div class="scen bear"><h4>Bear</h4><div class="pt">$180</div><span class="prob">P = 25%</span><ul><li>AI overbuild; ROIC disappoints</li><li>Cloud-infra commoditizes</li></ul></div>
+      </div>
+      <div class="callout">Probability-weighted 1-yr ≈ <strong>$223</strong> (~8% upside). Note the unusually fat bear tail ($150): this is not a low-variance compounder — it is a high-stakes, leveraged AI-infrastructure bet.</div>
+    </div>
+  </section>
+
+  <section id="s7" class="card">
+    <div class="card-head"><div class="badge">7</div><h2>Risks &amp; Anti-Thesis (Steelman the Bear)</h2><div class="chev">▾</div></div>
+    <div class="card-body">
+      <p>If we were short ORCL, here is the case — and it is stronger than the bulls admit.</p>
+      <div class="risk"><h4>1 · Negative FCF + a balance sheet levering up fast</h4><p>$50B FY26 capex vs $23.5B operating cash flow = a multi-billion FCF deficit funded by debt and equity ($50B financing program, $30B already raised). If AI demand or credit conditions turn, Oracle is the most financially exposed of the hyperscalers. Leverage cuts both ways.</p><div class="meta"><span class="tag">Prob: High</span><span class="tag">Impact: High</span><span class="tag">Priced in: Partly</span></div></div>
+      <div class="risk"><h4>2 · Customer concentration &amp; counterparty risk</h4><p>A large share of the $553B RPO sits with a few AI labs (notably OpenAI). Their multi-year ability to pay depends on their own fundraising and economics. If one mega-contract is restructured or impaired, both backlog and the narrative crack.</p><div class="meta"><span class="tag">Prob: Medium</span><span class="tag">Impact: Very High</span><span class="tag">Priced in: No</span></div></div>
+      <div class="risk"><h4>3 · RPO ≠ revenue ≠ profit</h4><p>$553B of backlog is impressive but converts over many years, at GPU-rental gross margins far below Oracle's software margins. The market may be capitalizing a low-margin, capital-intensive revenue stream at a software multiple.</p><div class="meta"><span class="tag">Prob: Med-High</span><span class="tag">Impact: High</span><span class="tag">Priced in: Partly</span></div></div>
+      <div class="risk"><h4>4 · Full valuation on a capital-intensive model</h4><p>~9x sales / ~29x forward earnings for a business whose marginal growth dollar requires heavy capex is demanding. Any OCI margin disappointment de-rates the multiple quickly.</p><div class="meta"><span class="tag">Prob: Medium</span><span class="tag">Impact: High</span><span class="tag">Priced in: Partly</span></div></div>
+      <div class="risk"><h4>5 · Bigger hyperscalers &amp; GPU/power dependency</h4><p>AWS, Azure and Google Cloud dwarf Oracle and can subsidize price. Oracle's build depends on Nvidia GPU allocation, data-center power, and construction timelines — any bottleneck delays revenue against fixed financing costs.</p><div class="meta"><span class="tag">Prob: Medium</span><span class="tag">Impact: Medium</span><span class="tag">Priced in: Partly</span></div></div>
+      <div class="note">Synthesis: the strategic story is genuinely exciting, but the funding and concentration risks are why this is a 6, not an 8. The market is paying a software multiple for a leveraged infrastructure build — admire the ambition, size the position for the tail.</div>
+    </div>
+  </section>
+
+  <section id="s8" class="card">
+    <div class="card-head"><div class="badge">8</div><h2>Catalyst Timeline</h2><div class="chev">▾</div></div>
+    <div class="card-body">
+      <div class="timeline">
+        <div class="tl-item"><div class="tl-date">Jun 10–11, 2026</div><div class="tl-title">Q4 FY26 Earnings — TODAY</div><div class="tl-desc">First real conversion test of the $553B backlog. Watch OCI revenue ramp, capex cadence, RPO additions, and any commentary on customer prepayments / cash funding.</div></div>
+        <div class="tl-item"><div class="tl-date">FY27 (Jun'26–May'27)</div><div class="tl-title">$90B revenue target</div><div class="tl-desc">Raised guidance; each quarter is a check on whether OCI is tracking the published $18B→$32B→$73B path.</div></div>
+        <div class="tl-item"><div class="tl-date">2H 2026</div><div class="tl-title">Financing program execution</div><div class="tl-desc">Up to $50B debt/equity; potential at-the-market equity issuance (dilution risk) not yet initiated.</div></div>
+        <div class="tl-item"><div class="tl-date">Ongoing 2026</div><div class="tl-title">Data-center capacity milestones</div><div class="tl-desc">GPU deliveries, power, and construction gating OCI revenue recognition.</div></div>
+        <div class="tl-item"><div class="tl-date">Ongoing</div><div class="tl-title">New AI mega-contracts (RPO adds)</div><div class="tl-desc">Each large signing extends the backlog — but also the concentration.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="s9" class="card">
+    <div class="card-head"><div class="badge">9</div><h2>Comparable Company Analysis</h2><div class="chev">▾</div></div>
+    <div class="card-body">
+      <p>Oracle now competes with the mega-cap hyperscalers and with enterprise-software peers. Peer figures other than Oracle's are best-estimate approximations from public data and should be confirmed against latest filings.</p>
+      <table>
+        <thead><tr><th>Company</th><th>Mkt Cap</th><th>Rev TTM</th><th>Rev Gr YoY</th><th>P/E (fwd)</th><th>P/S</th><th>FCF Mgn</th><th>Op Mgn</th><th>Cloud growth</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Oracle (ORCL)</strong></td><td class="num">~$592B</td><td class="num">~$62B</td><td class="num pos">+22%</td><td class="num">~29x</td><td class="num">8.8x</td><td class="num neg">neg.</td><td class="num">~43%*</td><td class="num pos">+44%</td></tr>
+          <tr><td>Microsoft (MSFT)†</td><td class="num">~$3.7T</td><td class="num">~$290B</td><td class="num pos">~+15%</td><td class="num">~32x</td><td class="num">~13x</td><td class="num">~25%</td><td class="num">~45%</td><td class="num pos">Azure ~+30%</td></tr>
+          <tr><td>Amazon (AMZN)†</td><td class="num">~$2.4T</td><td class="num">~$680B</td><td class="num pos">~+11%</td><td class="num">~32x</td><td class="num">~3.5x</td><td class="num">~6%</td><td class="num">~11%</td><td class="num pos">AWS ~+20%</td></tr>
+          <tr><td>Alphabet (GOOGL)†</td><td class="num">~$2.5T</td><td class="num">~$380B</td><td class="num pos">~+13%</td><td class="num">~22x</td><td class="num">~6.5x</td><td class="num">~18%</td><td class="num">~32%</td><td class="num pos">GCP ~+30%</td></tr>
+          <tr><td>SAP (SAP)†</td><td class="num">~$330B</td><td class="num">~$40B</td><td class="num pos">~+10%</td><td class="num">~35x</td><td class="num">~8x</td><td class="num">~20%</td><td class="num">~25%</td><td class="num pos">Cloud ~+25%</td></tr>
+        </tbody>
+      </table>
+      <p>*Oracle non-GAAP operating margin; GAAP lower. †Estimated. <strong>Relative read:</strong> Oracle's P/S (~8.8x) sits between the software-rich MSFT/SAP and the infrastructure-heavy AMZN. The key differentiator is <em>cash quality</em>: MSFT and Alphabet self-fund their AI capex from prodigious FCF, while Oracle is funding its build with debt and is FCF-negative. On growth Oracle screens best; on financial resilience it screens worst. The premium is a bet that OCI economics will eventually look like software, not commodity rental.</p>
+    </div>
+  </section>
+
+  <section id="s10" class="card">
+    <div class="card-head"><div class="badge">10</div><h2>First-Principles KPIs</h2><div class="chev">▾</div></div>
+    <div class="card-body">
+      <p>The numbers that actually drive the thesis (and the risk):</p>
+      <div class="chart-grid">
+        <div class="chart-box"><div class="chart-head"><span class="chart-title">OCI / IaaS Revenue ($B/qtr)</span><button class="zoom-btn" onclick="zoom('cOci')">⤢ expand</button></div><div class="canvas-wrap"><canvas id="cOci"></canvas></div></div>
+        <div class="chart-box"><div class="chart-head"><span class="chart-title">Published OCI Trajectory ($B/yr)</span><button class="zoom-btn" onclick="zoom('cTraj')">⤢ expand</button></div><div class="canvas-wrap"><canvas id="cTraj"></canvas></div></div>
+      </div>
+      <p><strong>KPI 1 — RPO ($553B, +325%).</strong> The backlog. Future revenue contracted but not yet recognized; the single most-watched number, but watch the <em>quality</em> (who, when, at what margin).</p>
+      <p><strong>KPI 2 — OCI/IaaS revenue ($4.9B/qtr, +84%).</strong> The actual conversion of backlog into recognized cloud-infra revenue. The bull/bear hinges here.</p>
+      <p><strong>KPI 3 — Capex vs operating cash flow ($50B vs $23.5B).</strong> The cash-burn gauge. Negative FCF is the central risk; the gap must narrow over time.</p>
+      <p><strong>KPI 4 — Cloud as % of total revenue (~52%).</strong> The mix-shift from legacy license to cloud; higher = more secular, less cyclical.</p>
+      <p><strong>KPI 5 — Net debt trajectory.</strong> Rising with the financing program; the balance-sheet stress test for the whole thesis.</p>
+    </div>
+  </section>
+
+  <section id="s11" class="card">
+    <div class="card-head"><div class="badge">11</div><h2>Glossary &amp; Methodology</h2><div class="chev">▾</div></div>
+    <div class="card-body">
+      <p id="g-rpo"><strong>RPO (Remaining Performance Obligations)</strong> — Total contracted revenue not yet recognized; i.e. backlog. Formula: sum of future contractual revenue under signed deals. <em>Why it matters:</em> a forward visibility gauge — but it converts over years and says nothing about margin or counterparty quality. <a href="#s1">↩ back</a></p>
+      <p id="g-oci"><strong>OCI (Oracle Cloud Infrastructure)</strong> — Oracle's IaaS platform: rented compute (incl. GPUs), storage and networking. <em>Why it matters:</em> the AI growth engine and the capital-intensive part of the model. <a href="#s1">↩ back</a></p>
+      <p><strong>IaaS / SaaS</strong> — Infrastructure-as-a-Service (raw cloud compute) vs Software-as-a-Service (finished apps like Fusion/NetSuite). <em>Why it matters:</em> SaaS carries far higher margins than IaaS; the revenue mix drives profitability. <a href="#s4">↩ back</a></p>
+      <p><strong>FCF (Free Cash Flow)</strong> — Operating cash flow − capex. Currently negative for Oracle. <em>Why it matters:</em> it determines whether growth is self-funding or debt-funded. <a href="#s4">↩ back</a></p>
+      <p><strong>P/S (Price-to-Sales)</strong> — Market cap ÷ revenue. FTA scale: &gt;30 Euphoric, &gt;18 Excited, &gt;8 Optimistic, 4–8 Aware, &lt;4 Cautious, &lt;2 Pessimistic. <a href="#s2">↩ back</a></p>
+      <p><strong>Hyperscaler</strong> — A massive cloud-infrastructure operator (AWS, Azure, Google Cloud, now Oracle). <em>Why it matters:</em> scale, capex and GPU access define competitiveness. <a href="#s9">↩ back</a></p>
+      <p><strong>Multicloud database</strong> — Oracle Database running inside rival clouds (AWS/Azure/Google). +531% YoY. <em>Why it matters:</em> a neutrality advantage that extends Oracle's data-gravity moat into competitors' turf. <a href="#s3">↩ back</a></p>
+      <h3>Methodology</h3>
+      <p>Subject-company financials are from Oracle's Q3 FY2026 earnings release (March 10, 2026) and guidance; price/market-cap from public market data as of June 9–10, 2026 (note: Q4 FY26 results were imminent at publication). Peer figures other than market cap are approximations and labeled as such. Scenario targets are FTA probability-weighted judgments, not guarantees. Educational research only; not investment advice.</p>
+    </div>
+  </section>
+
+  </div>
+  <footer>
+    <strong>Foundational Trading Academy · Investment Research Hub</strong><br>
+    ORCL deep dive · Generated June 10, 2026 · FTA Advanced Analysis Framework.<br>
+    For informational and educational purposes only; not investment advice. Past performance is not indicative of future results. Always conduct your own due diligence.
+  </footer>
+</div>
+
+<div class="modal" id="modal" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="modal-box"><span class="modal-close" onclick="document.getElementById('modal').classList.remove('open')">✕ close</span><div class="canvas-wrap"><canvas id="modalCanvas"></canvas></div></div>
+</div>
+
+<script>
+document.querySelectorAll('.card-head').forEach(h=>h.addEventListener('click',()=>h.parentElement.classList.toggle('collapsed')));
+const GREEN='#145A22',GOLD='#FCC55B',RED='#a8341f',FOREST='#243D27',MUT='#5d6155';
+Chart.defaults.font.family="'JetBrains Mono', monospace";Chart.defaults.font.size=10;Chart.defaults.color=MUT;
+const charts={};
+function mk(id,cfg){const el=document.getElementById(id);if(!el)return;charts[id]=new Chart(el,cfg);}
+const noLeg={plugins:{legend:{display:false}}};
+mk('cRpo',{type:'bar',data:{labels:["Q3'25","Q3'26"],datasets:[{data:[130,553],backgroundColor:[FOREST,GREEN]}]},options:{...noLeg,maintainAspectRatio:false,scales:{y:{beginAtZero:true}}}});
+mk('cMix',{type:'doughnut',data:{labels:['OCI / IaaS','SaaS','Software (license+supp)'],datasets:[{data:[4.9,4.0,6.1],backgroundColor:[GREEN,GOLD,FOREST]}]},options:{maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{boxWidth:10,font:{size:9}}}}}});
+mk('cCloud',{type:'bar',data:{labels:['Total','Cloud(I+S)','OCI/IaaS','SaaS','Software'],datasets:[{data:[22,44,84,13,3],backgroundColor:[FOREST,GREEN,GOLD,'#9aa873',MUT]}]},options:{...noLeg,maintainAspectRatio:false}});
+mk('cCash',{type:'bar',data:{labels:['Op Cash Flow (TTM)','FY26 Capex (guide)'],datasets:[{data:[23.5,50],backgroundColor:[GREEN,RED]}]},options:{...noLeg,maintainAspectRatio:false,scales:{y:{beginAtZero:true}}}});
+mk('cScen',{type:'bar',data:{labels:['Bear','Base','Bull'],datasets:[{data:[150,225,280],backgroundColor:[RED,GOLD,GREEN]}]},options:{...noLeg,maintainAspectRatio:false,scales:{y:{suggestedMin:100}}}});
+mk('cOci',{type:'line',data:{labels:["Q1'26e","Q2'26e","Q3'26"],datasets:[{data:[3.3,4.0,4.9],borderColor:GREEN,backgroundColor:'rgba(20,90,34,.18)',fill:true,tension:.3}]},options:{...noLeg,maintainAspectRatio:false}});
+mk('cTraj',{type:'line',data:{labels:['FY26','FY27','FY28','FY29','FY30'],datasets:[{data:[18,32,73,114,144],borderColor:GOLD,backgroundColor:'rgba(252,197,91,.2)',fill:true,tension:.3}]},options:{...noLeg,maintainAspectRatio:false}});
+let modalChart=null;
+function zoom(id){const src=charts[id];if(!src)return;document.getElementById('modal').classList.add('open');if(modalChart)modalChart.destroy();const cfg=JSON.parse(JSON.stringify(src.config._config));cfg.options=cfg.options||{};cfg.options.maintainAspectRatio=false;modalChart=new Chart(document.getElementById('modalCanvas'),cfg);}
+</script>
+</body>
+</html>

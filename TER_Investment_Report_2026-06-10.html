@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teradyne (TER) — FTA Investment Report</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Questrial&family=Quicksand:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  --green:#145A22; --dark-green:#0A3A14; --forest:#243D27; --gold:#FCC55B; --gold-deep:#e0a838;
+  --beige:#EDE8E0; --beige-card:#f6f3ed; --ink:#23241f; --muted:#5d6155; --red:#a8341f; --line:#d8d1c4;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Quicksand',sans-serif;background:var(--beige);color:var(--ink);line-height:1.6;display:flex}
+a{color:var(--green);text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* SIDEBAR */
+.sidebar{position:sticky;top:0;width:262px;min-width:262px;height:100vh;overflow-y:auto;
+  background:linear-gradient(180deg,#071f0b,#0A3A14 40%,#145A22);border-right:2px solid var(--gold);
+  color:#e9e4d8;padding:26px 20px}
+.brand{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:1.7rem;color:var(--gold);line-height:1.1;margin-bottom:4px}
+.brand-sub{font-family:'Questrial',sans-serif;font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:#b9c8b3;margin-bottom:20px}
+.ticker-box{background:rgba(0,0,0,.25);border:1px solid rgba(252,197,91,.35);border-radius:12px;padding:14px;margin-bottom:22px}
+.ticker-box .tk{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:1.5rem;color:#fff}
+.ticker-box .px{font-family:'JetBrains Mono',monospace;font-size:1.15rem;color:var(--gold);margin-top:2px}
+.ticker-box .chg{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:#e98a72;margin-top:2px}
+.ticker-box .meta{font-size:.66rem;color:#a9b8a3;margin-top:6px;text-transform:uppercase;letter-spacing:1px}
+.nav a{display:block;color:#dfe7d8;font-size:.82rem;padding:7px 8px;border-radius:7px;margin-bottom:2px}
+.nav a:hover{background:rgba(252,197,91,.16);text-decoration:none;color:#fff}
+.nav a .num{font-family:'JetBrains Mono',monospace;color:var(--gold);font-size:.72rem;margin-right:8px}
+.disclaimer{font-size:.6rem;color:#8fa089;margin-top:20px;line-height:1.4}
+
+/* MAIN */
+.main{flex:1;min-width:0}
+.hero{position:relative;overflow:hidden;background:linear-gradient(120deg,var(--dark-green),var(--green) 60%);color:#fff;padding:40px 48px}
+.hero::after{content:"";position:absolute;top:-120px;right:-80px;width:380px;height:380px;border-radius:50%;
+  background:radial-gradient(circle,rgba(252,197,91,.30),rgba(252,197,91,0) 70%)}
+.hero .eyebrow{font-family:'Questrial',sans-serif;letter-spacing:3px;text-transform:uppercase;font-size:.72rem;color:var(--gold)}
+.hero h1{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:2.9rem;line-height:1.05;margin:6px 0 4px}
+.hero .sub{font-size:1rem;color:#d7e4ce;max-width:680px}
+.verdict{display:inline-flex;align-items:center;gap:10px;margin-top:16px;background:rgba(252,197,91,.16);
+  border:1px solid var(--gold);border-radius:30px;padding:8px 18px}
+.verdict .pill{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:2px;font-size:.8rem;color:var(--gold)}
+.verdict .rate{font-family:'JetBrains Mono',monospace;font-weight:700;color:#fff;font-size:.95rem}
+
+/* KPI STRIP */
+.kpi-strip{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:var(--line);border-bottom:1px solid var(--line)}
+.kpi{background:var(--beige-card);padding:14px 16px}
+.kpi .lab{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:.6rem;color:var(--muted)}
+.kpi .val{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:1.18rem;color:var(--green);margin-top:3px}
+.kpi .vsub{font-size:.62rem;color:var(--muted);margin-top:1px}
+
+/* CONTENT */
+.content{max-width:1080px;margin:0 auto;padding:34px 48px 80px}
+.card{background:var(--beige-card);border:1px solid var(--line);border-radius:14px;margin-bottom:24px;overflow:hidden}
+.card-head{display:flex;align-items:center;gap:14px;padding:18px 22px;border-left:5px solid var(--green);cursor:pointer;background:#fff}
+.badge{font-family:'JetBrains Mono',monospace;font-weight:700;color:#fff;background:var(--green);width:34px;height:34px;min-width:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.95rem}
+.card-head h2{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:1.5rem;color:var(--ink);flex:1}
+.chev{font-family:'JetBrains Mono',monospace;color:var(--muted);transition:transform .2s}
+.card.collapsed .chev{transform:rotate(-90deg)}
+.card-body{padding:8px 24px 24px}
+.card.collapsed .card-body{display:none}
+.card-body p{margin:10px 0}
+.card-body h3{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:.82rem;color:var(--green);margin:18px 0 6px}
+
+/* THESIS */
+.thesis{font-family:'Cormorant Garamond',serif;font-size:1.45rem;line-height:1.4;border-left:4px solid var(--gold);padding:8px 0 8px 20px;margin:6px 0 14px;color:var(--forest)}
+
+/* CHIPS */
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0}
+.chip{background:#fff;border:1px solid var(--line);border-radius:10px;padding:9px 13px;min-width:120px}
+.chip .lab{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:.58rem;color:var(--muted)}
+.chip .val{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:1.1rem;color:var(--green);margin-top:2px}
+
+/* CALLOUTS */
+.callout{background:rgba(252,197,91,.14);border:1px solid var(--gold);border-radius:10px;padding:13px 16px;margin:14px 0;font-size:.95rem}
+.note{background:rgba(20,90,34,.07);border:1px solid rgba(20,90,34,.25);border-radius:10px;padding:13px 16px;margin:14px 0;font-size:.92rem}
+
+/* TABLES */
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:.86rem;background:#fff;border-radius:10px;overflow:hidden}
+thead th{background:var(--green);color:#fff;font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:.5px;font-size:.72rem;padding:10px 12px;text-align:left}
+tbody td{padding:9px 12px;border-bottom:1px solid var(--line)}
+tbody tr:nth-child(even){background:var(--beige-card)}
+tbody tr:hover{background:rgba(252,197,91,.13)}
+.num{font-family:'JetBrains Mono',monospace}
+.pos{color:var(--green);font-weight:700}
+.neg{color:var(--red);font-weight:700}
+
+/* SCENARIO */
+.scen-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:14px 0}
+.scen{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px;border-top:5px solid var(--muted)}
+.scen.bull{border-top-color:var(--green)}
+.scen.base{border-top-color:var(--gold)}
+.scen.bear{border-top-color:var(--red)}
+.scen h4{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:.8rem;margin-bottom:4px}
+.scen.bull h4{color:var(--green)} .scen.base h4{color:var(--gold-deep)} .scen.bear h4{color:var(--red)}
+.scen .pt{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:1.6rem;color:var(--ink)}
+.scen .prob{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:.7rem;background:var(--beige);border:1px solid var(--line);border-radius:20px;padding:2px 10px;margin:6px 0}
+.scen ul{list-style:none;font-size:.8rem;color:var(--muted);margin-top:6px}
+.scen li{padding:3px 0 3px 14px;position:relative}
+.scen li::before{content:"›";position:absolute;left:0;color:var(--gold-deep);font-weight:700}
+.horizon-label{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:2px;font-size:.78rem;color:var(--forest);margin:18px 0 2px;border-bottom:1px solid var(--line);padding-bottom:4px}
+
+/* RISK */
+.risk{background:#fff;border-left:4px solid var(--red);border-top:1px solid var(--line);border-right:1px solid var(--line);border-bottom:1px solid var(--line);border-radius:8px;padding:14px 16px;margin:12px 0}
+.risk h4{color:var(--red);font-family:'Questrial',sans-serif;font-size:.92rem;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.risk .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.risk .tag{font-family:'JetBrains Mono',monospace;font-size:.66rem;background:var(--beige);border:1px solid var(--line);border-radius:20px;padding:3px 10px}
+
+/* TIMELINE */
+.timeline{position:relative;margin:18px 0 4px;padding-left:28px}
+.timeline::before{content:"";position:absolute;left:7px;top:4px;bottom:4px;width:3px;background:linear-gradient(var(--green),var(--gold))}
+.tl-item{position:relative;margin-bottom:18px}
+.tl-item::before{content:"";position:absolute;left:-25px;top:3px;width:13px;height:13px;border-radius:50%;background:var(--gold);border:2px solid var(--green)}
+.tl-date{font-family:'JetBrains Mono',monospace;font-size:.74rem;color:var(--gold-deep);font-weight:700}
+.tl-title{font-weight:700;font-size:.92rem}
+.tl-desc{font-size:.82rem;color:var(--muted)}
+
+/* CHARTS */
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}
+.chart-box{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.chart-box.solo{max-width:420px;margin:16px auto}
+.chart-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.chart-title{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:.72rem;color:var(--forest)}
+.zoom-btn{font-family:'Questrial',sans-serif;font-size:.6rem;text-transform:uppercase;letter-spacing:1px;color:var(--muted);background:var(--beige);border:1px solid var(--line);border-radius:14px;padding:3px 9px;cursor:pointer}
+.zoom-btn:hover{background:var(--gold);color:var(--ink)}
+.canvas-wrap{position:relative;height:160px}
+
+/* MODAL */
+.modal{display:none;position:fixed;inset:0;background:rgba(10,30,15,.82);z-index:50;align-items:center;justify-content:center;padding:30px}
+.modal.open{display:flex}
+.modal-box{background:var(--beige-card);border:2px solid var(--gold);border-radius:14px;padding:20px;width:min(900px,94vw)}
+.modal-box .canvas-wrap{height:min(70vh,520px)}
+.modal-close{float:right;cursor:pointer;font-family:'JetBrains Mono',monospace;color:var(--red);font-weight:700}
+
+footer{background:var(--dark-green);color:#cdd8c4;padding:24px 48px;font-size:.78rem}
+sup a{font-size:.7rem}
+@media(max-width:880px){.chart-grid,.scen-grid{grid-template-columns:1fr}.kpi-strip{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:780px){.sidebar{display:none}.content,.hero,footer{padding-left:20px;padding-right:20px}.kpi-strip{grid-template-columns:repeat(3,1fr)}}
+</style>
+</head>
+<body>
+<aside class="sidebar">
+  <div class="brand">Foundational<br>Trading Academy</div>
+  <div class="brand-sub">Investment Research Hub</div>
+  <div class="ticker-box">
+    <div class="tk">TER</div>
+    <div class="px">$357.93</div>
+    <div class="chg">▼ 12.0% (Jun 5)</div>
+    <div class="meta">NASDAQ · Semis / ATE</div>
+  </div>
+  <nav class="nav">
+    <a href="#s1"><span class="num">01</span>Executive Summary</a>
+    <a href="#s2"><span class="num">02</span>Micro & Valuation</a>
+    <a href="#s3"><span class="num">03</span>Moat & Management</a>
+    <a href="#s4"><span class="num">04</span>Financial Deep Dive</a>
+    <a href="#s5"><span class="num">05</span>Earnings Tracker</a>
+    <a href="#s6"><span class="num">06</span>Bull / Base / Bear</a>
+    <a href="#s7"><span class="num">07</span>Risks & Anti-Thesis</a>
+    <a href="#s8"><span class="num">08</span>Catalyst Timeline</a>
+    <a href="#s9"><span class="num">09</span>Comparables</a>
+    <a href="#s10"><span class="num">10</span>First-Principles KPIs</a>
+    <a href="#s11"><span class="num">11</span>Glossary & Method</a>
+  </nav>
+  <div class="disclaimer">For educational purposes only. Not investment advice. Data via SEC filings &amp; public sources, as of June 10, 2026.</div>
+</aside>
+
+<div class="main">
+  <header class="hero">
+    <div class="eyebrow">FTA Advanced Analysis Framework · Equity Deep Dive</div>
+    <h1>Teradyne, Inc. (TER)</h1>
+    <div class="sub">The toll-booth on AI silicon: every accelerator and HBM stack must be tested, and Teradyne is winning back the high-end compute socket in a rational duopoly.</div>
+    <div class="verdict"><span class="pill">Verdict · BULL</span><span class="rate">Conviction 7 / 10</span></div>
+  </header>
+
+  <div class="kpi-strip">
+    <div class="kpi"><div class="lab">Price (Jun 5 cl.)</div><div class="val">$357.93</div><div class="vsub">off $418 Apr peak</div></div>
+    <div class="kpi"><div class="lab">Market Cap</div><div class="val">~$56.0B</div><div class="vsub">156.5M shares</div></div>
+    <div class="kpi"><div class="lab">Rev Growth (Q1'26)</div><div class="val">+87%</div><div class="vsub">YoY, record</div></div>
+    <div class="kpi"><div class="lab">Op Margin (Q1'26)</div><div class="val">37.5%</div><div class="vsub">non-GAAP</div></div>
+    <div class="kpi"><div class="lab">P/S (TTM)</div><div class="val">14.8x</div><div class="vsub">"Optimistic"</div></div>
+    <div class="kpi"><div class="lab">Analyst PT</div><div class="val">~$390</div><div class="vsub">Buy · $270–470</div></div>
+  </div>
+
+  <div class="content">
+
+  <!-- SECTION 1 -->
+  <section id="s1" class="card">
+    <div class="card-head"><div class="badge">1</div><h2>Executive Summary &amp; Investment Thesis</h2><div class="chev">▾</div></div>
+    <div class="card-body">
+      <div class="thesis">Teradyne is the indispensable quality gate on the AI hardware supply chain. As accelerator complexity and HBM stacking explode, <em>test intensity</em> rises faster than unit volume — and Teradyne's recapture of high-end compute share inside a two-player duopoly converts that intensity into record margins. We are <strong>bullish</strong>, but the stock already prices in durable AI test demand; the recent ~12% pullback improves the entry.</div>
+      <p>Teradyne sells <a href="#g-ate">automated test equipment (ATE)</a> — the machines that verify every chip works before it ships — plus a smaller industrial robotics arm (Universal Robots, MiR). The Q1 2026 print was a genuine inflection: revenue of <strong>$1,282M, up 87% year-over-year</strong>, with roughly <strong>70% of revenue tied to AI demand</strong> and non-GAAP operating margin of <strong>37.5%</strong>, both records. The wafer-to-AI-datacenter strategy is working.</p>
+      <p>The bull case rests on three legs: (1) structural AI test-intensity growth — HBM testing is ~10x more compute-intensive than legacy DRAM; (2) a rational <a href="#g-duopoly">duopoly</a> with Advantest where pricing is disciplined; and (3) operating leverage — incremental AI revenue drops through at very high margins. The caution flags: Q2 guidance ($1.15–1.25B) implies a <em>sequential decline</em> from Q1's peak, valuation is full at ~15x sales / ~66x trailing earnings, and the business remains cyclical and order-lumpy.</p>
+      <div class="chips">
+        <div class="chip"><div class="lab">Sector</div><div class="val">Semis · ATE</div></div>
+        <div class="chip"><div class="lab">TTM Revenue</div><div class="val">$3.79B</div></div>
+        <div class="chip"><div class="lab">TTM Net Inc.</div><div class="val">$854M</div></div>
+        <div class="chip"><div class="lab">Net Cash</div><div class="val">~$394M</div></div>
+        <div class="chip"><div class="lab">Conviction</div><div class="val">7 / 10</div></div>
+      </div>
+      <div class="callout"><strong>Why 7 and not 9:</strong> the quality of the franchise is a 9, but entry valuation and the visible Q2 sequential dip cap conviction. This is a own-the-compounder-on-weakness name, not a chase-it-at-the-high name.</div>
+    </div>
+  </section>
+
+  <!-- SECTION 2 -->
+  <section id="s2" class="card">
+    <div class="card-head"><div class="badge">2</div><h2>Microeconomic &amp; Valuation Analysis</h2><div class="chev">▾</div></div>
+    <div class="card-body">
+      <h3>Industry &amp; TAM</h3>
+      <p>The semiconductor test equipment market was ~<strong>$15.1B in 2025</strong>, growing to ~$16.0B in 2026 and ~$21.6B by 2031 — a blended <a href="#g-cagr">CAGR</a> of roughly 6%. But that headline understates the relevant opportunity: the AI-exposed slice (SoC test for accelerators + HBM/memory test) is compounding far faster as die sizes, core counts and stacked-memory layers all rise. Teradyne and Advantest together control ~45–48% of the market; with Cohu, the top three hold ~55%.</p>
+      <div class="chart-grid">
+        <div class="chart-box"><div class="chart-head"><span class="chart-title">Annual Revenue ($M)</span><button class="zoom-btn" onclick="zoom('cRev')">⤢ expand</button></div><div class="canvas-wrap"><canvas id="cRev"></canvas></div></div>
+        <div class="chart-box"><div class="chart-head"><span class="chart-title">Q1'26 Revenue Mix ($M)</span><button class="zoom-btn" onclick="zoom('cMix')">⤢ expand</button></div><div class="canvas-wrap"><canvas id="cMix"></canvas></div></div>
+      </div>
+      <h3>Valuation</h3>
+      <p>At ~$358 and ~$56B market cap, TER trades at <strong>~14.8x trailing sales</strong> and ~66x trailing GAAP earnings (~45x forward). On the FTA P/S scale, 14.8x sits in the <strong>"Optimistic"</strong> band (8–18) — elevated but not euphoric for a franchise growing revenue 30%+ TTM with expanding margins. Net cash of ~$394M (zero short-term debt after repaying the $200M revolver) keeps EV ≈ market cap; EV/EBITDA ≈ 49x.</p>
+      <div class="chips">
+        <div class="chip"><div class="lab">P/E (TTM)</div><div class="val">~66x</div></div>
+        <div class="chip"><div class="lab">P/S (TTM)</div><div class="val">14.8x</div></div>
+        <div class="chip"><div class="lab">EV/EBITDA</div><div class="val">~49x</div></div>
+        <div class="chip"><div class="lab">Div Yield</div><div class="val">~0.15%</div></div>
+        <div class="chip"><div class="lab">Shares YoY</div><div class="val">−2.8%</div></div>
+      </div>
+      <p><strong>Ownership &amp; flows:</strong> TER is ~90%+ institutionally owned (typical for a large-cap semi). The company is a consistent buyback machine — diluted shares fell from 162.0M (Q1'25) to 157.6M (Q1'26) — though it slowed repurchases in Q1'26 ($5.5M) to preserve cash during the demand ramp. Analyst consensus is <strong>Buy</strong> (≈12 Buy / 6 Hold / 0 Sell), average target ~$390 (range $270–470); Susquehanna recently raised to $415, Stifel to $390.</p>
+      <div class="note">Read the cheap dividend correctly: TER is not an income stock. Capital return is dominated by buybacks, and the priority right now is funding the AI capacity ramp and working capital (receivables jumped $322M in Q1 as shipments accelerated).</div>
+    </div>
+  </section>
+
+  <!-- SECTION 3 -->
+  <section id="s3" class="card">
+    <div class="card-head"><div class="badge">3</div><h2>Qualitative Analysis — Moat, Management &amp; Culture</h2><div class="chev">▾</div></div>
+    <div class="card-body">
+      <h3>The Moat, Systemically</h3>
+      <p>Teradyne's moat is best understood as a <em>position in a workflow that cannot be skipped</em>. Test is the last gate before a chip is sold; getting it wrong means shipping defective silicon into a $40,000 AI server. That makes the buying decision about trust and proven correlation to the customer's design, not price. Switching test platforms mid-program is enormously costly because test programs, handlers, and yield-learning are co-developed with the customer over months. The result is a <strong>high-switching-cost, reference-locked duopoly</strong> with disciplined pricing — the structural opposite of a commodity-equipment market.</p>
+      <p>The deeper moat is <em>test intensity scaling</em>. Every generation of AI accelerator adds transistors, I/O, and HBM stacks, and each of those raises the test time and test complexity per device. HBM wafer-stack testing is roughly 10x more intensive than traditional DRAM. So even flat unit volumes can drive rising test-equipment demand — Teradyne effectively earns a rising royalty on silicon complexity.</p>
+      <h3>Management &amp; Capital Allocation</h3>
+      <p>CEO Greg Smith (a long-tenured Teradyne insider who ran Semiconductor Test before the top job) frames the strategy as "wafer to AI data center." It is not founder-led — Teradyne is a ~60-year-old institution — but management has shown disciplined capital allocation: steady buybacks, a small but growing dividend, the strategic Technoprobe equity investment (probe-card adjacency, ~$523M carried), and a willingness to restructure the underperforming Robotics unit (two rounds of cuts) rather than subsidize it indefinitely.</p>
+      <h3>Culture &amp; Organizational Traits</h3>
+      <p>Strengths: deep engineering talent density and tight customer co-development loops (idea meritocracy in the application-engineering sense). Weaknesses: Robotics has been a multi-year value-destruction story relative to the 2015 Universal Robots thesis, and innovation pace in cobots has lagged. The honest read is a world-class test franchise bolted to a still-unproven robotics call option.</p>
+      <div class="callout"><strong>Moat verdict:</strong> Wide and arguably widening in core test; narrow-to-none in robotics. The investable thesis is the test duopoly, with robotics as a low-cost optionality kicker.</div>
+    </div>
+  </section>
+
+  <!-- SECTION 4 -->
+  <section id="s4" class="card">
+    <div class="card-head"><div class="badge">4</div><h2>Quantitative Analysis — Financial Deep Dive</h2><div class="chev">▾</div></div>
+    <div class="card-body">
+      <p>Q1 2026 (quarter ended March 29, 2026) was a step-change. Revenue $1,282.5M (+87% YoY, +18% QoQ); GAAP gross margin <strong>60.9%</strong>; GAAP operating income $473.0M (36.9%), non-GAAP $480.4M (<strong>37.5%</strong>); GAAP net income $398.9M, diluted EPS $2.53; non-GAAP EPS $2.56. Operating cash flow was $265.1M and capex $64.7M, for free cash flow of ~$200M — though working-capital build (receivables +$322M) muted cash conversion as shipments surged.</p>
+      <div class="chart-grid">
+        <div class="chart-box"><div class="chart-head"><span class="chart-title">Quarterly Revenue Ramp ($M)</span><button class="zoom-btn" onclick="zoom('cQRev')">⤢ expand</button></div><div class="canvas-wrap"><canvas id="cQRev"></canvas></div></div>
+        <div class="chart-box"><div class="chart-head"><span class="chart-title">Operating Margin Trajectory (%)</span><button class="zoom-btn" onclick="zoom('cMargin')">⤢ expand</button></div><div class="canvas-wrap"><canvas id="cMargin"></canvas></div></div>
+      </div>
+      <h3>Revenue Streams, Plainly</h3>
+      <p><strong>Semiconductor Test ($1,111M, ~87% of revenue)</strong> — machines that test finished chips. Within it, SoC (logic/compute, e.g. AI accelerators &amp; phones) was $882M and Memory (DRAM/HBM) was $203M; this is the AI engine of the company. <strong>Robotics ($91M)</strong> — collaborative and mobile robots for factories/warehouses. <strong>Product Test ($80M)</strong> — testing of finished electronics (e.g. phones, storage).</p>
+      <div class="chart-grid">
+        <div class="chart-box"><div class="chart-head"><span class="chart-title">Annual Free Cash Flow ($M)</span><button class="zoom-btn" onclick="zoom('cFcf')">⤢ expand</button></div><div class="canvas-wrap"><canvas id="cFcf"></canvas></div></div>
+        <div class="chart-box"><div class="chart-head"><span class="chart-title">Net Income &amp; EPS (annual)</span><button class="zoom-btn" onclick="zoom('cNi')">⤢ expand</button></div><div class="canvas-wrap"><canvas id="cNi"></canvas></div></div>
+      </div>
+      <h3>Balance Sheet &amp; Quality</h3>
+      <p>Pristine. Cash &amp; marketable securities ~$394M against zero short-term debt (the $200M revolver was repaid in Q1). Current ratio ~2.1x ($2,173M current assets / $1,012M current liabilities). The flywheel: AI complexity → more test demand → high-margin incremental revenue → operating leverage → cash → buybacks/strategic investments. Operating margin has swung from 17.6% (Q1'25) to 37.5% (Q1'26) on volume — textbook operating leverage in a fixed-cost-heavy equipment model.</p>
+      <table>
+        <thead><tr><th>Metric (TTM)</th><th>Value</th><th>5-yr context</th></tr></thead>
+        <tbody>
+          <tr><td>Revenue</td><td class="num">$3,787M</td><td class="num">+30% YoY; 2021 peak was $3,703M</td></tr>
+          <tr><td>Gross margin</td><td class="num">58.7%</td><td class="num">Stable 57–61%; Q1'26 60.9%</td></tr>
+          <tr><td>Operating margin</td><td class="num">26.5%</td><td class="num">Cyclical 18.7%–32.4%</td></tr>
+          <tr><td>Net margin</td><td class="num">23.1%</td><td class="num">—</td></tr>
+          <tr><td>Free cash flow</td><td class="num">$553M</td><td class="num">FCF margin 14.6%</td></tr>
+          <tr><td>FCF / share</td><td class="num">$3.49</td><td class="num">vs $2.82 FY25</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- SECTION 5 -->
+  <section id="s5" class="card">
+    <div class="card-head"><div class="badge">5</div><h2>Earnings Tracker — Management Credibility</h2><div class="chev">▾</div></div>
+    <div class="card-body">
+      <p>Teradyne guides one quarter ahead on revenue and EPS. Through the AI ramp it has consistently printed at or above the high end. The table blends precisely reported actuals (Q1'25, Q4'25, Q1'26) with the documented "beat / above high end" track record; credibility scores are FTA judgments on guidance-vs-actual.</p>
+      <table>
+        <thead><tr><th>Quarter</th><th>Guidance (rev)</th><th>Actual (rev)</th><th>Result</th><th>Credibility</th></tr></thead>
+        <tbody>
+          <tr><td>Q2'24</td><td class="num">~$0.66–0.72B</td><td class="num">~$0.70B</td><td class="pos">Met/Beat</td><td class="num">8/10</td></tr>
+          <tr><td>Q3'24</td><td class="num">~$0.68–0.74B</td><td class="num">~$0.74B</td><td class="pos">Beat</td><td class="num">8/10</td></tr>
+          <tr><td>Q4'24</td><td class="num">~$0.72–0.78B</td><td class="num">~$0.75B</td><td class="pos">Met</td><td class="num">7/10</td></tr>
+          <tr><td>Q1'25</td><td class="num">~$0.66–0.70B</td><td class="num">$0.686B</td><td class="pos">Met</td><td class="num">7/10</td></tr>
+          <tr><td>Q2'25</td><td class="num">~$0.65–0.73B</td><td class="num">~$0.75B</td><td class="pos">Beat</td><td class="num">8/10</td></tr>
+          <tr><td>Q3'25</td><td class="num">~$0.80–0.86B</td><td class="num">~$0.95B</td><td class="pos">Beat</td><td class="num">9/10</td></tr>
+          <tr><td>Q4'25</td><td class="num">~$1.00–1.08B</td><td class="num">$1.083B</td><td class="pos">Beat</td><td class="num">9/10</td></tr>
+          <tr><td>Q1'26</td><td class="num">below actual</td><td class="num">$1.282B</td><td class="pos">Above high end</td><td class="num">10/10</td></tr>
+        </tbody>
+      </table>
+      <div class="note">Older guidance ranges (pre-Q1'25) are approximate reconstructions; the three most recent quarters are exact from SEC filings. Net read: management has been <strong>credible-to-conservative</strong>, repeatedly guiding below the demand it then delivered. Watch whether the Q2'26 guide-down ($1.15–1.25B) is conservatism or a genuine peak.</div>
+    </div>
+  </section>
+
+  <!-- SECTION 6 -->
+  <section id="s6" class="card">
+    <div class="card-head"><div class="badge">6</div><h2>Bull / Base / Bear Scenarios</h2><div class="chev">▾</div></div>
+    <div class="card-body">
+      <p>Anchored to ~$358. Targets are probability-weighted; the chart shows the 1-year distribution.</p>
+      <div class="horizon-label">1-Year Horizon</div>
+      <div class="scen-grid">
+        <div class="scen bull"><h4>Bull</h4><div class="pt">$520</div><span class="prob">P = 35%</span><ul><li>AI test intensity compounds; FY26 rev ~$5B</li><li>HBM4 + next-gen GPU ramps</li><li>~17x sales multiple holds</li></ul></div>
+        <div class="scen base"><h4>Base</h4><div class="pt">$410</div><span class="prob">P = 45%</span><ul><li>Steady AI demand, FY26 rev ~$4.7B</li><li>Modest re-rate, ~13x sales</li><li>Robotics stable, not a drag</li></ul></div>
+        <div class="scen bear"><h4>Bear</h4><div class="pt">$260</div><span class="prob">P = 20%</span><ul><li>AI capex air-pocket; orders pause</li><li>Cyclical reset to ~10x sales</li><li>Multiple compresses on slower growth</li></ul></div>
+      </div>
+      <div class="chart-box solo"><div class="chart-head"><span class="chart-title">1-Yr Scenario Targets ($)</span><button class="zoom-btn" onclick="zoom('cScen')">⤢ expand</button></div><div class="canvas-wrap"><canvas id="cScen"></canvas></div></div>
+      <div class="horizon-label">3-Year Horizon</div>
+      <div class="scen-grid">
+        <div class="scen bull"><h4>Bull</h4><div class="pt">$780</div><span class="prob">P = 30%</span><ul><li>AI + physical-AI robotics inflect</li><li>Revenue compounds &gt;20%</li></ul></div>
+        <div class="scen base"><h4>Base</h4><div class="pt">$560</div><span class="prob">P = 45%</span><ul><li>Mid-teens revenue CAGR</li><li>Margins hold high-30s</li></ul></div>
+        <div class="scen bear"><h4>Bear</h4><div class="pt">$300</div><span class="prob">P = 25%</span><ul><li>Duopoly turns price-competitive</li><li>One full cyclical downcycle</li></ul></div>
+      </div>
+      <div class="horizon-label">5-Year Horizon</div>
+      <div class="scen-grid">
+        <div class="scen bull"><h4>Bull</h4><div class="pt">$1,100</div><span class="prob">P = 30%</span><ul><li>Test-intensity royalty on AI scales</li><li>Robotics finally contributes</li></ul></div>
+        <div class="scen base"><h4>Base</h4><div class="pt">$720</div><span class="prob">P = 45%</span><ul><li>Durable mid-teens compounding</li><li>Buybacks shrink share count</li></ul></div>
+        <div class="scen bear"><h4>Bear</h4><div class="pt">$350</div><span class="prob">P = 25%</span><ul><li>AI test demand normalizes</li><li>Back to cyclical mid-cycle multiple</li></ul></div>
+      </div>
+      <div class="callout">Probability-weighted 1-yr ≈ <strong>$419</strong> (~17% upside from $358). The asymmetry skews favorably after the pullback, but the bear tail is real and tied to AI-capex sentiment.</div>
+    </div>
+  </section>
+
+  <!-- SECTION 7 -->
+  <section id="s7" class="card">
+    <div class="card-head"><div class="badge">7</div><h2>Risks &amp; Anti-Thesis (Steelman the Bear)</h2><div class="chev">▾</div></div>
+    <div class="card-body">
+      <p>If we were short TER, here is the case we would press.</p>
+      <div class="risk"><h4>1 · Valuation discounts permanence of an AI cycle</h4><p>At ~15x sales and ~66x trailing earnings, the stock embeds durable, structural AI test demand. ATE is historically cyclical; the June 5 single-day −12% move shows how fast sentiment unwinds. Any sign that 2026 is a peak de-rates the multiple hard.</p><div class="meta"><span class="tag">Prob: High</span><span class="tag">Impact: High</span><span class="tag">Priced in: Partly</span></div></div>
+      <div class="risk"><h4>2 · The Q2 guide already shows a sequential dip</h4><p>Q2'26 guidance of $1.15–1.25B is <em>below</em> Q1's $1.28B. Equipment revenue is lumpy and order-timing-driven; a couple of pushed shipments could turn "pause" into "rollover," challenging the linear-growth narrative.</p><div class="meta"><span class="tag">Prob: Medium</span><span class="tag">Impact: Med-High</span><span class="tag">Priced in: Partly</span></div></div>
+      <div class="risk"><h4>3 · Customer &amp; end-market concentration</h4><p>The surge is driven by a handful of AI-compute and HBM customers (leading foundry/GPU and memory makers). Test orders track their capex; if one large program slips or insources, a quarter can swing materially.</p><div class="meta"><span class="tag">Prob: Medium</span><span class="tag">Impact: High</span><span class="tag">Priced in: No</span></div></div>
+      <div class="risk"><h4>4 · Advantest is the bigger gorilla</h4><p>Advantest holds ~58–60% of the ATE market and leads merchant-GPU/memory test. Teradyne's "win-back" in high-end compute could reverse; a rational duopoly can still become price-competitive if one side adds capacity aggressively.</p><div class="meta"><span class="tag">Prob: Medium</span><span class="tag">Impact: Medium</span><span class="tag">Priced in: Partly</span></div></div>
+      <div class="risk"><h4>5 · China, tariffs &amp; the robotics drag</h4><p>Export controls and tariffs create real revenue and supply-chain risk (explicitly flagged in filings). Meanwhile Robotics has been restructured twice and remains sub-scale — a persistent margin and management-attention drag with no proven turn.</p><div class="meta"><span class="tag">Prob: Medium</span><span class="tag">Impact: Medium</span><span class="tag">Priced in: Partly</span></div></div>
+      <div class="note">Honest synthesis: none of these break the franchise, but together they justify a conviction of 7, not 9 — and argue for buying weakness rather than strength.</div>
+    </div>
+  </section>
+
+  <!-- SECTION 8 -->
+  <section id="s8" class="card">
+    <div class="card-head"><div class="badge">8</div><h2>Catalyst Timeline</h2><div class="chev">▾</div></div>
+    <div class="card-body">
+      <div class="timeline">
+        <div class="tl-item"><div class="tl-date">Late Jul 2026</div><div class="tl-title">Q2 FY26 Earnings</div><div class="tl-desc">The key tell: does the guided sequential dip ($1.15–1.25B) hold, or does AI demand beat again? Watch SoC vs Memory mix and H2 commentary.</div></div>
+        <div class="tl-item"><div class="tl-date">2H 2026</div><div class="tl-title">HBM4 &amp; next-gen accelerator ramps</div><div class="tl-desc">New GPU/HBM generations raise test time per device — direct demand driver for SoC and memory test.</div></div>
+        <div class="tl-item"><div class="tl-date">Late 2026</div><div class="tl-title">Wixom, Michigan robotics hub opens</div><div class="tl-desc">Localizes Universal Robots / MiR production; a test of whether Robotics can finally scale.</div></div>
+        <div class="tl-item"><div class="tl-date">Oct 2026</div><div class="tl-title">Q3 FY26 Earnings</div><div class="tl-desc">Confirms whether H2 re-accelerates; full-year framing for 2027.</div></div>
+        <div class="tl-item"><div class="tl-date">Ongoing</div><div class="tl-title">China export-control / tariff headlines</div><div class="tl-desc">Risk catalyst — policy shifts can gate revenue and supply chain on short notice.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 9 -->
+  <section id="s9" class="card">
+    <div class="card-head"><div class="badge">9</div><h2>Comparable Company Analysis</h2><div class="chev">▾</div></div>
+    <div class="card-body">
+      <p>Test-and-measurement peer set. TER's direct rival is Advantest; Cohu and FormFactor are adjacent test-supply-chain names; KLA is a larger process-control bellwether for context. Peer figures other than market cap are best-estimate approximations from public data and should be confirmed against latest filings.</p>
+      <table>
+        <thead><tr><th>Company</th><th>Mkt Cap</th><th>Rev TTM</th><th>Rev Gr YoY</th><th>P/E</th><th>P/S</th><th>FCF Mgn</th><th>Net Mgn</th><th>EV/EBITDA</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Teradyne (TER)</strong></td><td class="num">~$56B</td><td class="num">$3.79B</td><td class="num pos">+30%</td><td class="num">66x</td><td class="num">14.8x</td><td class="num">14.6%</td><td class="num">23.1%</td><td class="num">~49x</td></tr>
+          <tr><td>Advantest (ATEYY)*</td><td class="num">~$120B</td><td class="num">~$6.5B</td><td class="num pos">~+45%</td><td class="num">~45x</td><td class="num">~18x</td><td class="num">~22%</td><td class="num">~28%</td><td class="num">~32x</td></tr>
+          <tr><td>FormFactor (FORM)*</td><td class="num">~$9.5B</td><td class="num">~$0.85B</td><td class="num pos">~+12%</td><td class="num">~45x</td><td class="num">~11x</td><td class="num">~14%</td><td class="num">~12%</td><td class="num">~30x</td></tr>
+          <tr><td>Cohu (COHU)*</td><td class="num">~$2.6B</td><td class="num">~$0.62B</td><td class="num pos">~+5%</td><td class="num">n/m</td><td class="num">~4.2x</td><td class="num">~6%</td><td class="num">low</td><td class="num">~30x</td></tr>
+          <tr><td>KLA (KLAC)*</td><td class="num">~$254B</td><td class="num">~$13B</td><td class="num pos">~+25%</td><td class="num">~30x</td><td class="num">~19x</td><td class="num">~30%</td><td class="num">~32%</td><td class="num">~22x</td></tr>
+        </tbody>
+      </table>
+      <p>*Estimated. <strong>Relative read:</strong> TER trades at a premium P/S to FormFactor and Cohu but a discount to Advantest and KLA on growth-adjusted multiples. Advantest's larger memory/GPU exposure has earned it a richer cap; TER's "win-back" narrative is the swing factor. Versus KLA, TER is smaller and more cyclical but carries net cash. The comp set says TER is fairly-to-fully valued — not a screaming bargain, not egregiously expensive for the growth.</p>
+    </div>
+  </section>
+
+  <!-- SECTION 10 -->
+  <section id="s10" class="card">
+    <div class="card-head"><div class="badge">10</div><h2>First-Principles KPIs</h2><div class="chev">▾</div></div>
+    <div class="card-body">
+      <p>Leading indicators that matter more than the headline print:</p>
+      <div class="chart-grid">
+        <div class="chart-box"><div class="chart-head"><span class="chart-title">AI % of Revenue (leading)</span><button class="zoom-btn" onclick="zoom('cAi')">⤢ expand</button></div><div class="canvas-wrap"><canvas id="cAi"></canvas></div></div>
+        <div class="chart-box"><div class="chart-head"><span class="chart-title">SoC Test Revenue ($M/qtr)</span><button class="zoom-btn" onclick="zoom('cSoc')">⤢ expand</button></div><div class="canvas-wrap"><canvas id="cSoc"></canvas></div></div>
+      </div>
+      <p><strong>KPI 1 — AI revenue mix.</strong> ~60% (Q4'25) → ~70% (Q1'26). The single best gauge of the structural shift from cyclical-consumer test to secular AI test.</p>
+      <p><strong>KPI 2 — SoC test revenue/quarter.</strong> $882M in Q1'26. Direct proxy for AI-accelerator test intensity; the engine of the model.</p>
+      <p><strong>KPI 3 — HBM test share.</strong> &gt;50% (win-back from Advantest). Memory test was $203M in Q1'26 and is the highest-intensity sub-segment (HBM ~10x DRAM).</p>
+      <p><strong>KPI 4 — Gross margin.</strong> 60.6% → 57.2% → 60.9% across Q1'25 / Q4'25 / Q1'26 — confirms pricing power and mix toward high-value test.</p>
+      <p><strong>KPI 5 — Diluted share count.</strong> 162.0M → 157.6M YoY; per-share compounding via buybacks layered on top of revenue growth.</p>
+    </div>
+  </section>
+
+  <!-- SECTION 11 -->
+  <section id="s11" class="card">
+    <div class="card-head"><div class="badge">11</div><h2>Glossary &amp; Methodology</h2><div class="chev">▾</div></div>
+    <div class="card-body">
+      <p id="g-ate"><strong>ATE (Automated Test Equipment)</strong> — Machines that automatically test semiconductors/electronics for defects and performance before shipment. <em>Why it matters:</em> it is a mandatory, non-skippable step, which gives suppliers durable pricing power. <a href="#s1">↩ back</a></p>
+      <p id="g-duopoly"><strong>Duopoly</strong> — A market dominated by two suppliers (here Teradyne &amp; Advantest in ATE). <em>Why it matters:</em> rational duopolies tend to compete on technology and reference wins rather than price, protecting margins. <a href="#s1">↩ back</a></p>
+      <p id="g-cagr"><strong>CAGR (Compound Annual Growth Rate)</strong> — The smoothed annual growth rate over a period. Formula: (End/Start)^(1/years) − 1. <em>Why it matters:</em> normalizes multi-year growth for comparison. <a href="#s2">↩ back</a></p>
+      <p><strong>P/S (Price-to-Sales)</strong> — Market cap ÷ revenue. FTA scale: &gt;30 Euphoric, &gt;18 Excited, &gt;8 Optimistic, 4–8 Aware, &lt;4 Cautious, &lt;2 Pessimistic. <em>Why it matters:</em> works even when earnings are volatile or depressed. <a href="#s2">↩ back</a></p>
+      <p><strong>FCF (Free Cash Flow)</strong> — Operating cash flow − capex. <em>Why it matters:</em> the cash actually available for buybacks, dividends, and reinvestment. <a href="#s4">↩ back</a></p>
+      <p><strong>EV/EBITDA</strong> — Enterprise value ÷ earnings before interest, tax, depreciation &amp; amortization. <em>Why it matters:</em> capital-structure-neutral valuation. <a href="#s9">↩ back</a></p>
+      <p><strong>HBM (High-Bandwidth Memory)</strong> — Vertically stacked DRAM used in AI accelerators; far harder to test than standard DRAM. <em>Why it matters:</em> rising HBM content raises test intensity, a core TER tailwind. <a href="#s3">↩ back</a></p>
+      <p><strong>RPO / Test intensity</strong> — "Test intensity" = test equipment demand per unit of silicon; it rises with complexity. <em>Why it matters:</em> lets TER grow even without unit-volume growth. <a href="#s10">↩ back</a></p>
+      <h3>Methodology</h3>
+      <p>Subject-company financials are sourced from Teradyne's Q1 2026 8-K/earnings exhibit (filed April 2026) and standardized historical statements; price/market-cap from public market data as of the June 5, 2026 close. Peer figures other than market cap are approximations and labeled as such. Scenario targets are FTA probability-weighted judgments, not guarantees. This is an educational research note, not investment advice.</p>
+    </div>
+  </section>
+
+  </div>
+  <footer>
+    <strong>Foundational Trading Academy · Investment Research Hub</strong><br>
+    TER deep dive · Generated June 10, 2026 · FTA Advanced Analysis Framework.<br>
+    For informational and educational purposes only; not investment advice. Past performance is not indicative of future results. Always conduct your own due diligence.
+  </footer>
+</div>
+
+<div class="modal" id="modal" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="modal-box"><span class="modal-close" onclick="document.getElementById('modal').classList.remove('open')">✕ close</span><div class="canvas-wrap"><canvas id="modalCanvas"></canvas></div></div>
+</div>
+
+<script>
+// collapsible
+document.querySelectorAll('.card-head').forEach(h=>h.addEventListener('click',()=>h.parentElement.classList.toggle('collapsed')));
+
+const GREEN='#145A22',GOLD='#FCC55B',RED='#a8341f',FOREST='#243D27',MUT='#5d6155';
+Chart.defaults.font.family="'JetBrains Mono', monospace";
+Chart.defaults.font.size=10;Chart.defaults.color=MUT;
+const charts={};
+function mk(id,cfg){const el=document.getElementById(id);if(!el)return;charts[id]=new Chart(el,cfg);}
+const noLeg={plugins:{legend:{display:false}}};
+
+mk('cRev',{type:'bar',data:{labels:['2021','2022','2023','2024','2025','TTM'],datasets:[{data:[3703,3155,2676,2820,3190,3787],backgroundColor:GREEN}]},options:{...noLeg,maintainAspectRatio:false,scales:{y:{beginAtZero:true}}}});
+mk('cMix',{type:'doughnut',data:{labels:['SoC Test','Memory Test','Robotics','Product Test'],datasets:[{data:[882,203,91,80],backgroundColor:[GREEN,GOLD,FOREST,'#9aa873']}]},options:{maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{boxWidth:10,font:{size:9}}}}}});
+mk('cQRev',{type:'bar',data:{labels:["Q1'25","Q4'25","Q1'26","Q2'26E"],datasets:[{data:[686,1083,1282,1200],backgroundColor:[FOREST,FOREST,GREEN,GOLD]}]},options:{...noLeg,maintainAspectRatio:false,scales:{y:{beginAtZero:true}}}});
+mk('cMargin',{type:'line',data:{labels:["Q1'25","Q4'25","Q1'26"],datasets:[{data:[20.5,29.0,37.5],borderColor:GOLD,backgroundColor:'rgba(252,197,91,.2)',fill:true,tension:.3}]},options:{...noLeg,maintainAspectRatio:false}});
+mk('cFcf',{type:'bar',data:{labels:['2021','2022','2023','2024','2025','TTM'],datasets:[{data:[966,415,426,474,450,553],backgroundColor:GREEN}]},options:{...noLeg,maintainAspectRatio:false}});
+mk('cNi',{type:'bar',data:{labels:['2021','2022','2023','2024','2025','TTM'],datasets:[{type:'bar',label:'Net Income $M',data:[1015,715,449,542,554,854],backgroundColor:FOREST,yAxisID:'y'},{type:'line',label:'EPS $',data:[5.53,4.22,2.73,3.32,3.47,5.40],borderColor:GOLD,backgroundColor:GOLD,yAxisID:'y1',tension:.3}]},options:{maintainAspectRatio:false,plugins:{legend:{labels:{boxWidth:10,font:{size:9}}}},scales:{y:{position:'left'},y1:{position:'right',grid:{drawOnChartArea:false}}}}});
+mk('cScen',{type:'bar',data:{labels:['Bear','Base','Bull'],datasets:[{data:[260,410,520],backgroundColor:[RED,GOLD,GREEN]}]},options:{...noLeg,maintainAspectRatio:false,scales:{y:{beginAtZero:false,suggestedMin:200}}}});
+mk('cAi',{type:'line',data:{labels:["Q4'25","Q1'26"],datasets:[{data:[60,70],borderColor:GREEN,backgroundColor:'rgba(20,90,34,.18)',fill:true,tension:.2}]},options:{...noLeg,maintainAspectRatio:false,scales:{y:{suggestedMin:40,suggestedMax:80}}}});
+mk('cSoc',{type:'bar',data:{labels:["Q1'25e","Q4'25e","Q1'26"],datasets:[{data:[430,720,882],backgroundColor:GREEN}]},options:{...noLeg,maintainAspectRatio:false}});
+
+// zoom modal
+let modalChart=null;
+function zoom(id){const src=charts[id];if(!src)return;document.getElementById('modal').classList.add('open');
+  if(modalChart)modalChart.destroy();
+  const cfg=JSON.parse(JSON.stringify(src.config._config));cfg.options=cfg.options||{};cfg.options.maintainAspectRatio=false;
+  modalChart=new Chart(document.getElementById('modalCanvas'),cfg);}
+</script>
+</body>
+</html>
