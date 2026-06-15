@@ -7,147 +7,147 @@
 <link href="https://fonts.googleapis.com/css2?family=Questrial&family=Quicksand:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --green: #145A22;
-  --dark-green: #0A3A14;
-  --forest: #243D27;
-  --light-green: #f0faf2;
-  --gold: #FCC55B;
-  --gold-muted: #e8b84a;
-  --gold-light: #fffbf0;
-  --beige: #D9CEBD;
-  --beige-light: #EDE8E0;
-  --beige-card: #f6f3ed;
-  --white: #FAFAF8;
-  --dark: #1a1a1a;
-  --muted: #5d6155;
-  --red: #C0392B;
-  --line: #d8d1c4;
-  --shadow: 0 1px 3px rgba(0,0,0,0.06);
-  --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
-  --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
-  --radius: 12px;
+--green: #145A22;
+--dark-green: #0A3A14;
+--forest: #243D27;
+--light-green: #f0faf2;
+--gold: #FCC55B;
+--gold-muted: #e8b84a;
+--gold-light: #fffbf0;
+--beige: #D9CEBD;
+--beige-light: #EDE8E0;
+--beige-card: #f6f3ed;
+--white: #FAFAF8;
+--dark: #1a1a1a;
+--muted: #5d6155;
+--red: #C0392B;
+--line: #d8d1c4;
+--shadow: 0 1px 3px rgba(0,0,0,0.06);
+--shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+--shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+--radius: 12px;
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 body {
-  font-family: 'Quicksand', sans-serif;
-  font-weight: 500;
-  color: var(--dark);
-  background: var(--beige-light);
-  line-height: 1.7;
-  font-size: 15px;
+font-family: 'Quicksand', sans-serif;
+font-weight: 500;
+color: var(--dark);
+background: var(--beige-light);
+line-height: 1.7;
+font-size: 15px;
 }
 
 /* HERO */
 .hero {
-  background: linear-gradient(135deg, #071f0b 0%, #0A3A14 30%, #145A22 70%, #243D27 100%);
-  color: #fff;
-  padding: 60px 48px 50px;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
+background: linear-gradient(135deg, #071f0b 0%, #0A3A14 30%, #145A22 70%, #243D27 100%);
+color: #fff;
+padding: 60px 48px 50px;
+text-align: center;
+position: relative;
+overflow: hidden;
 }
 .hero::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: radial-gradient(ellipse at 30% 50%, rgba(252,197,91,0.08) 0%, transparent 60%),
-              radial-gradient(ellipse at 70% 30%, rgba(252,197,91,0.05) 0%, transparent 50%);
+content: '';
+position: absolute;
+top: 0; left: 0; right: 0; bottom: 0;
+background: radial-gradient(ellipse at 30% 50%, rgba(252,197,91,0.08) 0%, transparent 60%),
+radial-gradient(ellipse at 70% 30%, rgba(252,197,91,0.05) 0%, transparent 50%);
 }
 .hero::after {
-  content: '';
-  position: absolute;
-  bottom: 0; left: 0; right: 0; height: 4px;
-  background: linear-gradient(90deg, var(--gold), var(--gold-muted), var(--gold));
+content: '';
+position: absolute;
+bottom: 0; left: 0; right: 0; height: 4px;
+background: linear-gradient(90deg, var(--gold), var(--gold-muted), var(--gold));
 }
 .hero-content { position: relative; z-index: 1; }
 .hero-badge {
-  font-family: 'Questrial', sans-serif;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  font-size: 0.7rem;
-  color: var(--gold);
-  margin-bottom: 12px;
+font-family: 'Questrial', sans-serif;
+letter-spacing: 0.3em;
+text-transform: uppercase;
+font-size: 0.7rem;
+color: var(--gold);
+margin-bottom: 12px;
 }
 .hero h1 {
-  font-family: 'Cormorant Garamond', serif;
-  font-style: italic;
-  font-weight: 700;
-  font-size: 3.2rem;
-  line-height: 1.1;
-  margin-bottom: 8px;
+font-family: 'Cormorant Garamond', serif;
+font-style: italic;
+font-weight: 700;
+font-size: 3.2rem;
+line-height: 1.1;
+margin-bottom: 8px;
 }
 .subtitle {
-  font-family: 'Quicksand', sans-serif;
-  font-size: 0.95rem;
-  color: rgba(255,255,255,0.7);
-  font-style: italic;
-  margin-bottom: 28px;
+font-family: 'Quicksand', sans-serif;
+font-size: 0.95rem;
+color: rgba(255,255,255,0.7);
+font-style: italic;
+margin-bottom: 28px;
 }
 .hero-stats {
-  display: flex;
-  justify-content: center;
-  gap: 48px;
+display: flex;
+justify-content: center;
+gap: 48px;
 }
 .hero-stat .num {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 2.2rem;
-  font-weight: 700;
-  color: var(--gold);
+font-family: 'JetBrains Mono', monospace;
+font-size: 2.2rem;
+font-weight: 700;
+color: var(--gold);
 }
 .hero-stat .label {
-  font-family: 'Questrial', sans-serif;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  font-size: 0.65rem;
-  color: rgba(255,255,255,0.6);
-  margin-top: 2px;
+font-family: 'Questrial', sans-serif;
+letter-spacing: 0.15em;
+text-transform: uppercase;
+font-size: 0.65rem;
+color: rgba(255,255,255,0.6);
+margin-top: 2px;
 }
 
 /* FILTER BAR */
 .filter-bar {
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  background: var(--beige-light);
-  border-bottom: 1px solid var(--line);
-  padding: 14px 48px;
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  justify-content: center;
+position: sticky;
+top: 0;
+z-index: 50;
+background: var(--beige-light);
+border-bottom: 1px solid var(--line);
+padding: 14px 48px;
+display: flex;
+gap: 10px;
+flex-wrap: wrap;
+justify-content: center;
 }
 .filter-btn {
-  font-family: 'Questrial', sans-serif;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  font-size: 0.72rem;
-  padding: 8px 18px;
-  border-radius: 30px;
-  border: 1px solid var(--line);
-  background: var(--white);
-  color: var(--dark);
-  cursor: pointer;
-  transition: all 0.2s;
-  display: flex;
-  align-items: center;
-  gap: 6px;
+font-family: 'Questrial', sans-serif;
+letter-spacing: 0.08em;
+text-transform: uppercase;
+font-size: 0.72rem;
+padding: 8px 18px;
+border-radius: 30px;
+border: 1px solid var(--line);
+background: var(--white);
+color: var(--dark);
+cursor: pointer;
+transition: all 0.2s;
+display: flex;
+align-items: center;
+gap: 6px;
 }
 .filter-btn:hover { border-color: var(--green); color: var(--green); }
 .filter-btn.active {
-  background: var(--dark-green);
-  color: #fff;
-  border-color: var(--dark-green);
+background: var(--dark-green);
+color: #fff;
+border-color: var(--dark-green);
 }
 .filter-btn .count {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.62rem;
-  background: rgba(0,0,0,0.1);
-  padding: 1px 6px;
-  border-radius: 10px;
+font-family: 'JetBrains Mono', monospace;
+font-size: 0.62rem;
+background: rgba(0,0,0,0.1);
+padding: 1px 6px;
+border-radius: 10px;
 }
 .filter-btn.active .count {
-  background: rgba(255,255,255,0.2);
+background: rgba(255,255,255,0.2);
 }
 
 /* CONTENT */
@@ -157,251 +157,251 @@ body {
 .sector-group { margin: 32px 0; }
 .sector-group.hidden { display: none; }
 .sector-header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 16px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid var(--line);
+display: flex;
+align-items: center;
+gap: 12px;
+margin-bottom: 16px;
+padding-bottom: 12px;
+border-bottom: 1px solid var(--line);
 }
 .sector-icon { font-size: 1.5rem; }
 .sector-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-style: italic;
-  font-weight: 700;
-  font-size: 1.6rem;
-  color: var(--dark-green);
+font-family: 'Cormorant Garamond', serif;
+font-style: italic;
+font-weight: 700;
+font-size: 1.6rem;
+color: var(--dark-green);
 }
 .sector-count {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.7rem;
-  color: var(--green);
-  background: var(--light-green);
-  padding: 3px 10px;
-  border-radius: 20px;
-  margin-left: 8px;
+font-family: 'JetBrains Mono', monospace;
+font-size: 0.7rem;
+color: var(--green);
+background: var(--light-green);
+padding: 3px 10px;
+border-radius: 20px;
+margin-left: 8px;
 }
 
 /* REPORT GRID */
 .report-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 20px;
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+gap: 20px;
 }
 
 /* REPORT CARD */
 .report-card {
-  background: var(--white);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  padding: 24px;
-  text-decoration: none;
-  color: var(--dark);
-  transition: all 0.2s;
-  display: flex;
-  flex-direction: column;
-  box-shadow: var(--shadow);
+background: var(--white);
+border: 1px solid var(--line);
+border-radius: var(--radius);
+padding: 24px;
+text-decoration: none;
+color: var(--dark);
+transition: all 0.2s;
+display: flex;
+flex-direction: column;
+box-shadow: var(--shadow);
 }
 .report-card:hover {
-  box-shadow: var(--shadow-lg);
-  transform: translateY(-2px);
-  border-color: var(--gold);
+box-shadow: var(--shadow-lg);
+transform: translateY(-2px);
+border-color: var(--gold);
 }
 .card-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 6px;
+display: flex;
+justify-content: space-between;
+align-items: flex-start;
+margin-bottom: 6px;
 }
 .card-top .ticker {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--dark-green);
+font-family: 'JetBrains Mono', monospace;
+font-size: 1.5rem;
+font-weight: 700;
+color: var(--dark-green);
 }
 .card-top .conviction {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.78rem;
-  font-weight: 700;
-  background: var(--dark-green);
-  color: #fff;
-  padding: 3px 10px;
-  border-radius: 20px;
+font-family: 'JetBrains Mono', monospace;
+font-size: 0.78rem;
+font-weight: 700;
+background: var(--dark-green);
+color: #fff;
+padding: 3px 10px;
+border-radius: 20px;
 }
 .card-top .conviction.high { background: var(--green); }
 .company {
-  font-family: 'Quicksand', sans-serif;
-  font-style: italic;
-  color: var(--muted);
-  font-size: 0.88rem;
-  margin-bottom: 14px;
+font-family: 'Quicksand', sans-serif;
+font-style: italic;
+color: var(--muted);
+font-size: 0.88rem;
+margin-bottom: 14px;
 }
 .metrics {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin-bottom: 14px;
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 8px;
+margin-bottom: 14px;
 }
 .metric {
-  background: var(--beige-light);
-  padding: 8px 10px;
-  border-radius: 8px;
+background: var(--beige-light);
+padding: 8px 10px;
+border-radius: 8px;
 }
 .metric-label {
-  font-family: 'Questrial', sans-serif;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  font-size: 0.58rem;
-  color: var(--muted);
+font-family: 'Questrial', sans-serif;
+letter-spacing: 0.1em;
+text-transform: uppercase;
+font-size: 0.58rem;
+color: var(--muted);
 }
 .metric-value {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.95rem;
-  font-weight: 700;
-  color: var(--dark);
+font-family: 'JetBrains Mono', monospace;
+font-size: 0.95rem;
+font-weight: 700;
+color: var(--dark);
 }
 .metric-value.green { color: var(--green); }
 .card-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: auto;
-  padding-top: 10px;
-  border-top: 1px solid var(--line);
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-top: auto;
+padding-top: 10px;
+border-top: 1px solid var(--line);
 }
 .card-footer .date {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.72rem;
-  color: var(--muted);
+font-family: 'JetBrains Mono', monospace;
+font-size: 0.72rem;
+color: var(--muted);
 }
 .card-footer .arrow {
-  color: var(--gold-muted);
-  font-size: 1.1rem;
-  transition: transform 0.2s;
+color: var(--gold-muted);
+font-size: 1.1rem;
+transition: transform 0.2s;
 }
 .report-card:hover .arrow { transform: translateX(4px); }
 
 /* SECTOR EMPTY */
 .sector-empty {
-  text-align: center;
-  padding: 30px;
-  color: var(--muted);
-  font-style: italic;
-  font-size: 0.9rem;
+text-align: center;
+padding: 30px;
+color: var(--muted);
+font-style: italic;
+font-size: 0.9rem;
 }
 .sector-empty .empty-icon { font-size: 2rem; margin-bottom: 8px; opacity: 0.4; }
 
 /* LOADING */
 .loading {
-  text-align: center;
-  padding: 60px 20px;
-  color: var(--muted);
+text-align: center;
+padding: 60px 20px;
+color: var(--muted);
 }
 .loading .spinner {
-  width: 36px; height: 36px;
-  border: 3px solid var(--line);
-  border-top-color: var(--green);
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-  margin: 0 auto 16px;
+width: 36px; height: 36px;
+border: 3px solid var(--line);
+border-top-color: var(--green);
+border-radius: 50%;
+animation: spin 0.8s linear infinite;
+margin: 0 auto 16px;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 .loading-text {
-  font-family: 'Quicksand', sans-serif;
-  font-size: 0.9rem;
+font-family: 'Quicksand', sans-serif;
+font-size: 0.9rem;
 }
 
 /* ERROR */
 .error-msg {
-  text-align: center;
-  padding: 40px 20px;
-  color: var(--red);
-  font-size: 0.9rem;
+text-align: center;
+padding: 40px 20px;
+color: var(--red);
+font-size: 0.9rem;
 }
 
 /* FOOTER */
 .site-footer {
-  background: var(--dark-green);
-  color: rgba(255,255,255,0.6);
-  text-align: center;
-  padding: 30px 48px;
-  font-size: 0.75rem;
+background: var(--dark-green);
+color: rgba(255,255,255,0.6);
+text-align: center;
+padding: 30px 48px;
+font-size: 0.75rem;
 }
 .site-footer .brand {
-  font-family: 'Cormorant Garamond', serif;
-  font-style: italic;
-  font-weight: 700;
-  font-size: 1.1rem;
-  color: var(--gold);
-  margin-bottom: 4px;
+font-family: 'Cormorant Garamond', serif;
+font-style: italic;
+font-weight: 700;
+font-size: 1.1rem;
+color: var(--gold);
+margin-bottom: 4px;
 }
 .site-footer .sub {
-  font-family: 'Questrial', sans-serif;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  font-size: 0.6rem;
-  margin-bottom: 12px;
+font-family: 'Questrial', sans-serif;
+letter-spacing: 0.12em;
+text-transform: uppercase;
+font-size: 0.6rem;
+margin-bottom: 12px;
 }
 .site-footer .disclaimer {
-  max-width: 600px;
-  margin: 0 auto;
-  line-height: 1.5;
+max-width: 600px;
+margin: 0 auto;
+line-height: 1.5;
 }
 
 @media (max-width: 768px) {
-  .hero { padding: 40px 20px 36px; }
-  .hero h1 { font-size: 2.2rem; }
-  .hero-stats { gap: 24px; }
-  .hero-stat .num { font-size: 1.6rem; }
-  .filter-bar { padding: 12px 16px; }
-  .content { padding: 20px 16px 60px; }
-  .report-grid { grid-template-columns: 1fr; }
-  .site-footer { padding: 24px 20px; }
+.hero { padding: 40px 20px 36px; }
+.hero h1 { font-size: 2.2rem; }
+.hero-stats { gap: 24px; }
+.hero-stat .num { font-size: 1.6rem; }
+.filter-bar { padding: 12px 16px; }
+.content { padding: 20px 16px 60px; }
+.report-grid { grid-template-columns: 1fr; }
+.site-footer { padding: 24px 20px; }
 }
 </style>
 </head>
 <body>
 
 <header class="hero">
-  <div class="hero-content">
-    <div class="hero-badge">Foundational Trading Academy</div>
-    <h1>Investment Research Hub</h1>
-    <div class="subtitle">Deep-Dive Analysis &middot; FTA Framework &middot; Institutional Grade</div>
-    <div class="hero-stats">
-      <div class="hero-stat">
-        <div class="num" id="totalReports">—</div>
-        <div class="label">Reports</div>
-      </div>
-      <div class="hero-stat">
-        <div class="num" id="totalSectors">—</div>
-        <div class="label">Sectors</div>
-      </div>
-      <div class="hero-stat">
-        <div class="num" id="totalTickers">41</div>
-        <div class="label">Ticker Queue</div>
-      </div>
-    </div>
-  </div>
+<div class="hero-content">
+<div class="hero-badge">Foundational Trading Academy</div>
+<h1>Investment Research Hub</h1>
+<div class="subtitle">Deep-Dive Analysis &middot; FTA Framework &middot; Institutional Grade</div>
+<div class="hero-stats">
+<div class="hero-stat">
+<div class="num" id="totalReports">—</div>
+<div class="label">Reports</div>
+</div>
+<div class="hero-stat">
+<div class="num" id="totalSectors">—</div>
+<div class="label">Sectors</div>
+</div>
+<div class="hero-stat">
+<div class="num" id="totalTickers">41</div>
+<div class="label">Ticker Queue</div>
+</div>
+</div>
+</div>
 </header>
 
 <div class="filter-bar" id="filterBar">
-  <!-- Populated by JS -->
+<!-- Populated by JS -->
 </div>
 
 <main class="content" id="mainContent">
-  <div class="loading" id="loadingState">
-    <div class="spinner"></div>
-    <div class="loading-text">Loading reports from GitHub...</div>
-  </div>
+<div class="loading" id="loadingState">
+<div class="spinner"></div>
+<div class="loading-text">Loading reports from GitHub...</div>
+</div>
 </main>
 
 <footer class="site-footer">
-  <div class="brand">Foundational Trading Academy</div>
-  <div class="sub">Investment Research Hub &middot; FTA Advanced Analysis Framework</div>
-  <div class="disclaimer">
-    This site is for informational and educational purposes only and does not constitute investment advice.
-    Past performance is not indicative of future results. Always conduct your own due diligence.
-  </div>
+<div class="brand">Foundational Trading Academy</div>
+<div class="sub">Investment Research Hub &middot; FTA Advanced Analysis Framework</div>
+<div class="disclaimer">
+This site is for informational and educational purposes only and does not constitute investment advice.
+Past performance is not indicative of future results. Always conduct your own due diligence.
+</div>
 </footer>
 
 <script>
@@ -410,285 +410,292 @@ const REPO = 'marileegrace/fta-research-hub';
 const API_URL = `https://api.github.com/repos/${REPO}/contents/`;
 const RAW_URL = `https://raw.githubusercontent.com/${REPO}/main/`;
 
-// Ticker → Sector mapping
+// Ticker → Sector mapping.
+// A value may be a single sector string OR an array of sectors for
+// companies that legitimately span more than one category.
 const SECTOR_MAP = {
-  // Robotics
-  TER:'robotics', AMBA:'robotics', CGNX:'robotics', MBLY:'robotics', ZBRA:'robotics',
-  SYNA:'robotics', ALNT:'robotics', OUST:'robotics', NOVT:'robotics', PATH:'robotics', ZETA:'robotics',
-  // Software / AI
-  NOW:'software-ai', AMD:'software-ai', ORCL:'software-ai', AMZN:'software-ai', CRDO:'software-ai',
-  TSLA:'software-ai', NBIS:'software-ai', VRT:'software-ai', SATS:'software-ai',
-  TEM:'software-ai', HIMS:'software-ai', LMND:'software-ai', PGY:'software-ai',
-  // Energy
-  ET:'energy', FSLR:'energy', WULF:'energy', NXT:'energy', RUN:'energy',
-  // Data Centers
-  CORZ:'data-centers', APLD:'data-centers', IREN:'data-centers',
-  // Space Race
-  ASTS:'space-race', PL:'space-race', RDW:'space-race', FLY:'space-race',
-  BKSY:'space-race', SATL:'space-race',
-  // Healthcare
-  PRME:'healthcare', ABCL:'healthcare',
+// Robotics
+TER:'robotics', AMBA:'robotics', CGNX:'robotics', MBLY:'robotics', ZBRA:'robotics',
+SYNA:'robotics', ALNT:'robotics', OUST:'robotics', NOVT:'robotics', PATH:'robotics', ZETA:'robotics',
+// Software / AI
+NOW:'software-ai', AMD:'software-ai', ORCL:'software-ai', AMZN:'software-ai', CRDO:'software-ai',
+TSLA:'software-ai', NBIS:'software-ai', VRT:'software-ai', SATS:'software-ai',
+LMND:'software-ai', PGY:'software-ai',
+// Cross-listed: AI-driven healthcare companies — shown in BOTH sectors
+TEM:['software-ai','healthcare'], HIMS:['software-ai','healthcare'],
+// Energy
+ET:'energy', FSLR:'energy', WULF:'energy', NXT:'energy', RUN:'energy',
+// Data Centers
+CORZ:'data-centers', APLD:'data-centers', IREN:'data-centers',
+// Space Race
+ASTS:'space-race', PL:'space-race', RDW:'space-race', FLY:'space-race',
+BKSY:'space-race', SATL:'space-race',
+// Healthcare
+PRME:'healthcare', ABCL:'healthcare',
 };
 
 const SECTOR_META = {
-  'robotics':     { icon: '🤖', title: 'Robotics',      order: 1 },
-  'software-ai':  { icon: '💻', title: 'Software / AI',  order: 2 },
-  'energy':       { icon: '⚡', title: 'Energy',         order: 3 },
-  'data-centers': { icon: '🏗️', title: 'Data Centers',   order: 4 },
-  'space-race':   { icon: '🚀', title: 'Space Race',     order: 5 },
-  'healthcare':   { icon: '🧬', title: 'Healthcare',     order: 6 },
+'robotics': { icon: '🤖', title: 'Robotics', order: 1 },
+'software-ai': { icon: '💻', title: 'Software / AI', order: 2 },
+'energy': { icon: '⚡', title: 'Energy', order: 3 },
+'data-centers': { icon: '🏗️', title: 'Data Centers', order: 4 },
+'space-race': { icon: '🚀', title: 'Space Race', order: 5 },
+'healthcare': { icon: '🧬', title: 'Healthcare', order: 6 },
 };
+
+// Normalize a ticker's sector(s) to an array.
+function sectorsFor(ticker) {
+const s = SECTOR_MAP[ticker];
+if (!s) return ['other'];
+return Array.isArray(s) ? s : [s];
+}
 
 // ==================== MAIN ====================
 let allReports = [];
 let activeSector = 'all';
 
 async function init() {
-  try {
-    // 1. Fetch repo file list
-    const res = await fetch(API_URL);
-    if (!res.ok) throw new Error(`GitHub API error: ${res.status}`);
-    const files = await res.json();
+try {
+// 1. Fetch repo file list
+const res = await fetch(API_URL);
+if (!res.ok) throw new Error(`GitHub API error: ${res.status}`);
+const files = await res.json();
 
-    // 2. Filter for report HTML files
-    const reportFiles = files.filter(f =>
-      f.name.match(/^[A-Z]+_Investment_Report_\d{4}-\d{2}-\d{2}\.html$/)
-    );
+// 2. Filter for report HTML files
+const reportFiles = files.filter(f =>
+f.name.match(/^[A-Z]+_Investment_Report_\d{4}-\d{2}-\d{2}\.html$/)
+);
 
-    if (reportFiles.length === 0) {
-      showEmpty();
-      return;
-    }
+if (reportFiles.length === 0) {
+showEmpty();
+return;
+}
 
-    // 3. Fetch metadata from each report (first 3KB is enough)
-    const promises = reportFiles.map(f => fetchReportMeta(f.name));
-    allReports = (await Promise.all(promises)).filter(Boolean);
+// 3. Fetch metadata from each report (first 3KB is enough)
+const promises = reportFiles.map(f => fetchReportMeta(f.name));
+allReports = (await Promise.all(promises)).filter(Boolean);
 
-    // Sort by date descending
-    allReports.sort((a, b) => b.date.localeCompare(a.date));
+// Sort by date descending
+allReports.sort((a, b) => b.date.localeCompare(a.date));
 
-    // 4. Render
-    renderStats();
-    renderFilters();
-    renderReports();
+// 4. Render
+renderStats();
+renderFilters();
+renderReports();
 
-  } catch (err) {
-    console.error(err);
-    document.getElementById('mainContent').innerHTML =
-      `<div class="error-msg">Could not load reports. Please refresh the page.<br><small>${err.message}</small></div>`;
-  }
+} catch (err) {
+console.error(err);
+document.getElementById('mainContent').innerHTML =
+`<div class="error-msg">Could not load reports. Please refresh the page.<br><small>${err.message}</small></div>`;
+}
 }
 
 async function fetchReportMeta(filename) {
-  try {
-    const res = await fetch(RAW_URL + filename);
-    const html = await res.text();
+try {
+const res = await fetch(RAW_URL + filename);
+const html = await res.text();
 
-    // Parse ticker and date from filename
-    const parts = filename.match(/^([A-Z]+)_Investment_Report_(\d{4}-\d{2}-\d{2})\.html$/);
-    if (!parts) return null;
-    const ticker = parts[1];
-    const date = parts[2];
+// Parse ticker and date from filename
+const parts = filename.match(/^([A-Z]+)_Investment_Report_(\d{4}-\d{2}-\d{2})\.html$/);
+if (!parts) return null;
+const ticker = parts[1];
+const date = parts[2];
 
-    // Extract metadata from HTML content
-    const company = extractBetween(html, '<h1>', '</h1>')
-      ?.replace(/<[^>]+>/g, '')
-      ?.replace(/\s*\([A-Z]+\)\s*/, '')
-      ?.trim() || ticker;
+// Extract metadata from HTML content
+const company = extractBetween(html, '<h1>', '</h1>')
+?.replace(/<[^>]+>/g, '')
+?.replace(/\s*\([A-Z]+\)\s*/, '')
+?.trim() || ticker;
 
-    // Try to find conviction from verdict div or other patterns
-    const convictionMatch = html.match(/(?:Conviction|conviction)[^\d]*(\d+\.?\d*)\s*[\/\\]\s*10/i);
-    const conviction = convictionMatch ? convictionMatch[1] : null;
+// Try to find conviction from verdict div or other patterns
+const convictionMatch = html.match(/(?:Conviction|conviction)[^\d]*(\d+\.?\d*)\s*[\/\\]\s*10/i);
+const conviction = convictionMatch ? convictionMatch[1] : null;
 
-    // Try to find price
-    const priceMatch = html.match(/(?:Price|price)[^$]*\$(\d+[\d,.]*)/i)
-      || html.match(/class="val">\$(\d+[\d,.]*)/);
-    const price = priceMatch ? '$' + priceMatch[1] : null;
+// Try to find price
+const priceMatch = html.match(/(?:Price|price)[^$]*\$(\d+[\d,.]*)/i)
+|| html.match(/class="val">\$(\d+[\d,.]*)/);
+const price = priceMatch ? '$' + priceMatch[1] : null;
 
-    // Try to find market cap
-    const mcapMatch = html.match(/(?:Market\s*Cap|market\s*cap|Mkt\s*Cap)[^$]*\$?([\d,.]+\s*[BMT])/i)
-      || html.match(/Market Cap<\/div><div class="val">\$?([\d,.]+[BMT]?)/i);
-    const mcap = mcapMatch ? '$' + mcapMatch[1].trim() : null;
+// Try to find market cap
+const mcapMatch = html.match(/(?:Market\s*Cap|market\s*cap|Mkt\s*Cap)[^$]*\$?([\d,.]+\s*[BMT])/i)
+|| html.match(/Market Cap<\/div><div class="val">\$?([\d,.]+[BMT]?)/i);
+const mcap = mcapMatch ? '$' + mcapMatch[1].trim() : null;
 
-    // Try to find P/E
-    const peMatch = html.match(/(?:P\/E|P\/E\s*Ratio)[^\d]*([\d,.]+)\s*x?/i);
-    const pe = peMatch ? peMatch[1] + 'x' : null;
+// Try to find P/E
+const peMatch = html.match(/(?:P\/E|P\/E\s*Ratio)[^\d]*([\d,.]+)\s*x?/i);
+const pe = peMatch ? peMatch[1] + 'x' : null;
 
-    // Try to find revenue growth
-    const revGrowthMatch = html.match(/(?:Revenue\s*Growth|Rev\s*Growth)[^\d+-]*([+-]?\d+[\d.]*%)/i);
-    const revGrowth = revGrowthMatch ? revGrowthMatch[1] : null;
+// Try to find revenue growth
+const revGrowthMatch = html.match(/(?:Revenue\s*Growth|Rev\s*Growth)[^\d+-]*([+-]?\d+[\d.]*%)/i);
+const revGrowth = revGrowthMatch ? revGrowthMatch[1] : null;
 
-    // Fallback metrics for non-standard companies (MLPs, REITs, etc.)
-    let altMetric = null;
-    let altMetricLabel = null;
-    if (!pe || !revGrowth) {
-      // Try Distribution/Dividend Yield
-      const yieldMatch = html.match(/(?:Distribution\s*Yield|Div(?:idend)?\s*Yield|Yield)[^\d]*([\d,.]+%)/i);
-      if (yieldMatch && !pe) { altMetric = yieldMatch[1]; altMetricLabel = 'YIELD'; }
+// Fallback metrics for non-standard companies (MLPs, REITs, etc.)
+let altMetric = null;
+let altMetricLabel = null;
+if (!pe || !revGrowth) {
+// Try Distribution/Dividend Yield
+const yieldMatch = html.match(/(?:Distribution\s*Yield|Div(?:idend)?\s*Yield|Yield)[^\d]*([\d,.]+%)/i);
+if (yieldMatch && !pe) { altMetric = yieldMatch[1]; altMetricLabel = 'YIELD'; }
 
-      // Try EV/EBITDA
-      const evMatch = html.match(/(?:EV\/EBITDA|EV\s*\/\s*EBITDA)[^\d]*([\d,.]+)\s*x?/i);
-      if (evMatch && !altMetric && !revGrowth) { altMetric = evMatch[1] + 'x'; altMetricLabel = 'EV/EBITDA'; }
+// Try EV/EBITDA
+const evMatch = html.match(/(?:EV\/EBITDA|EV\s*\/\s*EBITDA)[^\d]*([\d,.]+)\s*x?/i);
+if (evMatch && !altMetric && !revGrowth) { altMetric = evMatch[1] + 'x'; altMetricLabel = 'EV/EBITDA'; }
 
-      // Try FCF Margin
-      if (!altMetric && !revGrowth) {
-        const fcfMatch = html.match(/(?:FCF\s*Margin)[^\d]*([\d,.]+%)/i);
-        if (fcfMatch) { altMetric = fcfMatch[1]; altMetricLabel = 'FCF MARGIN'; }
-      }
+// Try FCF Margin
+if (!altMetric && !revGrowth) {
+const fcfMatch = html.match(/(?:FCF\s*Margin)[^\d]*([\d,.]+%)/i);
+if (fcfMatch) { altMetric = fcfMatch[1]; altMetricLabel = 'FCF MARGIN'; }
+}
 
-      // Try P/S
-      if (!altMetric && !pe) {
-        const psMatch = html.match(/(?:P\/S|P\/S\s*Ratio)[^\d]*([\d,.]+)\s*x?/i);
-        if (psMatch) { altMetric = psMatch[1] + 'x'; altMetricLabel = 'P/S'; }
-      }
-    }
+// Try P/S
+if (!altMetric && !pe) {
+const psMatch = html.match(/(?:P\/S|P\/S\s*Ratio)[^\d]*([\d,.]+)\s*x?/i);
+if (psMatch) { altMetric = psMatch[1] + 'x'; altMetricLabel = 'P/S'; }
+}
+}
 
-    // Try to find bull/bear thesis
-    const thesisMatch = html.match(/\b(BULL|BEAR|NEUTRAL)\b/i);
-    const thesis = thesisMatch ? thesisMatch[1].toUpperCase() : null;
+// Try to find bull/bear thesis
+const thesisMatch = html.match(/\b(BULL|BEAR|NEUTRAL)\b/i);
+const thesis = thesisMatch ? thesisMatch[1].toUpperCase() : null;
 
-    const sector = SECTOR_MAP[ticker] || 'other';
+const sectors = sectorsFor(ticker);
 
-    return { ticker, date, filename, company, conviction, price, mcap, pe, revGrowth, altMetric, altMetricLabel, thesis, sector };
-  } catch (err) {
-    console.warn(`Failed to fetch metadata for ${filename}:`, err);
-    return null;
-  }
+return { ticker, date, filename, company, conviction, price, mcap, pe, revGrowth, altMetric, altMetricLabel, thesis, sectors };
+} catch (err) {
+console.warn(`Failed to fetch metadata for ${filename}:`, err);
+return null;
+}
 }
 
 function extractBetween(str, start, end) {
-  const i = str.indexOf(start);
-  if (i === -1) return null;
-  const j = str.indexOf(end, i + start.length);
-  if (j === -1) return null;
-  return str.substring(i + start.length, j);
+const i = str.indexOf(start);
+if (i === -1) return null;
+const j = str.indexOf(end, i + start.length);
+if (j === -1) return null;
+return str.substring(i + start.length, j);
 }
 
 // ==================== RENDERING ====================
 function renderStats() {
-  document.getElementById('totalReports').textContent = allReports.length;
-  const sectors = new Set(allReports.map(r => r.sector));
-  document.getElementById('totalSectors').textContent = sectors.size;
+document.getElementById('totalReports').textContent = allReports.length;
+const sectors = new Set();
+allReports.forEach(r => r.sectors.forEach(s => sectors.add(s)));
+document.getElementById('totalSectors').textContent = sectors.size;
 }
 
 function renderFilters() {
-  const bar = document.getElementById('filterBar');
-  const sectorCounts = {};
-  allReports.forEach(r => {
-    sectorCounts[r.sector] = (sectorCounts[r.sector] || 0) + 1;
-  });
+const bar = document.getElementById('filterBar');
+const sectorCounts = {};
+allReports.forEach(r => {
+r.sectors.forEach(s => { sectorCounts[s] = (sectorCounts[s] || 0) + 1; });
+});
 
-  let html = `<button class="filter-btn active" onclick="filterSector('all')">All<span class="count">${allReports.length}</span></button>`;
+let html = `<button class="filter-btn active" onclick="filterSector('all')">All<span class="count">${allReports.length}</span></button>`;
 
-  Object.entries(SECTOR_META)
-    .sort((a, b) => a[1].order - b[1].order)
-    .forEach(([key, meta]) => {
-      const count = sectorCounts[key] || 0;
-      html += `<button class="filter-btn" onclick="filterSector('${key}')">${meta.title}<span class="count">${count}</span></button>`;
-    });
+Object.entries(SECTOR_META)
+.sort((a, b) => a[1].order - b[1].order)
+.forEach(([key, meta]) => {
+const count = sectorCounts[key] || 0;
+html += `<button class="filter-btn" onclick="filterSector('${key}')">${meta.title}<span class="count">${count}</span></button>`;
+});
 
-  bar.innerHTML = html;
+bar.innerHTML = html;
 }
 
 function renderReports() {
-  const main = document.getElementById('mainContent');
+const main = document.getElementById('mainContent');
 
-  // Group by sector
-  const grouped = {};
-  allReports.forEach(r => {
-    if (!grouped[r.sector]) grouped[r.sector] = [];
-    grouped[r.sector].push(r);
-  });
+// Group by sector — a report may appear in more than one group.
+const grouped = {};
+allReports.forEach(r => {
+r.sectors.forEach(s => {
+if (!grouped[s]) grouped[s] = [];
+grouped[s].push(r);
+});
+});
 
-  let html = '';
+let html = '';
 
-  Object.entries(SECTOR_META)
-    .sort((a, b) => a[1].order - b[1].order)
-    .forEach(([key, meta]) => {
-      const reports = grouped[key] || [];
-      const totalInSector = Object.keys(SECTOR_MAP).filter(t => SECTOR_MAP[t] === key).length;
-      const isHidden = activeSector !== 'all' && activeSector !== key;
+Object.entries(SECTOR_META)
+.sort((a, b) => a[1].order - b[1].order)
+.forEach(([key, meta]) => {
+const reports = grouped[key] || [];
+const totalInSector = Object.keys(SECTOR_MAP).filter(t => sectorsFor(t).includes(key)).length;
+const isHidden = activeSector !== 'all' && activeSector !== key;
 
-      html += `<div class="sector-group${isHidden ? ' hidden' : ''}" data-sector="${key}">`;
-      html += `<div class="sector-header">`;
-      html += `<div class="sector-icon">${meta.icon}</div>`;
-      html += `<div><div class="sector-title">${meta.title}</div></div>`;
-      html += `<div class="sector-count">${reports.length} / ${totalInSector} tickers</div>`;
-      html += `</div>`;
-      html += `<div class="report-grid">`;
+html += `<div class="sector-group${isHidden ? ' hidden' : ''}" data-sector="${key}">`;
+html += `<div class="sector-header">`;
+html += `<div class="sector-icon">${meta.icon}</div>`;
+html += `<div><div class="sector-title">${meta.title}</div></div>`;
+html += `<div class="sector-count">${reports.length} / ${totalInSector} tickers</div>`;
+html += `</div>`;
+html += `<div class="report-grid">`;
 
-      if (reports.length === 0) {
-        html += `<div class="sector-empty"><div class="empty-icon">📋</div><p>Reports coming soon</p></div>`;
-      } else {
-        reports.forEach(r => {
-          const convictionNum = parseFloat(r.conviction) || 0;
-          const convictionClass = convictionNum >= 7 ? ' high' : '';
-          const dateFormatted = formatDate(r.date);
+if (reports.length === 0) {
+html += `<div class="sector-empty"><div class="empty-icon">📋</div><p>Reports coming soon</p></div>`;
+} else {
+reports.forEach(r => {
+const convictionNum = parseFloat(r.conviction) || 0;
+const convictionClass = convictionNum >= 7 ? ' high' : '';
+const dateFormatted = formatDate(r.date);
 
-          html += `<a href="${r.filename}" class="report-card">`;
-          html += `<div class="card-top">`;
-          html += `<div class="ticker">${r.ticker}</div>`;
-          if (r.conviction) html += `<div class="conviction${convictionClass}">${r.conviction}/10</div>`;
-          html += `</div>`;
-          html += `<div class="company">${r.company}</div>`;
-          html += `<div class="metrics">`;
-          if (r.price) html += `<div class="metric"><div class="metric-label">PRICE</div><div class="metric-value">${r.price}</div></div>`;
-          if (r.mcap) html += `<div class="metric"><div class="metric-label">MKT CAP</div><div class="metric-value">${r.mcap}</div></div>`;
-          // 3rd metric: P/E or fallback alt metric
-          if (r.pe) {
-            html += `<div class="metric"><div class="metric-label">P/E</div><div class="metric-value">${r.pe}</div></div>`;
-          } else if (r.altMetric && !r.revGrowth) {
-            html += `<div class="metric"><div class="metric-label">${r.altMetricLabel}</div><div class="metric-value">${r.altMetric}</div></div>`;
-          }
-          // 4th metric: Rev Growth or fallback alt metric
-          if (r.revGrowth) {
-            html += `<div class="metric"><div class="metric-label">REV GROWTH</div><div class="metric-value green">${r.revGrowth}</div></div>`;
-          } else if (r.altMetric && r.pe) {
-            html += `<div class="metric"><div class="metric-label">${r.altMetricLabel}</div><div class="metric-value">${r.altMetric}</div></div>`;
-          }
-          html += `</div>`;
-          html += `<div class="card-footer">`;
-          html += `<span class="date">${dateFormatted}</span>`;
-          html += `<span class="arrow">&rarr;</span>`;
-          html += `</div>`;
-          html += `</a>`;
-        });
-      }
+html += `<a href="${r.filename}" class="report-card">`;
+html += `<div class="card-top">`;
+html += `<div class="ticker">${r.ticker}</div>`;
+if (r.conviction) html += `<div class="conviction${convictionClass}">${r.conviction}/10</div>`;
+html += `</div>`;
+html += `<div class="company">${r.company}</div>`;
+html += `<div class="metrics">`;
+if (r.price) html += `<div class="metric"><div class="metric-label">PRICE</div><div class="metric-value">${r.price}</div></div>`;
+if (r.mcap) html += `<div class="metric"><div class="metric-label">MKT CAP</div><div class="metric-value">${r.mcap}</div></div>`;
+// 3rd metric: P/E or fallback alt metric
+if (r.pe) {
+html += `<div class="metric"><div class="metric-label">P/E</div><div class="metric-value">${r.pe}</div></div>`;
+} else if (r.altMetric && !r.revGrowth) {
+html += `<div class="metric"><div class="metric-label">${r.altMetricLabel}</div><div class="metric-value">${r.altMetric}</div></div>`;
+}
+// 4th metric: Rev Growth or fallback alt metric
+if (r.revGrowth) {
+html += `<div class="metric"><div class="metric-label">REV GROWTH</div><div class="metric-value green">${r.revGrowth}</div></div>`;
+} else if (r.altMetric && r.pe) {
+html += `<div class="metric"><div class="metric-label">${r.altMetricLabel}</div><div class="metric-value">${r.altMetric}</div></div>`;
+}
+html += `</div>`;
+html += `<div class="card-footer">`;
+html += `<span class="date">${dateFormatted}</span>`;
+html += `<span class="arrow">&rarr;</span>`;
+html += `</div>`;
+html += `</a>`;
+});
+}
 
-      html += `</div></div>`;
-    });
+html += `</div></div>`;
+});
 
-  main.innerHTML = html;
+main.innerHTML = html;
 }
 
 function filterSector(sector) {
-  activeSector = sector;
+activeSector = sector;
 
-  // Update buttons
-  document.querySelectorAll('.filter-btn').forEach(btn => {
-    btn.classList.toggle('active', btn.textContent.includes(sector === 'all' ? 'All' :
-      SECTOR_META[sector]?.title || ''));
-  });
+// Update active state on buttons properly
+const btns = document.querySelectorAll('.filter-btn');
+btns.forEach(btn => btn.classList.remove('active'));
+event.target.closest('.filter-btn').classList.add('active');
 
-  // Re-render (simplest approach)
-  // Update active state on buttons properly
-  const btns = document.querySelectorAll('.filter-btn');
-  btns.forEach(btn => btn.classList.remove('active'));
-  event.target.closest('.filter-btn').classList.add('active');
-
-  // Show/hide sectors
-  document.querySelectorAll('.sector-group').forEach(g => {
-    if (sector === 'all') {
-      g.classList.remove('hidden');
-    } else {
-      g.classList.toggle('hidden', g.dataset.sector !== sector);
-    }
-  });
+// Show/hide sectors
+document.querySelectorAll('.sector-group').forEach(g => {
+if (sector === 'all') {
+g.classList.remove('hidden');
+} else {
+g.classList.toggle('hidden', g.dataset.sector !== sector);
+}
+});
 }
 
 function formatDate(dateStr) {
-  const d = new Date(dateStr + 'T00:00:00');
-  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+const d = new Date(dateStr + 'T00:00:00');
+return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 }
 
 // ==================== INIT ====================
