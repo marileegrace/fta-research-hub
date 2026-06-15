@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TEM — Tempus AI | Investment Research Report</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Questrial&family=Quicksand:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  --green:#145A22; --dark-green:#0A3A14; --forest:#243D27;
+  --gold:#FCC55B; --gold-deep:#e0a838;
+  --beige:#EDE8E0; --beige-card:#f6f3ed;
+  --ink:#23241f; --muted:#5d6155;
+  --red:#a8341f; --line:#d8d1c4;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Quicksand',sans-serif;background:var(--beige);color:var(--ink);line-height:1.6;display:flex}
+
+/* SIDEBAR */
+.sidebar{position:sticky;top:0;height:100vh;width:262px;flex-shrink:0;
+  background:linear-gradient(180deg,#071f0b,#0A3A14 40%,#145A22);
+  border-right:2px solid var(--gold);padding:26px 20px;overflow-y:auto;color:var(--beige)}
+.brand{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:1.9rem;color:var(--gold);line-height:1.05;margin-bottom:4px}
+.brand-sub{font-family:'Questrial',sans-serif;font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;color:#bcd6c0;margin-bottom:22px}
+.ticker-box{background:rgba(255,255,255,.06);border:1px solid rgba(252,197,91,.4);border-radius:10px;padding:14px;margin-bottom:24px}
+.ticker-box .tk{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:1.5rem;color:var(--gold)}
+.ticker-box .nm{font-size:.72rem;color:#bcd6c0;margin-bottom:8px}
+.ticker-box .px{font-family:'JetBrains Mono',monospace;font-size:1.35rem;font-weight:600;color:#fff}
+.ticker-box .px small{font-size:.7rem;color:#9fc0a4}
+nav a{display:flex;gap:9px;align-items:baseline;color:#d6e4d8;text-decoration:none;font-size:.83rem;padding:7px 8px;border-radius:7px;transition:.15s}
+nav a:hover{background:rgba(252,197,91,.13);color:#fff}
+nav a .n{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--gold);min-width:18px}
+.side-foot{margin-top:20px;padding-top:16px;border-top:1px solid rgba(255,255,255,.12);font-size:.62rem;color:#9fc0a4;line-height:1.5}
+
+/* MAIN */
+.main{flex:1;min-width:0}
+.hero{position:relative;overflow:hidden;background:linear-gradient(120deg,var(--dark-green),var(--green) 60%);color:#fff;padding:46px 48px 40px}
+.hero::after{content:"";position:absolute;right:-120px;top:-120px;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,rgba(252,197,91,.28),transparent 70%)}
+.hero .eyebrow{font-family:'Questrial',sans-serif;letter-spacing:.28em;text-transform:uppercase;font-size:.72rem;color:var(--gold);margin-bottom:14px}
+.hero h1{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:3rem;line-height:1.05;margin-bottom:6px}
+.hero h1 .sym{font-family:'JetBrains Mono',monospace;font-size:1.5rem;color:var(--gold);vertical-align:middle;margin-left:10px}
+.hero .sub{font-size:1rem;color:#cfe1d1;max-width:680px;position:relative;z-index:2}
+.verdict{display:inline-flex;align-items:center;gap:10px;margin-top:20px;background:rgba(252,197,91,.16);border:1px solid var(--gold);border-radius:40px;padding:8px 18px;position:relative;z-index:2}
+.verdict .lab{font-family:'Questrial',sans-serif;letter-spacing:.16em;text-transform:uppercase;font-size:.7rem;color:var(--gold)}
+.verdict .val{font-family:'JetBrains Mono',monospace;font-weight:700;color:#fff;font-size:.95rem}
+
+/* KPI STRIP */
+.kpi-strip{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:var(--line);border-bottom:1px solid var(--line)}
+.kpi{background:var(--beige-card);padding:16px 14px}
+.kpi .lab{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:.1em;font-size:.6rem;color:var(--muted);margin-bottom:6px}
+.kpi .val{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:1.25rem;color:var(--green);line-height:1.1}
+.kpi .st{font-size:.66rem;color:var(--muted);margin-top:3px}
+
+/* CONTENT */
+.content{max-width:1080px;margin:0 auto;padding:38px 48px 80px}
+.card{background:var(--beige-card);border-radius:14px;margin-bottom:26px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.card-head{display:flex;align-items:center;gap:14px;padding:18px 22px;border-left:5px solid var(--green);cursor:pointer;user-select:none}
+.badge{width:34px;height:34px;border-radius:9px;background:var(--green);color:#fff;font-family:'JetBrains Mono',monospace;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:.95rem}
+.card-head h2{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:1.6rem;color:var(--dark-green);flex:1;line-height:1.15}
+.chev{transition:.25s;color:var(--green);font-size:1.1rem}
+.card.collapsed .chev{transform:rotate(-90deg)}
+.card-body{padding:4px 24px 24px}
+.card.collapsed .card-body{display:none}
+p{margin-bottom:13px}
+.card-body h3{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:.08em;font-size:.82rem;color:var(--green);margin:18px 0 9px}
+a.gloss{color:var(--green);border-bottom:1px dotted var(--gold-deep);text-decoration:none;font-weight:600}
+a.gloss:hover{background:rgba(252,197,91,.18)}
+
+/* THESIS */
+.thesis{font-family:'Cormorant Garamond',serif;font-size:1.5rem;line-height:1.4;border-left:4px solid var(--gold);padding:6px 0 6px 20px;margin:6px 0 18px;color:var(--forest)}
+.thesis strong{color:var(--green)}
+
+/* CHIPS */
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0}
+.chip{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;min-width:120px}
+.chip .lab{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:.07em;font-size:.58rem;color:var(--muted);margin-bottom:3px}
+.chip .val{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:1.15rem;color:var(--green)}
+.chip .val.neg{color:var(--red)}
+
+/* CALLOUT */
+.callout{border-radius:10px;padding:14px 16px;margin:14px 0;font-size:.92rem}
+.callout.gold{background:rgba(252,197,91,.16);border:1px solid var(--gold)}
+.callout.note{background:rgba(20,90,34,.07);border:1px solid rgba(20,90,34,.25)}
+.callout .ct{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:.1em;font-size:.66rem;color:var(--gold-deep);margin-bottom:5px;font-weight:700}
+.callout.note .ct{color:var(--green)}
+
+/* TABLES */
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:.86rem;background:#fff;border-radius:10px;overflow:hidden}
+th{background:var(--green);color:#fff;text-align:left;padding:10px 12px;font-family:'Questrial',sans-serif;font-weight:400;letter-spacing:.04em;font-size:.74rem;text-transform:uppercase}
+td{padding:9px 12px;border-bottom:1px solid var(--line)}
+tbody tr:nth-child(even){background:rgba(237,232,224,.45)}
+tbody tr:hover{background:rgba(252,197,91,.14)}
+td.num{font-family:'JetBrains Mono',monospace;font-weight:500}
+.pos{color:var(--green);font-weight:600}
+.neg{color:var(--red);font-weight:600}
+
+/* SCENARIO */
+.scen-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:16px 0}
+.scen{background:#fff;border-radius:12px;border-top:5px solid var(--green);padding:16px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.scen.base{border-top-color:var(--gold)}
+.scen.bear{border-top-color:var(--red)}
+.scen .nm{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:.1em;font-size:.74rem;color:var(--muted)}
+.scen .pt{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:1.7rem;color:var(--green);margin:4px 0}
+.scen.bear .pt{color:var(--red)}.scen.base .pt{color:var(--gold-deep)}
+.prob{display:inline-block;background:rgba(20,90,34,.12);color:var(--green);font-family:'JetBrains Mono',monospace;font-size:.72rem;font-weight:600;padding:2px 9px;border-radius:20px;margin-bottom:8px}
+.scen.bear .prob{background:rgba(168,52,31,.12);color:var(--red)}
+.scen.base .prob{background:rgba(224,168,56,.18);color:var(--gold-deep)}
+.scen ul{list-style:none;font-size:.8rem}
+.scen li{padding-left:14px;position:relative;margin-bottom:5px;color:var(--muted)}
+.scen li::before{content:"▸";position:absolute;left:0;color:var(--gold-deep)}
+.horizon-lab{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--dark-green);font-size:.95rem;margin:18px 0 2px}
+
+/* RISK */
+.risk{background:#fff;border-left:4px solid var(--red);border-radius:9px;padding:14px 16px;margin:12px 0;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.risk h4{color:var(--red);font-family:'Quicksand',sans-serif;font-weight:700;font-size:1rem;margin-bottom:6px}
+.risk .meta{display:flex;flex-wrap:wrap;gap:7px;margin-top:9px}
+.risk .meta span{font-family:'JetBrains Mono',monospace;font-size:.66rem;padding:3px 9px;border-radius:20px;background:var(--beige);border:1px solid var(--line)}
+
+/* TIMELINE */
+.timeline{position:relative;margin:18px 0 6px;padding-left:26px}
+.timeline::before{content:"";position:absolute;left:6px;top:4px;bottom:4px;width:3px;background:linear-gradient(180deg,var(--green),var(--gold))}
+.tl-item{position:relative;margin-bottom:18px}
+.tl-item::before{content:"";position:absolute;left:-23px;top:3px;width:13px;height:13px;border-radius:50%;background:var(--gold);border:3px solid var(--green)}
+.tl-date{font-family:'JetBrains Mono',monospace;font-weight:600;color:var(--green);font-size:.8rem}
+.tl-title{font-weight:700;font-size:.95rem}
+.tl-desc{font-size:.84rem;color:var(--muted)}
+
+/* CHARTS */
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}
+.chart-box{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px}
+.chart-box.solo{max-width:420px;margin:16px auto}
+.chart-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.chart-title{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:.07em;font-size:.7rem;color:var(--green)}
+.zoom-btn{background:var(--beige);border:1px solid var(--line);border-radius:6px;cursor:pointer;font-size:.62rem;font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);padding:3px 8px}
+.zoom-btn:hover{background:var(--gold);color:var(--ink)}
+.cv-wrap{position:relative;height:160px}
+
+/* MODAL */
+.modal{display:none;position:fixed;inset:0;background:rgba(10,20,12,.82);z-index:99;align-items:center;justify-content:center;padding:30px}
+.modal.open{display:flex}
+.modal-box{background:var(--beige-card);border:2px solid var(--gold);border-radius:14px;padding:22px;width:min(900px,94vw);height:min(560px,86vh);position:relative}
+.modal-box .cv-wrap{height:100%}
+.modal-close{position:absolute;top:10px;right:14px;background:none;border:none;font-size:1.6rem;color:var(--green);cursor:pointer}
+
+.foot{text-align:center;font-size:.72rem;color:var(--muted);padding:24px;line-height:1.6}
+.src{font-size:.78rem;color:var(--muted)}
+.src a{color:var(--green)}
+
+@media(max-width:880px){.chart-grid,.scen-grid{grid-template-columns:1fr}}
+@media(max-width:780px){
+  .sidebar{display:none}
+  .kpi-strip{grid-template-columns:repeat(3,1fr)}
+  .hero{padding:32px 22px}.hero h1{font-size:2.1rem}
+  .content{padding:24px 18px 60px}
+}
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="brand">Frontier<br>Terra Alpha</div>
+  <div class="brand-sub">Independent Equity Research</div>
+  <div class="ticker-box">
+    <div class="tk">TEM</div>
+    <div class="nm">Tempus AI, Inc. · Nasdaq</div>
+    <div class="px">$47.82 <small>· 15 Jun 2026</small></div>
+  </div>
+  <nav>
+    <a href="#s1"><span class="n">01</span> Executive Summary &amp; Thesis</a>
+    <a href="#s2"><span class="n">02</span> Micro &amp; Valuation</a>
+    <a href="#s3"><span class="n">03</span> Moat, Management &amp; Culture</a>
+    <a href="#s4"><span class="n">04</span> Financial Deep Dive</a>
+    <a href="#s5"><span class="n">05</span> Earnings Tracker</a>
+    <a href="#s6"><span class="n">06</span> Bull / Base / Bear</a>
+    <a href="#s7"><span class="n">07</span> Risks &amp; Anti-Thesis</a>
+    <a href="#s8"><span class="n">08</span> Catalyst Timeline</a>
+    <a href="#s9"><span class="n">09</span> Comparable Companies</a>
+    <a href="#s10"><span class="n">10</span> First-Principles KPIs</a>
+    <a href="#s11"><span class="n">11</span> Glossary &amp; Methodology</a>
+  </nav>
+  <div class="side-foot">
+    Prepared 15 Jun 2026. For research &amp; educational purposes only. Not investment advice. Author holds no position disclosed.
+  </div>
+</aside>
+
+<main class="main">
+  <header class="hero">
+    <div class="eyebrow">Deep-Dive Equity Research · Precision Medicine &amp; Health AI</div>
+    <h1>Tempus AI <span class="sym">$TEM</span></h1>
+    <div class="sub">A diagnostics lab the market keeps pricing as a lab — while the asset that compounds is the largest oncology multimodal data network in the United States.</div>
+    <div class="verdict">
+      <span class="lab">Verdict</span>
+      <span class="val">CONSTRUCTIVE BULL · Conviction 7 / 10</span>
+    </div>
+  </header>
+
+  <section class="kpi-strip">
+    <div class="kpi"><div class="lab">Price</div><div class="val">$47.82</div><div class="st">15 Jun 2026</div></div>
+    <div class="kpi"><div class="lab">Market Cap</div><div class="val">~$8.6B</div><div class="st">~179M shares</div></div>
+    <div class="kpi"><div class="lab">Rev Growth (Q1'26)</div><div class="val">+36%</div><div class="st">YoY</div></div>
+    <div class="kpi"><div class="lab">FY26 Adj. EBITDA</div><div class="val">~$65M</div><div class="st">Guidance</div></div>
+    <div class="kpi"><div class="lab">Fwd P/S</div><div class="val">~5.4x</div><div class="st">on $1.6B guide</div></div>
+    <div class="kpi"><div class="lab">Analyst PT (avg)</div><div class="val">~$72</div><div class="st">range $67–89</div></div>
+  </section>
+
+  <div class="content">
+
+  <!-- S1 -->
+  <section class="card" id="s1">
+    <div class="card-head"><div class="badge">01</div><h2>Executive Summary &amp; Investment Thesis</h2><span class="chev">▼</span></div>
+    <div class="card-body">
+      <div class="thesis">
+        <strong>Tempus AI is mispriced as a clinical lab company when its durable edge is a self-reinforcing data flywheel.</strong> Each diagnostic test the market values on reimbursement economics simultaneously enriches a proprietary multimodal oncology dataset that pharma and AI developers pay recurring, high-margin dollars to access. The diagnostics business funds data capture; data monetization is where operating leverage and the real moat live. As the company crosses into <a class="gloss" href="#g-ebitda">Adjusted EBITDA</a> profitability in 2026, the equity should re-rate from "story stock" to "compounding data platform."
+      </div>
+      <p>Tempus closed Q1 2026 with <strong>$348.1M of revenue, up 36.1% year-over-year</strong>, its <a class="gloss" href="#g-data">Data &amp; Applications</a> segment growing 40.5% and posting a third consecutive quarter of bookings above $100M. Adjusted EBITDA improved to –$2.8M from –$16.2M a year earlier, and management <strong>raised full-year revenue guidance to $1.59–1.60B with ~$65M of Adjusted EBITDA</strong>. The trajectory toward profitability is no longer hypothetical — it is being delivered quarter by quarter.</p>
+      <p>The bear's strongest point is honest: TEM still posts large GAAP losses (FY2025 net loss of –$245M), carries ~$930M of debt and convertibles, dilutes shareholders through heavy <a class="gloss" href="#g-sbc">stock-based compensation</a>, and trades at a premium to slower-growing diagnostics peers. The Q1 2026 GAAP <a class="gloss" href="#g-eps">EPS</a> of –$0.71 badly missed the –$0.10 consensus. This is not a clean compounder yet. The bull case rests on the data segment's margin profile and the founder's history of building category-defining businesses.</p>
+      <div class="chips">
+        <div class="chip"><div class="lab">Sector</div><div class="val" style="font-size:.92rem">Precision Med / Health AI</div></div>
+        <div class="chip"><div class="lab">Q1'26 Revenue</div><div class="val">$348.1M</div></div>
+        <div class="chip"><div class="lab">FY26 Rev Guide</div><div class="val">$1.6B</div></div>
+        <div class="chip"><div class="lab">Founder-Led</div><div class="val">Yes</div></div>
+        <div class="chip"><div class="lab">Insider Stake</div><div class="val">~21%</div></div>
+        <div class="chip"><div class="lab">Conviction</div><div class="val">7 / 10</div></div>
+      </div>
+      <div class="callout gold"><div class="ct">The Asymmetry</div>The market underwrites TEM on diagnostics-lab comps (low-margin, reimbursement-gated). It is paying little for the Insights data-licensing engine, which grew 44% YoY at structurally higher margins and barely consumes incremental capital. If data scales as guided, the multiple the market is using is anchored to the wrong business.</div>
+    </div>
+  </section>
+
+  <!-- S2 -->
+  <section class="card" id="s2">
+    <div class="card-head"><div class="badge">02</div><h2>Microeconomic &amp; Valuation Analysis</h2><span class="chev">▼</span></div>
+    <div class="card-body">
+      <h3>Industry &amp; TAM</h3>
+      <p>Tempus sits at the intersection of three expanding markets: molecular/genomic oncology diagnostics, real-world clinical-genomic <a class="gloss" href="#g-data">data licensing</a>, and AI-enabled clinical decision tools. Management frames a combined addressable opportunity well north of $100B; the oncology diagnostics slice alone is commonly sized in the $40–60B range and the precision-medicine data/AI layer is growing faster off a smaller base. Industry <a class="gloss" href="#g-cagr">CAGR</a> estimates for clinical genomic testing cluster around 12–18%, while real-world-data and health-AI markets are frequently modeled at 20–30%+ — meaning TEM's revenue mix is tilting toward the faster-growing layers.</p>
+      <h3>Valuation</h3>
+      <p>With a market cap of roughly $8.6B and trailing-twelve-month revenue near $1.34B, TEM trades at a <a class="gloss" href="#g-ps">P/S</a> of ~6.4x trailing and ~5.4x on the $1.6B 2026 guide. On the report's P/S scale that sits in the <strong>"Aware" band (4–8)</strong> — neither euphoric nor cheap. There is no meaningful <a class="gloss" href="#g-pe">P/E</a> because the company is not yet GAAP-profitable; valuation must rest on revenue growth, gross-margin trajectory, and the path to <a class="gloss" href="#g-fcf">free cash flow</a>.</p>
+      <div class="chips">
+        <div class="chip"><div class="lab">Trailing P/S</div><div class="val">~6.4x</div></div>
+        <div class="chip"><div class="lab">Forward P/S</div><div class="val">~5.4x</div></div>
+        <div class="chip"><div class="lab">P/S Band</div><div class="val" style="font-size:.95rem">Aware</div></div>
+        <div class="chip"><div class="lab">Insider Own.</div><div class="val">~21%</div></div>
+        <div class="chip"><div class="lab">Inst. Own.</div><div class="val">~59%</div></div>
+      </div>
+      <h3>Ownership &amp; Estimates</h3>
+      <p>Founder Eric Lefkofsky holds ~37.8M shares (~21% economic stake, worth roughly $1.7B) and additional super-voting control — exceptional alignment for a company this size. Institutional ownership is ~59%. Sell-side sentiment is constructive: roughly three-quarters of analysts rate the stock Buy/Strong Buy with no Sell ratings, and the average price target sits near $72 (range ~$67–89), implying material upside from the current ~$48 but with wide dispersion that reflects genuine debate about the path to profitability.</p>
+      <div class="chart-grid">
+        <div class="chart-box">
+          <div class="chart-head"><span class="chart-title">Revenue Trajectory ($M)</span><button class="zoom-btn" data-c="cRev">⤢ Expand</button></div>
+          <div class="cv-wrap"><canvas id="cRev"></canvas></div>
+        </div>
+        <div class="chart-box">
+          <div class="chart-head"><span class="chart-title">Q1'26 Revenue Mix</span><button class="zoom-btn" data-c="cMix">⤢ Expand</button></div>
+          <div class="cv-wrap"><canvas id="cMix"></canvas></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S3 -->
+  <section class="card" id="s3">
+    <div class="card-head"><div class="badge">03</div><h2>Qualitative Analysis — Moat, Management &amp; Culture</h2><span class="chev">▼</span></div>
+    <div class="card-body">
+      <h3>The Moat — A Data Flywheel, Philosophically</h3>
+      <p>The most defensible moats are systems that get harder to replicate the more they are used. Tempus's moat is exactly this: every sequenced tumor, paired with longitudinal clinical outcomes across a network of academic and community oncology sites, deepens a dataset that is impossible to buy off a shelf. More tests → richer multimodal data → more valuable to pharma and AI partners → more revenue to fund more testing and partnerships. The asset is not the algorithm or the assay (both copyable); it is the <em>compounding linkage</em> between molecular data and real-world outcomes at scale, governed by consent and contracts that a new entrant cannot retroactively assemble.</p>
+      <div class="callout note"><div class="ct">Systems View</div>A competitor can build a better single test. It cannot build a longer history. Tempus's edge is path-dependent — it accrues with time and connectivity, the two things money alone cannot purchase.</div>
+      <h3>Management &amp; Capital Allocation</h3>
+      <p>Tempus is <strong>founder-led and founder-controlled</strong>. Eric Lefkofsky (CEO/Chairman since founding in 2015) is a serial category-builder — Groupon, Echo Global Logistics, InnerWorkings, Mediaocean, and venture firm Lightbank. That track record cuts both ways: deep operating range and credibility raising capital, but also a history of aggressive growth-first execution. The 2025 Ambry Genetics acquisition (~$692M) was a sizeable bet that immediately added hereditary-testing scale and accelerated revenue to ~80% growth for the year — a capital-allocation move that has so far compounded the data and distribution base.</p>
+      <h3>Culture &amp; Organizational Traits</h3>
+      <p>Tempus exhibits classic high-velocity health-tech traits: rapid product iteration (xT/xF/xR assay families, MRD, the Lens data platform), high tolerance for unprofitable investment in pursuit of category leadership, and strong talent density at the engineering/data-science intersection of medicine. The structural risk is the flip side of founder control — concentrated decision rights and elevated stock-based compensation that transfers value from public shareholders to insiders and employees. Investors are effectively betting on idea-meritocracy and innovation pace outrunning dilution.</p>
+      <div class="chips">
+        <div class="chip"><div class="lab">CEO Tenure</div><div class="val">Since 2015</div></div>
+        <div class="chip"><div class="lab">Pharma Partners</div><div class="val">50+</div></div>
+        <div class="chip"><div class="lab">Key Partners</div><div class="val" style="font-size:.82rem">AZ · Gilead · BI</div></div>
+        <div class="chip"><div class="lab">Voting Control</div><div class="val">Founder</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S4 -->
+  <section class="card" id="s4">
+    <div class="card-head"><div class="badge">04</div><h2>Quantitative Analysis — Financial Deep Dive</h2><span class="chev">▼</span></div>
+    <div class="card-body">
+      <p>The financial story is one of <strong>rapid top-line growth converging toward profitability</strong>, funded today by the balance sheet rather than by operations. FY2025 revenue reached ~$1.25B (~80% growth, boosted by the Ambry acquisition), with a net loss of –$245M that included $136.3M of stock-based compensation and related payroll taxes — i.e., a large chunk of the loss is non-cash. Adjusted EBITDA improved by $97.3M YoY to –$7.4M for 2025, and Q1 2026 narrowed to –$2.8M, with full-year 2026 guided to ~+$65M. That is the inflection the thesis hinges on.</p>
+      <h3>Revenue Streams, Explained Simply</h3>
+      <p><strong>Diagnostics ($261.1M in Q1'26, +34.7%):</strong> Tempus runs molecular tests — primarily oncology (tumor sequencing, ~28% unit growth), plus hereditary testing from Ambry and minimal-residual-disease (MRD) testing. Think of this as the "razor": each test generates revenue and, crucially, data. <strong>Data &amp; Applications ($87.0M, +40.5%):</strong> Tempus licenses de-identified multimodal datasets and AI tools to pharma and researchers (the "Insights" business grew 44.1%). This is the "blades" — higher margin, recurring, and capital-light.</p>
+      <div class="chart-grid">
+        <div class="chart-box">
+          <div class="chart-head"><span class="chart-title">Adj. EBITDA — Path to Breakeven ($M)</span><button class="zoom-btn" data-c="cEbitda">⤢ Expand</button></div>
+          <div class="cv-wrap"><canvas id="cEbitda"></canvas></div>
+        </div>
+        <div class="chart-box">
+          <div class="chart-head"><span class="chart-title">Segment Revenue Growth YoY (%)</span><button class="zoom-btn" data-c="cGrowth">⤢ Expand</button></div>
+          <div class="cv-wrap"><canvas id="cGrowth"></canvas></div>
+        </div>
+      </div>
+      <h3>Balance Sheet, Cash &amp; Dilution</h3>
+      <p>Tempus held $643.8M in cash and marketable securities at 31 Mar 2026 (down from $759.7M at year-end 2025 as it funds operations and working capital). Debt comprises roughly $203M of term loan (net), $728M of convertible senior notes (net), and a $100M revolver — meaningful leverage for a not-yet-FCF-positive company, though the converts push maturities out and the cash balance provides multi-year runway at the current burn. Weighted-average diluted shares were ~174M in 2025; ongoing equity compensation is the principal <a class="gloss" href="#g-dilution">dilution</a> vector to monitor.</p>
+      <div class="chart-grid">
+        <div class="chart-box">
+          <div class="chart-head"><span class="chart-title">Cash vs. Total Debt ($M)</span><button class="zoom-btn" data-c="cCash">⤢ Expand</button></div>
+          <div class="cv-wrap"><canvas id="cCash"></canvas></div>
+        </div>
+        <div class="chart-box">
+          <div class="chart-head"><span class="chart-title">Quarterly Revenue &amp; YoY Growth</span><button class="zoom-btn" data-c="cQtr">⤢ Expand</button></div>
+          <div class="cv-wrap"><canvas id="cQtr"></canvas></div>
+        </div>
+      </div>
+      <div class="callout note"><div class="ct">Operating Leverage</div>The flywheel's payoff is operating leverage: diagnostics revenue scales with variable lab cost, but data revenue scales against a largely fixed dataset. As mix shifts toward Data &amp; Applications, incremental gross margin should rise — the mechanical driver behind the EBITDA inflection.</div>
+    </div>
+  </section>
+
+  <!-- S5 -->
+  <section class="card" id="s5">
+    <div class="card-head"><div class="badge">05</div><h2>Earnings Tracker — Management Credibility</h2><span class="chev">▼</span></div>
+    <div class="card-body">
+      <p>Tempus's credibility rests less on hitting GAAP EPS (which it routinely misses on non-cash items) and more on <strong>revenue delivery and the cadence of guidance raises</strong>. On that scorecard, management has been reliable: it has repeatedly raised full-year revenue guidance and met or exceeded the revised top-line bar.</p>
+      <table>
+        <thead><tr><th>Quarter / Date</th><th>Promise / Guidance</th><th>Actual Result</th><th>Credibility</th></tr></thead>
+        <tbody>
+          <tr><td>Q1'25 (May'25)</td><td>Guided FY25 rev ~$1.25B post-Ambry</td><td>On track; Ambry integrated</td><td class="pos">9 / 10</td></tr>
+          <tr><td>Q2'25 (Aug'25)</td><td>Reiterated/raised FY25 top line</td><td>Beat revenue est.</td><td class="pos">8 / 10</td></tr>
+          <tr><td>Q3'25 (Nov'25)</td><td>Data bookings momentum, EBITDA improvement</td><td>Bookings &gt;$100M; EBITDA narrowing</td><td class="pos">8 / 10</td></tr>
+          <tr><td>Q4/FY25 (Feb'26)</td><td>Deliver ~$1.25B FY25; Adj. EBITDA improvement</td><td>~$1.25B (+80%); Adj. EBITDA –$7.4M (+$97M YoY)</td><td class="pos">9 / 10</td></tr>
+          <tr><td>Q1'26 (May'26)</td><td>Grow data 40%+, narrow EBITDA loss</td><td>Rev +36%; Data +40.5%; Adj. EBITDA –$2.8M</td><td class="pos">8 / 10</td></tr>
+          <tr><td>Q1'26 (May'26)</td><td>GAAP EPS consensus –$0.10</td><td>EPS –$0.71 (large miss, non-cash heavy)</td><td class="neg">4 / 10</td></tr>
+          <tr><td>FY26 guide</td><td>Raised rev to $1.59–1.60B</td><td>Pending (H2 weighted)</td><td class="num">— watch</td></tr>
+          <tr><td>FY26 guide</td><td>~$65M Adj. EBITDA (first full-year positive)</td><td>Pending — key proof point</td><td class="num">— watch</td></tr>
+        </tbody>
+      </table>
+      <div class="callout gold"><div class="ct">Read-Through</div>High credibility on revenue and bookings; low credibility on GAAP bottom-line predictability. The single most important 2026 deliverable is the ~$65M Adjusted EBITDA target — hit it, and the re-rating thesis strengthens materially.</div>
+    </div>
+  </section>
+
+  <!-- S6 -->
+  <section class="card" id="s6">
+    <div class="card-head"><div class="badge">06</div><h2>Bull / Base / Bear Case Scenarios</h2><span class="chev">▼</span></div>
+    <div class="card-body">
+      <p>Price targets below are probability-weighted and anchored to <a class="gloss" href="#g-ps">P/S</a> multiples applied to scenario revenue, reflecting that TEM remains a revenue-and-margin-trajectory story rather than an earnings story.</p>
+
+      <div class="horizon-lab">⟢ 1-Year Horizon (mid-2027)</div>
+      <div class="scen-grid">
+        <div class="scen"><div class="nm">Bull</div><div class="prob">25%</div><div class="pt">$80</div><ul><li>FY26 EBITDA beats ~$65M guide</li><li>Data bookings re-accelerate &gt;45%</li><li>Multiple expands to ~8x P/S</li></ul></div>
+        <div class="scen base"><div class="nm">Base</div><div class="prob">50%</div><div class="pt">$58</div><ul><li>Revenue ~$1.6B as guided</li><li>EBITDA roughly on target</li><li>~6x P/S sustained</li></ul></div>
+        <div class="scen bear"><div class="nm">Bear</div><div class="prob">25%</div><div class="pt">$33</div><ul><li>EBITDA target slips</li><li>Reimbursement / MRD pricing stalls</li><li>Multiple compresses to ~4x</li></ul></div>
+      </div>
+      <p class="src">Probability-weighted 1-yr ≈ <strong>$57</strong> (~19% above spot).</p>
+
+      <div class="horizon-lab">⟢ 3-Year Horizon (2029)</div>
+      <div class="scen-grid">
+        <div class="scen"><div class="nm">Bull</div><div class="prob">30%</div><div class="pt">$135</div><ul><li>Revenue ~$3B, data &gt;35% of mix</li><li>Sustained positive FCF</li><li>Platform re-rate to data multiple</li></ul></div>
+        <div class="scen base"><div class="nm">Base</div><div class="prob">45%</div><div class="pt">$78</div><ul><li>~$2.4B revenue, ~20% CAGR</li><li>Mid-teens EBITDA margin</li><li>Multiple normalizes ~5–6x</li></ul></div>
+        <div class="scen bear"><div class="nm">Bear</div><div class="prob">25%</div><div class="pt">$28</div><ul><li>Growth decelerates to ~15%</li><li>Dilution + debt overhang weigh</li><li>De-rated to lab comps</li></ul></div>
+      </div>
+      <p class="src">Probability-weighted 3-yr ≈ <strong>$82</strong>.</p>
+
+      <div class="horizon-lab">⟢ 5-Year Horizon (2031)</div>
+      <div class="scen-grid">
+        <div class="scen"><div class="nm">Bull</div><div class="prob">30%</div><div class="pt">$210</div><ul><li>Category-defining health-AI data layer</li><li>$4–5B revenue, expanding FCF margin</li><li>Durable premium multiple</li></ul></div>
+        <div class="scen base"><div class="nm">Base</div><div class="prob">45%</div><div class="pt">$110</div><ul><li>Profitable, ~15–18% grower</li><li>Data is clear margin engine</li><li>Quality compounder valuation</li></ul></div>
+        <div class="scen bear"><div class="nm">Bear</div><div class="prob">25%</div><div class="pt">$25</div><ul><li>Commoditized diagnostics</li><li>Failed to monetize data at scale</li><li>Capital-structure stress</li></ul></div>
+      </div>
+      <p class="src">Probability-weighted 5-yr ≈ <strong>$120</strong>.</p>
+
+      <div class="chart-box">
+        <div class="chart-head"><span class="chart-title">Scenario Price Targets by Horizon ($)</span><button class="zoom-btn" data-c="cScen">⤢ Expand</button></div>
+        <div class="cv-wrap"><canvas id="cScen"></canvas></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S7 -->
+  <section class="card" id="s7">
+    <div class="card-head"><div class="badge">07</div><h2>Risks &amp; Anti-Thesis (Steelman the Bear)</h2><span class="chev">▼</span></div>
+    <div class="card-body">
+      <p>If I were short TEM, here is the case I would press — engaged seriously, not as a strawman.</p>
+      <div class="risk">
+        <h4>1. The company has never generated GAAP profit or sustained free cash flow</h4>
+        <p>FY2025 net loss was –$245M and Q1'26 EPS missed badly at –$0.71. Adjusted EBITDA flatters the picture by excluding $130M+ of annual stock comp that is a real economic cost to shareholders. "Path to profitability" has been the pitch for years.</p>
+        <div class="meta"><span>Probability: High</span><span>Impact: High</span><span>Priced in: Partially</span></div>
+      </div>
+      <div class="risk">
+        <h4>2. Diagnostics is reimbursement-gated and competitive</h4>
+        <p>Test pricing depends on payer and CMS decisions outside the company's control. MRD reimbursement is "progressing" but not locked. Guardant, Natera, Exact Sciences and others compete fiercely on price and clinical evidence, capping diagnostics margin.</p>
+        <div class="meta"><span>Probability: Medium-High</span><span>Impact: Medium</span><span>Priced in: Partially</span></div>
+      </div>
+      <div class="risk">
+        <h4>3. The data thesis is concentrated and lumpy</h4>
+        <p>Data &amp; Applications revenue depends on a finite set of large pharma contracts. Bookings can be lumpy; a few delayed or non-renewed deals would puncture the "recurring high-margin" narrative the bull case relies on.</p>
+        <div class="meta"><span>Probability: Medium</span><span>Impact: High</span><span>Priced in: No</span></div>
+      </div>
+      <div class="risk">
+        <h4>4. Dilution and a levered balance sheet</h4>
+        <p>~$930M of debt/converts plus persistent stock issuance. If equity markets tighten or growth slows before FCF turns positive, refinancing and dilution risk rises sharply — a classic squeeze for cash-burning growth names.</p>
+        <div class="meta"><span>Probability: Medium</span><span>Impact: High</span><span>Priced in: Partially</span></div>
+      </div>
+      <div class="risk">
+        <h4>5. Founder control concentrates governance risk</h4>
+        <p>Super-voting structure means public holders have limited say on capital allocation, M&amp;A (e.g., another Ambry-scale deal), or compensation. Aligned today; a liability if priorities ever diverge from minority shareholders.</p>
+        <div class="meta"><span>Probability: Low-Medium</span><span>Impact: Medium</span><span>Priced in: No</span></div>
+      </div>
+      <div class="callout note"><div class="ct">Anti-Thesis Verdict</div>The bear case is coherent and the EPS miss is a genuine yellow flag. It is rebuttable <em>only</em> if the data segment keeps compounding at 40%+ and the 2026 EBITDA target is met. Miss those, and the bear wins.</div>
+    </div>
+  </section>
+
+  <!-- S8 -->
+  <section class="card" id="s8">
+    <div class="card-head"><div class="badge">08</div><h2>Catalyst Timeline</h2><span class="chev">▼</span></div>
+    <div class="card-body">
+      <div class="timeline">
+        <div class="tl-item"><div class="tl-date">Aug 2026 (est.)</div><div class="tl-title">Q2 2026 Earnings</div><div class="tl-desc">Key check on H2-weighted guidance, data bookings cadence, and the EBITDA inflection. Highest-frequency catalyst.</div></div>
+        <div class="tl-item"><div class="tl-date">2H 2026</div><div class="tl-title">xF assay FDA submission / xR to follow</div><div class="tl-desc">Regulatory milestones expanding the FDA-approved menu and supporting ADLT pricing pathways.</div></div>
+        <div class="tl-item"><div class="tl-date">Through 2026</div><div class="tl-title">MRD reimbursement &amp; ADLT migration</div><div class="tl-desc">MRD volume up ~500% YoY (~6,500 tests in Q1'26); pricing/reimbursement scaling is a direct revenue catalyst.</div></div>
+        <div class="tl-item"><div class="tl-date">Ongoing 2026</div><div class="tl-title">New pharma &amp; data partnerships</div><div class="tl-desc">Expansions like Gilead (Lens platform) and NYU Langone; each large deal feeds the Data &amp; Applications flywheel.</div></div>
+        <div class="tl-item"><div class="tl-date">Nov 2026 (est.)</div><div class="tl-title">Q3 2026 Earnings</div><div class="tl-desc">Final read before year-end on whether the ~$65M Adj. EBITDA target is achievable.</div></div>
+        <div class="tl-item"><div class="tl-date">Feb 2027 (est.)</div><div class="tl-title">FY2026 Results — the proof point</div><div class="tl-desc">First potential full-year positive Adjusted EBITDA. The single most important scheduled catalyst for the re-rating thesis.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S9 -->
+  <section class="card" id="s9">
+    <div class="card-head"><div class="badge">09</div><h2>Comparable Company Analysis</h2><span class="chev">▼</span></div>
+    <div class="card-body">
+      <p>TEM is best compared to high-growth precision-oncology and genomic-testing peers. The table mixes reported and approximate figures; growth rates and multiples are the decision-relevant fields.</p>
+      <table>
+        <thead><tr><th>Company</th><th>Mkt Cap</th><th>Rev (TTM)</th><th>Rev Growth</th><th>P/S</th><th>Net Margin</th><th>Profile</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Tempus AI (TEM)</strong></td><td class="num">~$8.6B</td><td class="num">~$1.34B</td><td class="num pos">+36%</td><td class="num">~6.4x</td><td class="num neg">Negative</td><td>Dx + data flywheel</td></tr>
+          <tr><td>Guardant Health (GH)</td><td class="num">~$11.2B</td><td class="num">~$1.0B</td><td class="num pos">+33%</td><td class="num">~11x</td><td class="num neg">Negative</td><td>Liquid biopsy</td></tr>
+          <tr><td>Natera (NTRA)</td><td class="num">~$20B+</td><td class="num">~$2.0B</td><td class="num pos">+40%+</td><td class="num">~10x</td><td class="num neg">Approaching B/E</td><td>MRD / women's health</td></tr>
+          <tr><td>Exact Sciences (EXAS)</td><td class="num">~$10B</td><td class="num">~$3.0B</td><td class="num pos">+10%</td><td class="num">~3x</td><td class="num neg">Negative</td><td>Screening (Cologuard)</td></tr>
+          <tr><td>Veracyte (VCYT)</td><td class="num">~$2.8B</td><td class="num">~$0.52B</td><td class="num pos">+18%</td><td class="num">~5x</td><td class="num pos">Near profitable</td><td>Genomic Dx</td></tr>
+        </tbody>
+      </table>
+      <h3>Relative Read</h3>
+      <p>On a pure P/S basis TEM looks <strong>cheaper than the fastest growers</strong> (GH ~11x, NTRA ~10x) despite comparable ~36% growth, and more expensive than the slower-growing screeners (EXAS ~3x). The differentiator the comps miss is mix: none of these peers has TEM's data-licensing engine as a distinct, fast-growing, capital-light segment. If the market eventually values that segment separately, TEM screens as the relative value in the group; if it does not, TEM is fairly priced against diagnostics peers.</p>
+      <div class="chart-box">
+        <div class="chart-head"><span class="chart-title">Peer Revenue Growth vs. P/S</span><button class="zoom-btn" data-c="cPeer">⤢ Expand</button></div>
+        <div class="cv-wrap"><canvas id="cPeer"></canvas></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S10 -->
+  <section class="card" id="s10">
+    <div class="card-head"><div class="badge">10</div><h2>First-Principles KPIs</h2><span class="chev">▼</span></div>
+    <div class="card-body">
+      <p>Strip away the income statement and four leading indicators tell you whether the flywheel is turning. These lead reported revenue by one to several quarters.</p>
+      <div class="chips">
+        <div class="chip"><div class="lab">Oncology Unit Growth</div><div class="val">~28%</div></div>
+        <div class="chip"><div class="lab">Data Bookings/Qtr</div><div class="val">&gt;$100M</div></div>
+        <div class="chip"><div class="lab">MRD Volume YoY</div><div class="val">~+500%</div></div>
+        <div class="chip"><div class="lab">Insights Growth</div><div class="val">+44%</div></div>
+      </div>
+      <div class="chart-grid">
+        <div class="chart-box">
+          <div class="chart-head"><span class="chart-title">Data &amp; Applications Bookings ($M)</span><button class="zoom-btn" data-c="cBook">⤢ Expand</button></div>
+          <div class="cv-wrap"><canvas id="cBook"></canvas></div>
+        </div>
+        <div class="chart-box">
+          <div class="chart-head"><span class="chart-title">MRD Test Volume (indexed)</span><button class="zoom-btn" data-c="cMrd">⤢ Expand</button></div>
+          <div class="cv-wrap"><canvas id="cMrd"></canvas></div>
+        </div>
+      </div>
+      <p style="margin-top:14px"><strong>Why these four:</strong> (1) <em>Oncology unit growth</em> is the raw fuel of the data network — volume, not price. (2) <em>Data bookings</em> are contracted future revenue; three straight quarters &gt;$100M is the cleanest evidence the moat monetizes. (3) <em>MRD volume</em> is the highest-optionality new line — recurring, longitudinal testing that compounds per patient. (4) <em>Insights growth</em> isolates the highest-margin engine from lower-margin diagnostics. If all four hold, the EBITDA target and re-rating follow almost mechanically.</p>
+    </div>
+  </section>
+
+  <!-- S11 -->
+  <section class="card" id="s11">
+    <div class="card-head"><div class="badge">11</div><h2>Glossary &amp; Methodology</h2><span class="chev">▼</span></div>
+    <div class="card-body">
+      <p id="g-ps"><strong>Price-to-Sales (P/S)</strong> — Market cap ÷ trailing-twelve-month revenue. <em>Formula:</em> P/S = Market Cap / Revenue. <em>Why it matters:</em> the primary valuation tool for unprofitable growth companies where P/E is meaningless. Scale used here: &gt;30 Euphoric, &gt;18 Excited, &gt;8 Optimistic, 4–8 Aware, &lt;4 Cautious, &lt;2 Pessimistic. <a href="#s2" class="src">↩ back to §2</a></p>
+      <p id="g-pe"><strong>Price-to-Earnings (P/E)</strong> — Price ÷ earnings per share. <em>Why it matters:</em> standard profitability multiple; not meaningful for TEM because it is not yet GAAP-profitable. <a href="#s2" class="src">↩ back to §2</a></p>
+      <p id="g-ebitda"><strong>Adjusted EBITDA</strong> — Earnings before interest, taxes, depreciation, amortization, and adjustments (notably stock-based comp). <em>Why it matters:</em> a proxy for cash operating profitability, but it <em>excludes</em> real shareholder costs like SBC — read it alongside GAAP. <a href="#s1" class="src">↩ back to §1</a></p>
+      <p id="g-fcf"><strong>Free Cash Flow (FCF)</strong> — Operating cash flow minus capital expenditures. <em>Formula:</em> FCF = OCF − CapEx. <em>Why it matters:</em> the truest measure of self-funding; the milestone that would end dilution dependence. <a href="#s2" class="src">↩ back to §2</a></p>
+      <p id="g-eps"><strong>EPS</strong> — Net income (loss) ÷ diluted shares. <em>Why it matters:</em> headline profitability; TEM's GAAP EPS is distorted by large non-cash charges, so revenue and EBITDA are more informative here. <a href="#s1" class="src">↩ back to §1</a></p>
+      <p id="g-sbc"><strong>Stock-Based Compensation (SBC)</strong> — Equity paid to employees, expensed on the income statement. <em>Why it matters:</em> non-cash but dilutive — it transfers ownership from existing holders. $136M+ in FY25. <a href="#s1" class="src">↩ back to §1</a></p>
+      <p id="g-dilution"><strong>Dilution</strong> — The reduction in existing holders' ownership as new shares are issued. <em>Why it matters:</em> for cash-burning growth companies, even great operating results can be offset by a rising share count. <a href="#s4" class="src">↩ back to §4</a></p>
+      <p id="g-data"><strong>Data &amp; Applications / Insights</strong> — Tempus's segment licensing de-identified multimodal clinical-genomic data and AI tools to pharma and researchers. <em>Why it matters:</em> the high-margin, capital-light engine at the center of the bull thesis. <a href="#s1" class="src">↩ back to §1</a></p>
+      <p id="g-cagr"><strong>CAGR</strong> — Compound Annual Growth Rate. <em>Formula:</em> (End/Start)^(1/years) − 1. <em>Why it matters:</em> smooths multi-year growth into a single comparable rate for TAM and revenue. <a href="#s2" class="src">↩ back to §2</a></p>
+
+      <h3>Methodology &amp; Sources</h3>
+      <p class="src">Figures sourced from Tempus AI SEC filings (10-Q for the quarter ended 31 Mar 2026; 8-K earnings releases; FY2025 results), the Q1 2026 investor presentation and earnings call, and market-data/analyst aggregators. Prices and market cap as of 15 Jun 2026 are real-time approximations and will drift. Scenario targets are the author's probability-weighted estimates, not company guidance.</p>
+      <p class="src">Key sources:
+        <a href="https://www.sec.gov/Archives/edgar/data/0001717115/000119312526206356/tem-20260331.htm">Q1'26 10-Q</a> ·
+        <a href="https://www.tempus.com/news/pr/tempus-reports-first-quarter-2026-results/">Q1'26 results PR</a> ·
+        <a href="https://www.tempus.com/news/pr/tempus-reports-fourth-quarter-and-full-year-2025-results/">FY2025 results</a> ·
+        <a href="https://investors.tempus.com/static-files/c5344fd9-1707-4c32-a622-136d824ca623">Q1'26 investor deck</a> ·
+        <a href="https://stockanalysis.com/stocks/tem/forecast/">Analyst forecasts</a> ·
+        <a href="https://www.wallstreetzen.com/stocks/us/nasdaq/tem/ownership">Ownership</a>
+      </p>
+    </div>
+  </section>
+
+  <div class="foot">
+    Frontier Terra Alpha · Independent Equity Research · Generated 15 June 2026<br>
+    This document is for research and educational purposes only and is not investment advice or a recommendation to buy or sell any security. Do your own due diligence.
+  </div>
+  </div>
+</main>
+
+<!-- MODAL -->
+<div class="modal" id="modal"><div class="modal-box"><button class="modal-close" id="modalClose">×</button><div class="cv-wrap"><canvas id="modalCanvas"></canvas></div></div></div>
+
+<script>
+const G={green:'#145A22',dark:'#0A3A14',gold:'#FCC55B',goldD:'#e0a838',red:'#a8341f',muted:'#5d6155',line:'#d8d1c4'};
+Chart.defaults.font.family="'JetBrains Mono', monospace";
+Chart.defaults.font.size=10;
+Chart.defaults.color=G.muted;
+const charts={};
+function mk(id,cfg){const el=document.getElementById(id);if(!el)return;charts[id]=new Chart(el,cfg);}
+const noLegend={plugins:{legend:{display:false}}};
+const gridX={grid:{display:false}},gridY={grid:{color:'rgba(0,0,0,.06)'},beginAtZero:true};
+
+// Revenue trajectory (annual)
+mk('cRev',{type:'bar',data:{labels:['2023','2024','2025','2026E'],datasets:[{data:[531,693,1245,1595],backgroundColor:[G.line,G.goldD,G.green,G.gold],borderRadius:5}]},options:{responsive:true,maintainAspectRatio:false,...noLegend,scales:{x:gridX,y:gridY}}});
+// Revenue mix doughnut
+mk('cMix',{type:'doughnut',data:{labels:['Diagnostics $261M','Data & Apps $87M'],datasets:[{data:[261.1,87.0],backgroundColor:[G.green,G.gold],borderColor:'#fff',borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:9}}}}}});
+// Adj EBITDA path
+mk('cEbitda',{type:'bar',data:{labels:['2024','2025','Q1\'26','2026E'],datasets:[{data:[-104.7,-7.4,-2.8,65],backgroundColor:c=>0,borderRadius:5}]},options:{responsive:true,maintainAspectRatio:false,...noLegend,scales:{x:gridX,y:{grid:{color:'rgba(0,0,0,.06)'}}},elements:{}}});
+charts['cEbitda'].data.datasets[0].backgroundColor=[-104.7,-7.4,-2.8,65].map(v=>v<0?G.red:G.green);charts['cEbitda'].update();
+// Segment growth
+mk('cGrowth',{type:'bar',data:{labels:['Diagnostics','Oncology Vol','Data & Apps','Insights'],datasets:[{data:[34.7,28,40.5,44.1],backgroundColor:[G.green,G.dark,G.gold,G.goldD],borderRadius:5}]},options:{responsive:true,maintainAspectRatio:false,...noLegend,scales:{x:gridX,y:gridY}}});
+// Cash vs debt
+mk('cCash',{type:'bar',data:{labels:['Cash & Mkt Sec','Term Loan','Convert Notes','Revolver'],datasets:[{data:[643.8,203,728,100],backgroundColor:[G.green,G.red,G.red,G.goldD],borderRadius:5}]},options:{responsive:true,maintainAspectRatio:false,...noLegend,scales:{x:gridX,y:gridY}}});
+// Quarterly revenue + growth
+mk('cQtr',{data:{labels:['Q1\'25','Q2\'25','Q3\'25','Q4\'25','Q1\'26'],datasets:[{type:'bar',label:'Revenue $M',data:[255.7,314,330,345,348.1],backgroundColor:G.green,borderRadius:5,yAxisID:'y'},{type:'line',label:'YoY %',data:[75.4,89,55,48,36.1],borderColor:G.goldD,backgroundColor:G.gold,tension:.3,yAxisID:'y1'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{boxWidth:10,font:{size:8}}}},scales:{x:gridX,y:{position:'left',beginAtZero:true,grid:{color:'rgba(0,0,0,.06)'}},y1:{position:'right',grid:{display:false}}}}});
+// Scenario chart
+mk('cScen',{type:'bar',data:{labels:['1-Year','3-Year','5-Year'],datasets:[{label:'Bear',data:[33,28,25],backgroundColor:G.red,borderRadius:4},{label:'Base',data:[58,78,110],backgroundColor:G.gold,borderRadius:4},{label:'Bull',data:[80,135,210],backgroundColor:G.green,borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{boxWidth:10,font:{size:9}}}},scales:{x:gridX,y:gridY}}});
+// Peer growth vs P/S
+mk('cPeer',{data:{labels:['TEM','GH','NTRA','EXAS','VCYT'],datasets:[{type:'bar',label:'Rev Growth %',data:[36,33,40,10,18],backgroundColor:G.green,borderRadius:5,yAxisID:'y'},{type:'line',label:'P/S',data:[6.4,11,10,3,5],borderColor:G.goldD,backgroundColor:G.gold,tension:.3,yAxisID:'y1'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{boxWidth:10,font:{size:8}}}},scales:{x:gridX,y:{position:'left',beginAtZero:true,grid:{color:'rgba(0,0,0,.06)'}},y1:{position:'right',grid:{display:false}}}}});
+// Data bookings
+mk('cBook',{type:'bar',data:{labels:['Q3\'25','Q4\'25','Q1\'26'],datasets:[{data:[100,105,110],backgroundColor:[G.goldD,G.gold,G.green],borderRadius:5}]},options:{responsive:true,maintainAspectRatio:false,...noLegend,scales:{x:gridX,y:gridY}}});
+// MRD indexed
+mk('cMrd',{type:'line',data:{labels:['Q1\'25','Q2\'25','Q3\'25','Q4\'25','Q1\'26'],datasets:[{data:[100,200,360,520,600],borderColor:G.green,backgroundColor:'rgba(20,90,34,.12)',fill:true,tension:.35}]},options:{responsive:true,maintainAspectRatio:false,...noLegend,scales:{x:gridX,y:gridY}}});
+
+// collapse
+document.querySelectorAll('.card-head').forEach(h=>h.addEventListener('click',()=>h.parentElement.classList.toggle('collapsed')));
+// modal zoom
+const modal=document.getElementById('modal');let mc=null;
+document.querySelectorAll('.zoom-btn').forEach(b=>b.addEventListener('click',()=>{
+  const src=charts[b.dataset.c];if(!src)return;
+  if(mc)mc.destroy();
+  const cfg=JSON.parse(JSON.stringify({type:src.config.type,data:src.config._config.data,options:src.config._config.options}));
+  modal.classList.add('open');
+  mc=new Chart(document.getElementById('modalCanvas'),{type:src.config.type||'bar',data:src.data,options:Object.assign({},src.options,{maintainAspectRatio:false})});
+}));
+document.getElementById('modalClose').addEventListener('click',()=>{modal.classList.remove('open');if(mc){mc.destroy();mc=null;}});
+modal.addEventListener('click',e=>{if(e.target===modal){modal.classList.remove('open');if(mc){mc.destroy();mc=null;}}});
+</script>
+</body>
+</html>
