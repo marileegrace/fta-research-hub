@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ASTS — AST SpaceMobile · FTA Investment Research</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Questrial&family=Quicksand:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  --green:#145A22; --dark-green:#0A3A14; --forest:#243D27;
+  --gold:#FCC55B; --gold-deep:#e0a838;
+  --beige:#EDE8E0; --beige-card:#f6f3ed;
+  --ink:#23241f; --muted:#5d6155; --red:#a8341f; --line:#d8d1c4;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Quicksand',sans-serif;background:var(--beige);color:var(--ink);line-height:1.6;}
+a{color:var(--green);text-decoration:none;}
+a:hover{text-decoration:underline;}
+
+/* layout */
+.wrap{display:flex;min-height:100vh;}
+.sidebar{width:262px;flex:0 0 262px;position:sticky;top:0;height:100vh;overflow-y:auto;
+  background:linear-gradient(180deg,#071f0b,#0A3A14 40%,#145A22);
+  border-right:3px solid var(--gold);color:var(--beige);padding:26px 20px;}
+.brand{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:1.55rem;color:var(--gold);line-height:1.1;margin-bottom:4px;}
+.brand-sub{font-family:'Questrial',sans-serif;text-transform:uppercase;font-size:.6rem;letter-spacing:.18em;color:rgba(255,255,255,.6);margin-bottom:22px;}
+.ticker-box{background:rgba(255,255,255,.06);border:1px solid rgba(252,197,91,.4);border-radius:12px;padding:14px;margin-bottom:24px;}
+.ticker-sym{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:1.5rem;color:var(--gold);}
+.ticker-name{font-size:.72rem;color:rgba(255,255,255,.7);margin-bottom:8px;}
+.ticker-price{font-family:'JetBrains Mono',monospace;font-size:1.35rem;font-weight:700;}
+.ticker-chg{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--red);font-weight:500;}
+.nav a{display:block;color:rgba(255,255,255,.82);font-size:.82rem;padding:7px 8px;border-radius:7px;margin-bottom:2px;transition:.15s;}
+.nav a:hover{background:rgba(252,197,91,.14);color:var(--gold);text-decoration:none;}
+.nav .num{font-family:'JetBrains Mono',monospace;color:var(--gold);font-size:.72rem;margin-right:8px;}
+.side-disc{margin-top:22px;font-size:.6rem;color:rgba(255,255,255,.4);line-height:1.5;}
+
+.main{flex:1;min-width:0;}
+
+/* hero */
+.hero{position:relative;overflow:hidden;background:linear-gradient(120deg,var(--dark-green),var(--green) 60%);color:#fff;padding:54px 48px 46px;}
+.hero::after{content:"";position:absolute;top:-120px;right:-120px;width:420px;height:420px;border-radius:50%;
+  background:radial-gradient(circle,rgba(252,197,91,.32),transparent 68%);pointer-events:none;}
+.hero-tag{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:.2em;font-size:.68rem;color:var(--gold);margin-bottom:14px;}
+.hero h1{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:2.9rem;line-height:1.05;margin-bottom:6px;}
+.hero h1 .mono{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--gold);font-size:2.2rem;}
+.hero-sub{font-size:1rem;color:rgba(255,255,255,.85);max-width:680px;margin-bottom:22px;}
+.verdict{display:inline-flex;align-items:center;gap:14px;background:rgba(252,197,91,.16);border:1px solid var(--gold);border-radius:50px;padding:9px 22px;}
+.verdict .pill-label{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:.14em;font-size:.7rem;color:var(--gold);}
+.verdict .pill-val{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:1.05rem;color:#fff;}
+.conv{display:inline-flex;align-items:center;gap:8px;margin-left:6px;}
+.conv-dot{width:9px;height:9px;border-radius:50%;background:var(--gold);}
+.conv-empty{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.22);}
+
+/* kpi strip */
+.kpi-strip{display:grid;grid-template-columns:repeat(6,1fr);gap:0;background:var(--forest);}
+.kpi{background:var(--beige-card);margin:1px;padding:16px 14px;text-align:left;}
+.kpi .label{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:.1em;font-size:.58rem;color:var(--muted);margin-bottom:5px;}
+.kpi .val{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:1.2rem;color:var(--green);line-height:1.1;}
+.kpi .subt{font-size:.62rem;color:var(--muted);margin-top:3px;}
+
+/* content */
+.content{max-width:1080px;margin:0 auto;padding:40px 48px 80px;}
+.card{background:var(--beige-card);border:1px solid var(--line);border-radius:14px;margin-bottom:26px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04);}
+.card-head{display:flex;align-items:center;gap:14px;padding:18px 24px;border-left:5px solid var(--green);cursor:pointer;background:#fff;}
+.card-head .badge{flex:0 0 34px;width:34px;height:34px;border-radius:8px;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:.95rem;}
+.card-head h2{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:1.5rem;color:var(--ink);flex:1;}
+.chev{transition:.25s;color:var(--green);font-size:1.1rem;}
+.card.collapsed .chev{transform:rotate(-90deg);}
+.card-body{padding:22px 24px 26px;}
+.card.collapsed .card-body{display:none;}
+.card-body p{margin-bottom:13px;}
+.card-body h3{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:.08em;font-size:.82rem;color:var(--green);margin:20px 0 10px;}
+
+/* thesis */
+.thesis{font-family:'Cormorant Garamond',serif;font-size:1.5rem;line-height:1.4;border-left:4px solid var(--gold);padding:6px 0 6px 22px;margin:6px 0 20px;color:var(--forest);}
+.thesis strong{font-weight:700;color:var(--green);}
+
+/* chips */
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0;}
+.chip{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;min-width:120px;}
+.chip .l{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:.07em;font-size:.56rem;color:var(--muted);margin-bottom:4px;}
+.chip .v{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:1.05rem;color:var(--green);}
+.chip .v.neg{color:var(--red);}
+
+/* scenario */
+.scen-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:8px 0;}
+.scen{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px;border-top:4px solid var(--gold);}
+.scen.bull{border-top-color:var(--green);}
+.scen.bear{border-top-color:var(--red);}
+.scen .scen-h{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:.1em;font-size:.75rem;font-weight:700;margin-bottom:8px;}
+.scen.bull .scen-h{color:var(--green);}
+.scen.base .scen-h{color:var(--gold-deep);}
+.scen.bear .scen-h{color:var(--red);}
+.scen .pt{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:1.7rem;color:var(--ink);}
+.scen .prob{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:.7rem;background:var(--beige);border:1px solid var(--line);border-radius:30px;padding:2px 10px;margin:6px 0 10px;}
+.scen ul{list-style:none;font-size:.82rem;}
+.scen li{padding:4px 0 4px 16px;position:relative;color:var(--muted);}
+.scen li::before{content:"›";position:absolute;left:0;color:var(--gold-deep);font-weight:700;}
+.horizon-label{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:.1em;font-size:.78rem;color:var(--forest);margin:22px 0 10px;border-bottom:1px solid var(--line);padding-bottom:6px;}
+
+/* risk */
+.risk{background:#fff;border:1px solid var(--line);border-left:4px solid var(--red);border-radius:10px;padding:16px 18px;margin-bottom:14px;}
+.risk h4{color:var(--red);font-family:'Questrial',sans-serif;font-size:.95rem;margin-bottom:8px;}
+.risk p{font-size:.88rem;margin-bottom:10px;}
+.risk .meta{display:flex;flex-wrap:wrap;gap:8px;}
+.tag{font-family:'JetBrains Mono',monospace;font-size:.62rem;padding:3px 9px;border-radius:30px;background:var(--beige);border:1px solid var(--line);color:var(--muted);}
+.tag.hi{background:rgba(168,52,31,.1);border-color:var(--red);color:var(--red);}
+.tag.md{background:rgba(224,168,56,.14);border-color:var(--gold-deep);color:var(--gold-deep);}
+.tag.lo{background:rgba(20,90,34,.1);border-color:var(--green);color:var(--green);}
+
+/* timeline */
+.timeline{position:relative;margin:14px 0 4px;padding-left:30px;}
+.timeline::before{content:"";position:absolute;left:8px;top:4px;bottom:4px;width:3px;
+  background:linear-gradient(180deg,var(--green),var(--gold));border-radius:3px;}
+.tl-item{position:relative;margin-bottom:20px;}
+.tl-item::before{content:"";position:absolute;left:-29px;top:3px;width:15px;height:15px;border-radius:50%;
+  background:var(--gold);border:3px solid var(--green);}
+.tl-date{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--gold-deep);font-weight:700;}
+.tl-title{font-weight:700;font-size:.95rem;color:var(--ink);}
+.tl-desc{font-size:.83rem;color:var(--muted);}
+
+/* table */
+table{width:100%;border-collapse:collapse;font-size:.84rem;margin:10px 0;}
+thead th{background:var(--green);color:#fff;font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:.05em;font-size:.7rem;padding:10px 12px;text-align:left;}
+tbody td{padding:9px 12px;border-bottom:1px solid var(--line);}
+tbody tr:nth-child(even){background:rgba(255,255,255,.55);}
+tbody tr:hover{background:rgba(252,197,91,.16);}
+td.num,th.num{font-family:'JetBrains Mono',monospace;text-align:right;}
+.pos{color:var(--green);font-weight:600;}
+.neg{color:var(--red);font-weight:600;}
+
+/* callouts */
+.callout{border-radius:10px;padding:14px 18px;margin:14px 0;font-size:.88rem;}
+.callout.gold{background:rgba(252,197,91,.16);border:1px solid var(--gold);}
+.callout.note{background:rgba(20,90,34,.08);border:1px solid var(--green);}
+.callout strong{color:var(--green);}
+
+/* charts */
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:14px 0;}
+.chart-box{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px;}
+.chart-box.solo{max-width:420px;margin:14px auto;}
+.chart-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.chart-title{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:.07em;font-size:.7rem;color:var(--forest);}
+.zoom-btn{font-family:'Questrial',sans-serif;font-size:.6rem;text-transform:uppercase;letter-spacing:.06em;color:var(--gold-deep);background:none;border:1px solid var(--line);border-radius:30px;padding:3px 10px;cursor:pointer;}
+.zoom-btn:hover{background:var(--beige);}
+.canvas-c{position:relative;height:158px;}
+
+/* modal */
+.modal{display:none;position:fixed;inset:0;background:rgba(8,20,10,.82);z-index:100;align-items:center;justify-content:center;padding:30px;}
+.modal.open{display:flex;}
+.modal-box{background:var(--beige-card);border:2px solid var(--gold);border-radius:16px;padding:24px;width:min(900px,94vw);max-height:90vh;}
+.modal-box .canvas-c{height:min(64vh,520px);}
+.modal-close{float:right;background:var(--green);color:#fff;border:none;border-radius:8px;padding:6px 12px;cursor:pointer;font-family:'Questrial',sans-serif;}
+
+.gloss-term{scroll-margin-top:20px;}
+.gloss-item{border-bottom:1px solid var(--line);padding:14px 0;}
+.gloss-item h4{font-family:'JetBrains Mono',monospace;color:var(--green);font-size:.95rem;margin-bottom:4px;}
+.gloss-item .formula{font-family:'JetBrains Mono',monospace;font-size:.78rem;background:#fff;border:1px solid var(--line);border-radius:6px;padding:6px 10px;display:inline-block;margin:6px 0;}
+.back-link{font-size:.7rem;font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:.06em;}
+
+.foot{background:var(--dark-green);color:rgba(255,255,255,.7);padding:30px 48px;font-size:.74rem;line-height:1.7;}
+.foot .brand{font-size:1.1rem;margin-bottom:6px;}
+
+@media(max-width:880px){
+  .chart-grid,.scen-grid{grid-template-columns:1fr;}
+}
+@media(max-width:780px){
+  .sidebar{display:none;}
+  .kpi-strip{grid-template-columns:repeat(3,1fr);}
+  .hero{padding:36px 22px;}
+  .hero h1{font-size:2.1rem;}
+  .content{padding:26px 18px 60px;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="brand">Foundational<br>Trading Academy</div>
+  <div class="brand-sub">Investment Research Hub</div>
+  <div class="ticker-box">
+    <div class="ticker-sym">ASTS</div>
+    <div class="ticker-name">AST SpaceMobile, Inc.</div>
+    <div class="ticker-price">$82.41</div>
+    <div class="ticker-chg">▼ -15.53% · 1D</div>
+  </div>
+  <nav class="nav">
+    <a href="#s1"><span class="num">01</span>Executive Summary</a>
+    <a href="#s2"><span class="num">02</span>Micro &amp; Valuation</a>
+    <a href="#s3"><span class="num">03</span>Moat &amp; Management</a>
+    <a href="#s4"><span class="num">04</span>Financial Deep Dive</a>
+    <a href="#s5"><span class="num">05</span>Earnings Tracker</a>
+    <a href="#s6"><span class="num">06</span>Bull / Base / Bear</a>
+    <a href="#s7"><span class="num">07</span>Risks &amp; Anti-Thesis</a>
+    <a href="#s8"><span class="num">08</span>Catalyst Timeline</a>
+    <a href="#s9"><span class="num">09</span>Comparable Companies</a>
+    <a href="#s10"><span class="num">10</span>First-Principles KPIs</a>
+    <a href="#s11"><span class="num">11</span>Glossary &amp; Method</a>
+  </nav>
+  <div class="side-disc">Generated 2026-06-15 · Automated FTA research run. Educational use only — not investment advice. Data from primary filings &amp; market sources, retrieved live.</div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+  <header class="hero">
+    <div class="hero-tag">Deep-Dive Analysis · Space Race · Direct-to-Device</div>
+    <h1>AST SpaceMobile <span class="mono">$ASTS</span></h1>
+    <div class="hero-sub">The only company building a space-based cellular broadband network designed for unmodified smartphones. Post-pullback, the market is pricing in the failures and ignoring the moat.</div>
+    <div class="verdict">
+      <span class="pill-label">Verdict</span>
+      <span class="pill-val">BULL · Speculative Growth</span>
+      <span class="conv" title="Conviction 7/10">
+        <span class="conv-dot"></span><span class="conv-dot"></span><span class="conv-dot"></span><span class="conv-dot"></span><span class="conv-dot"></span><span class="conv-dot"></span><span class="conv-dot"></span><span class="conv-empty"></span><span class="conv-empty"></span><span class="conv-empty"></span>
+        <span class="pill-val" style="font-size:.85rem">7/10</span>
+      </span>
+    </div>
+  </header>
+
+  <!-- KPI STRIP -->
+  <div class="kpi-strip">
+    <div class="kpi"><div class="label">Price (Jun 14)</div><div class="val">$82.41</div><div class="subt">52wk $36–$134</div></div>
+    <div class="kpi"><div class="label">Market Cap</div><div class="val">~$32.0B</div><div class="subt">multi-class</div></div>
+    <div class="kpi"><div class="label">2026 Rev Guide</div><div class="val">$150–200M</div><div class="subt">vs $70.9M FY25</div></div>
+    <div class="kpi"><div class="label">Cash</div><div class="val">~$3.5B</div><div class="subt">Mar 31 '26</div></div>
+    <div class="kpi"><div class="label">P/S (fwd)</div><div class="val">~180x</div><div class="subt">Euphoric</div></div>
+    <div class="kpi"><div class="label">Analyst PT</div><div class="val">~$88</div><div class="subt">$41–$108</div></div>
+  </div>
+
+  <div class="content">
+
+  <!-- SECTION 1 -->
+  <section class="card" id="s1">
+    <div class="card-head"><div class="badge">1</div><h2>Executive Summary &amp; Investment Thesis</h2><span class="chev">▾</span></div>
+    <div class="card-body">
+      <div class="thesis">AST SpaceMobile is a <strong>binary, asymmetric infrastructure bet</strong> on owning the only LEO constellation purpose-built to deliver true cellular <em>broadband</em> — not just texts — to ordinary phones. After a ~38% drawdown from its May all-time high, the market is over-weighting two recoverable setbacks (a lost satellite, a rocket explosion) and under-weighting an FCC-blessed 248-satellite franchise, ~45 MHz of dedicated spectrum, and equity from both AT&amp;T and Verizon. We are <strong>cautiously bullish</strong>.</div>
+
+      <p>ASTS trades at roughly <strong>$82.41</strong> (June 14, 2026), down from a $133.86 all-time high set May 28, with a market capitalization near <strong>$32B</strong> across its multi-class share structure. This is a pre-commercial company: Q1 2026 revenue was just <strong>$14.7M</strong> against a <strong>$191.0M</strong> net loss. The entire valuation rests on a single question — can it deploy and operate the constellation before the capital, the spectrum window, or the carriers' patience runs out?</p>
+
+      <p>The bull case is structural. AST holds <a href="#g-fcc">FCC commercial authorization</a> (April 2026) to operate 248 satellites delivering <a href="#g-scs">Supplemental Coverage from Space</a> using premium 700/800 MHz low-band spectrum coordinated with AT&amp;T, Verizon and FirstNet, plus up to 45 MHz of lower mid-band via the Ligado deal. It is targeting ~45 satellites in orbit by year-end 2026 and carries a war chest of ~$3.5B in cash against >$1.2B of committed backlog. No competitor — including SpaceX's Starlink Direct-to-Cell — currently offers genuine broadband (video, data) to a standard handset.</p>
+
+      <p>The bear case is equally real: this remains a cash-incinerating, pre-revenue hardware program facing relentless dilution, a brutal launch-cadence dependency, and a deep-pocketed SpaceX competitor. Conviction is therefore moderate — sized as a high-volatility, asymmetric position, not a core holding.</p>
+
+      <div class="chips">
+        <div class="chip"><div class="l">Conviction</div><div class="v">7 / 10</div></div>
+        <div class="chip"><div class="l">Sector</div><div class="v" style="font-size:.8rem">Space / D2D Telecom</div></div>
+        <div class="chip"><div class="l">Stance</div><div class="v">BULL</div></div>
+        <div class="chip"><div class="l">Time Horizon</div><div class="v" style="font-size:.85rem">3–5 yr</div></div>
+        <div class="chip"><div class="l">Risk Profile</div><div class="v neg">Very High</div></div>
+      </div>
+
+      <div class="callout gold"><strong>Contrarian read:</strong> The April BlueBird&nbsp;7 loss and the Blue Origin New Glenn anomaly spooked the tape, but management reaffirmed the 45-satellite 2026 target, said the loss is insured, and has BlueBird 8–10 shipping within ~30 days. Operational setbacks ≠ thesis breaks — as long as the cadence resumes.</div>
+    </div>
+  </section>
+
+  <!-- SECTION 2 -->
+  <section class="card" id="s2">
+    <div class="card-head"><div class="badge">2</div><h2>Microeconomic &amp; Valuation Analysis</h2><span class="chev">▾</span></div>
+    <div class="card-body">
+      <h3>The Addressable Market</h3>
+      <p>The <a href="#g-tam">TAM</a> is the global mobile subscriber base — roughly 5.5–6 billion handsets — overlaid on the ~90% of Earth's surface that lacks terrestrial cellular coverage (oceans, deserts, rural interiors). Direct-to-device satellite connectivity is projected to grow from a few hundred million dollars today to a multi-tens-of-billions market by the early 2030s, with sell-side <a href="#g-cagr">CAGR</a> estimates frequently in the 30–40% range. AST's wholesale model — sharing revenue with mobile network operators rather than acquiring subscribers — lets it address that base without building a retail brand.</p>
+
+      <h3>Valuation Posture</h3>
+      <p>On forward 2026 revenue guidance of $150–200M, ASTS trades around <strong>180x forward sales</strong> — firmly in the "Euphoric" band of the <a href="#g-ps">P/S</a> scale (>30). On trailing 2025 revenue of $70.9M the multiple is absurd; on a 2028+ "constellation complete, continuous coverage" revenue base of several billion, today's price could look cheap. This is the definition of a <a href="#g-optionality">real-option</a> valuation: you are not buying current cash flows, you are buying the discounted probability of a future utility-scale network. A conventional <a href="#g-pe">P/E</a> is meaningless — the company is deeply loss-making.</p>
+
+      <div class="chart-grid">
+        <div class="chart-box">
+          <div class="chart-head"><span class="chart-title">P/S vs Space-Telecom Peers</span><button class="zoom-btn" data-c="cPS">⤢ expand</button></div>
+          <div class="canvas-c"><canvas id="cPS"></canvas></div>
+        </div>
+        <div class="chart-box">
+          <div class="chart-head"><span class="chart-title">Market Cap — Peer Set ($B)</span><button class="zoom-btn" data-c="cMC">⤢ expand</button></div>
+          <div class="canvas-c"><canvas id="cMC"></canvas></div>
+        </div>
+      </div>
+
+      <h3>Ownership &amp; Insider Activity</h3>
+      <p>The cap table is unusually strategic: AT&amp;T, Verizon, Vodafone, Rakuten and Google are all investors and/or commercial partners, anchoring institutional confidence. Founder-CEO Abel Avellan retains super-voting Class B/C shares, concentrating control. Retail ownership is large and the name is a perennial high-short-interest battleground, fueling violent volatility. Recent insider activity has skewed toward routine, pre-planned secondary sales rather than open-market buying — consistent with a founder-led pre-revenue company funding itself, but worth monitoring.</p>
+
+      <div class="chips">
+        <div class="chip"><div class="l">Fwd P/S</div><div class="v">~180x</div></div>
+        <div class="chip"><div class="l">P/E</div><div class="v neg">n/m (loss)</div></div>
+        <div class="chip"><div class="l">Backlog</div><div class="v">$1.2B+</div></div>
+        <div class="chip"><div class="l">'25→'26 Rev Growth</div><div class="v pos">+112–182%</div></div>
+        <div class="chip"><div class="l">Strategic Holders</div><div class="v" style="font-size:.75rem">ATT·VZ·VOD</div></div>
+      </div>
+      <div class="callout note"><strong>Note:</strong> Reported market cap figures vary ($32B–$36B) because ASTS has Class A/B/C shares; Class A float (~299M shares) understates the fully-economic count (~388M). We use ~$32B at the June 14 close.</div>
+    </div>
+  </section>
+
+  <!-- SECTION 3 -->
+  <section class="card" id="s3">
+    <div class="card-head"><div class="badge">3</div><h2>Qualitative — Moat, Management &amp; Culture</h2><span class="chev">▾</span></div>
+    <div class="card-body">
+      <h3>The Moat — Thinking Systemically</h3>
+      <p>AST's moat is a stack of compounding scarcities, not a single feature. First, <strong>physics &amp; IP</strong>: the BlueBird arrays are the largest commercial communications structures ever flown (BlueBird 6 spans ~2,400 sq ft), and the phased-array beamforming that lets a satellite close a link with a 0.1-watt phone is protected by a deep patent estate. Second, <strong>spectrum</strong>: through carrier partnerships AST gets premium 700/800 MHz low-band for free, plus ~45 MHz of mid-band from Ligado — a regulatory asset competitors cannot simply buy. Third, <strong>regulatory</strong>: FCC authorization for 248 satellites and SCS service is a multi-year, hard-won barrier. Fourth, <strong>distribution</strong>: exclusive-leaning relationships with the carriers controlling billions of existing subscribers. Each layer is individually defensible; stacked, they form a genuine systemic moat — provided execution delivers.</p>
+
+      <h3>Management &amp; Capital Allocation</h3>
+      <p>ASTS is <strong>founder-led</strong>: Abel Avellan is founder, chairman and CEO, with a prior exit (Emerging Markets Communications, sold to Global Eagle) demonstrating he can build and monetize satellite-comms businesses. Capital allocation is aggressive and creative — the team has repeatedly tapped convertibles and at-the-market equity to fund the constellation, and in Feb 2026 opportunistically refinanced higher-coupon 2032 notes with cheaper long-dated 2036 paper. The flip side is chronic dilution and a balance sheet increasingly layered with convertible debt.</p>
+
+      <h3>Culture &amp; Organizational Traits</h3>
+      <p>The culture reads as engineering-first and mission-driven, with high failure tolerance baked in — necessary for an aerospace hardware company where rockets explode and satellites de-orbit. Talent density is concentrated in RF/phased-array and aerospace engineering. The risk is key-person dependence on Avellan and a decision-making structure that is centralized rather than an idea-meritocracy. Innovation pace is high; the constraint is manufacturing throughput and launch access, not ideas.</p>
+
+      <div class="callout gold"><strong>Moat verdict:</strong> Wide but unproven. The combination of spectrum + regulatory + carrier distribution is close to un-replicable. But a moat around a network that isn't yet operational is potential energy, not kinetic — it only converts to durable economics once continuous coverage is live.</div>
+    </div>
+  </section>
+
+  <!-- SECTION 4 -->
+  <section class="card" id="s4">
+    <div class="card-head"><div class="badge">4</div><h2>Quantitative — Financial Deep Dive</h2><span class="chev">▾</span></div>
+    <div class="card-body">
+      <p>The financials must be read as those of a capital project mid-construction, not an operating business. Revenue is immaterial and lumpy (gateway-equipment sales and government engineering work), while operating expense scales with the build. The numbers that matter are <a href="#g-fcf">free cash flow</a> burn, the cash runway against it, and the dilution required to bridge to commercialization.</p>
+
+      <div class="chart-grid">
+        <div class="chart-box">
+          <div class="chart-head"><span class="chart-title">Quarterly Revenue ($M)</span><button class="zoom-btn" data-c="cRev">⤢ expand</button></div>
+          <div class="canvas-c"><canvas id="cRev"></canvas></div>
+        </div>
+        <div class="chart-box">
+          <div class="chart-head"><span class="chart-title">Net Loss vs Op-Ex ($M)</span><button class="zoom-btn" data-c="cLoss">⤢ expand</button></div>
+          <div class="canvas-c"><canvas id="cLoss"></canvas></div>
+        </div>
+      </div>
+      <div class="chart-grid">
+        <div class="chart-box">
+          <div class="chart-head"><span class="chart-title">Cash vs Total Debt ($B)</span><button class="zoom-btn" data-c="cCash">⤢ expand</button></div>
+          <div class="canvas-c"><canvas id="cCash"></canvas></div>
+        </div>
+        <div class="chart-box">
+          <div class="chart-head"><span class="chart-title">Shares Outstanding — Dilution (M)</span><button class="zoom-btn" data-c="cDil">⤢ expand</button></div>
+          <div class="canvas-c"><canvas id="cDil"></canvas></div>
+        </div>
+      </div>
+
+      <h3>Revenue Streams, Explained Simply</h3>
+      <p>Today's trickle of revenue comes from two places: <strong>selling ground gateway equipment</strong> to mobile operators (one-time hardware) and <strong>government / engineering services</strong> (e.g., a ~$30M Space Development Agency HALO contract). Tomorrow's revenue — the thesis — is <strong>wholesale connectivity</strong>: carriers pay AST a share of what subscribers pay for satellite coverage, a high-margin, recurring stream that only switches on with continuous coverage. FY25 revenue was ~$70.9M; FY26 guidance of $150–200M still reflects mostly equipment and government work, with roughly half from contracted backlog.</p>
+
+      <h3>Burn, Liquidity &amp; Leverage</h3>
+      <p>Q1 2026 operating expenses were $164.1M (up from $126.6M in Q4 2025), driven by a $37.9M jump in engineering-services cost and a $17.4M rise in G&amp;A — the build accelerating. Net loss was $191.0M (-$0.66/share). Against this, AST held ~$3.5B in cash and equivalents at March 31, providing multiple years of runway at current burn. The cost is leverage and dilution: total debt now includes a $1.15B 2.00% 2036 convert, ~$325M remaining 2.375% 2032 converts (post-repurchase), a fresh $1.0B 2.25% 2036 convert (Feb 2026), a $420M term loan, plus ~$69M subsidiary debt. <a href="#g-fcf">FCF</a> remains deeply negative and FCF/share will stay negative until coverage scales.</p>
+
+      <div class="chips">
+        <div class="chip"><div class="l">Q1'26 Revenue</div><div class="v">$14.7M</div></div>
+        <div class="chip"><div class="l">Q1'26 Net Loss</div><div class="v neg">-$191.0M</div></div>
+        <div class="chip"><div class="l">Q1'26 Op-Ex</div><div class="v neg">$164.1M</div></div>
+        <div class="chip"><div class="l">EPS</div><div class="v neg">-$0.66</div></div>
+        <div class="chip"><div class="l">Cash</div><div class="v">~$3.5B</div></div>
+        <div class="chip"><div class="l">FCF</div><div class="v neg">Negative</div></div>
+      </div>
+      <div class="callout note"><strong>Flywheel (prospective):</strong> launch satellites → expand coverage → activate carrier revenue-share → fund more launches at lower cost of capital → denser constellation → higher capacity/ARPU. The flywheel has not yet turned; it is the entire reason to own the stock.</div>
+    </div>
+  </section>
+
+  <!-- SECTION 5 -->
+  <section class="card" id="s5">
+    <div class="card-head"><div class="badge">5</div><h2>Earnings Tracker — Management Credibility</h2><span class="chev">▾</span></div>
+    <div class="card-body">
+      <p>For a pre-revenue company, credibility is measured against operational and deployment promises as much as financial guidance. AST's record is mixed: strong on regulatory and financing milestones, weaker on launch timing and revenue ramp.</p>
+      <table>
+        <thead><tr><th>Quarter / Date</th><th>Promise / Guidance</th><th>Actual Result</th><th class="num">Credibility</th></tr></thead>
+        <tbody>
+          <tr><td>Q1 2026</td><td>~$39M revenue (consensus)</td><td>$14.7M — significant miss</td><td class="num neg">3/10</td></tr>
+          <tr><td>Q1 2026</td><td>FY26 revenue $150–200M</td><td>Reiterated</td><td class="num">6/10</td></tr>
+          <tr><td>Apr 2026</td><td>BlueBird 7 to orbit (New Glenn)</td><td>Lost — low orbit, de-orbited (insured)</td><td class="num neg">2/10</td></tr>
+          <tr><td>Apr 2026</td><td>FCC commercial D2D authorization</td><td>Granted — 248 sats approved</td><td class="num pos">10/10</td></tr>
+          <tr><td>Q4 2025</td><td>BlueBird 6 launch by year-end</td><td>Launched Dec 23, 2025</td><td class="num pos">9/10</td></tr>
+          <tr><td>2025</td><td>Secure mid-band spectrum</td><td>Ligado ~45 MHz; court-approved</td><td class="num pos">9/10</td></tr>
+          <tr><td>2025</td><td>Verizon definitive agreement</td><td>Signed (Oct 2025)</td><td class="num pos">9/10</td></tr>
+          <tr><td>Ongoing</td><td>~45 satellites in orbit by YE2026</td><td>At risk — cadence dependent</td><td class="num md">5/10</td></tr>
+        </tbody>
+      </table>
+      <div class="callout gold"><strong>Read:</strong> Management reliably clears regulatory and financing bars (the hardest moats to build) but has repeatedly stumbled on the literal rocket science — launch timing and orbital insertion. The investable question is whether deployment risk is idiosyncratic (bad rockets) or systemic (AST can't execute). Evidence to date points to the former.</div>
+    </div>
+  </section>
+
+  <!-- SECTION 6 -->
+  <section class="card" id="s6">
+    <div class="card-head"><div class="badge">6</div><h2>Bull / Base / Bear Scenarios</h2><span class="chev">▾</span></div>
+    <div class="card-body">
+      <p>Probability-weighted price targets across three horizons. Given the binary nature of constellation deployment, outcome dispersion is extreme — these are scenario anchors, not precision forecasts.</p>
+
+      <div class="horizon-label">1-Year Horizon (mid-2027)</div>
+      <div class="scen-grid">
+        <div class="scen bull"><div class="scen-h">Bull · 30%</div><div class="pt">$150</div><span class="prob">P = 30%</span>
+          <ul><li>Launch cadence resumes, 30+ sats in orbit</li><li>AT&amp;T/Verizon beta → continuous coverage</li><li>First wholesale revenue recognized</li></ul></div>
+        <div class="scen base"><div class="scen-h">Base · 45%</div><div class="pt">$95</div><span class="prob">P = 45%</span>
+          <ul><li>~40 sats; intermittent coverage</li><li>FY26 guide roughly met (~$175M)</li><li>One more capital raise / dilution</li></ul></div>
+        <div class="scen bear"><div class="scen-h">Bear · 25%</div><div class="pt">$42</div><span class="prob">P = 25%</span>
+          <ul><li>Further launch failures / slippage to 2027</li><li>Carrier patience tested; Starlink gains</li><li>Dilutive emergency financing</li></ul></div>
+      </div>
+      <p style="font-size:.82rem;color:var(--muted)">Probability-weighted 1-yr target ≈ <strong>$96</strong> (vs $82 spot) — modest upside skew.</p>
+
+      <div class="horizon-label">3-Year Horizon (2029)</div>
+      <div class="scen-grid">
+        <div class="scen bull"><div class="scen-h">Bull · 30%</div><div class="pt">$310</div><span class="prob">P = 30%</span>
+          <ul><li>Continuous US + intl coverage live</li><li>Wholesale revenue scaling toward $1–2B</li><li>FCF inflection in sight</li></ul></div>
+        <div class="scen base"><div class="scen-h">Base · 45%</div><div class="pt">$130</div><span class="prob">P = 45%</span>
+          <ul><li>Constellation ~half built; coverage patchy</li><li>Revenue $500M–1B, still loss-making</li><li>Competition compresses pricing</li></ul></div>
+        <div class="scen bear"><div class="scen-h">Bear · 25%</div><div class="pt">$30</div><span class="prob">P = 25%</span>
+          <ul><li>Capital exhaustion / restructuring</li><li>SpaceX wins broadband D2D</li><li>Carriers defect at exclusivity expiry</li></ul></div>
+      </div>
+      <p style="font-size:.82rem;color:var(--muted)">Probability-weighted 3-yr target ≈ <strong>$159</strong>.</p>
+
+      <div class="horizon-label">5-Year Horizon (2031)</div>
+      <div class="scen-grid">
+        <div class="scen bull"><div class="scen-h">Bull · 30%</div><div class="pt">$520</div><span class="prob">P = 30%</span>
+          <ul><li>Global utility-scale network; ~168+ sats</li><li>Multi-billion recurring revenue, FCF+</li><li>Re-rated as infrastructure compounder</li></ul></div>
+        <div class="scen base"><div class="scen-h">Base · 45%</div><div class="pt">$190</div><span class="prob">P = 45%</span>
+          <ul><li>Profitable but sub-scale vs vision</li><li>Shared market with Starlink D2C</li><li>Mature multiple on real cash flow</li></ul></div>
+        <div class="scen bear"><div class="scen-h">Bear · 25%</div><div class="pt">$20</div><span class="prob">P = 25%</span>
+          <ul><li>Technology / economics don't scale</li><li>Permanent dilution overhang</li><li>Acquired for spectrum at low premium</li></ul></div>
+      </div>
+      <p style="font-size:.82rem;color:var(--muted)">Probability-weighted 5-yr target ≈ <strong>$248</strong> — the asymmetry lives here.</p>
+
+      <div class="chart-box solo">
+        <div class="chart-head"><span class="chart-title">1-Yr Scenario Targets ($)</span><button class="zoom-btn" data-c="cScen">⤢ expand</button></div>
+        <div class="canvas-c"><canvas id="cScen"></canvas></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 7 -->
+  <section class="card" id="s7">
+    <div class="card-head"><div class="badge">7</div><h2>Risks &amp; Anti-Thesis — Steelmanning the Bear</h2><span class="chev">▾</span></div>
+    <div class="card-body">
+      <p>If I were short ASTS, here is the case I would press. Each risk is engaged seriously, with probability, impact, and whether it is already discounted in the price.</p>
+
+      <div class="risk">
+        <h4>1. Execution &amp; launch-cadence dependency</h4>
+        <p>The entire thesis requires launching dozens of large, complex satellites on a 1–2 month cadence using third-party rockets (SpaceX, Blue Origin). The BlueBird 7 loss and the New Glenn anomaly show how fragile this is. A multi-month cadence slip pushes continuous coverage into 2027 and forces renegotiation of carrier service-level commitments. This is the single most likely thesis-breaker.</p>
+        <div class="meta"><span class="tag hi">Probability: High</span><span class="tag hi">Impact: Severe</span><span class="tag md">Partially priced in</span></div>
+      </div>
+
+      <div class="risk">
+        <h4>2. Relentless dilution &amp; capital intensity</h4>
+        <p>AST has funded itself with serial convertible notes and ATM equity. Each raise dilutes holders and layers in conversion overhang (~11.9M potential shares from the Feb 2026 note alone). A full constellation may cost billions more than currently funded. The market's reflex to every financing is "more shares = lower value."</p>
+        <div class="meta"><span class="tag hi">Probability: High</span><span class="tag md">Impact: Moderate-High</span><span class="tag md">Partially priced in</span></div>
+      </div>
+
+      <div class="risk">
+        <h4>3. SpaceX / Starlink competition</h4>
+        <p>Starlink Direct-to-Cell, paired with T-Mobile's "T-Satellite," is already live for messaging and benefits from SpaceX's owned, near-free launch capacity and capital depth. T-Mobile's Starlink exclusivity expires in 2026 — if SpaceX matures broadband D2C, AT&amp;T and Verizon could be tempted to defect. AST's edge is broadband-grade capacity to unmodified phones, but the competitive clock is loud.</p>
+        <div class="meta"><span class="tag md">Probability: Medium</span><span class="tag hi">Impact: Severe</span><span class="tag lo">Under-priced</span></div>
+      </div>
+
+      <div class="risk">
+        <h4>4. Valuation / expectations risk</h4>
+        <p>At ~180x forward sales and ~$32B market cap on $14.7M quarterly revenue, the stock embeds near-flawless execution. Any disappointment — a missed launch, a guidance trim, a carrier delay — triggers violent 20–40% drawdowns (as just witnessed). The downside in a "show me" market is structurally large.</p>
+        <div class="meta"><span class="tag hi">Probability: High</span><span class="tag md">Impact: Moderate</span><span class="tag md">Partially priced in</span></div>
+      </div>
+
+      <div class="risk">
+        <h4>5. Regulatory / spectrum interference disputes</h4>
+        <p>The Ligado mid-band acquisition faces opposition (Iridium has urged the FCC to block it over interference/coordination concerns). Spectrum coordination across borders and incumbents is slow and contestable. A regulatory setback would directly impair a core moat asset.</p>
+        <div class="meta"><span class="tag md">Probability: Medium</span><span class="tag md">Impact: Moderate-High</span><span class="tag lo">Under-priced</span></div>
+      </div>
+
+      <div class="callout gold"><strong>Anti-thesis synthesis:</strong> The bear doesn't need the technology to fail — only for it to arrive late and expensive while a better-capitalized rival closes the window. That is a credible path. The bull's defense is the spectrum/regulatory/carrier moat and a genuine broadband architecture advantage that messaging-grade competitors can't yet match.</div>
+    </div>
+  </section>
+
+  <!-- SECTION 8 -->
+  <section class="card" id="s8">
+    <div class="card-head"><div class="badge">8</div><h2>Catalyst Timeline</h2><span class="chev">▾</span></div>
+    <div class="card-body">
+      <div class="timeline">
+        <div class="tl-item"><div class="tl-date">Q3 2026 (next earnings)</div><div class="tl-title">Q2 2026 results</div><div class="tl-desc">Watch revenue ramp toward $150–200M guide, opex trajectory, and updated satellite count.</div></div>
+        <div class="tl-item"><div class="tl-date">~Jul 2026</div><div class="tl-title">BlueBird 8–10 launch</div><div class="tl-desc">Shipped ~30 days post-BB7 loss; resumption of cadence is the key proof point.</div></div>
+        <div class="tl-item"><div class="tl-date">H2 2026</div><div class="tl-title">AT&amp;T / Verizon beta → continuous coverage</div><div class="tl-desc">Intermittent service early-2026 transitioning to continuous as constellation densifies.</div></div>
+        <div class="tl-item"><div class="tl-date">2H 2026</div><div class="tl-title">Ligado mid-band FCC ruling</div><div class="tl-desc">Final clearance vs. incumbent opposition (Iridium). Direct moat impact.</div></div>
+        <div class="tl-item"><div class="tl-date">YE 2026</div><div class="tl-title">~45 satellites in orbit target</div><div class="tl-desc">The headline deployment milestone enabling continuous US coverage.</div></div>
+        <div class="tl-item"><div class="tl-date">2026</div><div class="tl-title">T-Mobile / Starlink exclusivity expiry</div><div class="tl-desc">Competitive inflection — watch for carrier positioning shifts.</div></div>
+        <div class="tl-item"><div class="tl-date">2027+</div><div class="tl-title">Government / Defense contract expansion</div><div class="tl-desc">SDA HALO and follow-on national-security demand as a diversifier.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 9 -->
+  <section class="card" id="s9">
+    <div class="card-head"><div class="badge">9</div><h2>Comparable Company Analysis</h2><span class="chev">▾</span></div>
+    <div class="card-body">
+      <p>Pure-play comps are scarce; the closest public satellite-connectivity names are Globalstar and Iridium, with Rocket Lab as a space-infrastructure reference. None is a true peer — AST is pre-revenue and broadband-D2D; the others are operating businesses — which is exactly why the multiple gap is so wide.</p>
+      <table>
+        <thead><tr><th>Company</th><th class="num">Mkt Cap</th><th class="num">Rev (TTM/Guide)</th><th class="num">Rev Growth</th><th class="num">P/S</th><th class="num">FCF Margin</th><th class="num">Net Margin</th></tr></thead>
+        <tbody>
+          <tr><td>ASTS · AST SpaceMobile</td><td class="num">~$32B</td><td class="num">$150–200M*</td><td class="num pos">+112–182%</td><td class="num neg">~180x</td><td class="num neg">Negative</td><td class="num neg">Negative</td></tr>
+          <tr><td>GSAT · Globalstar</td><td class="num">~$9.4B</td><td class="num">$280–305M*</td><td class="num pos">+5–12%</td><td class="num">~32x</td><td class="num">Low+</td><td class="num neg">~Breakeven</td></tr>
+          <tr><td>IRDM · Iridium</td><td class="num">~$5.5B</td><td class="num">~$881M*</td><td class="num pos">~+5%</td><td class="num pos">~6x</td><td class="num pos">Strong</td><td class="num pos">Positive</td></tr>
+        </tbody>
+      </table>
+      <p style="font-size:.78rem;color:var(--muted)">*Guidance / forecast figures. ASTS &amp; GSAT show FY2026 revenue guidance; IRDM shows FY2026 consensus.</p>
+
+      <h3>Relative Valuation Read</h3>
+      <p>Iridium is the value anchor — profitable, ~6x sales, strong FCF, but low-growth and capacity-constrained for true broadband. Globalstar sits in between, recently in a definitive agreement to be acquired by Amazon (a strategic validation of D2D spectrum's worth). ASTS commands a ~30x premium to Iridium's sales multiple precisely because it is the only name selling the broadband-to-any-phone dream. The comp table makes the asymmetry explicit: you are paying a venture-stage multiple inside a public wrapper. Globalstar's Amazon takeout also signals that hyperscalers value D2D spectrum/assets — a read-through positive for AST's strategic optionality.</p>
+
+      <div class="chart-grid">
+        <div class="chart-box">
+          <div class="chart-head"><span class="chart-title">Revenue Growth vs Peers (YoY)</span><button class="zoom-btn" data-c="cPeerG">⤢ expand</button></div>
+          <div class="canvas-c"><canvas id="cPeerG"></canvas></div>
+        </div>
+        <div class="chart-box">
+          <div class="chart-head"><span class="chart-title">P/S Multiple vs Peers</span><button class="zoom-btn" data-c="cPeerPS">⤢ expand</button></div>
+          <div class="canvas-c"><canvas id="cPeerPS"></canvas></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 10 -->
+  <section class="card" id="s10">
+    <div class="card-head"><div class="badge">10</div><h2>First-Principles KPIs</h2><span class="chev">▾</span></div>
+    <div class="card-body">
+      <p>Forget GAAP for a moment. For a constellation-in-construction, the leading indicators that actually predict terminal value are physical and contractual, not financial. We track five.</p>
+
+      <div class="chips">
+        <div class="chip"><div class="l">Satellites in Orbit</div><div class="v">~6 → 45</div></div>
+        <div class="chip"><div class="l">Launch Cadence</div><div class="v">1–2 / mo</div></div>
+        <div class="chip"><div class="l">% Continuous Coverage</div><div class="v">Intermittent</div></div>
+        <div class="chip"><div class="l">Committed Backlog</div><div class="v">$1.2B+</div></div>
+        <div class="chip"><div class="l">Cash Runway</div><div class="v">Multi-yr</div></div>
+      </div>
+
+      <div class="chart-grid">
+        <div class="chart-box">
+          <div class="chart-head"><span class="chart-title">Satellites in Orbit — Deployment Path</span><button class="zoom-btn" data-c="cSats">⤢ expand</button></div>
+          <div class="canvas-c"><canvas id="cSats"></canvas></div>
+        </div>
+        <div class="chart-box">
+          <div class="chart-head"><span class="chart-title">Revenue Backlog Coverage Build ($M)</span><button class="zoom-btn" data-c="cKpiRev">⤢ expand</button></div>
+          <div class="canvas-c"><canvas id="cKpiRev"></canvas></div>
+        </div>
+      </div>
+
+      <p><strong>Why these matter.</strong> (1) <em>Satellites in orbit</em> is the raw determinant of coverage and capacity — the numerator of every revenue model. (2) <em>Launch cadence</em> dictates whether the YE-2026 target and carrier SLAs hold. (3) <em>% continuous coverage</em> is the switch that flips dormant carrier contracts into recurring revenue-share. (4) <em>Backlog</em> proves demand is contracted, not hypothetical. (5) <em>Cash runway vs burn</em> determines how many more dilutive raises stand between today and self-funding. Track these quarterly; they will move the stock long before EPS does.</p>
+    </div>
+  </section>
+
+  <!-- SECTION 11 -->
+  <section class="card" id="s11">
+    <div class="card-head"><div class="badge">11</div><h2>Glossary &amp; Methodology</h2><span class="chev">▾</span></div>
+    <div class="card-body">
+      <p style="font-size:.85rem;color:var(--muted)">Definitions for hyperlinked terms used above. Each links back to where it first appeared.</p>
+
+      <div class="gloss-item gloss-term" id="g-fcc">
+        <h4>FCC Commercial Authorization / SCS</h4>
+        <p>The U.S. Federal Communications Commission's grant permitting a satellite operator to provide service commercially. AST's April 2026 order approved a 248-satellite constellation for <strong>Supplemental Coverage from Space (SCS)</strong> — using terrestrial mobile spectrum from space to fill coverage gaps. <strong>Why it matters:</strong> regulatory approval is a multi-year, hard-to-replicate barrier to entry. <a class="back-link" href="#s1">↩ back to Section 1</a></p>
+      </div>
+      <div class="gloss-item gloss-term" id="g-scs">
+        <h4>Supplemental Coverage from Space (SCS)</h4>
+        <p>A regulatory framework allowing satellites to use a partner carrier's licensed terrestrial spectrum (e.g., 700/800 MHz) to reach standard phones where there is no cell tower. <strong>Why it matters:</strong> it lets AST deliver service to unmodified handsets using premium low-band spectrum it doesn't have to buy. <a class="back-link" href="#s1">↩ back to Section 1</a></p>
+      </div>
+      <div class="gloss-item gloss-term" id="g-tam">
+        <h4>TAM — Total Addressable Market</h4>
+        <p>The total revenue opportunity if a product captured 100% of demand. <strong>Formula:</strong> (# potential customers) × (avg revenue per customer). <strong>Why it matters:</strong> frames the ceiling for a growth thesis — here, billions of phones × global coverage gaps. <a class="back-link" href="#s2">↩ back to Section 2</a></p>
+      </div>
+      <div class="gloss-item gloss-term" id="g-cagr">
+        <h4>CAGR — Compound Annual Growth Rate</h4>
+        <p>The smoothed annual growth rate over a period. <span class="formula">CAGR = (End / Start)^(1/years) − 1</span> <strong>Why it matters:</strong> standardizes multi-year growth into one comparable number. <a class="back-link" href="#s2">↩ back to Section 2</a></p>
+      </div>
+      <div class="gloss-item gloss-term" id="g-ps">
+        <h4>P/S — Price-to-Sales Ratio</h4>
+        <p>Market cap divided by revenue. <span class="formula">P/S = Market Cap / Revenue</span> FTA scale: &gt;30 Euphoric · &gt;18 Excited · &gt;8 Optimistic · 4–8 Aware · &lt;4 Cautious · &lt;2 Pessimistic. <strong>Why it matters:</strong> usable when a company has no earnings; ASTS's ~180x is off-the-charts Euphoric. <a class="back-link" href="#s2">↩ back to Section 2</a></p>
+      </div>
+      <div class="gloss-item gloss-term" id="g-pe">
+        <h4>P/E — Price-to-Earnings Ratio</h4>
+        <p>Price per share divided by earnings per share. <span class="formula">P/E = Price / EPS</span> <strong>Why it matters:</strong> the classic valuation yardstick — but meaningless ("n/m") for a loss-making company like ASTS. <a class="back-link" href="#s2">↩ back to Section 2</a></p>
+      </div>
+      <div class="gloss-item gloss-term" id="g-optionality">
+        <h4>Real Option / Optionality</h4>
+        <p>Valuing a business as the probability-weighted payoff of a future opportunity, akin to a call option, rather than on current cash flows. <strong>Why it matters:</strong> the only coherent way to value a pre-revenue, binary-outcome company — most of ASTS's value is contingent future cash flow. <a class="back-link" href="#s2">↩ back to Section 2</a></p>
+      </div>
+      <div class="gloss-item gloss-term" id="g-fcf">
+        <h4>FCF — Free Cash Flow</h4>
+        <p>Cash from operations minus capital expenditures — the cash a business actually generates after investment. <span class="formula">FCF = Operating Cash Flow − CapEx</span> <strong>Why it matters:</strong> for a capital-heavy build like AST's, FCF burn vs. cash on hand defines the runway and dilution risk. <a class="back-link" href="#s4">↩ back to Section 4</a></p>
+      </div>
+
+      <h3>Methodology</h3>
+      <p style="font-size:.85rem">All financial data was retrieved live from primary sources (SEC 10-Q/8-K filings, AST SpaceMobile investor relations, earnings releases) and corroborating market data (stockanalysis.com, Yahoo Finance, Investing.com, sector press) as of June 14–15, 2026. Prices and market caps are intraday snapshots and will drift. Scenario targets are analyst judgment, not guarantees; probabilities are subjective. Market-cap figures reconcile to a multi-class share structure (~388M economic shares). This report is generated by an automated research process for educational purposes and is not investment advice.</p>
+    </div>
+  </section>
+
+  </div><!-- /content -->
+
+  <footer class="foot">
+    <div class="brand" style="font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--gold);">Foundational Trading Academy</div>
+    Investment Research Hub · FTA Advanced Analysis Framework<br>
+    This site is for informational and educational purposes only and does not constitute investment advice. Past performance is not indicative of future results. Always conduct your own due diligence.<br>
+    Report generated 2026-06-15 · ASTS · AST SpaceMobile, Inc.
+  </footer>
+</div><!-- /main -->
+</div><!-- /wrap -->
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+  <div class="modal-box">
+    <button class="modal-close" id="modalClose">✕ Close</button>
+    <div class="canvas-c"><canvas id="modalCanvas"></canvas></div>
+  </div>
+</div>
+
+<script>
+// collapsible cards
+document.querySelectorAll('.card-head').forEach(h=>{
+  h.addEventListener('click',()=>h.parentElement.classList.toggle('collapsed'));
+});
+
+// chart theming
+const G='#145A22',GOLD='#FCC55B',GD='#e0a838',RED='#a8341f',MUT='#5d6155',LINE='#d8d1c4',FOREST='#243D27';
+Chart.defaults.font.family="'JetBrains Mono', monospace";
+Chart.defaults.font.size=9;
+Chart.defaults.color=MUT;
+const baseOpts=(extra={})=>Object.assign({responsive:true,maintainAspectRatio:false,
+  plugins:{legend:{labels:{font:{size:9},boxWidth:10}}}},extra);
+
+const defs={};
+function reg(id,cfg){defs[id]=cfg;new Chart(document.getElementById(id),JSON.parse(JSON.stringify(cfg)));}
+
+// 1 P/S vs peers
+reg('cPS',{type:'bar',data:{labels:['ASTS','GSAT','IRDM'],datasets:[{label:'Fwd P/S (x)',data:[180,32,6],backgroundColor:[GOLD,G,FOREST]}]},
+  options:baseOpts({plugins:{legend:{display:false}},scales:{y:{type:'logarithmic',grid:{color:LINE}}}})});
+// 2 Market cap
+reg('cMC',{type:'bar',data:{labels:['ASTS','GSAT','IRDM'],datasets:[{label:'Market Cap ($B)',data:[32,9.4,5.5],backgroundColor:[GOLD,G,FOREST]}]},
+  options:baseOpts({plugins:{legend:{display:false}},scales:{y:{grid:{color:LINE}}}})});
+// 3 Revenue quarterly
+reg('cRev',{type:'bar',data:{labels:['Q2 25','Q3 25','Q4 25','Q1 26','FY26 guide(mid)'],datasets:[{label:'Revenue ($M)',data:[1.1,14.9,21,14.7,175],backgroundColor:[FOREST,FOREST,FOREST,G,GOLD]}]},
+  options:baseOpts({plugins:{legend:{display:false}},scales:{y:{grid:{color:LINE}}}})});
+// 4 Net loss vs opex
+reg('cLoss',{type:'bar',data:{labels:['Q3 25','Q4 25','Q1 26'],datasets:[
+  {label:'Op-Ex',data:[110,126.6,164.1],backgroundColor:GD},
+  {label:'Net Loss',data:[118,135,191],backgroundColor:RED}]},
+  options:baseOpts({scales:{y:{grid:{color:LINE}}}})});
+// 5 cash vs debt
+reg('cCash',{type:'bar',data:{labels:['Cash','Total Debt'],datasets:[{label:'$B',data:[3.5,3.2],backgroundColor:[G,RED]}]},
+  options:baseOpts({plugins:{legend:{display:false}},scales:{y:{grid:{color:LINE}}}})});
+// 6 dilution
+reg('cDil',{type:'line',data:{labels:['2023','2024','2025','Q1 26'],datasets:[{label:'Shares Out (M)',data:[150,225,290,388],borderColor:RED,backgroundColor:'rgba(168,52,31,.12)',fill:true,tension:.3,pointBackgroundColor:GOLD}]},
+  options:baseOpts({plugins:{legend:{display:false}},scales:{y:{grid:{color:LINE}}}})});
+// 7 scenario
+reg('cScen',{type:'bar',data:{labels:['Bear','Base','Bull','Spot'],datasets:[{label:'1-Yr Target ($)',data:[42,95,150,82.41],backgroundColor:[RED,GOLD,G,FOREST]}]},
+  options:baseOpts({plugins:{legend:{display:false}},scales:{y:{grid:{color:LINE}}}})});
+// 8 peer growth
+reg('cPeerG',{type:'bar',data:{labels:['ASTS','GSAT','IRDM'],datasets:[{label:'Rev Growth YoY (%)',data:[147,9,5],backgroundColor:[GOLD,G,FOREST]}]},
+  options:baseOpts({plugins:{legend:{display:false}},scales:{y:{grid:{color:LINE}}}})});
+// 9 peer ps
+reg('cPeerPS',{type:'bar',data:{labels:['ASTS','GSAT','IRDM'],datasets:[{label:'P/S (x)',data:[180,32,6],backgroundColor:[GOLD,G,FOREST]}]},
+  options:baseOpts({plugins:{legend:{display:false}},scales:{y:{type:'logarithmic',grid:{color:LINE}}}})});
+// 10 satellites
+reg('cSats',{type:'line',data:{labels:['YE24','Q1 26','Q3 26e','YE26 tgt','YE27e'],datasets:[{label:'Sats in Orbit',data:[5,6,20,45,90],borderColor:G,backgroundColor:'rgba(20,90,34,.12)',fill:true,tension:.3,pointBackgroundColor:GOLD,pointRadius:4}]},
+  options:baseOpts({plugins:{legend:{display:false}},scales:{y:{grid:{color:LINE}}}})});
+// 11 kpi rev build
+reg('cKpiRev',{type:'bar',data:{labels:['FY24','FY25','FY26 guide','FY27e'],datasets:[
+  {label:'Revenue ($M)',data:[4.4,70.9,175,450],backgroundColor:G},
+  {label:'Backlog ($M)',data:[200,900,1200,1500],backgroundColor:GOLD}]},
+  options:baseOpts({scales:{y:{grid:{color:LINE}}}})});
+
+// modal expand
+let modalChart=null;
+const modal=document.getElementById('modal');
+document.querySelectorAll('.zoom-btn').forEach(b=>{
+  b.addEventListener('click',()=>{
+    const cfg=defs[b.dataset.c];if(!cfg)return;
+    modal.classList.add('open');
+    if(modalChart)modalChart.destroy();
+    modalChart=new Chart(document.getElementById('modalCanvas'),JSON.parse(JSON.stringify(cfg)));
+  });
+});
+document.getElementById('modalClose').addEventListener('click',()=>{modal.classList.remove('open');if(modalChart){modalChart.destroy();modalChart=null;}});
+modal.addEventListener('click',e=>{if(e.target===modal){modal.classList.remove('open');if(modalChart){modalChart.destroy();modalChart=null;}}});
+</script>
+</body>
+</html>
