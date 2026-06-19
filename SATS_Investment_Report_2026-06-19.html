@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EchoStar (SATS) — Investment Research Report</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Questrial&family=Quicksand:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  --green:#145A22; --dark-green:#0A3A14; --forest:#243D27;
+  --gold:#FCC55B; --gold-deep:#e0a838;
+  --beige:#EDE8E0; --beige-card:#f6f3ed;
+  --ink:#23241f; --muted:#5d6155;
+  --red:#a8341f; --line:#d8d1c4;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Quicksand',sans-serif;background:var(--beige);color:var(--ink);line-height:1.6;display:flex}
+a{color:var(--green)}
+
+/* SIDEBAR */
+.sidebar{position:sticky;top:0;align-self:flex-start;width:262px;min-width:262px;height:100vh;overflow-y:auto;
+  background:linear-gradient(180deg,#071f0b,#0A3A14 40%,#145A22);border-right:3px solid var(--gold);padding:26px 20px;color:var(--beige)}
+.brand{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:30px;color:var(--gold);line-height:1.05}
+.brand small{display:block;font-family:'Questrial',sans-serif;font-style:normal;font-size:10px;letter-spacing:3px;color:var(--beige);text-transform:uppercase;margin-top:6px;opacity:.8}
+.ticker-box{margin:22px 0;background:rgba(255,255,255,.06);border:1px solid rgba(252,197,91,.4);border-radius:12px;padding:14px}
+.ticker-box .sym{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:20px;color:var(--gold)}
+.ticker-box .price{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:700;color:#fff;margin-top:4px}
+.ticker-box .chg{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--gold);margin-top:2px}
+.ticker-box .ex{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--beige);opacity:.7;margin-top:6px}
+.nav-label{font-family:'Questrial',sans-serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);opacity:.8;margin:18px 0 8px}
+.nav a{display:flex;gap:10px;align-items:baseline;text-decoration:none;color:var(--beige);font-size:13.5px;padding:7px 8px;border-radius:8px;transition:.15s}
+.nav a:hover{background:rgba(252,197,91,.14);color:#fff}
+.nav a .n{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold);min-width:18px}
+
+/* MAIN */
+.main{flex:1;min-width:0}
+.hero{position:relative;overflow:hidden;background:linear-gradient(120deg,var(--dark-green),var(--green) 60%);color:var(--beige);padding:46px 48px 40px}
+.hero::after{content:"";position:absolute;top:-120px;right:-80px;width:380px;height:380px;border-radius:50%;
+  background:radial-gradient(circle,rgba(252,197,91,.32),transparent 70%)}
+.hero .eyebrow{font-family:'Questrial',sans-serif;letter-spacing:4px;text-transform:uppercase;font-size:12px;color:var(--gold)}
+.hero h1{font-family:'Cormorant Garamond',serif;font-weight:700;font-size:46px;line-height:1.05;margin:8px 0 4px}
+.hero h1 em{font-style:italic;color:var(--gold)}
+.hero .sub{font-size:15px;max-width:640px;opacity:.92}
+.verdict{display:inline-flex;align-items:center;gap:14px;margin-top:20px;background:rgba(252,197,91,.16);border:1.5px solid var(--gold);border-radius:50px;padding:9px 20px}
+.verdict .pill{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:2px;font-size:13px;color:var(--gold)}
+.verdict .conv{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:15px;color:#fff}
+.hero .meta{position:relative;z-index:2;margin-top:14px;font-size:12px;font-family:'JetBrains Mono',monospace;opacity:.8}
+
+/* KPI STRIP */
+.kpi-strip{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:var(--line);border-bottom:3px solid var(--gold)}
+.kpi{background:var(--beige-card);padding:16px 14px}
+.kpi .lab{font-family:'Questrial',sans-serif;font-size:9.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
+.kpi .val{font-family:'JetBrains Mono',monospace;font-size:21px;font-weight:700;color:var(--green);margin-top:5px;line-height:1.1}
+.kpi .st{font-size:10.5px;color:var(--muted);margin-top:3px}
+
+/* CONTENT */
+.content{max-width:1080px;margin:0 auto;padding:34px 48px 80px}
+.card{background:var(--beige-card);border-radius:14px;margin:22px 0;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.card-head{display:flex;align-items:center;gap:14px;border-left:5px solid var(--green);padding:16px 20px;cursor:pointer;user-select:none}
+.badge{font-family:'JetBrains Mono',monospace;font-weight:700;background:var(--green);color:#fff;width:34px;height:34px;min-width:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px}
+.card-head h2{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:25px;color:var(--ink);flex:1}
+.chev{font-family:'JetBrains Mono',monospace;color:var(--green);transition:.2s;font-size:15px}
+.card.collapsed .chev{transform:rotate(-90deg)}
+.card-body{padding:6px 24px 24px}
+.card.collapsed .card-body{display:none}
+.card-body p{margin:11px 0;font-size:14.5px}
+.card-body h3{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1.5px;font-size:12.5px;color:var(--green);margin:20px 0 8px}
+.card-body ul{margin:10px 0 10px 4px;list-style:none}
+.card-body ul li{padding:5px 0 5px 20px;position:relative;font-size:14px}
+.card-body ul li::before{content:"▸";position:absolute;left:0;color:var(--gold-deep)}
+
+/* THESIS */
+.thesis{font-family:'Cormorant Garamond',serif;font-size:23px;line-height:1.4;border-left:4px solid var(--gold);background:rgba(252,197,91,.07);padding:16px 22px;margin:14px 0;color:var(--forest)}
+.thesis strong{color:var(--green)}
+
+/* CHIPS */
+.chips{display:flex;flex-wrap:wrap;gap:12px;margin:16px 0}
+.chip{background:#fff;border:1px solid var(--line);border-radius:11px;padding:11px 15px;min-width:120px}
+.chip .l{font-family:'Questrial',sans-serif;font-size:9.5px;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
+.chip .v{font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:700;color:var(--green);margin-top:3px}
+.chip .v.neg{color:var(--red)}
+
+/* CALLOUTS */
+.callout{border-radius:11px;padding:14px 18px;margin:16px 0;font-size:14px}
+.callout.gold{background:rgba(252,197,91,.13);border:1px solid var(--gold)}
+.callout.note{background:rgba(20,90,34,.07);border:1px solid var(--green)}
+.callout b{color:var(--green)}
+
+/* SCENARIO */
+.scen-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:18px 0}
+.scen{background:#fff;border:1px solid var(--line);border-top:5px solid var(--muted);border-radius:12px;padding:16px}
+.scen.bull{border-top-color:var(--green)}
+.scen.base{border-top-color:var(--gold-deep)}
+.scen.bear{border-top-color:var(--red)}
+.scen h4{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1.5px;font-size:13px;margin-bottom:8px}
+.scen.bull h4{color:var(--green)} .scen.base h4{color:var(--gold-deep)} .scen.bear h4{color:var(--red)}
+.scen .pt{font-family:'JetBrains Mono',monospace;font-size:25px;font-weight:700;color:var(--ink)}
+.scen .prob{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:11px;background:var(--beige);border-radius:20px;padding:3px 10px;margin:6px 0 10px}
+.scen ul{list-style:none;font-size:12.5px}
+.scen ul li{padding:4px 0 4px 16px;position:relative}
+.scen ul li::before{content:"·";position:absolute;left:4px;color:var(--gold-deep);font-weight:700}
+.horizon-label{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:2px;font-size:12px;color:var(--green);margin:22px 0 2px;border-bottom:1px solid var(--line);padding-bottom:6px}
+
+/* RISK */
+.risk{background:#fff;border:1px solid var(--line);border-left:4px solid var(--red);border-radius:10px;padding:15px 18px;margin:14px 0}
+.risk h4{color:var(--red);font-family:'Questrial',sans-serif;font-size:15px;letter-spacing:.5px;margin-bottom:6px}
+.risk .meta{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 4px}
+.risk .meta span{font-family:'JetBrains Mono',monospace;font-size:10.5px;background:var(--beige);border:1px solid var(--line);border-radius:20px;padding:3px 10px}
+.risk .meta span b{color:var(--ink)}
+
+/* TIMELINE */
+.timeline{position:relative;margin:20px 0 6px;padding-left:30px}
+.timeline::before{content:"";position:absolute;left:8px;top:4px;bottom:4px;width:3px;background:linear-gradient(180deg,var(--green),var(--gold))}
+.tl-item{position:relative;margin-bottom:20px}
+.tl-item::before{content:"";position:absolute;left:-29px;top:3px;width:14px;height:14px;border-radius:50%;background:var(--gold);border:3px solid var(--green)}
+.tl-item .date{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold-deep);font-weight:700}
+.tl-item .title{font-weight:700;font-size:14.5px;margin:2px 0}
+.tl-item .desc{font-size:13px;color:var(--muted)}
+
+/* TABLES */
+.tbl-wrap{overflow-x:auto;margin:16px 0}
+table{border-collapse:collapse;width:100%;font-size:13px;background:#fff;border-radius:10px;overflow:hidden}
+thead th{background:var(--green);color:#fff;font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:.5px;font-size:11px;padding:10px 12px;text-align:left}
+tbody td{padding:9px 12px;border-bottom:1px solid var(--line)}
+tbody tr:nth-child(even){background:rgba(237,232,224,.5)}
+tbody tr:hover{background:rgba(252,197,91,.14)}
+td.num,th.num{font-family:'JetBrains Mono',monospace;text-align:right}
+.pos{color:var(--green);font-weight:600} .neg{color:var(--red);font-weight:600}
+
+/* CHARTS */
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0}
+.chart-box{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px}
+.chart-box .ct{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.chart-box .ct .t{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:11.5px;color:var(--green)}
+.chart-box .ct .zoom{cursor:pointer;font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:2px 7px;background:var(--beige)}
+.chart-box canvas{max-height:160px}
+.chart-solo{max-width:420px;margin:18px auto}
+
+/* MODAL */
+.modal{display:none;position:fixed;inset:0;z-index:99;background:rgba(7,20,9,.82);align-items:center;justify-content:center;padding:30px}
+.modal.open{display:flex}
+.modal-box{background:var(--beige-card);border:2px solid var(--gold);border-radius:16px;padding:22px;width:min(900px,94vw)}
+.modal-box .mt{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1px;color:var(--green);font-size:14px;margin-bottom:10px;display:flex;justify-content:space-between}
+.modal-box .x{cursor:pointer;color:var(--red);font-weight:700}
+.modal-box canvas{max-height:60vh}
+
+/* GLOSSARY */
+.gloss{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:12px 0}
+.gloss h4{font-family:'JetBrains Mono',monospace;color:var(--green);font-size:14px;margin-bottom:4px}
+.gloss .back{font-size:11px;font-family:'JetBrains Mono',monospace}
+.gloss p{font-size:13px;margin:5px 0}
+sup a{text-decoration:none;color:var(--gold-deep);font-weight:700}
+
+.footer{text-align:center;font-size:11.5px;color:var(--muted);padding:30px 20px;border-top:1px solid var(--line)}
+
+@media(max-width:880px){.chart-grid,.scen-grid{grid-template-columns:1fr}}
+@media(max-width:780px){.sidebar{display:none}.kpi-strip{grid-template-columns:repeat(3,1fr)}.content,.hero{padding-left:20px;padding-right:20px}.hero h1{font-size:34px}}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="brand">First-Principles<br>Alpha<small>Independent Equity Research</small></div>
+  <div class="ticker-box">
+    <div class="sym">SATS</div>
+    <div class="price">$114.08</div>
+    <div class="chg">▲ +531% / 12M</div>
+    <div class="ex">Nasdaq · as of Jun 12 2026</div>
+  </div>
+  <div class="nav-label">Sections</div>
+  <nav class="nav">
+    <a href="#s1"><span class="n">01</span> Executive Summary &amp; Thesis</a>
+    <a href="#s2"><span class="n">02</span> Micro &amp; Valuation</a>
+    <a href="#s3"><span class="n">03</span> Moat, Management &amp; Culture</a>
+    <a href="#s4"><span class="n">04</span> Quantitative Deep Dive</a>
+    <a href="#s5"><span class="n">05</span> Earnings Tracker</a>
+    <a href="#s6"><span class="n">06</span> Bull / Base / Bear</a>
+    <a href="#s7"><span class="n">07</span> Risks &amp; Anti-Thesis</a>
+    <a href="#s8"><span class="n">08</span> Catalyst Timeline</a>
+    <a href="#s9"><span class="n">09</span> Comparable Companies</a>
+    <a href="#s10"><span class="n">10</span> First-Principles KPIs</a>
+    <a href="#s11"><span class="n">11</span> Glossary &amp; Method</a>
+  </nav>
+</aside>
+
+<div class="main">
+<!-- HERO -->
+<header class="hero">
+  <div class="eyebrow">Equity Research · Telecom / Satellite / Spectrum</div>
+  <h1>EchoStar Corp. — <em>SATS</em></h1>
+  <p class="sub">A bankrupt-adjacent pay-TV operator turned the most asymmetric spectrum-monetization story of the decade — selling ~$42B of airwaves to AT&amp;T and SpaceX and emerging as a deleveraged telecom holding a multibillion-dollar SpaceX equity stake.</p>
+  <div class="verdict">
+    <span class="pill">Verdict · Constructive (Bull, with caveats)</span>
+    <span class="conv">Conviction 7 / 10</span>
+  </div>
+  <div class="meta">Report date: 2026-06-19 · Analyst: First-Principles Alpha (autonomous) · All figures web-sourced, not from training data</div>
+</header>
+
+<!-- KPI STRIP -->
+<section class="kpi-strip">
+  <div class="kpi"><div class="lab">Price</div><div class="val">$114.08</div><div class="st">Jun 12 2026</div></div>
+  <div class="kpi"><div class="lab">Market Cap</div><div class="val">~$36B</div><div class="st">~290M sh out</div></div>
+  <div class="kpi"><div class="lab">12-Mo Return</div><div class="val">+531%</div><div class="st">best-in-class</div></div>
+  <div class="kpi"><div class="lab">Q1'26 Revenue</div><div class="val">$3.67B</div><div class="st">−5% YoY</div></div>
+  <div class="kpi"><div class="lab">SpaceX Stake</div><div class="val">~$15–31B</div><div class="st">est. mark-to-mkt</div></div>
+  <div class="kpi"><div class="lab">Mean Analyst PT</div><div class="val">$133.50</div><div class="st">Buy (mixed)</div></div>
+</section>
+
+<div class="content">
+
+<!-- SECTION 1 -->
+<section class="card" id="s1">
+  <div class="card-head"><div class="badge">1</div><h2>Executive Summary &amp; Investment Thesis</h2><span class="chev">▾</span></div>
+  <div class="card-body">
+    <div class="thesis">
+      <strong>Thesis (Bull):</strong> EchoStar is a once-in-a-cycle balance-sheet transformation. By monetizing ~$42.6B of strategically warehoused <a href="#g-spectrum">spectrum</a><sup><a href="#g-spectrum">①</a></sup> to AT&amp;T (~$23B) and SpaceX (~$17–19.6B), Charlie Ergen converted a declining, over-levered pay-TV company into a deleveraged telecom that <strong>also owns a large, newly public SpaceX equity stake.</strong> The market is now valuing SATS partly as a liquid back-door into SpaceX. We see a credible path to <strong>$150–185</strong> on a 12-month view if the SpaceX mark holds and debt falls as guided — but the asymmetry has narrowed after a +531% run, so position sizing and the SpaceX lock-up are the whole game.
+    </div>
+    <h3>Why this is mispriced (or was)</h3>
+    <p>For two years the consensus narrative was terminal decline: cord-cutting at DISH/Sling, a sub-scale Boost Mobile wireless build, a Hughes broadband franchise losing customers to Starlink, and a wall of debt with looming maturities. That narrative ignored the embedded option value of EchoStar's <a href="#g-spectrum">spectrum</a> portfolio — among the largest privately held in the U.S. The FCC's May 2026 approval of the SpaceX/AT&amp;T sales crystallized that value in cash and equity, and SpaceX's June 11–12, 2026 IPO at a ~$1.75T valuation turned the equity slug into a marked, headline-grabbing asset.</p>
+    <div class="chips">
+      <div class="chip"><div class="l">Sector</div><div class="v" style="font-size:13px">Telecom / Satellite</div></div>
+      <div class="chip"><div class="l">Price</div><div class="v">$114.08</div></div>
+      <div class="chip"><div class="l">Mkt Cap</div><div class="v">~$36B</div></div>
+      <div class="chip"><div class="l">Net Loss Q1'26</div><div class="v neg">−$147M</div></div>
+      <div class="chip"><div class="l">Insider (Ergen)</div><div class="v">51% / 90% vote</div></div>
+      <div class="chip"><div class="l">Conviction</div><div class="v">7 / 10</div></div>
+    </div>
+    <div class="callout note"><b>One-line view:</b> Own SATS as a deleveraging + SpaceX-optionality vehicle, not for the legacy P&amp;L. The core business is still shrinking; the asset story is what matters.</div>
+  </div>
+</section>
+
+<!-- SECTION 2 -->
+<section class="card" id="s2">
+  <div class="card-head"><div class="badge">2</div><h2>Microeconomic &amp; Valuation Analysis</h2><span class="chev">▾</span></div>
+  <div class="card-body">
+    <h3>Industry &amp; TAM</h3>
+    <p>EchoStar straddles three markets: U.S. pay-TV (~$80B, structurally declining ~5–8%/yr as cord-cutting continues), U.S. wireless (~$300B service revenue, low-single-digit growth, fiercely competitive among AT&amp;T, Verizon, T-Mobile), and satellite/enterprise broadband (Hughes), where <a href="#g-leo">LEO</a><sup><a href="#g-leo">②</a></sup> constellations (Starlink, Kuiper) are rapidly compressing the legacy GEO franchise. The growth engine is not these end-markets — it is the <a href="#g-spectrum">spectrum</a> monetization and the SpaceX equity, where direct-to-device satellite connectivity is a genuine new TAM projected to scale at a high-teens-to-20%+ CAGR over the rest of the decade.</p>
+    <div class="chart-grid">
+      <div class="chart-box"><div class="ct"><span class="t">Annual Revenue ($B, combined entity)</span><span class="zoom" data-c="revAnnual">⤢ expand</span></div><canvas id="revAnnual"></canvas></div>
+      <div class="chart-box"><div class="ct"><span class="t">Est. Revenue Mix Q1'26</span><span class="zoom" data-c="revMix">⤢ expand</span></div><canvas id="revMix"></canvas></div>
+    </div>
+    <p style="font-size:12px;color:var(--muted)">Segment mix is approximate, derived from Q1'26 disclosures (wireless service revenue $868M; pay-TV the largest segment; Hughes broadband declining). Pre-2024 revenue reflects standalone EchoStar before the December 2023 DISH merger and is not comparable.</p>
+
+    <h3>Valuation — P/S framing</h3>
+    <p>On ~$15B TTM revenue and a ~$36B market cap, SATS trades at roughly <strong>2.4x sales</strong> — squarely in the "Cautious / Pessimistic" zone of our P/S scale. But this is misleading: the equity value increasingly reflects the SpaceX stake and post-deal net cash, not the operating revenue. On an <a href="#g-ev">enterprise-value-to-asset</a><sup><a href="#g-ev">③</a></sup> basis (stripping out the SpaceX stake and pro-forma cash), the residual operating business is being valued at a deep discount to peer telecom multiples — the crux of the bull case.</p>
+    <div class="chips">
+      <div class="chip"><div class="l">P/S (TTM)</div><div class="v">~2.4x</div></div>
+      <div class="chip"><div class="l">P/S verdict</div><div class="v" style="font-size:13px">Cautious</div></div>
+      <div class="chip"><div class="l">Mean PT</div><div class="v">$133.50</div></div>
+      <div class="chip"><div class="l">High PT</div><div class="v">$161</div></div>
+      <div class="chip"><div class="l">Low PT</div><div class="v">$121</div></div>
+    </div>
+    <h3>Ownership &amp; analyst posture</h3>
+    <p>Insider control is extreme: Charlie Ergen beneficially owns ~51% of shares and ~90% of voting power via super-voting Class B stock. Institutional ownership has been rising as the SpaceX-proxy thesis attracts event-driven and special-situations funds. Sell-side is genuinely split — New Street initiated Buy at $161 and TD Cowen raised to $155, while some quant/aggregate services still flag a "Sell" on the legacy fundamentals. That divergence is itself a signal of a story in transition.</p>
+    <div class="chart-grid">
+      <div class="chart-box"><div class="ct"><span class="t">Analyst Price Targets vs Price</span><span class="zoom" data-c="ptChart">⤢ expand</span></div><canvas id="ptChart"></canvas></div>
+      <div class="chart-box"><div class="ct"><span class="t">P/S Scale Positioning</span><span class="zoom" data-c="psChart">⤢ expand</span></div><canvas id="psChart"></canvas></div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 3 -->
+<section class="card" id="s3">
+  <div class="card-head"><div class="badge">3</div><h2>Qualitative Analysis — Moat, Management &amp; Culture</h2><span class="chev">▾</span></div>
+  <div class="card-body">
+    <h3>The moat: a regulatory-scarcity asset, not an operating one</h3>
+    <p>EchoStar's durable advantage was never customer love or network superiority — it was <strong>control of a finite, government-licensed resource.</strong> Spectrum is the closest thing telecom has to beachfront land: it cannot be manufactured, its allocation is politically gated, and the buyers (AT&amp;T, SpaceX) have few alternatives at national scale. Ergen's genuine, systemic edge has been the patience and balance-sheet tolerance to <em>hold</em> that asset through a decade of skepticism and FCC build-out brinkmanship until a motivated buyer with a new use case (direct-to-cell) appeared. That is a moat of <em>optionality and time arbitrage</em>, not of throughput.</p>
+    <h3>Founder-led &amp; capital allocation</h3>
+    <p>This is among the most founder-dominated large caps in the market. Ergen co-founded the business, returned as CEO in November 2025 to personally steer the endgame, and his interests are unambiguously aligned through his ~51% stake. His capital-allocation record is a study in contrarian conviction: warehousing spectrum others called "dead money," using bankruptcy-adjacent leverage as a negotiating tool, and a celebrated history of hard-nosed dealmaking (the "poker player" reputation is earned). The flip side — covered in Risks — is key-man dependence and a willingness to play brinkmanship that can spook partners and regulators.</p>
+    <h3>Culture &amp; organizational traits</h3>
+    <ul>
+      <li><b>Failure tolerance / patience:</b> very high — the entire thesis rests on holding non-yielding assets for years against consensus.</li>
+      <li><b>Customer obsession:</b> low/mixed — DISH and Hughes are not known for service leadership; subscriber losses are chronic.</li>
+      <li><b>Idea meritocracy &amp; decentralization:</b> low — this is a top-down, founder-will organization, for better and worse.</li>
+      <li><b>Talent density:</b> concentrated in dealmaking, regulatory, and engineering rather than consumer growth.</li>
+    </ul>
+    <div class="callout gold"><b>Philosophical read:</b> EchoStar is best understood as a <em>holding company with a single brilliant capital allocator</em> wrapped around declining operating assets — closer to a special-situations vehicle than a growth telecom. Underwrite the man and the assets, not the income statement.</div>
+  </div>
+</section>
+
+<!-- SECTION 4 -->
+<section class="card" id="s4">
+  <div class="card-head"><div class="badge">4</div><h2>Quantitative Analysis — Financial Deep Dive</h2><span class="chev">▾</span></div>
+  <div class="card-body">
+    <h3>Revenue, margins &amp; cash flow</h3>
+    <p>The operating trajectory is one of managed decline. Combined revenue fell from ~$17.0B (2023) to $15.83B (2024) to $15.0B (2025), and Q1'26 revenue of $3.67B was down ~5% YoY from $3.87B. Net loss narrowed to $147M in Q1'26 from $203M a year earlier — improvement, but still a loss. <a href="#g-fcf">Free cash flow</a><sup><a href="#g-fcf">④</a></sup> has been negative (≈ −$0.29B in 2024), pressured by interest on the debt stack and the capital-intensive wireless build.</p>
+    <div class="chips">
+      <div class="chip"><div class="l">Rev TTM</div><div class="v">~$15B</div></div>
+      <div class="chip"><div class="l">Q1'26 Rev</div><div class="v">$3.67B</div></div>
+      <div class="chip"><div class="l">Net Loss Q1'26</div><div class="v neg">−$147M</div></div>
+      <div class="chip"><div class="l">Wireless Svc Rev</div><div class="v">$868M</div></div>
+      <div class="chip"><div class="l">Wireless ARPU</div><div class="v">$38.59</div></div>
+      <div class="chip"><div class="l">FCF 2024</div><div class="v neg">−$0.29B</div></div>
+    </div>
+    <h3>Balance sheet — the real story</h3>
+    <p>Pre-deal, EchoStar carried ~$26–30B of total debt against ~$4.3B cash (net debt ~$22.6B) with ~$1.7B annual interest expense — the source of all the distress chatter. The transactions change this fundamentally: management has pointed to ~$24.1B of gross cash coming in, enabling debt paydown toward ~$13.4B pro-forma, plus SpaceX funding ~$2B of cash interest through November 2027. The <a href="#g-deleverage">deleveraging</a><sup><a href="#g-deleverage">⑤</a></sup> is the engine that converts a going-concern worry into an asset-rich balance sheet.</p>
+    <div class="chart-grid">
+      <div class="chart-box"><div class="ct"><span class="t">Debt: Pre-Deal vs Pro-Forma ($B)</span><span class="zoom" data-c="debtChart">⤢ expand</span></div><canvas id="debtChart"></canvas></div>
+      <div class="chart-box"><div class="ct"><span class="t">Quarterly Revenue ($B)</span><span class="zoom" data-c="qRev">⤢ expand</span></div><canvas id="qRev"></canvas></div>
+    </div>
+    <h3>Subscriber flywheel (running in reverse on legacy, forward on the asset)</h3>
+    <p>Pay-TV ended Q1'26 at 6.63M subs (4.84M DISH + 1.79M Sling), down ~366K in the quarter. Wireless reached 7.53M but added only ~16K (vs +150K a year earlier — a sharp deceleration as Boost transitions to a hybrid MNO on AT&amp;T's network). Hughes lost ~58K broadband subs to Starlink. The legacy flywheel is decelerating; the new flywheel is <em>spectrum value → cash + SpaceX equity → deleveraging → re-rating</em>.</p>
+    <div class="chart-grid">
+      <div class="chart-box"><div class="ct"><span class="t">Subscribers by Segment (M)</span><span class="zoom" data-c="subChart">⤢ expand</span></div><canvas id="subChart"></canvas></div>
+      <div class="chart-box"><div class="ct"><span class="t">Net Loss Trend ($M)</span><span class="zoom" data-c="lossChart">⤢ expand</span></div><canvas id="lossChart"></canvas></div>
+    </div>
+    <div class="callout note"><b>Operating leverage note:</b> The Boost→hybrid-MNO shift (using AT&amp;T cell sites) trades subscriber-growth ambition for lower capex and cash burn. That is rational endgame management — prioritizing the balance sheet over a costly greenfield 5G build.</div>
+  </div>
+</section>
+
+<!-- SECTION 5 -->
+<section class="card" id="s5">
+  <div class="card-head"><div class="badge">5</div><h2>Earnings Tracker — Management Credibility</h2><span class="chev">▾</span></div>
+  <div class="card-body">
+    <p>Credibility scored 1–10 on whether management delivered against the prior guidance/promise. EchoStar's pattern: weak on operating/subscriber promises, exceptionally strong on the strategic spectrum-monetization promise that defines the thesis.</p>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>Quarter / Date</th><th>Specific Promise / Guidance</th><th>Actual Result</th><th class="num">Credibility</th></tr></thead>
+      <tbody>
+        <tr><td>Q1'26 · May 7 '26</td><td>Close spectrum sales after FCC approval; begin deleveraging</td><td>FCC approved May '26; deals closing; cash inflow underway</td><td class="num pos">9</td></tr>
+        <tr><td>Q4'25 · Feb '26</td><td>Boost transition to hybrid MNO; reduce wireless cash burn</td><td>Transition underway; sub adds collapsed to ~16K (intended trade-off)</td><td class="num">6</td></tr>
+        <tr><td>Q3'25 · Nov '25</td><td>Expand SpaceX agreement; Ergen returns as CEO</td><td>Stake raised to ~$11.1B; Ergen back as CEO</td><td class="num pos">9</td></tr>
+        <tr><td>Q2'25 · Aug '25</td><td>Resolve FCC build-out dispute; protect licenses</td><td>Path to sale secured; "$326M poker" with FCC resolved favorably</td><td class="num pos">8</td></tr>
+        <tr><td>Q1'25 · May '25</td><td>Stabilize wireless subs; defend pay-TV ARPU</td><td>Wireless +150K then; pay-TV still bleeding ~381K</td><td class="num">5</td></tr>
+        <tr><td>Q4'24 · Feb '25</td><td>Address 2026 debt maturities</td><td>Refinancing/exchange progress; runway extended</td><td class="num">6</td></tr>
+        <tr><td>Q3'24 · Nov '24</td><td>Integrate DISH; find spectrum monetization path</td><td>Integration on track; monetization still pending (delivered later)</td><td class="num">6</td></tr>
+        <tr><td>Q2'24 · Aug '24</td><td>Improve liquidity amid distress headlines</td><td>Liquidity managed but FCF stayed negative</td><td class="num">5</td></tr>
+      </tbody>
+    </table></div>
+    <div class="callout gold"><b>Read:</b> Average credibility ≈ 6.8/10, but weighted by what matters — the strategic spectrum thesis — management has delivered the high-stakes promises. The misses cluster in consumer operations, which the thesis explicitly de-emphasizes.</div>
+  </div>
+</section>
+
+<!-- SECTION 6 -->
+<section class="card" id="s6">
+  <div class="card-head"><div class="badge">6</div><h2>Bull / Base / Bear Scenarios</h2><span class="chev">▾</span></div>
+  <div class="card-body">
+    <p>Probability-weighted price targets across three horizons. Anchored to current $114. The dominant swing factor is the marked value and liquidity of the SpaceX stake; the secondary factor is deleveraging execution.</p>
+
+    <div class="horizon-label">1-Year Horizon</div>
+    <div class="scen-grid">
+      <div class="scen bull"><h4>Bull</h4><div class="pt">$175</div><span class="prob">Prob 30%</span>
+        <ul><li>SpaceX trades up / holds ~$1.75T+</li><li>Debt cut as guided; rating upgrades</li><li>Index/fund inclusion drives flows</li></ul></div>
+      <div class="scen base"><h4>Base</h4><div class="pt">$135</div><span class="prob">Prob 45%</span>
+        <ul><li>Stake holds; lock-up overhang caps upside</li><li>Deleveraging on track</li><li>Legacy decline continues, priced in</li></ul></div>
+      <div class="scen bear"><h4>Bear</h4><div class="pt">$80</div><span class="prob">Prob 25%</span>
+        <ul><li>SpaceX de-rates post-IPO froth</li><li>Lock-up + key-man discount widens</li><li>Operating cash burn resurfaces</li></ul></div>
+    </div>
+    <div class="callout note">1-yr probability-weighted ≈ <b>$133</b> (in line with mean sell-side PT).</div>
+
+    <div class="horizon-label">3-Year Horizon</div>
+    <div class="scen-grid">
+      <div class="scen bull"><h4>Bull</h4><div class="pt">$260</div><span class="prob">Prob 30%</span>
+        <ul><li>SpaceX compounds toward $2.5T+</li><li>Net debt minimal; FCF turns positive</li><li>Boost hybrid MNO stabilizes</li></ul></div>
+      <div class="scen base"><h4>Base</h4><div class="pt">$160</div><span class="prob">Prob 45%</span>
+        <ul><li>SpaceX modestly higher; stake monetized in tranches</li><li>Telecom segment ex-growth but cash-generative</li></ul></div>
+      <div class="scen bear"><h4>Bear</h4><div class="pt">$70</div><span class="prob">Prob 25%</span>
+        <ul><li>SpaceX valuation re-rates lower</li><li>Pay-TV/Hughes decline accelerates</li><li>Capital misallocation post-windfall</li></ul></div>
+    </div>
+    <div class="callout note">3-yr probability-weighted ≈ <b>$167</b>.</div>
+
+    <div class="horizon-label">5-Year Horizon</div>
+    <div class="scen-grid">
+      <div class="scen bull"><h4>Bull</h4><div class="pt">$340</div><span class="prob">Prob 28%</span>
+        <ul><li>SpaceX a $3T+ public compounder</li><li>EchoStar a clean cash-rich holdco / capital allocator</li></ul></div>
+      <div class="scen base"><h4>Base</h4><div class="pt">$190</div><span class="prob">Prob 44%</span>
+        <ul><li>Stake monetized; capital returned / redeployed</li><li>Operating business in runoff but funded</li></ul></div>
+      <div class="scen bear"><h4>Bear</h4><div class="pt">$65</div><span class="prob">Prob 28%</span>
+        <ul><li>SpaceX disappoints; windfall eroded</li><li>Ergen succession / governance shock</li></ul></div>
+    </div>
+    <div class="callout note">5-yr probability-weighted ≈ <b>$190</b>. Note the fat tails on both sides — this is a high-variance position.</div>
+
+    <div class="chart-box" style="margin-top:18px"><div class="ct"><span class="t">Probability-Weighted Targets by Horizon</span><span class="zoom" data-c="scenChart">⤢ expand</span></div><canvas id="scenChart" style="max-height:200px"></canvas></div>
+  </div>
+</section>
+
+<!-- SECTION 7 -->
+<section class="card" id="s7">
+  <div class="card-head"><div class="badge">7</div><h2>Risks &amp; Anti-Thesis — Steelman the Bear</h2><span class="chev">▾</span></div>
+  <div class="card-body">
+    <p>Underwritten as if short. These are the five arguments that would make me press the bear case.</p>
+    <div class="risk">
+      <h4>1. The SpaceX stake is illiquid, locked-up, and hard to mark</h4>
+      <p>The valuation rests on an equity slug whose true worth is genuinely uncertain — third-party estimates span ~$15B to ~$31B depending on share count and SpaceX's valuation. Lock-ups, minority-holder discounts, and the fact that EchoStar can't freely sell mean the headline mark overstates realizable value. A "back-door SpaceX" trade can de-rate violently if SpaceX's post-IPO price falls.</p>
+      <div class="meta"><span>Probability <b>High</b></span><span>Impact <b>High</b></span><span>Priced in? <b>Partially</b></span></div>
+    </div>
+    <div class="risk">
+      <h4>2. The core operating business is in secular decline</h4>
+      <p>Pay-TV loses ~350K+ subs per quarter, Hughes bleeds to Starlink, and Boost's growth has collapsed to ~16K adds as it retreats to a hybrid MNO model. Strip out the SpaceX stake and cash, and you own a melting ice cube of a telecom with negative FCF history.</p>
+      <div class="meta"><span>Probability <b>Very High</b></span><span>Impact <b>Medium</b></span><span>Priced in? <b>Yes</b></span></div>
+    </div>
+    <div class="risk">
+      <h4>3. Key-man risk &amp; super-voting control</h4>
+      <p>Ergen holds ~90% of voting power and personally drives strategy. His genius is the thesis — but minority holders have almost no governance recourse, succession is unaddressed, and a health event or a value-destructive pivot (he controls the windfall's redeployment) is an existential, un-hedgeable risk.</p>
+      <div class="meta"><span>Probability <b>Medium</b></span><span>Impact <b>High</b></span><span>Priced in? <b>No</b></span></div>
+    </div>
+    <div class="risk">
+      <h4>4. The easy money is made — asymmetry has compressed</h4>
+      <p>After +531% in 12 months, much of the spectrum-crystallization and SpaceX-IPO catalyst is in the price. Mean sell-side PT ($133.50) implies modest upside, and aggregate quant services still flag "Sell." Buying after the re-rating risks being the last marginal holder of a crowded event-driven trade.</p>
+      <div class="meta"><span>Probability <b>Medium</b></span><span>Impact <b>Medium</b></span><span>Priced in? <b>Partially</b></span></div>
+    </div>
+    <div class="risk">
+      <h4>5. Regulatory / deal-completion &amp; residual liabilities</h4>
+      <p>The FCC approval came with conditions (e.g., a ~$2.4B escrow for license-dispute exposure). Remaining closing mechanics, build-out obligations on retained spectrum, and tax leakage on the gains could reduce net proceeds below the optimistic ~$24B figure. Political/regulatory posture toward SpaceX could also shift.</p>
+      <div class="meta"><span>Probability <b>Low-Medium</b></span><span>Impact <b>Medium</b></span><span>Priced in? <b>Partially</b></span></div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 8 -->
+<section class="card" id="s8">
+  <div class="card-head"><div class="badge">8</div><h2>Catalyst Timeline</h2><span class="chev">▾</span></div>
+  <div class="card-body">
+    <div class="timeline">
+      <div class="tl-item"><div class="date">May 2026 ✓</div><div class="title">FCC approves ~$40B spectrum sales</div><div class="desc">SpaceX (AWS-4/H-block) &amp; AT&amp;T (3.45 GHz/600 MHz) cleared, with conditions incl. ~$2.4B escrow.</div></div>
+      <div class="tl-item"><div class="date">Jun 11–12 2026 ✓</div><div class="title">SpaceX IPO on Nasdaq</div><div class="desc">Priced after close Jun 11, debuted Jun 12 targeting ~$1.75T valuation — marks EchoStar's equity stake.</div></div>
+      <div class="tl-item"><div class="date">Late Jul / Aug 2026</div><div class="title">Q2 2026 earnings</div><div class="desc">First print to show deal cash inflow, pro-forma debt reduction, and updated SpaceX-stake disclosure.</div></div>
+      <div class="tl-item"><div class="date">H2 2026</div><div class="title">Debt paydown / refinancing actions</div><div class="desc">Deployment of ~$24B proceeds toward ~$13.4B pro-forma debt; potential rating-agency upgrades.</div></div>
+      <div class="tl-item"><div class="date">2026–2027</div><div class="title">Boost hybrid-MNO ramp on AT&amp;T network</div><div class="desc">Watch wireless ARPU/churn and cash-burn reduction as the model transitions.</div></div>
+      <div class="tl-item"><div class="date">Through Nov 2027</div><div class="title">SpaceX-funded interest payments</div><div class="desc">~$2B of EchoStar cash interest covered by SpaceX — a near-term cash-flow cushion.</div></div>
+      <div class="tl-item"><div class="date">2027+</div><div class="title">SpaceX lock-up expiry / stake monetization</div><div class="desc">The key liquidity event — when/if EchoStar can sell shares determines realized value &amp; capital return.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 9 -->
+<section class="card" id="s9">
+  <div class="card-head"><div class="badge">9</div><h2>Comparable Company Analysis</h2><span class="chev">▾</span></div>
+  <div class="card-body">
+    <p>SATS has no clean comp — it is part wireless, part pay-TV, part satellite, part SpaceX holdco. The table below frames it against U.S. wireless/telecom peers and a satellite operator. The takeaway: SATS screens "expensive" on operating P/S only because the market is paying for the SpaceX stake and balance-sheet repair, not the income statement.</p>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>Company</th><th class="num">Mkt Cap</th><th class="num">Rev TTM</th><th class="num">Rev Gr YoY</th><th class="num">P/S</th><th class="num">Net Margin</th><th class="num">FCF Margin</th></tr></thead>
+      <tbody>
+        <tr><td><b>EchoStar (SATS)</b></td><td class="num">~$36B</td><td class="num">~$15.0B</td><td class="num neg">−5%</td><td class="num">2.4x</td><td class="num neg">neg</td><td class="num neg">neg</td></tr>
+        <tr><td>AT&amp;T (T)</td><td class="num">~$200B</td><td class="num">~$123B</td><td class="num pos">+2%</td><td class="num">1.6x</td><td class="num pos">~9%</td><td class="num pos">~13%</td></tr>
+        <tr><td>Verizon (VZ)</td><td class="num">~$185B</td><td class="num">~$135B</td><td class="num pos">+1%</td><td class="num">1.4x</td><td class="num pos">~13%</td><td class="num pos">~13%</td></tr>
+        <tr><td>T-Mobile (TMUS)</td><td class="num">~$250B</td><td class="num">~$83B</td><td class="num pos">+5%</td><td class="num">3.0x</td><td class="num pos">~14%</td><td class="num pos">~18%</td></tr>
+        <tr><td>Charter (CHTR)</td><td class="num">~$50B</td><td class="num">~$55B</td><td class="num">flat</td><td class="num">0.9x</td><td class="num pos">~9%</td><td class="num pos">~8%</td></tr>
+      </tbody>
+    </table></div>
+    <p style="font-size:12px;color:var(--muted)">Peer figures are approximate, rounded market estimates for framing only; EV/EBITDA omitted for peers where EchoStar's is distorted by negative operating EBITDA and the non-operating SpaceX asset. The relevant comparison is sum-of-the-parts (operating business + cash + SpaceX stake), not a single multiple.</p>
+    <div class="callout gold"><b>Relative-value verdict:</b> On operating metrics SATS looks worse than every peer. On a sum-of-the-parts/asset basis it is arguably the cheapest way to own SpaceX exposure in public markets — which is exactly why the two camps reach opposite ratings.</div>
+    <div class="chart-grid">
+      <div class="chart-box"><div class="ct"><span class="t">Peer P/S Comparison</span><span class="zoom" data-c="compPS">⤢ expand</span></div><canvas id="compPS"></canvas></div>
+      <div class="chart-box"><div class="ct"><span class="t">Peer Revenue Growth YoY (%)</span><span class="zoom" data-c="compGr">⤢ expand</span></div><canvas id="compGr"></canvas></div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 10 -->
+<section class="card" id="s10">
+  <div class="card-head"><div class="badge">10</div><h2>First-Principles KPIs</h2><span class="chev">▾</span></div>
+  <div class="card-body">
+    <p>Forget GAAP EPS — for this special situation, the leading indicators are about <em>asset value and balance-sheet repair</em>, not operating throughput.</p>
+    <h3>KPI 1 — SpaceX stake mark-to-market ($B)</h3>
+    <p>The single biggest driver of intrinsic value. Tracks SpaceX's public valuation × EchoStar's share count, discounted for lock-up. This is the number to watch every quarter.</p>
+    <h3>KPI 2 — Net debt ($B)</h3>
+    <p>The thesis is deleveraging. Falling net debt directly de-risks the equity and can trigger rating upgrades and re-rating.</p>
+    <h3>KPI 3 — Wireless cash burn / capex</h3>
+    <p>Boost's transition to a hybrid MNO should cut burn. Lower capex = faster path to positive FCF independent of the stake.</p>
+    <h3>KPI 4 — Blended subscriber attrition</h3>
+    <p>Pay-TV + Hughes losses set the floor on operating value. Slowing attrition limits the melting-ice-cube discount.</p>
+    <div class="chart-grid">
+      <div class="chart-box"><div class="ct"><span class="t">KPI: Net Debt Path ($B)</span><span class="zoom" data-c="kpiDebt">⤢ expand</span></div><canvas id="kpiDebt"></canvas></div>
+      <div class="chart-box"><div class="ct"><span class="t">KPI: SpaceX Stake Value Range ($B)</span><span class="zoom" data-c="kpiStake">⤢ expand</span></div><canvas id="kpiStake"></canvas></div>
+    </div>
+    <div class="chart-grid">
+      <div class="chart-box"><div class="ct"><span class="t">KPI: Pay-TV Net Adds (000s)</span><span class="zoom" data-c="kpiSubs">⤢ expand</span></div><canvas id="kpiSubs"></canvas></div>
+      <div class="chart-box"><div class="ct"><span class="t">KPI: Wireless ARPU ($)</span><span class="zoom" data-c="kpiArpu">⤢ expand</span></div><canvas id="kpiArpu"></canvas></div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 11 -->
+<section class="card" id="s11">
+  <div class="card-head"><div class="badge">11</div><h2>Glossary &amp; Methodology</h2><span class="chev">▾</span></div>
+  <div class="card-body">
+    <div class="gloss" id="g-spectrum"><h4>① Spectrum <span class="back"><a href="#s1">↩ back</a></span></h4>
+      <p><b>Definition:</b> Government-licensed radio frequencies used to transmit wireless signals. A finite, regulated resource allocated by the FCC.</p>
+      <p><b>Why it matters:</b> Spectrum is the scarce input for all wireless/satellite connectivity. EchoStar's value was largely the option value of its warehoused licenses — monetized via the AT&amp;T and SpaceX sales.</p></div>
+    <div class="gloss" id="g-leo"><h4>② LEO (Low Earth Orbit) <span class="back"><a href="#s2">↩ back</a></span></h4>
+      <p><b>Definition:</b> Satellites orbiting ~300–1,200 miles up (e.g., Starlink), offering low-latency broadband versus traditional high-orbit (GEO) satellites like Hughes uses.</p>
+      <p><b>Why it matters:</b> LEO constellations are disrupting EchoStar's legacy Hughes broadband — and SpaceX's Starlink direct-to-cell is the new use case that gave EchoStar's spectrum its buyer.</p></div>
+    <div class="gloss" id="g-ev"><h4>③ Enterprise Value / Sum-of-the-Parts <span class="back"><a href="#s2">↩ back</a></span></h4>
+      <p><b>Definition:</b> EV = market cap + debt − cash. Sum-of-the-parts values each asset (operating business, cash, SpaceX stake) separately, then nets debt.</p>
+      <p><b>Why it matters:</b> For a holdco like EchoStar, a single P/S or P/E is misleading; SOTP isolates how much the market pays for the operating business vs. the SpaceX equity.</p></div>
+    <div class="gloss" id="g-fcf"><h4>④ Free Cash Flow (FCF) <span class="back"><a href="#s4">↩ back</a></span></h4>
+      <p><b>Definition:</b> Operating cash flow minus capital expenditures — the cash a business generates after maintaining/growing its asset base. Formula: FCF = CFO − CapEx.</p>
+      <p><b>Why it matters:</b> EchoStar's negative FCF was the root of distress fears. The deal proceeds and reduced wireless capex are the path back to positive FCF.</p></div>
+    <div class="gloss" id="g-deleverage"><h4>⑤ Deleveraging <span class="back"><a href="#s4">↩ back</a></span></h4>
+      <p><b>Definition:</b> Reducing total debt (and net debt = debt − cash). Lowers interest expense, default risk, and the equity-risk premium.</p>
+      <p><b>Why it matters:</b> The core mechanical driver of EchoStar's re-rating: moving from ~$26–30B debt toward ~$13.4B pro-forma transforms the risk profile of the equity.</p></div>
+
+    <h3>Methodology &amp; sources</h3>
+    <p>All financial figures were retrieved via live web research (June 2026), prioritizing EchoStar IR/SEC filings and reputable secondary sources, not pre-trained knowledge. Price/return as of Jun 12 2026. Segment splits, peer multiples, and forward KPI paths are clearly labeled approximations for analytical framing. Scenario targets are the analyst's probability-weighted judgments, not guarantees. Conviction 7/10 reflects high asset-value conviction offset by valuation that has already re-rated and meaningful lock-up/key-man risk.</p>
+    <div class="callout note"><b>Not investment advice.</b> This is independent research for informational purposes. The author is an autonomous research agent, not a licensed financial adviser. Do your own due diligence; SATS is a high-variance, event-driven situation.</div>
+    <h3>Primary &amp; secondary sources</h3>
+    <ul style="font-size:12.5px">
+      <li>EchoStar Investor Relations — Q1 2026 results &amp; SpaceX agreement releases (ir.echostar.com)</li>
+      <li>SEC EDGAR — EchoStar 8-K / 10-Q filings (FY2025–2026)</li>
+      <li>FCC spectrum-sale approval coverage (Advanced Television, SDxCentral)</li>
+      <li>Fortune, Barron's, Deadline, Morningstar — SpaceX stake &amp; Ergen coverage</li>
+      <li>StockAnalysis, MacroTrends, CompaniesMarketCap — price, market cap, historicals</li>
+      <li>WallStreetZen, TD Cowen, New Street — analyst targets &amp; ratings</li>
+    </ul>
+  </div>
+</section>
+
+<div class="footer">First-Principles Alpha · Independent Equity Research · EchoStar (SATS) · Generated 2026-06-19 · Figures web-sourced June 2026 · Not investment advice</div>
+</div>
+</div>
+
+<!-- MODAL -->
+<div class="modal" id="modal"><div class="modal-box"><div class="mt"><span id="modalTitle">Chart</span><span class="x" id="modalX">✕ close</span></div><canvas id="modalCanvas"></canvas></div></div>
+
+<script>
+// collapsible
+document.querySelectorAll('.card-head').forEach(h=>h.addEventListener('click',()=>h.parentElement.classList.toggle('collapsed')));
+
+Chart.defaults.font.family="'JetBrains Mono', monospace";
+Chart.defaults.font.size=10;
+Chart.defaults.color="#5d6155";
+const GREEN="#145A22",GOLD="#FCC55B",RED="#a8341f",FOREST="#243D27",GOLDD="#e0a838",MUT="#9a9384";
+
+const defs={};
+function mk(id,cfg){const el=document.getElementById(id);if(!el)return;defs[id]=cfg;new Chart(el,JSON.parse(JSON.stringify(cfg)));}
+const noLeg={plugins:{legend:{display:false}}};
+
+mk('revAnnual',{type:'bar',data:{labels:['2023','2024','2025'],datasets:[{label:'Revenue $B',data:[17.0,15.83,15.0],backgroundColor:[GREEN,GREEN,GOLDD]}]},options:{...noLeg,scales:{y:{beginAtZero:true}}}});
+mk('revMix',{type:'doughnut',data:{labels:['Pay-TV','Wireless','Broadband/Hughes & Other'],datasets:[{data:[2.4,0.95,0.32],backgroundColor:[GREEN,GOLD,FOREST]}]},options:{plugins:{legend:{position:'bottom'}}}});
+mk('ptChart',{type:'bar',data:{labels:['Low','Mean','TD Cowen','New Street','Price'],datasets:[{label:'$',data:[121,133.5,155,161,114.08],backgroundColor:[MUT,GOLDD,GREEN,GREEN,RED]}]},options:{...noLeg,indexAxis:'y'}});
+mk('psChart',{type:'bar',data:{labels:['Pessim<2','Caut<4','Aware4-8','Optim>8','Excit>18','Euph>30'],datasets:[{label:'P/S band',data:[2,4,8,18,30,40],backgroundColor:[GREEN,GOLDD,GOLD,'#cbb27a',MUT,RED]}]},options:{...noLeg,plugins:{legend:{display:false},title:{display:true,text:'SATS ≈ 2.4x (Cautious)'}}}});
+mk('debtChart',{type:'bar',data:{labels:['Pre-Deal Debt','Pro-Forma Debt','Cash Inflow'],datasets:[{label:'$B',data:[27,13.4,24.1],backgroundColor:[RED,GREEN,GOLD]}]},options:noLeg});
+mk('qRev',{type:'line',data:{labels:['Q1\'25','Q2\'25','Q3\'25','Q4\'25','Q1\'26'],datasets:[{label:'Rev $B',data:[3.87,3.86,3.84,3.62,3.67],borderColor:GREEN,backgroundColor:'rgba(20,90,34,.12)',fill:true,tension:.3}]},options:{...noLeg,scales:{y:{suggestedMin:3.2,suggestedMax:4.0}}}});
+mk('subChart',{type:'bar',data:{labels:['Pay-TV','Wireless','— DISH','— Sling'],datasets:[{label:'Subs (M)',data:[6.63,7.53,4.84,1.79],backgroundColor:[GREEN,GOLD,FOREST,GOLDD]}]},options:noLeg});
+mk('lossChart',{type:'bar',data:{labels:['Q1\'25','Q1\'26'],datasets:[{label:'Net Loss $M',data:[-202.67,-146.89],backgroundColor:[RED,GOLDD]}]},options:noLeg});
+mk('scenChart',{type:'bar',data:{labels:['1-Year','3-Year','5-Year'],datasets:[
+  {label:'Bear',data:[80,70,65],backgroundColor:RED},
+  {label:'Base',data:[135,160,190],backgroundColor:GOLD},
+  {label:'Bull',data:[175,260,340],backgroundColor:GREEN}]},options:{plugins:{legend:{position:'bottom'}}}});
+mk('compPS',{type:'bar',data:{labels:['SATS','T','VZ','TMUS','CHTR'],datasets:[{label:'P/S',data:[2.4,1.6,1.4,3.0,0.9],backgroundColor:[GOLDD,GREEN,GREEN,GREEN,GREEN]}]},options:noLeg});
+mk('compGr',{type:'bar',data:{labels:['SATS','T','VZ','TMUS','CHTR'],datasets:[{label:'Rev Gr %',data:[-5,2,1,5,0],backgroundColor:[RED,GREEN,GREEN,GREEN,MUT]}]},options:noLeg});
+mk('kpiDebt',{type:'line',data:{labels:['Pre-deal','Pro-forma','Target'],datasets:[{label:'Net Debt $B',data:[22.6,13.4,10],borderColor:GREEN,backgroundColor:'rgba(20,90,34,.12)',fill:true,tension:.3}]},options:noLeg});
+mk('kpiStake',{type:'bar',data:{labels:['Cost basis','Low est.','High est.'],datasets:[{label:'$B',data:[11.1,15,31],backgroundColor:[MUT,GOLDD,GREEN]}]},options:noLeg});
+mk('kpiSubs',{type:'bar',data:{labels:['Q1\'25','Q1\'26'],datasets:[{label:'Pay-TV net adds (000s)',data:[-381,-366],backgroundColor:[RED,GOLDD]}]},options:noLeg});
+mk('kpiArpu',{type:'line',data:{labels:['Q1\'25','Q1\'26'],datasets:[{label:'Wireless ARPU $',data:[37.89,38.59],borderColor:GOLDD,backgroundColor:'rgba(224,168,56,.15)',fill:true,tension:.3}]},options:{...noLeg,scales:{y:{suggestedMin:36,suggestedMax:40}}}});
+
+// modal expand
+let modalChart=null;
+document.querySelectorAll('.zoom').forEach(z=>z.addEventListener('click',()=>{
+  const id=z.dataset.c;const cfg=defs[id];if(!cfg)return;
+  document.getElementById('modalTitle').textContent=z.closest('.ct').querySelector('.t').textContent;
+  document.getElementById('modal').classList.add('open');
+  if(modalChart)modalChart.destroy();
+  modalChart=new Chart(document.getElementById('modalCanvas'),JSON.parse(JSON.stringify(cfg)));
+}));
+document.getElementById('modalX').addEventListener('click',()=>{document.getElementById('modal').classList.remove('open');if(modalChart){modalChart.destroy();modalChart=null;}});
+document.getElementById('modal').addEventListener('click',e=>{if(e.target.id==='modal'){document.getElementById('modal').classList.remove('open');if(modalChart){modalChart.destroy();modalChart=null;}}});
+</script>
+</body>
+</html>
