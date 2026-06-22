@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>RKLB — Rocket Lab Investment Report | FTA Research</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Questrial&family=Quicksand:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  --green:#145A22; --dark-green:#0A3A14; --forest:#243D27;
+  --gold:#FCC55B; --gold-deep:#e0a838;
+  --beige:#EDE8E0; --beige-card:#f6f3ed;
+  --ink:#23241f; --muted:#5d6155; --red:#a8341f; --line:#d8d1c4;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--beige);color:var(--ink);font-family:'Quicksand',sans-serif;font-weight:400;line-height:1.6}
+a{color:var(--green);text-decoration:none}
+a:hover{text-decoration:underline}
+.layout{display:flex;align-items:flex-start}
+
+/* SIDEBAR */
+.sidebar{position:sticky;top:0;width:262px;min-width:262px;height:100vh;overflow-y:auto;
+  background:linear-gradient(180deg,#071f0b,#0A3A14 40%,#145A22);
+  border-right:2px solid var(--gold);padding:26px 20px;color:#eae6dc}
+.brand{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:27px;color:var(--gold);line-height:1.1;margin-bottom:4px}
+.brand small{display:block;font-family:'Questrial',sans-serif;font-style:normal;font-size:10px;letter-spacing:3px;color:#cfc9bb;margin-top:6px;text-transform:uppercase}
+.ticker-box{margin:22px 0;padding:14px;border:1px solid rgba(252,197,91,.4);border-radius:12px;background:rgba(0,0,0,.18)}
+.ticker-box .sym{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:22px;color:#fff;letter-spacing:1px}
+.ticker-box .px{font-family:'JetBrains Mono',monospace;font-size:20px;color:var(--gold);margin-top:4px}
+.ticker-box .chg{font-family:'JetBrains Mono',monospace;font-size:12px;color:#7fd28a;margin-top:2px}
+.ticker-box .ex{font-size:10px;color:#bcb6a8;margin-top:6px;letter-spacing:1px;text-transform:uppercase;font-family:'Questrial',sans-serif}
+.nav a{display:flex;gap:10px;align-items:baseline;padding:7px 8px;border-radius:8px;color:#e3ddcf;font-size:13.5px;font-weight:500}
+.nav a:hover{background:rgba(252,197,91,.14);text-decoration:none;color:#fff}
+.nav a .n{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold);min-width:18px}
+.nav .navlabel{font-family:'Questrial',sans-serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#9fad9c;margin:16px 0 6px 8px}
+.disclaim{margin-top:20px;font-size:9.5px;color:#9aa394;line-height:1.5}
+
+/* MAIN */
+.main{flex:1;min-width:0}
+.hero{position:relative;overflow:hidden;background:linear-gradient(120deg,var(--dark-green),var(--green) 60%);color:#fff;padding:46px 48px 40px}
+.hero::after{content:"";position:absolute;right:-120px;top:-120px;width:360px;height:360px;border-radius:50%;
+  background:radial-gradient(circle,rgba(252,197,91,.32),rgba(252,197,91,0) 68%)}
+.hero .eyebrow{font-family:'Questrial',sans-serif;letter-spacing:4px;font-size:11px;text-transform:uppercase;color:var(--gold)}
+.hero h1{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:46px;margin:10px 0 4px;line-height:1.05}
+.hero h1 .em{font-style:italic;color:var(--gold)}
+.hero .sub{max-width:760px;font-size:15px;color:#e7efe4}
+.verdict{display:inline-flex;align-items:center;gap:14px;margin-top:20px;padding:12px 20px;border:1px solid rgba(252,197,91,.5);border-radius:40px;background:rgba(0,0,0,.16)}
+.verdict .pill{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:2px;font-size:13px;color:var(--gold)}
+.verdict .conv{font-family:'JetBrains Mono',monospace;font-size:13px;color:#fff;border-left:1px solid rgba(255,255,255,.3);padding-left:14px}
+.verdict .conv b{color:var(--gold);font-size:18px}
+
+/* KPI STRIP */
+.kpi-strip{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:var(--line);border-bottom:1px solid var(--line)}
+.kpi{background:var(--beige-card);padding:16px 18px}
+.kpi .lab{font-family:'Questrial',sans-serif;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
+.kpi .val{font-family:'JetBrains Mono',monospace;font-size:21px;font-weight:700;color:var(--green);margin-top:6px;line-height:1.1}
+.kpi .sub{font-size:11px;color:var(--muted);margin-top:3px}
+
+/* CONTENT */
+.content{max-width:1080px;margin:0 auto;padding:34px 48px 80px}
+.card{background:var(--beige-card);border:1px solid var(--line);border-radius:14px;margin:22px 0;overflow:hidden;box-shadow:0 1px 0 rgba(0,0,0,.02)}
+.card-head{display:flex;align-items:center;gap:14px;padding:18px 22px;border-left:5px solid var(--green);cursor:pointer;user-select:none}
+.badge{font-family:'JetBrains Mono',monospace;font-weight:700;width:34px;height:34px;min-width:34px;border-radius:9px;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;font-size:15px}
+.card-head h2{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:27px;margin:0;flex:1;color:var(--dark-green)}
+.chev{font-family:'JetBrains Mono',monospace;color:var(--muted);transition:transform .2s}
+.card.collapsed .chev{transform:rotate(-90deg)}
+.card-body{padding:4px 24px 24px}
+.card.collapsed .card-body{display:none}
+.card-body p{margin:12px 0}
+.card-body h3{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1.5px;font-size:13px;color:var(--green);margin:22px 0 8px}
+
+/* THESIS */
+.thesis{font-family:'Cormorant Garamond',serif;font-size:25px;line-height:1.4;font-weight:500;border-left:4px solid var(--gold);padding:6px 0 6px 22px;margin:8px 0 18px;color:var(--forest)}
+.thesis b{color:var(--green)}
+
+/* CHIPS */
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0}
+.chip{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;min-width:120px}
+.chip .l{font-family:'Questrial',sans-serif;font-size:9.5px;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted)}
+.chip .v{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;color:var(--green);margin-top:4px}
+.chip .v.red{color:var(--red)}
+
+/* CALLOUTS */
+.callout{border-radius:10px;padding:14px 18px;margin:16px 0;font-size:14.5px}
+.callout.gold{background:rgba(252,197,91,.16);border:1px solid var(--gold)}
+.callout.note{background:rgba(20,90,34,.08);border:1px solid rgba(20,90,34,.35)}
+.callout b{color:var(--dark-green)}
+
+/* TABLES */
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13.5px;background:#fff;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+thead th{background:var(--green);color:#fff;font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:.6px;font-size:11.5px;font-weight:400;padding:11px 12px;text-align:left}
+tbody td{padding:10px 12px;border-top:1px solid var(--line);vertical-align:top}
+tbody tr:nth-child(even){background:#faf8f3}
+tbody tr:hover{background:rgba(252,197,91,.12)}
+.mono{font-family:'JetBrains Mono',monospace}
+.pos{color:var(--green);font-weight:700}
+.neg{color:var(--red);font-weight:700}
+td.num,th.num{font-family:'JetBrains Mono',monospace;text-align:right}
+
+/* SCENARIO */
+.scen-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:16px 0}
+.scen{background:#fff;border:1px solid var(--line);border-radius:12px;padding:0 18px 18px;border-top:4px solid var(--muted)}
+.scen.bull{border-top-color:var(--green)}
+.scen.base{border-top-color:var(--gold)}
+.scen.bear{border-top-color:var(--red)}
+.scen h4{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1.5px;font-size:13px;margin:16px 0 4px}
+.scen.bull h4{color:var(--green)} .scen.base h4{color:var(--gold-deep)} .scen.bear h4{color:var(--red)}
+.scen .pt{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:700;color:var(--ink)}
+.scen .prob{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:11px;padding:3px 9px;border-radius:20px;background:var(--beige);color:var(--muted);margin:6px 0 10px}
+.scen ul{margin:6px 0 0;padding-left:16px;font-size:12.5px;color:var(--muted)}
+.scen ul li{margin:5px 0}
+.horizon-label{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:2px;font-size:12px;color:var(--green);margin:20px 0 2px}
+
+/* RISK */
+.risk{background:#fff;border:1px solid var(--line);border-left:4px solid var(--red);border-radius:10px;padding:14px 18px;margin:14px 0}
+.risk h4{color:var(--red);font-family:'Questrial',sans-serif;font-size:15px;margin:0 0 6px;letter-spacing:.5px}
+.risk .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.risk .tag{font-family:'JetBrains Mono',monospace;font-size:10.5px;padding:3px 9px;border-radius:20px;background:var(--beige);color:var(--muted)}
+.risk .tag b{color:var(--ink)}
+
+/* TIMELINE */
+.timeline{position:relative;margin:18px 0 6px;padding-left:26px}
+.timeline::before{content:"";position:absolute;left:7px;top:4px;bottom:4px;width:3px;background:linear-gradient(180deg,var(--green),var(--gold))}
+.tl-item{position:relative;margin:0 0 20px}
+.tl-item::before{content:"";position:absolute;left:-23px;top:3px;width:13px;height:13px;border-radius:50%;background:var(--gold);border:2px solid var(--green)}
+.tl-date{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--green);font-weight:700}
+.tl-title{font-weight:700;margin:2px 0}
+.tl-desc{font-size:13px;color:var(--muted)}
+
+/* CHARTS */
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}
+.chart-box{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px 8px}
+.chart-box .ct{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.chart-box .ct .t{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:11.5px;color:var(--green)}
+.chart-box .zoom{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);background:var(--beige);border:1px solid var(--line);border-radius:6px;padding:3px 7px;cursor:pointer}
+.chart-box .zoom:hover{background:var(--gold);color:var(--dark-green)}
+.canvas-wrap{position:relative;height:160px}
+.solo-chart{max-width:420px;margin:0 auto}
+
+/* MODAL */
+.modal{display:none;position:fixed;inset:0;background:rgba(10,30,12,.82);z-index:99;align-items:center;justify-content:center;padding:30px}
+.modal.open{display:flex}
+.modal-box{background:var(--beige-card);border:2px solid var(--gold);border-radius:14px;padding:20px;width:min(900px,94vw);height:min(70vh,560px);position:relative}
+.modal-box canvas{width:100%!important;height:100%!important}
+.modal-close{position:absolute;top:10px;right:14px;font-family:'JetBrains Mono',monospace;cursor:pointer;color:var(--muted);font-size:18px;background:none;border:none}
+
+.foot{font-size:11.5px;color:var(--muted);border-top:1px solid var(--line);margin-top:30px;padding-top:16px}
+.gloss dt{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--green);margin-top:16px;font-size:13.5px}
+.gloss dd{margin:4px 0 0;font-size:13.5px}
+.gloss .back{font-size:11px}
+sup a{font-family:'JetBrains Mono',monospace;font-size:10px}
+
+@media(max-width:880px){
+  .chart-grid,.scen-grid{grid-template-columns:1fr}
+}
+@media(max-width:780px){
+  .sidebar{display:none}
+  .kpi-strip{grid-template-columns:repeat(3,1fr)}
+  .content,.hero{padding-left:20px;padding-right:20px}
+  .hero h1{font-size:34px}
+}
+</style>
+</head>
+<body>
+<div class="layout">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="brand">First To Alpha<small>Research Hub</small></div>
+    <div class="ticker-box">
+      <div class="sym">RKLB</div>
+      <div class="px">$106.20</div>
+      <div class="chg">▲ Nasdaq-100 entry 6/22</div>
+      <div class="ex">Nasdaq · Aerospace &amp; Defense</div>
+    </div>
+    <nav class="nav">
+      <div class="navlabel">Report</div>
+      <a href="#s1"><span class="n">01</span> Executive Summary &amp; Thesis</a>
+      <a href="#s2"><span class="n">02</span> Micro &amp; Valuation</a>
+      <a href="#s3"><span class="n">03</span> Moat, Mgmt &amp; Culture</a>
+      <a href="#s4"><span class="n">04</span> Financial Deep Dive</a>
+      <a href="#s5"><span class="n">05</span> Earnings Tracker</a>
+      <a href="#s6"><span class="n">06</span> Bull / Base / Bear</a>
+      <a href="#s7"><span class="n">07</span> Risks &amp; Anti-Thesis</a>
+      <a href="#s8"><span class="n">08</span> Catalyst Timeline</a>
+      <a href="#s9"><span class="n">09</span> Comparable Companies</a>
+      <a href="#s10"><span class="n">10</span> First-Principles KPIs</a>
+      <a href="#s11"><span class="n">11</span> Glossary &amp; Method</a>
+    </nav>
+    <div class="disclaim">For research/education only. Not investment advice. Data sourced from primary filings &amp; public market data as of June 22, 2026. Author is not a financial advisor.</div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main">
+    <header class="hero">
+      <div class="eyebrow">First To Alpha · Deep-Dive Research · 22 Jun 2026</div>
+      <h1>Rocket Lab <span class="em">/ RKLB</span></h1>
+      <p class="sub">The only pure-play vertically integrated space company scaling launch and space systems in tandem — now entering the Nasdaq-100 with a $2.2B backlog, a Golden Dome seat, and a make-or-break Neutron debut on the horizon. A generational franchise priced for flawless execution.</p>
+      <div class="verdict">
+        <span class="pill">Verdict · Constructive Bull — Accumulate on Weakness</span>
+        <span class="conv">Conviction <b>7</b>/10</span>
+      </div>
+    </header>
+
+    <!-- KPI STRIP -->
+    <section class="kpi-strip">
+      <div class="kpi"><div class="lab">Price</div><div class="val">$106.20</div><div class="sub">ATH close $150.23 (5/27)</div></div>
+      <div class="kpi"><div class="lab">Market Cap</div><div class="val">~$66B</div><div class="sub">621M dil. shares</div></div>
+      <div class="kpi"><div class="lab">Rev Growth YoY</div><div class="val">+63.5%</div><div class="sub">Q1'26 $200.3M</div></div>
+      <div class="kpi"><div class="lab">Adj. EBITDA</div><div class="val">-$11.8M</div><div class="sub">improving fast</div></div>
+      <div class="kpi"><div class="lab">P/S (TTM)</div><div class="val">~97x</div><div class="sub">Euphoric</div></div>
+      <div class="kpi"><div class="lab">Analyst PT</div><div class="val">$107</div><div class="sub">14 Buy / 4 Hold</div></div>
+    </section>
+
+    <div class="content">
+
+      <!-- SECTION 1 -->
+      <section class="card" id="s1">
+        <div class="card-head"><span class="badge">1</span><h2>Executive Summary &amp; Investment Thesis</h2><span class="chev">▾</span></div>
+        <div class="card-body">
+          <div class="thesis">Rocket Lab is the rare second mover that can credibly challenge an entrenched monopolist. <b>We are constructive bulls</b> on a generational, founder-led franchise — but the stock at ~97x sales already discounts a near-flawless Neutron debut. The asymmetry favors <b>accumulating on weakness</b> rather than chasing strength.</div>
+
+          <p>Rocket Lab has quietly become the most complete pure-play in the public space economy. It is the only company outside SpaceX that simultaneously operates the world's most frequently launched small orbital rocket (<a href="#g-electron">Electron</a>), a fast-scaling <a href="#g-spacesystems">space systems</a> manufacturing arm (satellites, components, solar, propulsion), and a credible medium-lift, partially reusable vehicle in late-stage development (<a href="#g-neutron">Neutron</a>). Q1 2026 delivered record revenue of $200.3M (+63.5% YoY), a record $2.2B <a href="#g-backlog">backlog</a>, and record GAAP gross margin of 38.2% — beating every guided metric.</p>
+
+          <p>The bull thesis rests on three pillars: (1) <b>Neutron</b> unlocks the ~10x-larger medium-lift and constellation-deployment market, structurally re-rating the launch segment; (2) <b>Golden Dome / Space-Based Interceptor</b> with Raytheon positions Rocket Lab inside what could become the U.S. government's single largest national-security program; and (3) <b>vertical integration</b> (Mynaric optical comms, Motiv robotics, in-housed propulsion) compounds margin and supply control as the space systems business scales toward a prime-contractor profile.</p>
+
+          <p>The bear's strongest card is valuation and timing. At roughly $66B market cap on ~$679M trailing revenue, RKLB trades near 97x sales — a number that only makes sense if Neutron flies, scales, and lands reuse on a 2027–2029 cadence while the company crosses into sustained free-cash-flow generation. The January 2026 fuel-tank test failure and slip of the Neutron debut to Q4 2026 (at the earliest) is a reminder that the entire re-rating hinges on a vehicle that has not yet reached orbit. Our conviction of 7/10 reflects a world-class franchise we want to own, tempered by a price that demands the bull case to be largely correct.</p>
+
+          <div class="chips">
+            <div class="chip"><div class="l">Sector</div><div class="v">Aero/Defense</div></div>
+            <div class="chip"><div class="l">Backlog</div><div class="v">$2.2B</div></div>
+            <div class="chip"><div class="l">Liquidity</div><div class="v">&gt;$2.0B</div></div>
+            <div class="chip"><div class="l">Gross Margin</div><div class="v">38.2%</div></div>
+            <div class="chip"><div class="l">Net Cash</div><div class="v">~$1.42B</div></div>
+            <div class="chip"><div class="l">Founder-Led</div><div class="v">Yes · Beck</div></div>
+          </div>
+
+          <div class="callout gold"><b>One-line takeaway:</b> Buy the franchise, respect the price. Rocket Lab is the highest-quality non-SpaceX space asset on the market, but the margin of safety lives below ~$90, not above $130.</div>
+        </div>
+      </section>
+
+      <!-- SECTION 2 -->
+      <section class="card" id="s2">
+        <div class="card-head"><span class="badge">2</span><h2>Microeconomic &amp; Valuation Analysis</h2><span class="chev">▾</span></div>
+        <div class="card-body">
+          <p>The total addressable market is unusually expandable. Global space economy revenue is widely projected to grow from roughly $600B today toward $1.8T by 2035 (~11% <a href="#g-cagr">CAGR</a>), with launch, satellite manufacturing, and national-security space the fastest-growing slices. Rocket Lab's served markets — small/medium launch, satellite components and buses, and defense space — collectively represent a multi-hundred-billion opportunity that the company is positioning to capture end-to-end, from raw silicon and solar cells through to constellations on orbit.</p>
+
+          <div class="chart-grid">
+            <div class="chart-box"><div class="ct"><span class="t">Space Economy TAM ($T)</span><button class="zoom" data-c="tam">⤢ expand</button></div><div class="canvas-wrap"><canvas id="tam"></canvas></div></div>
+            <div class="chart-box"><div class="ct"><span class="t">Revenue Mix — Q1'26 ($M)</span><button class="zoom" data-c="mix">⤢ expand</button></div><div class="canvas-wrap"><canvas id="mix"></canvas></div></div>
+          </div>
+
+          <h3>Valuation — Price-to-Sales Lens</h3>
+          <p>On our trailing-twelve-month revenue estimate of ~$679M against a ~$66B market cap, RKLB trades near <b>97x sales</b>. On the firm's <a href="#g-ps">P/S framework</a> this sits deep in <b>Euphoric</b> territory (&gt;30). Even forward 2026 revenue of ~$900M–$950M leaves the multiple north of ~70x. The market is not valuing today's launch cadence; it is pricing the option value of Neutron + Golden Dome + a space-systems business graduating to prime-contractor economics. There is no GAAP P/E — the company is not yet profitable, so traditional earnings multiples are not meaningful, and EV/Sales / EV/Backlog dominate the valuation conversation.</p>
+
+          <div class="chips">
+            <div class="chip"><div class="l">P/S (TTM)</div><div class="v">~97x</div></div>
+            <div class="chip"><div class="l">P/S (fwd '26)</div><div class="v">~72x</div></div>
+            <div class="chip"><div class="l">EV / Backlog</div><div class="v">~29x</div></div>
+            <div class="chip"><div class="l">GAAP P/E</div><div class="v red">n/m</div></div>
+            <div class="chip"><div class="l">Rev CAGR 5y</div><div class="v">~76%</div></div>
+          </div>
+
+          <h3>Ownership &amp; Sentiment</h3>
+          <p>Institutional ownership is high and rising as RKLB graduates into major indices — the stock joins the <b>Nasdaq-100 on June 22, 2026</b>, a mechanical catalyst that forces passive inflows. The company remains founder-led: CEO Peter Beck retains a meaningful personal stake, aligning insider incentives with shareholders. The watch item is dilution: weighted shares rose from ~505M (Q1'25) to ~605M (Q1'26), driven by a $450M Q1 at-the-market (<a href="#g-atm">ATM</a>) raise and ongoing stock-based compensation. Management is explicitly using equity to fund M&amp;A and Neutron — a defensible strategy given a near-zero cost of equity at these multiples, but one that caps per-share upside.</p>
+
+          <div class="chart-grid">
+            <div class="chart-box"><div class="ct"><span class="t">Analyst PT Distribution ($)</span><button class="zoom" data-c="pt">⤢ expand</button></div><div class="canvas-wrap"><canvas id="pt"></canvas></div></div>
+            <div class="chart-box"><div class="ct"><span class="t">Shares Outstanding (M)</span><button class="zoom" data-c="shares">⤢ expand</button></div><div class="canvas-wrap"><canvas id="shares"></canvas></div></div>
+          </div>
+          <div class="callout note"><b>Analyst view:</b> 14 Buy / 4 Hold / 0 Sell. Average target ~$107, median $102.50, range $60–$150 (KeyBanc high $135, 6/15/26). Consensus essentially brackets the current price — the Street sees fair value here and is paying up for the Neutron optionality, not a discount.</div>
+        </div>
+      </section>
+
+      <!-- SECTION 3 -->
+      <section class="card" id="s3">
+        <div class="card-head"><span class="badge">3</span><h2>Qualitative Analysis — Moat, Management &amp; Culture</h2><span class="chev">▾</span></div>
+        <div class="card-body">
+          <h3>The Moat — Systemic, Not Singular</h3>
+          <p>Rocket Lab's moat is best understood philosophically as a <b>compounding integration loop</b> rather than a single defensible feature. Each capability it brings in-house — reaction wheels, star trackers, solar arrays, separation systems, flight software, now optical comms (Mynaric) and robotics/precision mechanisms (Motiv) — simultaneously lowers its own cost, removes a supply-chain bottleneck, and creates a merchant-supplier revenue stream sold to competitors. The result is a flywheel where vertical integration funds R&amp;D, R&amp;D widens the product catalog, the catalog wins more missions, and more missions amortize the integration. SpaceX is the only other company running this loop at scale, and it is not investable directly.</p>
+          <p>The deeper moat is <b>reliability-as-reputation</b>. Electron is the most-launched small orbital rocket in the world; that flight heritage is a trust asset that cannot be bought, only accumulated launch by launch. In national security, where Rocket Lab is now embedded in Golden Dome's Space-Based Interceptor with Raytheon, that heritage plus a U.S.-soil, vertically controlled supply chain is precisely what buyers underwrite.</p>
+
+          <h3>Management &amp; Capital Allocation</h3>
+          <p>Founder-CEO <b>Peter Beck</b> is the defining variable. He built the company from New Zealand garage origins to a vertically integrated, two-continent space prime, and is one of the few launch-industry leaders to bring a new orbital rocket to operational cadence and keep it there. Capital allocation has been aggressive but coherent: a $450M ATM raise and convertible-note management built &gt;$2B of liquidity, deployed into Neutron, the Mynaric close, and the pending Motiv acquisition. The strategy is to weaponize a richly valued currency to vertically integrate and buy capability — sensible while the multiple holds, riskier if the stock de-rates mid-build.</p>
+
+          <h3>Culture &amp; Organizational Traits</h3>
+          <p>Rocket Lab exhibits the structural traits the best engineering organizations share: high <b>talent density</b> concentrated around hard propulsion and avionics problems, a bias toward <b>insourcing</b> over outsourcing (decentralized capability ownership), and a publicly demonstrated <b>failure tolerance</b> — the January 2026 fuel-tank rupture during stress testing was framed by management as a deliberate test-to-failure to understand structural margins, then engineered around. That is the signature of an organization that treats failure as information rather than embarrassment, the same cultural DNA that underpins iterative aerospace development. Innovation pace is high: in a single quarter the company introduced the Gauss electric thruster, won a record MACH-TB hypersonic contract, signed 31 Electron/HASTE contracts plus five Neutron launches, and closed/announced two acquisitions.</p>
+
+          <div class="callout gold"><b>Moat verdict:</b> Wide and widening on the systems side; <i>narrowing the gap</i> on launch. The single-point dependency is Beck and the Neutron engineering org — a key-person and key-program concentration that is both the moat and the risk.</div>
+        </div>
+      </section>
+
+      <!-- SECTION 4 -->
+      <section class="card" id="s4">
+        <div class="card-head"><span class="badge">4</span><h2>Quantitative Analysis — Financial Deep Dive</h2><span class="chev">▾</span></div>
+        <div class="card-body">
+          <p>Rocket Lab is a high-growth, pre-profit compounder with a fortress balance sheet and improving unit economics. Two revenue streams drive the model: <b>Product revenue</b> (space systems — satellites, components, propulsion; $127.5M in Q1'26, +58% YoY) and <b>Service revenue</b> (launch services for Electron/HASTE; $72.9M, +74% YoY). The product/space-systems segment is now ~64% of revenue and the larger growth engine, while launch is the higher-visibility, reputation-driving business.</p>
+
+          <div class="chart-grid">
+            <div class="chart-box"><div class="ct"><span class="t">Quarterly Revenue ($M)</span><button class="zoom" data-c="rev">⤢ expand</button></div><div class="canvas-wrap"><canvas id="rev"></canvas></div></div>
+            <div class="chart-box"><div class="ct"><span class="t">GAAP Gross Margin (%)</span><button class="zoom" data-c="gm">⤢ expand</button></div><div class="canvas-wrap"><canvas id="gm"></canvas></div></div>
+          </div>
+
+          <h3>Free Cash Flow &amp; Operating Leverage</h3>
+          <p>The company is not yet free-cash-flow positive — Q1'26 operating cash flow was ($50.3)M and capex ($27.1)M, for <a href="#g-fcf">FCF</a> of roughly ($77)M as it funds the Neutron build-out and working capital for a scaling order book. Crucially, the <b>trajectory</b> is what matters: Adjusted EBITDA improved to ($11.8)M from ($30.0)M a year earlier, GAAP gross margin expanded ~940bps YoY to 38.2%, and operating loss narrowed even as R&amp;D rose 46% to fund Neutron. This is textbook <a href="#g-oplev">operating leverage</a> emerging — revenue is growing far faster than the cost base, and gross-profit dollars (+117% YoY to $76.5M) are now outpacing opex growth.</p>
+
+          <div class="chips">
+            <div class="chip"><div class="l">OCF Q1'26</div><div class="v red">-$50.3M</div></div>
+            <div class="chip"><div class="l">FCF Q1'26</div><div class="v red">-$77.4M</div></div>
+            <div class="chip"><div class="l">Gross Profit</div><div class="v">$76.5M</div></div>
+            <div class="chip"><div class="l">GP Growth YoY</div><div class="v">+117%</div></div>
+            <div class="chip"><div class="l">Current Ratio</div><div class="v">4.5x</div></div>
+            <div class="chip"><div class="l">Total Debt</div><div class="v">~$53M</div></div>
+          </div>
+
+          <h3>Balance Sheet — Fortress Liquidity</h3>
+          <p>Rocket Lab exited Q1'26 with $1.21B cash, plus ~$271M marketable securities, for ~$1.48B in cash &amp; investments against just ~$53M total debt (convertible notes were cut to $37M from $152M via conversion). Net cash sits near $1.42B and total liquidity exceeds $2B. The current ratio of 4.5x and contract liabilities of $241M (customer prepayments on backlog) underscore a self-funding working-capital position. This balance sheet is the single most underappreciated asset: it lets the company absorb Neutron slippage and fund M&amp;A without distress — the luxury that killed most prior new-launch entrants.</p>
+
+          <div class="chart-grid">
+            <div class="chart-box"><div class="ct"><span class="t">Cash &amp; Investments vs Debt ($M)</span><button class="zoom" data-c="bs">⤢ expand</button></div><div class="canvas-wrap"><canvas id="bs"></canvas></div></div>
+            <div class="chart-box"><div class="ct"><span class="t">Adj. EBITDA Trajectory ($M)</span><button class="zoom" data-c="ebitda">⤢ expand</button></div><div class="canvas-wrap"><canvas id="ebitda"></canvas></div></div>
+          </div>
+
+          <h3>The Flywheel</h3>
+          <p>Revenue compounding (FY22 $211M → FY23 $245M → FY24 $436M → FY25 $602M, a ~76% five-year CAGR) feeds a backlog that has grown 73% YoY to $1.85B at year-end and on to $2.2B in Q1'26. Backlog converts into revenue, revenue funds vertical integration, integration lifts margins, margins fund Neutron, and Neutron expands the addressable launch market — closing the loop at a larger scale each turn. The key unproven link is the conversion of Neutron backlog into flown, paid, repeatable missions.</p>
+        </div>
+      </section>
+
+      <!-- SECTION 5 -->
+      <section class="card" id="s5">
+        <div class="card-head"><span class="badge">5</span><h2>Earnings Tracker — Management Credibility</h2><span class="chev">▾</span></div>
+        <div class="card-body">
+          <p>Management has built a strong revenue-delivery track record while repeatedly resetting the Neutron timeline — the central tension in the credibility story. On financial guidance Rocket Lab is highly reliable; on its flagship development program it has consistently been optimistic.</p>
+          <table>
+            <thead><tr><th>Quarter</th><th>Guidance / Promise</th><th>Actual Result</th><th class="num">Credibility</th></tr></thead>
+            <tbody>
+              <tr><td class="mono">Q1'26</td><td>Revenue $185–200M; record margin</td><td>$200.3M, GM 38.2% — <span class="pos">beat</span> top end</td><td class="num">9 / 10</td></tr>
+              <tr><td class="mono">Q4'25</td><td>Revenue $170–180M</td><td>$180M — <span class="pos">top of range</span></td><td class="num">9 / 10</td></tr>
+              <tr><td class="mono">Q3'25</td><td>Revenue ~$145–155M</td><td>$155M, +48% YoY — <span class="pos">beat</span></td><td class="num">9 / 10</td></tr>
+              <tr><td class="mono">Q2'25</td><td>Revenue $130–140M</td><td>~$144M — <span class="pos">above range</span></td><td class="num">9 / 10</td></tr>
+              <tr><td class="mono">Q1'25</td><td>Revenue $117–123M</td><td>$122.6M — <span class="pos">in range</span></td><td class="num">8 / 10</td></tr>
+              <tr><td class="mono">Q4'24</td><td>FY25 backlog &amp; growth ramp</td><td>FY25 rev $602M (+38%), backlog +73%</td><td class="num">8 / 10</td></tr>
+              <tr><td class="mono">2025 (Neutron)</td><td>Neutron debut in 2025</td><td><span class="neg">Slipped to 2026</span></td><td class="num">4 / 10</td></tr>
+              <tr><td class="mono">Q4'25 (Neutron)</td><td>Q1'26 to pad, launch "thereafter"</td><td><span class="neg">Tank failure → Q4'26 earliest</span></td><td class="num">4 / 10</td></tr>
+            </tbody>
+          </table>
+          <div class="callout note"><b>Read-through:</b> Trust the revenue model; haircut the Neutron calendar. A blended credibility of ~7/10 — excellent operators who systematically underestimate the difficulty of a clean-sheet medium-lift, reusable rocket. Treat any "later this year" Neutron guidance as "sometime in the next 6–12 months."</div>
+        </div>
+      </section>
+
+      <!-- SECTION 6 -->
+      <section class="card" id="s6">
+        <div class="card-head"><span class="badge">6</span><h2>Bull / Base / Bear Scenarios</h2><span class="chev">▾</span></div>
+        <div class="card-body">
+          <p>Price targets below are probability-weighted across 1-, 3-, and 5-year horizons. The dispersion is enormous because the outcome is binary on Neutron — a working, reusable medium-lift rocket re-rates the entire enterprise; a failed or chronically delayed one collapses the optionality premium.</p>
+
+          <div class="horizon-label">1-Year Horizon (mid-2027)</div>
+          <div class="scen-grid">
+            <div class="scen bull"><h4>Bull</h4><div class="pt">$160</div><span class="prob">25% probability</span><ul><li>Neutron reaches orbit on debut in Q4'26</li><li>Golden Dome contracts begin to fund</li><li>FY26 revenue &gt;$950M; EBITDA turns positive</li></ul></div>
+            <div class="scen base"><h4>Base</h4><div class="pt">$112</div><span class="prob">50% probability</span><ul><li>Neutron debut slips but flies by 1H'27</li><li>Space systems compounds 50%+; margins hold</li><li>Multiple stays elevated on optionality</li></ul></div>
+            <div class="scen bear"><h4>Bear</h4><div class="pt">$62</div><span class="prob">25% probability</span><ul><li>Second Neutron delay or test anomaly</li><li>Space-stock multiple compression</li><li>Dilution overhang weighs on sentiment</li></ul></div>
+          </div>
+
+          <div class="horizon-label">3-Year Horizon (2029)</div>
+          <div class="scen-grid">
+            <div class="scen bull"><h4>Bull</h4><div class="pt">$260</div><span class="prob">30% probability</span><ul><li>Neutron at multi-launch cadence + reuse</li><li>Defense/Golden Dome a $1B+ revenue line</li><li>Sustained FCF positive; rev &gt;$2.5B</li></ul></div>
+            <div class="scen base"><h4>Base</h4><div class="pt">$150</div><span class="prob">45% probability</span><ul><li>Neutron operational, reuse maturing</li><li>Revenue ~$1.8–2.2B; gross margin ~45%+</li><li>P/S compresses to ~18–25x on bigger base</li></ul></div>
+            <div class="scen bear"><h4>Bear</h4><div class="pt">$55</div><span class="prob">25% probability</span><ul><li>Neutron underperforms econ/cadence targets</li><li>SpaceX Starship crushes pricing</li><li>Capital cycle turns; growth de-rates hard</li></ul></div>
+          </div>
+
+          <div class="horizon-label">5-Year Horizon (2031)</div>
+          <div class="scen-grid">
+            <div class="scen bull"><h4>Bull</h4><div class="pt">$400</div><span class="prob">30% probability</span><ul><li>Second credible launch prime to SpaceX</li><li>Constellation + defense flywheel at scale</li><li>Revenue &gt;$4B, durable FCF margins</li></ul></div>
+            <div class="scen base"><h4>Base</h4><div class="pt">$210</div><span class="prob">45% probability</span><ul><li>Profitable, diversified space prime</li><li>Revenue ~$3B; normalized ~20–25x earnings</li><li>Steady share gains in launch + systems</li></ul></div>
+            <div class="scen bear"><h4>Bear</h4><div class="pt">$60</div><span class="prob">25% probability</span><ul><li>Commoditized launch, margin pressure</li><li>Neutron reuse economics disappoint</li><li>Re-rated to a defense-industrial multiple</li></ul></div>
+          </div>
+
+          <div class="chart-box solo-chart" style="margin-top:18px"><div class="ct"><span class="t">Prob-Weighted Targets by Horizon ($)</span><button class="zoom" data-c="scen">⤢ expand</button></div><div class="canvas-wrap"><canvas id="scen"></canvas></div></div>
+        </div>
+      </section>
+
+      <!-- SECTION 7 -->
+      <section class="card" id="s7">
+        <div class="card-head"><span class="badge">7</span><h2>Risks &amp; Anti-Thesis — Steelman the Bear</h2><span class="chev">▾</span></div>
+        <div class="card-body">
+          <p>If we were short RKLB, here is the case we would press. Each risk is rated on probability, impact, and how much we believe is already priced in.</p>
+
+          <div class="risk">
+            <h4>1. Neutron is a clean-sheet, reusable rocket that has never flown</h4>
+            <p>The entire valuation premium rests on a vehicle that failed a fuel-tank stress test in January 2026 and has slipped to Q4'26 at the earliest. New orbital rockets routinely fail on debut; reusability adds another order of magnitude of difficulty. A second material delay or a launch failure would vaporize the optionality premium overnight.</p>
+            <div class="meta"><span class="tag">Probability <b>Medium-High</b></span><span class="tag">Impact <b>Severe</b></span><span class="tag">Priced in? <b>Partially</b></span></div>
+          </div>
+          <div class="risk">
+            <h4>2. Valuation leaves zero margin of safety</h4>
+            <p>At ~97x trailing sales and ~72x forward sales, RKLB is priced for a flawless decade. Any growth deceleration, margin wobble, or risk-off rotation in speculative growth compresses the multiple violently — a move from 70x to 35x sales is a ~50% drawdown even with revenue growing.</p>
+            <div class="meta"><span class="tag">Probability <b>High</b></span><span class="tag">Impact <b>High</b></span><span class="tag">Priced in? <b>No</b></span></div>
+          </div>
+          <div class="risk">
+            <h4>3. SpaceX is an existential competitive shadow</h4>
+            <p>Starship, if it reaches full reusability and the cost curve SpaceX targets, could price medium-lift below Neutron's economics before Neutron even matures. SpaceX's launch dominance and vertical integration set the pricing umbrella Rocket Lab must operate beneath — and a $2T SpaceX IPO could pull capital and talent.</p>
+            <div class="meta"><span class="tag">Probability <b>Medium</b></span><span class="tag">Impact <b>High</b></span><span class="tag">Priced in? <b>Partially</b></span></div>
+          </div>
+          <div class="risk">
+            <h4>4. Persistent dilution caps per-share returns</h4>
+            <p>Shares grew ~20% YoY (505M→605M weighted) via a $450M ATM and heavy SBC, with ~46M preferred shares on top. Management is explicitly funding Neutron and M&amp;A with equity. Even if enterprise value compounds, shareholders capture less per share — and a de-rating would make equity funding far more expensive.</p>
+            <div class="meta"><span class="tag">Probability <b>High</b></span><span class="tag">Impact <b>Medium</b></span><span class="tag">Priced in? <b>Partially</b></span></div>
+          </div>
+          <div class="risk">
+            <h4>5. Government/program concentration &amp; key-person risk</h4>
+            <p>The Golden Dome / SBI upside depends on a politically contingent program that could be re-scoped, defunded, or re-competed. Meanwhile the franchise is deeply tied to Peter Beck and a concentrated engineering core; a leadership shock or program cancellation removes a load-bearing pillar of the thesis.</p>
+            <div class="meta"><span class="tag">Probability <b>Low-Medium</b></span><span class="tag">Impact <b>High</b></span><span class="tag">Priced in? <b>No</b></span></div>
+          </div>
+
+          <div class="callout gold"><b>Honest synthesis:</b> The bear case is strong on <i>price and timing</i> and weaker on <i>business quality</i>. Most realistic bad outcomes are drawdowns to the $55–65 range, not a broken company. That asymmetry — limited terminal-impairment risk, real near-term de-rating risk — is exactly why we prefer accumulating on weakness over chasing.</div>
+        </div>
+      </section>
+
+      <!-- SECTION 8 -->
+      <section class="card" id="s8">
+        <div class="card-head"><span class="badge">8</span><h2>Catalyst Timeline</h2><span class="chev">▾</span></div>
+        <div class="card-body">
+          <div class="timeline">
+            <div class="tl-item"><div class="tl-date">Jun 22, 2026</div><div class="tl-title">Nasdaq-100 Inclusion (TODAY)</div><div class="tl-desc">Mechanical passive inflows from QQQ and Nasdaq-100 trackers; raises institutional visibility and liquidity.</div></div>
+            <div class="tl-item"><div class="tl-date">Early Aug 2026</div><div class="tl-title">Q2 2026 Earnings</div><div class="tl-desc">Guided revenue $225–240M (record); watch gross margin (33–35% GAAP) and Adj. EBITDA loss ($20–26M). Neutron progress commentary is the swing factor.</div></div>
+            <div class="tl-item"><div class="tl-date">2H 2026</div><div class="tl-title">Motiv Acquisition Close</div><div class="tl-desc">Adds Mars-proven robotics + in-houses solar array drive assemblies and precision mechanisms; closes a vertical-integration gap.</div></div>
+            <div class="tl-item"><div class="tl-date">Q3–Q4 2026</div><div class="tl-title">Archimedes Engine Qualification &amp; Neutron Hardware</div><div class="tl-desc">Second-stage, reusable-fairing, and engine-qual milestones — the technical gates before any launch attempt.</div></div>
+            <div class="tl-item"><div class="tl-date">Q4 2026 (earliest)</div><div class="tl-title">★ Neutron Debut Launch</div><div class="tl-desc">The single most important catalyst in the story. A successful orbital debut re-rates the launch segment; a failure or further slip compresses the optionality premium.</div></div>
+            <div class="tl-item"><div class="tl-date">2026–2027</div><div class="tl-title">Golden Dome / Space-Based Interceptor Funding</div><div class="tl-desc">Contract awards and funding milestones under the Raytheon-led SBI program — potential multi-year defense revenue line.</div></div>
+            <div class="tl-item"><div class="tl-date">FY2027</div><div class="tl-title">Neutron Cadence &amp; Reuse Demonstration</div><div class="tl-desc">Transition from debut to repeatable, paid missions and first booster recovery — proof points for the medium-lift thesis.</div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 9 -->
+      <section class="card" id="s9">
+        <div class="card-head"><span class="badge">9</span><h2>Comparable Company Analysis</h2><span class="chev">▾</span></div>
+        <div class="card-body">
+          <p>Rocket Lab trades at a clear premium to other pure-play space names on sales multiples, justified by its scale, vertical integration, and the breadth of its catalog — but the gap to the defense primes (Lockheed) on profitability is stark. RKLB is valued like a hyper-growth optionality asset; LMT like a cash-generative industrial.</p>
+          <table>
+            <thead><tr><th>Company</th><th class="num">Mkt Cap</th><th class="num">Rev TTM</th><th class="num">Rev YoY</th><th class="num">P/S</th><th class="num">Gross Mgn</th><th class="num">FCF Mgn</th></tr></thead>
+            <tbody>
+              <tr><td><b>Rocket Lab (RKLB)</b></td><td class="num">~$66B</td><td class="num">~$679M</td><td class="num pos">+63%</td><td class="num">~97x</td><td class="num">38%</td><td class="num neg">neg</td></tr>
+              <tr><td>AST SpaceMobile (ASTS)</td><td class="num">~$22B</td><td class="num">~$80M</td><td class="num pos">n/m</td><td class="num">~270x</td><td class="num">n/m</td><td class="num neg">neg</td></tr>
+              <tr><td>Planet Labs (PL)</td><td class="num">~$13B</td><td class="num">~$340M</td><td class="num pos">+42%</td><td class="num">~38x</td><td class="num">~60%</td><td class="num">~break-even</td></tr>
+              <tr><td>Intuitive Machines (LUNR)</td><td class="num">~$6B</td><td class="num">~$280M</td><td class="num pos">+30%</td><td class="num">~21x</td><td class="num">~15%</td><td class="num neg">neg</td></tr>
+              <tr><td>Lockheed Martin (LMT)</td><td class="num">~$110B</td><td class="num">~$74B</td><td class="num">+4%</td><td class="num">~1.5x</td><td class="num">~12%</td><td class="num pos">~7%</td></tr>
+            </tbody>
+          </table>
+          <div class="callout note"><b>Relative-value read:</b> Among the speculative space cohort, RKLB's ~97x is rich on an absolute basis but cheaper-per-dollar-of-revenue than ASTS, and backed by the largest, most diversified, fastest-scaling revenue base. It is the "quality" name in the basket — you pay up for execution proof, real backlog, and a balance sheet that can survive a downturn. Peer figures are approximate, blended from public market data.</div>
+          <div class="chart-grid">
+            <div class="chart-box"><div class="ct"><span class="t">P/S Multiple vs Peers</span><button class="zoom" data-c="psbar">⤢ expand</button></div><div class="canvas-wrap"><canvas id="psbar"></canvas></div></div>
+            <div class="chart-box"><div class="ct"><span class="t">Revenue Growth YoY vs Peers (%)</span><button class="zoom" data-c="growth">⤢ expand</button></div><div class="canvas-wrap"><canvas id="growth"></canvas></div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 10 -->
+      <section class="card" id="s10">
+        <div class="card-head"><span class="badge">10</span><h2>First-Principles KPIs</h2><span class="chev">▾</span></div>
+        <div class="card-body">
+          <p>Forget the income statement for a moment. The leading indicators that actually determine whether the bull thesis compounds are operational, not accounting. We track four.</p>
+          <h3>1 · Backlog &amp; Backlog Coverage</h3>
+          <p>Backlog ($2.2B, +20% QoQ) is the truest forward demand signal — it grew faster than revenue, meaning bookings are outrunning deliveries. Backlog ÷ TTM revenue of ~3.2x is healthy multi-year coverage. Watch the launch-vs-systems mix (currently ~42% / 58%) — Neutron wins shifting the mix toward launch would confirm medium-lift demand.</p>
+          <h3>2 · Launch Cadence &amp; Manifest Depth</h3>
+          <p>The manifest now exceeds 70 contracted missions, and the company sold more launches in Q1'26 than in all of FY2025. Cadence is the flywheel's RPM — each incremental launch amortizes fixed costs and compounds reliability heritage.</p>
+          <h3>3 · Gross Margin Expansion</h3>
+          <p>GAAP gross margin climbed from ~28.8% (Q1'25) to 38.2% (Q1'26). This is the single cleanest proof of operating leverage and vertical-integration payoff. The path to FCF positivity runs directly through this line.</p>
+          <h3>4 · Net Cash Runway</h3>
+          <p>~$1.42B net cash funds the Neutron build and M&amp;A without forced dilution at depressed prices. Runway is the survival metric — it is why Rocket Lab, unlike prior launch entrants, can afford to be late.</p>
+          <div class="chart-grid">
+            <div class="chart-box"><div class="ct"><span class="t">Backlog Growth ($B)</span><button class="zoom" data-c="backlog">⤢ expand</button></div><div class="canvas-wrap"><canvas id="backlog"></canvas></div></div>
+            <div class="chart-box"><div class="ct"><span class="t">Annual Revenue Compounding ($M)</span><button class="zoom" data-c="annual">⤢ expand</button></div><div class="canvas-wrap"><canvas id="annual"></canvas></div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 11 -->
+      <section class="card" id="s11">
+        <div class="card-head"><span class="badge">11</span><h2>Glossary &amp; Methodology</h2><span class="chev">▾</span></div>
+        <div class="card-body">
+          <dl class="gloss">
+            <dt id="g-electron">Electron</dt>
+            <dd>Rocket Lab's small orbital launch vehicle — the most frequently launched small rocket in the world. <b>Why it matters:</b> the flight-heritage and reliability asset that anchors the company's reputation and recurring launch revenue. <span class="back"><a href="#s1">↩ back to §1</a></span></dd>
+            <dt id="g-neutron">Neutron</dt>
+            <dd>Rocket Lab's in-development medium-lift, partially reusable launch vehicle, targeting constellation deployment and national-security missions. Debut targeted for Q4 2026 at the earliest. <b>Why it matters:</b> unlocks a ~10x-larger addressable launch market and is the core of the valuation's optionality. <span class="back"><a href="#s1">↩ back to §1</a></span></dd>
+            <dt id="g-spacesystems">Space Systems</dt>
+            <dd>The product segment: satellites, spacecraft buses, solar arrays, reaction wheels, star trackers, separation systems, propulsion, and optical comms. <b>Why it matters:</b> now ~64% of revenue and the larger growth engine; sells components to competitors, widening the moat. <span class="back"><a href="#s1">↩ back to §1</a></span></dd>
+            <dt id="g-backlog">Backlog</dt>
+            <dd>Contracted but not-yet-recognized revenue ($2.2B in Q1'26). <b>Formula:</b> sum of remaining performance obligations across launch + systems contracts. <b>Why it matters:</b> the cleanest leading indicator of future revenue and demand momentum. <span class="back"><a href="#s4">↩ back to §4</a></span></dd>
+            <dt id="g-cagr">CAGR (Compound Annual Growth Rate)</dt>
+            <dd><b>Formula:</b> (Ending ÷ Beginning)^(1/years) − 1. <b>Why it matters:</b> smooths multi-year growth into a single comparable rate; RKLB's ~76% 5-yr revenue CAGR signals exceptional top-line compounding. <span class="back"><a href="#s2">↩ back to §2</a></span></dd>
+            <dt id="g-ps">P/S (Price-to-Sales) Ratio</dt>
+            <dd><b>Formula:</b> Market Cap ÷ TTM Revenue. <b>FTA scale:</b> &gt;30 Euphoric, &gt;18 Excited, &gt;8 Optimistic, 4–8 Aware, &lt;4 Cautious, &lt;2 Pessimistic. <b>Why it matters:</b> the primary valuation lens for pre-profit growth names where P/E is meaningless. RKLB at ~97x is deep in Euphoric territory. <span class="back"><a href="#s2">↩ back to §2</a></span></dd>
+            <dt id="g-atm">ATM (At-the-Market Offering)</dt>
+            <dd>A mechanism to sell new shares into the open market over time at prevailing prices ($450M raised in Q1'26). <b>Why it matters:</b> low-friction equity funding that supports growth but dilutes existing holders. <span class="back"><a href="#s2">↩ back to §2</a></span></dd>
+            <dt id="g-fcf">Free Cash Flow (FCF)</dt>
+            <dd><b>Formula:</b> Operating Cash Flow − Capital Expenditures (Q1'26: −$50.3M − $27.1M ≈ −$77M). <b>Why it matters:</b> the ultimate measure of self-funding; the trajectory toward positive FCF is the key profitability milestone. <span class="back"><a href="#s4">↩ back to §4</a></span></dd>
+            <dt id="g-oplev">Operating Leverage</dt>
+            <dd>The degree to which revenue growth outpaces cost growth, expanding margins. <b>Why it matters:</b> RKLB's gross profit grew +117% YoY versus revenue +63%, evidence that scale is converting into margin. <span class="back"><a href="#s4">↩ back to §4</a></span></dd>
+            <dt>Adjusted EBITDA</dt>
+            <dd>Earnings before interest, taxes, depreciation, amortization, and items management deems non-representative (e.g., SBC, transaction costs). Q1'26: −$11.8M, improving from −$30.0M. <b>Why it matters:</b> a proxy for underlying cash operating performance, smoothing non-cash and one-time items. <span class="back"><a href="#s4">↩ back to §4</a></span></dd>
+          </dl>
+
+          <div class="foot">
+            <p><b>Methodology &amp; sources.</b> All financial figures are drawn from primary sources where possible — Rocket Lab's Q1 2026 8-K/earnings release (filed May 7, 2026), FY2025 results (Feb 26, 2026), and SEC filings — supplemented by public market data and analyst-consensus aggregators for price, market cap, and targets as of June 22, 2026. Peer figures are approximate, blended estimates for relative-value context only. Forward scenarios and probability weights are the author's independent judgment, not consensus. P/S framework per First To Alpha house methodology.</p>
+            <p><b>Disclaimer.</b> This report is for research and educational purposes only and does not constitute investment, legal, or financial advice. The author is not a registered financial advisor. Forward-looking statements are inherently uncertain; space-sector equities are highly volatile. Conduct your own due diligence and consult a licensed professional before making any investment decision.</p>
+            <p>First To Alpha · Independent Investment Research · Generated June 22, 2026.</p>
+          </div>
+        </div>
+      </section>
+
+    </div><!-- /content -->
+  </div><!-- /main -->
+</div><!-- /layout -->
+
+<!-- MODAL -->
+<div class="modal" id="modal"><div class="modal-box"><button class="modal-close" id="mclose">✕</button><canvas id="modalCanvas"></canvas></div></div>
+
+<script>
+// collapsible cards
+document.querySelectorAll('.card-head').forEach(h=>{
+  h.addEventListener('click',()=>h.parentElement.classList.toggle('collapsed'));
+});
+
+const GREEN='#145A22',GOLD='#FCC55B',RED='#a8341f',FOREST='#243D27',MUTED='#5d6155',LINE='#d8d1c4';
+Chart.defaults.font.family="'JetBrains Mono', monospace";
+Chart.defaults.font.size=10;
+Chart.defaults.color=MUTED;
+const noLegend={plugins:{legend:{display:false}}};
+const gridX={grid:{display:false}}, gridY={grid:{color:'rgba(0,0,0,.06)'},beginAtZero:true};
+
+const configs={};
+function reg(id,cfg){configs[id]=cfg;}
+
+reg('tam',{type:'bar',data:{labels:['2024','2030E','2035E'],datasets:[{data:[0.6,1.1,1.8],backgroundColor:[GREEN,'#2f7a3e',GOLD]}]},options:{...noLegend,scales:{x:gridX,y:gridY}}});
+reg('mix',{type:'doughnut',data:{labels:['Product (Space Systems) $127.5M','Service (Launch) $72.9M'],datasets:[{data:[127.5,72.9],backgroundColor:[GREEN,GOLD],borderColor:'#fff',borderWidth:2}]},options:{plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:9}}}}}});
+reg('pt',{type:'bar',data:{labels:['Low $60','Median $102.5','Avg $107','KeyBanc $135','High $150'],datasets:[{data:[60,102.5,107,135,150],backgroundColor:[RED,GOLD,GREEN,'#2f7a3e','#2f7a3e']}]},options:{...noLegend,indexAxis:'y',scales:{x:gridY,y:gridX}}});
+reg('shares',{type:'line',data:{labels:['Q1\'25','Q2\'25','Q3\'25','Q4\'25','Q1\'26'],datasets:[{data:[505,520,545,575,605],borderColor:RED,backgroundColor:'rgba(168,52,31,.12)',fill:true,tension:.3,pointBackgroundColor:RED}]},options:{...noLegend,scales:{x:gridX,y:{...gridY,beginAtZero:false}}}});
+reg('rev',{type:'bar',data:{labels:['Q1\'25','Q2\'25','Q3\'25','Q4\'25','Q1\'26'],datasets:[{data:[122.6,144,155,180,200.3],backgroundColor:GREEN,borderRadius:3}]},options:{...noLegend,scales:{x:gridX,y:gridY}}});
+reg('gm',{type:'line',data:{labels:['Q1\'25','Q2\'25','Q3\'25','Q4\'25','Q1\'26'],datasets:[{data:[28.8,33,37,37.9,38.2],borderColor:GOLD,backgroundColor:'rgba(252,197,91,.18)',fill:true,tension:.3,pointBackgroundColor:GOLD,pointBorderColor:GREEN}]},options:{...noLegend,scales:{x:gridX,y:{...gridY,beginAtZero:false}}}});
+reg('bs',{type:'bar',data:{labels:['Cash & Investments','Total Debt'],datasets:[{data:[1476,53],backgroundColor:[GREEN,RED],borderRadius:3}]},options:{...noLegend,scales:{x:gridX,y:gridY}}});
+reg('ebitda',{type:'line',data:{labels:['Q1\'25','Q2\'25','Q3\'25','Q4\'25','Q1\'26'],datasets:[{data:[-30,-27,-22,-16,-11.8],borderColor:GREEN,backgroundColor:'rgba(20,90,34,.12)',fill:true,tension:.3,pointBackgroundColor:GREEN}]},options:{...noLegend,scales:{x:gridX,y:{grid:{color:'rgba(0,0,0,.06)'}}}}});
+reg('scen',{type:'bar',data:{labels:['1-Year','3-Year','5-Year'],datasets:[
+  {label:'Bear',data:[62,55,60],backgroundColor:RED},
+  {label:'Base',data:[112,150,210],backgroundColor:GOLD},
+  {label:'Bull',data:[160,260,400],backgroundColor:GREEN}]},options:{plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:9}}}},scales:{x:gridX,y:gridY}}});
+reg('psbar',{type:'bar',data:{labels:['LMT','LUNR','PL','RKLB','ASTS'],datasets:[{data:[1.5,21,38,97,270],backgroundColor:['#7a8a78','#9aa394',GOLD,GREEN,RED]}]},options:{...noLegend,scales:{x:gridX,y:{...gridY,type:'logarithmic'}}}});
+reg('growth',{type:'bar',data:{labels:['LMT','LUNR','PL','ASTS','RKLB'],datasets:[{data:[4,30,42,60,63],backgroundColor:['#7a8a78','#9aa394',GOLD,'#2f7a3e',GREEN]}]},options:{...noLegend,scales:{x:gridX,y:gridY}}});
+reg('backlog',{type:'bar',data:{labels:['Q4\'24','Q4\'25','Q1\'26'],datasets:[{data:[1.07,1.85,2.2],backgroundColor:[GOLD,'#2f7a3e',GREEN],borderRadius:3}]},options:{...noLegend,scales:{x:gridX,y:gridY}}});
+reg('annual',{type:'bar',data:{labels:['FY22','FY23','FY24','FY25','FY26E'],datasets:[{data:[211,245,436,602,940],backgroundColor:[FOREST,FOREST,'#2f7a3e',GREEN,GOLD],borderRadius:3}]},options:{...noLegend,scales:{x:gridX,y:gridY}}});
+
+const charts={};
+Object.keys(configs).forEach(id=>{const el=document.getElementById(id);if(el)charts[id]=new Chart(el,JSON.parse(JSON.stringify(configs[id])));});
+
+// modal expand
+const modal=document.getElementById('modal');let modalChart=null;
+document.querySelectorAll('.zoom').forEach(b=>{
+  b.addEventListener('click',()=>{
+    const id=b.dataset.c;modal.classList.add('open');
+    if(modalChart)modalChart.destroy();
+    modalChart=new Chart(document.getElementById('modalCanvas'),JSON.parse(JSON.stringify(configs[id])));
+  });
+});
+function closeModal(){modal.classList.remove('open');if(modalChart){modalChart.destroy();modalChart=null;}}
+document.getElementById('mclose').addEventListener('click',closeModal);
+modal.addEventListener('click',e=>{if(e.target===modal)closeModal();});
+</script>
+</body>
+</html>
