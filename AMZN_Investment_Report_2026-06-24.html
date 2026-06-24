@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AMZN — Investment Research | FTA Research Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Questrial&family=Quicksand:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  --green:#145A22; --dark-green:#0A3A14; --forest:#243D27;
+  --gold:#FCC55B; --gold-deep:#e0a838;
+  --beige:#EDE8E0; --beige-card:#f6f3ed;
+  --ink:#23241f; --muted:#5d6155; --red:#a8341f; --line:#d8d1c4;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Quicksand',sans-serif;background:var(--beige);color:var(--ink);line-height:1.6;display:flex}
+a{color:var(--green);text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* SIDEBAR */
+.sidebar{position:sticky;top:0;align-self:flex-start;width:262px;min-width:262px;height:100vh;overflow-y:auto;
+  background:linear-gradient(180deg,#071f0b,#0A3A14 40%,#145A22);border-right:2px solid var(--gold);
+  color:var(--beige);padding:26px 20px;display:flex;flex-direction:column;gap:18px}
+.brand{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:26px;color:var(--gold);line-height:1.1}
+.brand small{display:block;font-family:'Questrial',sans-serif;font-style:normal;font-size:9px;letter-spacing:2.5px;color:var(--beige);text-transform:uppercase;margin-top:5px;opacity:.8}
+.tickerbox{background:rgba(255,255,255,.06);border:1px solid rgba(252,197,91,.35);border-radius:12px;padding:14px}
+.tickerbox .tk{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:22px;color:#fff;letter-spacing:1px}
+.tickerbox .px{font-family:'JetBrains Mono',monospace;font-size:20px;color:var(--gold);margin-top:4px}
+.tickerbox .chg{font-family:'JetBrains Mono',monospace;font-size:12px;color:#e8c4bb;margin-top:2px}
+.nav{display:flex;flex-direction:column;gap:2px;margin-top:4px}
+.nav a{display:flex;gap:10px;align-items:baseline;color:var(--beige);font-size:13.5px;padding:7px 9px;border-radius:8px;transition:.15s}
+.nav a:hover{background:rgba(252,197,91,.14);text-decoration:none;color:#fff}
+.nav a .n{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold);min-width:18px}
+.sidefoot{margin-top:auto;font-size:10px;letter-spacing:.5px;opacity:.6;line-height:1.5}
+
+/* MAIN */
+.main{flex:1;min-width:0}
+.hero{position:relative;overflow:hidden;background:linear-gradient(120deg,var(--dark-green),var(--green) 60%);color:var(--beige);padding:46px 48px 40px}
+.hero::after{content:"";position:absolute;right:-120px;top:-120px;width:380px;height:380px;border-radius:50%;
+  background:radial-gradient(circle,rgba(252,197,91,.28),transparent 65%)}
+.hero .eyebrow{font-family:'Questrial',sans-serif;letter-spacing:4px;font-size:11px;text-transform:uppercase;color:var(--gold)}
+.hero h1{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:50px;line-height:1.05;margin:8px 0 4px}
+.hero h1 .tk{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:32px;color:var(--gold);vertical-align:middle;margin-left:10px}
+.hero .sub{font-size:15px;max-width:680px;opacity:.92}
+.verdict{display:inline-flex;align-items:center;gap:14px;margin-top:20px;background:rgba(0,0,0,.22);border:1px solid var(--gold);
+  border-radius:40px;padding:9px 20px 9px 14px;position:relative;z-index:2}
+.verdict .pill{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:2px;font-size:12px;background:var(--gold);color:var(--dark-green);padding:5px 14px;border-radius:30px;font-weight:bold}
+.verdict .conv{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--beige)}
+.verdict .conv b{color:var(--gold);font-size:16px}
+
+/* KPI STRIP */
+.kpis{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:var(--line);border-bottom:1px solid var(--line)}
+.kpi{background:var(--beige-card);padding:16px 18px}
+.kpi .lab{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1.5px;font-size:9.5px;color:var(--muted)}
+.kpi .val{font-family:'JetBrains Mono',monospace;font-size:21px;font-weight:700;color:var(--green);margin-top:5px;line-height:1.1}
+.kpi .st{font-size:10.5px;color:var(--muted);margin-top:3px}
+
+/* CONTENT */
+.content{max-width:1080px;margin:0 auto;padding:34px 48px 70px}
+.card{background:var(--beige-card);border-radius:14px;margin:22px 0;box-shadow:0 1px 3px rgba(0,0,0,.05);overflow:hidden}
+.card-h{display:flex;align-items:center;gap:14px;padding:18px 22px;border-left:5px solid var(--green);cursor:pointer;user-select:none}
+.badge{width:34px;height:34px;min-width:34px;border-radius:9px;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;
+  font-family:'JetBrains Mono',monospace;font-weight:700;font-size:15px}
+.card-h h2{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:27px;color:var(--ink);flex:1;line-height:1.15}
+.chev{font-size:14px;color:var(--muted);transition:.2s}
+.card.collapsed .chev{transform:rotate(-90deg)}
+.card-b{padding:6px 24px 26px}
+.card.collapsed .card-b{display:none}
+.card-b p{margin:12px 0}
+.card-b h3{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1.5px;font-size:13px;color:var(--green);margin:22px 0 8px}
+.card-b ul{margin:10px 0 10px 4px;list-style:none}
+.card-b ul li{padding:5px 0 5px 22px;position:relative}
+.card-b ul li::before{content:"▹";position:absolute;left:2px;color:var(--gold-deep);font-size:13px}
+
+/* THESIS */
+.thesis{font-family:'Cormorant Garamond',serif;font-size:23px;line-height:1.4;color:var(--ink);border-left:4px solid var(--gold);
+  padding:6px 0 6px 22px;margin:14px 0 8px;font-weight:500}
+
+/* CHIPS */
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0}
+.chip{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;min-width:120px}
+.chip .l{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:9px;color:var(--muted)}
+.chip .v{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;color:var(--green);margin-top:3px}
+
+/* SCENARIO */
+.scen-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:18px 0}
+.scen{background:#fff;border:1px solid var(--line);border-top:5px solid var(--green);border-radius:12px;padding:16px}
+.scen.base{border-top-color:var(--gold)}
+.scen.bear{border-top-color:var(--red)}
+.scen h4{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1.5px;font-size:13px;display:flex;justify-content:space-between;align-items:center}
+.scen .pt{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:700;color:var(--ink);margin:8px 0 2px}
+.scen .prob{font-family:'JetBrains Mono',monospace;font-size:11px;background:var(--beige);border-radius:20px;padding:3px 9px;color:var(--muted)}
+.scen ul{margin:10px 0 0;list-style:none}
+.scen ul li{font-size:12.5px;padding:4px 0 4px 16px;position:relative;color:var(--muted)}
+.scen ul li::before{content:"–";position:absolute;left:2px;color:var(--gold-deep)}
+.horizon-lab{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--green);font-weight:700;margin:20px 0 2px;letter-spacing:1px}
+
+/* RISK */
+.risk{background:#fff;border-left:4px solid var(--red);border-radius:10px;padding:15px 18px;margin:14px 0;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.risk h4{color:var(--red);font-family:'Quicksand',sans-serif;font-weight:700;font-size:16px;margin-bottom:6px}
+.risk .meta{display:flex;flex-wrap:wrap;gap:7px;margin:9px 0 4px}
+.risk .meta span{font-family:'JetBrains Mono',monospace;font-size:10.5px;background:var(--beige);border:1px solid var(--line);border-radius:20px;padding:3px 10px}
+.risk .meta span b{color:var(--ink)}
+
+/* TIMELINE */
+.timeline{position:relative;margin:18px 0 4px;padding-left:28px}
+.timeline::before{content:"";position:absolute;left:7px;top:4px;bottom:4px;width:3px;border-radius:3px;
+  background:linear-gradient(180deg,var(--green),var(--gold))}
+.tl-item{position:relative;padding:0 0 20px 22px}
+.tl-item::before{content:"";position:absolute;left:-25px;top:3px;width:14px;height:14px;border-radius:50%;background:var(--gold);border:3px solid var(--green)}
+.tl-item .date{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--green);font-weight:700}
+.tl-item .ttl{font-weight:700;font-size:15px;margin:2px 0}
+.tl-item .desc{font-size:13px;color:var(--muted)}
+
+/* TABLES */
+.tbl-wrap{overflow-x:auto;margin:16px 0}
+table{border-collapse:collapse;width:100%;font-size:13px;background:#fff;border-radius:10px;overflow:hidden}
+thead th{background:var(--green);color:#fff;font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:11px;padding:11px 12px;text-align:left}
+tbody td{padding:10px 12px;border-bottom:1px solid var(--line)}
+tbody tr:nth-child(even){background:var(--beige-card)}
+tbody tr:hover{background:rgba(252,197,91,.14)}
+.mono{font-family:'JetBrains Mono',monospace}
+.pos{color:var(--green);font-weight:700}
+.neg{color:var(--red);font-weight:700}
+
+/* CALLOUTS */
+.callout{border-radius:10px;padding:14px 18px;margin:16px 0;font-size:13.5px}
+.callout.gold{background:rgba(252,197,91,.16);border:1px solid var(--gold)}
+.callout.note{background:rgba(20,90,34,.07);border:1px solid rgba(20,90,34,.25)}
+.callout b{color:var(--ink)}
+
+/* CHARTS */
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0}
+.chart-box{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 14px 10px;position:relative}
+.chart-box.full{grid-column:1/-1}
+.chart-box .ct{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1.2px;font-size:11px;color:var(--green);margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
+.chart-box .zoom{cursor:pointer;font-size:10px;color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:2px 7px;background:var(--beige-card)}
+.chart-box .zoom:hover{color:var(--green);border-color:var(--gold)}
+.cc{position:relative;height:160px}
+.chart-box.tall .cc{height:185px}
+
+/* MODAL */
+.modal{display:none;position:fixed;inset:0;background:rgba(10,30,14,.82);z-index:99;align-items:center;justify-content:center;padding:30px}
+.modal.open{display:flex}
+.modal-inner{background:var(--beige-card);border:2px solid var(--gold);border-radius:16px;padding:22px;width:min(900px,92vw);max-height:88vh}
+.modal-inner .ct{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1.5px;font-size:13px;color:var(--green);margin-bottom:12px;display:flex;justify-content:space-between}
+.modal-inner .ct .x{cursor:pointer;color:var(--red);font-weight:bold}
+.modal-cc{position:relative;height:65vh}
+
+.glossary dt{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--green);margin-top:16px;font-size:14px}
+.glossary dd{margin:4px 0 0;font-size:13.5px;color:var(--muted)}
+.glossary dd .back{font-size:11px}
+.foot{text-align:center;font-size:11px;color:var(--muted);padding:30px 0 0;line-height:1.7}
+
+@media(max-width:880px){.chart-grid,.scen-grid{grid-template-columns:1fr}}
+@media(max-width:780px){
+  .sidebar{display:none}
+  .hero{padding:32px 22px}.hero h1{font-size:36px}
+  .content{padding:24px 20px 50px}
+  .kpis{grid-template-columns:repeat(3,1fr)}
+  .card-b{padding:6px 16px 22px}
+}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="brand">Fortuna<br>Research<small>FTA Investment Hub</small></div>
+  <div class="tickerbox">
+    <div class="tk">AMZN</div>
+    <div class="px">$234.11</div>
+    <div class="chg">▼ 14.9% from ATH ($274.99)</div>
+  </div>
+  <nav class="nav">
+    <a href="#s1"><span class="n">01</span> Executive Summary</a>
+    <a href="#s2"><span class="n">02</span> Micro &amp; Valuation</a>
+    <a href="#s3"><span class="n">03</span> Moat &amp; Management</a>
+    <a href="#s4"><span class="n">04</span> Financial Deep Dive</a>
+    <a href="#s5"><span class="n">05</span> Earnings Tracker</a>
+    <a href="#s6"><span class="n">06</span> Bull / Base / Bear</a>
+    <a href="#s7"><span class="n">07</span> Risks &amp; Anti-Thesis</a>
+    <a href="#s8"><span class="n">08</span> Catalyst Timeline</a>
+    <a href="#s9"><span class="n">09</span> Comparables</a>
+    <a href="#s10"><span class="n">10</span> First-Principles KPIs</a>
+    <a href="#s11"><span class="n">11</span> Glossary &amp; Method</a>
+  </nav>
+  <div class="sidefoot">Generated 24 Jun 2026<br>Data: Q1 FY2026 (rep. 29 Apr)<br>Not investment advice.</div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+  <header class="hero">
+    <div class="eyebrow">Institutional Deep-Dive · Mega-Cap Compounder</div>
+    <h1>Amazon.com <span class="tk">AMZN</span></h1>
+    <div class="sub">The market is pricing AMZN on a collapsing free-cash-flow optic while Amazon quietly converts that very capex into a custom-silicon AWS moat. The denominator everyone fears is the numerator of the next thesis.</div>
+    <div class="verdict">
+      <span class="pill">Bullish · Accumulate</span>
+      <span class="conv">Conviction <b>8</b>/10</span>
+    </div>
+  </header>
+
+  <!-- KPI STRIP -->
+  <section class="kpis">
+    <div class="kpi"><div class="lab">Price</div><div class="val">$234.11</div><div class="st">23 Jun 2026 close</div></div>
+    <div class="kpi"><div class="lab">Market Cap</div><div class="val">$2.52T</div><div class="st">5th most valuable</div></div>
+    <div class="kpi"><div class="lab">Rev Growth Q1</div><div class="val">+17%</div><div class="st">AWS +28%</div></div>
+    <div class="kpi"><div class="lab">Op. Margin</div><div class="val">13.1%</div><div class="st">Company record</div></div>
+    <div class="kpi"><div class="lab">Fwd P/E</div><div class="val">29.3×</div><div class="st">P/S ≈ 3.5×</div></div>
+    <div class="kpi"><div class="lab">Analyst PT</div><div class="val">$313</div><div class="st">+34% · Strong Buy</div></div>
+  </section>
+
+  <div class="content">
+
+  <!-- SECTION 1 -->
+  <section class="card" id="s1">
+    <div class="card-h"><div class="badge">1</div><h2>Executive Summary &amp; Investment Thesis</h2><span class="chev">▼</span></div>
+    <div class="card-b">
+      <div class="thesis">"Amazon is a three-headed compounder — cloud, advertising, and retail logistics — that the market is currently valuing as if its record AI capex is a permanent leak rather than the foundation of its next decade of operating leverage. We are buyers of the disconnect."</div>
+
+      <p>As of the 23 June 2026 close, AMZN trades at <b>$234.11</b>, roughly 15% below its 6 May all-time high of $274.99, giving a market capitalization of about <b>$2.52 trillion</b> — the world's fifth-most-valuable company. The pullback followed a Q1 FY2026 print that beat on virtually every line yet spooked the tape on one number: <a href="#g-fcf">trailing-twelve-month free cash flow</a> collapsed to ~$1.2B from $25.9B a year earlier, as net property &amp; equipment spend rose $59.3B year-over-year to build out AI data-center capacity.</p>
+
+      <p>Our thesis is that this is a textbook case of the market punishing the <i>denominator of a DCF</i> while ignoring the <i>asset being created</i>. AWS just grew 28% — its fastest in 15 quarters — to a $150B annualized run-rate, with $14.2B of segment operating income. Advertising crossed a $70B+ TTM run-rate growing 24%. Consolidated operating margin hit a company-record 13.1%. The capex that is depressing FCF today is purchasing GPUs and, more importantly, Amazon's own <a href="#g-trainium">Trainium</a> silicon, the highest-margin layer of the AI stack.</p>
+
+      <h3>Key Metrics at a Glance</h3>
+      <div class="chips">
+        <div class="chip"><div class="l">Sector</div><div class="v" style="font-size:14px">Cloud / E-Comm</div></div>
+        <div class="chip"><div class="l">Q1 Net Sales</div><div class="v">$181.5B</div></div>
+        <div class="chip"><div class="l">Q1 Op. Income</div><div class="v">$23.9B</div></div>
+        <div class="chip"><div class="l">AWS Run-Rate</div><div class="v">$150B</div></div>
+        <div class="chip"><div class="l">Ad TTM</div><div class="v">$70B+</div></div>
+        <div class="chip"><div class="l">Q1 EPS</div><div class="v">$2.78</div></div>
+        <div class="chip"><div class="l">Cash Conv.</div><div class="v">Low (capex)</div></div>
+        <div class="chip"><div class="l">Conviction</div><div class="v">8 / 10</div></div>
+      </div>
+
+      <div class="callout gold"><b>The one-line thesis:</b> Buy the FCF air-pocket. Capex intensity is cyclical and self-funding; the AWS + Ads margin engine is structural. We see a 3-year base case of <b>$340</b> (+45%) with a credible bull path to $470.</div>
+      <p style="font-size:12px;color:var(--muted)"><i>Note: Q1 EPS of $2.78 included ~$16.8B of pre-tax mark-to-market gains on Amazon's Anthropic stake; we treat reported EPS with caution and lean on operating income and segment economics throughout this report.</i></p>
+    </div>
+  </section>
+
+  <!-- SECTION 2 -->
+  <section class="card" id="s2">
+    <div class="card-h"><div class="badge">2</div><h2>Microeconomic &amp; Valuation Analysis</h2><span class="chev">▼</span></div>
+    <div class="card-b">
+      <h3>Total Addressable Market</h3>
+      <p>Amazon competes across three enormous, secularly growing pools. Global <b>cloud infrastructure</b> is a ~$400B+ annual market compounding in the high-teens/low-20s as the AI build-out pulls forward demand; AWS holds roughly 31% share versus Azure's ~24% and Google Cloud's ~12–14%. Global <b>digital advertising</b> is a ~$700B market where Amazon's retail-media position is the fastest-growing share-gainer outside the Google/Meta duopoly. And global <b>e-commerce + logistics</b> remains a multi-trillion-dollar pool still under ~20% online-penetrated in most categories.</p>
+
+      <div class="chart-grid">
+        <div class="chart-box"><div class="ct">Q1 FY26 Revenue by Segment ($B)<span class="zoom" data-c="cSeg">⤢ expand</span></div><div class="cc"><canvas id="cSeg"></canvas></div></div>
+        <div class="chart-box"><div class="ct">Revenue Mix — Where the $ Comes From<span class="zoom" data-c="cMix">⤢ expand</span></div><div class="cc"><canvas id="cMix"></canvas></div></div>
+      </div>
+
+      <h3>Valuation — P/S and P/E in Context</h3>
+      <p>At a ~$2.52T market cap on roughly $725B of trailing revenue, AMZN trades at a <a href="#g-ps">Price/Sales</a> of ~<b>3.5×</b>. On our house scale (>30 Euphoric, >18 Excited, >8 Optimistic, 4–8 Aware, &lt;4 Cautious, &lt;2 Pessimistic), a 3.5× P/S sits firmly in <b>"Cautious"</b> territory — a striking read for a company growing consolidated revenue 17% with a 28%-growth cloud crown-jewel. The optical reason is Amazon's blended margin profile (low-margin retail dilutes the multiple), which is precisely why a <a href="#g-sotp">sum-of-the-parts</a> lens matters more here than any single ratio.</p>
+      <p>On earnings, the forward <a href="#g-pe">P/E</a> of ~29× is roughly in line with Alphabet (~29×) and a premium to Microsoft (~23×). But Amazon's reported P/E is depressed by the heaviest depreciation load of the three (capex flowing through the P&amp;L), meaning its "true" earnings power is understated relative to peers.</p>
+
+      <div class="chips">
+        <div class="chip"><div class="l">P/S (TTM)</div><div class="v">≈3.5×</div></div>
+        <div class="chip"><div class="l">Fwd P/E</div><div class="v">29.3×</div></div>
+        <div class="chip"><div class="l">FY26 Rev Est</div><div class="v">$795.6B</div></div>
+        <div class="chip"><div class="l">Analysts</div><div class="v">67</div></div>
+        <div class="chip"><div class="l">Rating</div><div class="v" style="font-size:14px">Strong Buy</div></div>
+        <div class="chip"><div class="l">PT Range</div><div class="v" style="font-size:14px">$207–$370</div></div>
+      </div>
+
+      <h3>Ownership &amp; Insider Signal</h3>
+      <p>AMZN remains a core institutional holding (~60%+ of the float held by institutions), a profile that limits idiosyncratic squeeze risk but also means flows track macro and mega-cap rotation. Founder Jeff Bezos continues a long-running, pre-scheduled <a href="#g-10b5">Rule 10b5-1</a> sell program funding Blue Origin and philanthropy — a structural, telegraphed sale stream that should not be read as a fundamental signal. The cleaner insider tell is the absence of cluster <i>selling</i> by operating executives and continued heavy equity-linked compensation alignment.</p>
+      <div class="callout note"><b>Valuation verdict:</b> On every absolute multiple, AMZN screens cheaper than its own growth and cheaper than the quality of its mix would imply. The market is paying ~3.5× sales for a business whose two best segments (AWS + Ads, ~$220B+ combined run-rate) arguably justify that multiple <i>alone</i> — with retail thrown in for free.</div>
+    </div>
+  </section>
+
+  <!-- SECTION 3 -->
+  <section class="card" id="s3">
+    <div class="card-h"><div class="badge">3</div><h2>Qualitative Analysis — Moat, Management &amp; Culture</h2><span class="chev">▼</span></div>
+    <div class="card-b">
+      <h3>The Moat — A System, Not a Feature</h3>
+      <p>Amazon's durable advantage is best understood philosophically as a <b>compounding flywheel of optionality</b>. Each business it builds lowers the cost or raises the value of the next: fulfillment scale makes Prime stickier; Prime stickiness funds content and devices; the retail surface generates the highest-intent advertising inventory on the internet; and the capital thrown off underwrites AWS, whose own scale economics then subsidize internal AI. No single layer is unassailable, but the <i>interlock</i> between layers is. Competitors must beat Amazon on price, selection, logistics, cloud, <i>and</i> ads simultaneously to dislodge the system.</p>
+      <p>Within AWS specifically, the moat is deepening at the silicon layer. By designing <a href="#g-trainium">Trainium</a> and Inferentia chips, Amazon is attacking the one input — Nvidia GPU margin — that threatens cloud economics. Custom silicon is a multi-year, capital-intensive moat that neither pure-software rivals nor smaller clouds can replicate.</p>
+
+      <h3>Management &amp; Capital Allocation</h3>
+      <p>CEO Andy Jassy — the architect of AWS — runs Amazon with the same long-duration, reinvestment-first philosophy Bezos institutionalized. The current capex surge is the clearest expression of that culture: management is explicitly willing to depress near-term FCF to capture a generational AI-infrastructure demand curve. Capital allocation has been ROIC-accretive over time (AWS and Ads are the proof), and the company has shown discipline in retiring lower-return bets.</p>
+
+      <h3>Culture &amp; Organizational Traits</h3>
+      <ul>
+        <li><b>Customer obsession:</b> the founding tenet; still the tie-breaker in product decisions and the source of pricing power restraint that compounds trust.</li>
+        <li><b>Innovation pace &amp; failure tolerance:</b> Amazon's history of public failures (Fire Phone, Crucible) is a feature — it signals a portfolio approach where a single AWS-scale winner pays for a thousand experiments.</li>
+        <li><b>Talent density &amp; decentralization:</b> the "two-pizza team" and single-threaded-owner model pushes decisions down, preserving start-up velocity at trillion-dollar scale.</li>
+        <li><b>Idea meritocracy:</b> the famous six-page narrative memo forces rigor and lets the best argument — not the loudest voice — win.</li>
+      </ul>
+      <div class="callout gold"><b>Moat verdict:</b> Wide and widening. The combination of system-level interlock and a fresh silicon-layer advantage is exactly the kind of structural edge that justifies patience through a capex-heavy investment cycle.</div>
+    </div>
+  </section>
+
+  <!-- SECTION 4 -->
+  <section class="card" id="s4">
+    <div class="card-h"><div class="badge">4</div><h2>Quantitative Analysis — Financial Deep Dive</h2><span class="chev">▼</span></div>
+    <div class="card-b">
+      <p>Amazon's income statement is in the middle of a deliberate transformation: revenue is decelerating gracefully into the high-teens while <b>margin is inflecting upward</b> as the high-margin AWS and advertising mix grows faster than low-margin retail. Q1 consolidated operating income of <b>$23.9B</b> (13.1% margin) is a company record, up from $18.4B (11.8%) a year ago — a 30% increase in operating profit on 17% revenue growth, the signature of <a href="#g-oplev">operating leverage</a>.</p>
+
+      <div class="chart-grid">
+        <div class="chart-box"><div class="ct">Quarterly Net Sales ($B)<span class="zoom" data-c="cRev">⤢ expand</span></div><div class="cc"><canvas id="cRev"></canvas></div></div>
+        <div class="chart-box"><div class="ct">Consolidated Operating Margin (%)<span class="zoom" data-c="cMargin">⤢ expand</span></div><div class="cc"><canvas id="cMargin"></canvas></div></div>
+      </div>
+
+      <h3>The Free Cash Flow Story (read this carefully)</h3>
+      <p>TTM <a href="#g-fcf">free cash flow</a> fell to ~$1.2B from $25.9B, driven almost entirely by a $59.3B year-over-year increase in net purchases of property and equipment. This is <i>not</i> a deterioration in the underlying cash-generative quality of the business — operating cash flow remains robust. It is a conscious decision to pull forward AI capacity. The critical analytical point: this capex creates a depreciable, revenue-generating asset (data centers + silicon) with attractive unit economics, unlike a cash burn that funds losses.</p>
+
+      <div class="chart-grid">
+        <div class="chart-box"><div class="ct">TTM Free Cash Flow ($B) — the air-pocket<span class="zoom" data-c="cFcf">⤢ expand</span></div><div class="cc"><canvas id="cFcf"></canvas></div></div>
+        <div class="chart-box"><div class="ct">Capex Intensity Driving the Dip ($B, TTM Δ)<span class="zoom" data-c="cCapex">⤢ expand</span></div><div class="cc"><canvas id="cCapex"></canvas></div></div>
+      </div>
+
+      <h3>Revenue Streams, Explained Simply</h3>
+      <ul>
+        <li><b>AWS ($37.6B, +28%):</b> renting computing power, storage, databases and AI services to businesses. Highest margin (~38% segment operating margin), the primary profit engine.</li>
+        <li><b>North America retail ($8.3B op income):</b> the U.S./Canada store, Prime, devices, and fulfillment — large, lower-margin, but margins expanding on logistics efficiency.</li>
+        <li><b>International ($1.4B op income):</b> the same model outside North America, now sustainably profitable after years of investment.</li>
+        <li><b>Advertising ($17.2B/qtr, +24%):</b> sponsored products and brand ads on Amazon's high-intent retail surface — very high incremental margin, increasingly the "third pillar."</li>
+      </ul>
+
+      <h3>Margin Drivers, Dilution &amp; Balance Sheet</h3>
+      <p>Profit-margin expansion is being driven by (1) AWS growing faster than the company average, (2) advertising's near-software-like incremental margins, and (3) genuine cost-to-serve improvements in fulfillment. Share count crept up modestly (~10.6B → ~10.8B shares YoY) — manageable <a href="#g-dilution">dilution</a>, with stock-based awards outstanding actually <i>declining</i> (263M → 195M), a healthy sign of compensation discipline. The balance sheet carries a strong net-cash-adjusted position with investment-grade debt comfortably serviced by operating cash flow.</p>
+      <div class="callout note"><b>Quant verdict:</b> Revenue is growing faster than cost of revenue, margins are at record highs, and the only "weak" metric — FCF — is weak for the best possible reason: voluntary, high-return investment. This is the financial profile of operating leverage in motion, temporarily masked by an investment cycle.</div>
+    </div>
+  </section>
+
+  <!-- SECTION 5 -->
+  <section class="card" id="s5">
+    <div class="card-h"><div class="badge">5</div><h2>Earnings Tracker — Management Credibility</h2><span class="chev">▼</span></div>
+    <div class="card-b">
+      <p>Amazon's guidance discipline is among the best in mega-cap tech: it guides operating income as a <i>range</i> and has a long record of landing at or above the high end while under-promising on revenue. The table below scores the last eight reported quarters on how actuals stacked against prior guidance/consensus (credibility 1–10).</p>
+      <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Quarter</th><th>Reported</th><th>Promise / Guidance</th><th>Actual Result</th><th>Cred.</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">Q1 FY26</td><td class="mono">29 Apr 26</td><td>Op. income $X; AWS reaccel expected</td><td class="mono">Op. inc $23.9B record; AWS +28% <span class="pos">beat</span></td><td class="mono pos">10</td></tr>
+          <tr><td class="mono">Q4 FY25</td><td class="mono">Feb 26</td><td>Holiday-quarter margin guide</td><td class="mono">Beat on op. income &amp; AWS <span class="pos">beat</span></td><td class="mono pos">9</td></tr>
+          <tr><td class="mono">Q3 FY25</td><td class="mono">Oct 25</td><td>AWS stabilization, margin hold</td><td class="mono">In-line rev, <span class="pos">beat</span> op income</td><td class="mono pos">9</td></tr>
+          <tr><td class="mono">Q2 FY25</td><td class="mono">Jul 25</td><td>Op. income $13–17B guide</td><td class="mono">Landed high end <span class="pos">beat</span></td><td class="mono pos">9</td></tr>
+          <tr><td class="mono">Q1 FY25</td><td class="mono">Apr 25</td><td>Margin expansion continuation</td><td class="mono">$18.4B op inc, 11.8% <span class="pos">beat</span></td><td class="mono pos">9</td></tr>
+          <tr><td class="mono">Q4 FY24</td><td class="mono">Feb 25</td><td>Record holiday op income</td><td class="mono">Beat; cautious capex framing</td><td class="mono">8</td></tr>
+          <tr><td class="mono">Q3 FY24</td><td class="mono">Oct 24</td><td>AWS &amp; ads momentum</td><td class="mono">Beat op income <span class="pos">beat</span></td><td class="mono pos">9</td></tr>
+          <tr><td class="mono">Q2 FY24</td><td class="mono">Jul 24</td><td>Op. income guide range</td><td class="mono">Rev light, op income beat</td><td class="mono">7</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="chart-box full tall" style="margin-top:6px"><div class="ct">Operating-Income Beat vs Guidance Midpoint (illustrative, $B)<span class="zoom" data-c="cBeat">⤢ expand</span></div><div class="cc"><canvas id="cBeat"></canvas></div></div>
+      <div class="callout gold"><b>Credibility verdict:</b> ~8.9/10 average. Management consistently under-promises on revenue and over-delivers on operating income. The Q2 FY26 guide (revenue $194–199B, op income $20–24B) should be read through that lens — i.e., the high end is the realistic target.</div>
+    </div>
+  </section>
+
+  <!-- SECTION 6 -->
+  <section class="card" id="s6">
+    <div class="card-h"><div class="badge">6</div><h2>Bull / Base / Bear Scenarios</h2><span class="chev">▼</span></div>
+    <div class="card-b">
+      <p>Probability-weighted price targets across 1-, 3-, and 5-year horizons. Assumptions anchor on AWS growth durability, advertising mix, retail margin, and the capex-to-FCF normalization curve.</p>
+
+      <div class="horizon-lab">▸ 1-YEAR HORIZON (mid-2027)</div>
+      <div class="scen-grid">
+        <div class="scen"><h4>Bull <span class="prob">25%</span></h4><div class="pt">$330</div><ul><li>AWS holds &gt;28%, Trainium ramps</li><li>Ads &gt;$80B run-rate</li><li>Capex peaks, FCF inflects up</li></ul></div>
+        <div class="scen base"><h4>Base <span class="prob">55%</span></h4><div class="pt">$285</div><ul><li>AWS ~24–26%, margins hold</li><li>Revenue ~$800B FY26</li><li>Multiple re-rates modestly</li></ul></div>
+        <div class="scen bear"><h4>Bear <span class="prob">20%</span></h4><div class="pt">$195</div><ul><li>AI capex disappoints on ROI</li><li>Cloud growth fades to ~20%</li><li>FCF stays depressed, de-rate</li></ul></div>
+      </div>
+      <p class="mono" style="font-size:12px;color:var(--muted)">Prob-weighted 1Y ≈ <b style="color:var(--green)">$278</b> (+19%)</p>
+
+      <div class="horizon-lab">▸ 3-YEAR HORIZON (mid-2029)</div>
+      <div class="scen-grid">
+        <div class="scen"><h4>Bull <span class="prob">30%</span></h4><div class="pt">$470</div><ul><li>AWS &gt;$300B run-rate, AI workloads compound</li><li>Consolidated op margin &gt;16%</li><li>FCF normalizes to $80B+</li></ul></div>
+        <div class="scen base"><h4>Base <span class="prob">50%</span></h4><div class="pt">$340</div><ul><li>Revenue ~$1.0T, op margin ~15%</li><li>Ads a $120B business</li><li>Capex/FCF curve normalizes</li></ul></div>
+        <div class="scen bear"><h4>Bear <span class="prob">20%</span></h4><div class="pt">$210</div><ul><li>AI demand normalizes, overbuild</li><li>Margin stalls near 13%</li><li>Multiple compresses to ~22×</li></ul></div>
+      </div>
+      <p class="mono" style="font-size:12px;color:var(--muted)">Prob-weighted 3Y ≈ <b style="color:var(--green)">$353</b> (+51%)</p>
+
+      <div class="horizon-lab">▸ 5-YEAR HORIZON (mid-2031)</div>
+      <div class="scen-grid">
+        <div class="scen"><h4>Bull <span class="prob">30%</span></h4><div class="pt">$640</div><ul><li>AWS the dominant AI cloud, &gt;$450B</li><li>Op margin approaching 18–20%</li><li>FCF machine fully re-armed</li></ul></div>
+        <div class="scen base"><h4>Base <span class="prob">50%</span></h4><div class="pt">$470</div><ul><li>~$1.3T revenue, mid-teens FCF margin</li><li>Three-pillar profit engine matured</li><li>~12% annualized return</li></ul></div>
+        <div class="scen bear"><h4>Bear <span class="prob">20%</span></h4><div class="pt">$250</div><ul><li>Commoditized cloud, AI ROI thesis fails</li><li>Regulatory drag on retail/ads</li><li>Flat-to-modest return</li></ul></div>
+      </div>
+      <p class="mono" style="font-size:12px;color:var(--muted)">Prob-weighted 5Y ≈ <b style="color:var(--green)">$484</b> (+107%)</p>
+
+      <div class="chart-box full tall"><div class="ct">Scenario Price Targets by Horizon ($)<span class="zoom" data-c="cScen">⤢ expand</span></div><div class="cc"><canvas id="cScen"></canvas></div></div>
+    </div>
+  </section>
+
+  <!-- SECTION 7 -->
+  <section class="card" id="s7">
+    <div class="card-h"><div class="badge">7</div><h2>Risks &amp; Anti-Thesis — Steelmanning the Bear</h2><span class="chev">▼</span></div>
+    <div class="card-b">
+      <p>If we were short AMZN, here is the case we would press. Each risk is rated on probability, impact, and whether the market already prices it.</p>
+
+      <div class="risk">
+        <h4>1. The AI capex never earns its cost of capital</h4>
+        <p>The entire bull case rests on $100B+/yr of capacity earning an attractive return. If AI demand is a bubble that normalizes, Amazon will own a mountain of rapidly-depreciating GPUs and half-empty data centers, and the FCF "air-pocket" becomes a permanent crater.</p>
+        <div class="meta"><span><b>Probability:</b> Medium</span><span><b>Impact:</b> Severe</span><span><b>Priced in:</b> Partially</span></div>
+      </div>
+      <div class="risk">
+        <h4>2. Cloud commoditization &amp; the GCP surge</h4>
+        <p>Google Cloud grew 63% to $20B and is taking share (12%→14%). If AWS's growth premium erodes and pricing power fades in a three-way race, the highest-margin profit engine de-rates — and so does the whole stock.</p>
+        <div class="meta"><span><b>Probability:</b> Medium</span><span><b>Impact:</b> High</span><span><b>Priced in:</b> Partially</span></div>
+      </div>
+      <div class="risk">
+        <h4>3. Reported-earnings quality &amp; the Anthropic mark</h4>
+        <p>Q1 EPS of $2.78 was flattered by ~$16.8B of pre-tax Anthropic gains. Mark-to-market on private-company stakes cuts both ways; a down-round or AI sentiment reversal could deliver an ugly, headline-grabbing EPS miss that obscures clean operating progress.</p>
+        <div class="meta"><span><b>Probability:</b> Medium</span><span><b>Impact:</b> Medium</span><span><b>Priced in:</b> No</span></div>
+      </div>
+      <div class="risk">
+        <h4>4. Regulatory &amp; antitrust overhang</h4>
+        <p>Amazon faces ongoing antitrust scrutiny (FTC), retail-media data questions, and global digital regulation. A forced structural remedy on the ads/retail data interlock would directly attack the flywheel's connective tissue.</p>
+        <div class="meta"><span><b>Probability:</b> Low–Medium</span><span><b>Impact:</b> High</span><span><b>Priced in:</b> Partially</span></div>
+      </div>
+      <div class="risk">
+        <h4>5. Macro / consumer &amp; the retail anchor</h4>
+        <p>Half the revenue base is consumer discretionary spending and fulfillment cost exposed to fuel/labor inflation. A consumer recession compresses the largest (if lowest-margin) segment and drags consolidated growth below the high-teens the bull case assumes.</p>
+        <div class="meta"><span><b>Probability:</b> Medium</span><span><b>Impact:</b> Medium</span><span><b>Priced in:</b> Mostly</span></div>
+      </div>
+
+      <div class="callout note"><b>Anti-thesis synthesis:</b> The strongest bear argument is #1 — that this is the wrong moment in the AI capex cycle to underwrite returns. We respect it. Our rebuttal: Amazon, uniquely, can <i>internalize</i> excess capacity through its own retail/ads/AI workloads even if external demand softens, giving it a demand backstop no pure cloud rival has. That optionality is why we remain net-long despite a genuinely cloudy FCF picture.</div>
+    </div>
+  </section>
+
+  <!-- SECTION 8 -->
+  <section class="card" id="s8">
+    <div class="card-h"><div class="badge">8</div><h2>Catalyst Timeline</h2><span class="chev">▼</span></div>
+    <div class="card-b">
+      <div class="timeline">
+        <div class="tl-item"><div class="date">Jul 2026</div><div class="ttl">Prime Day (Q2)</div><div class="desc">Largest retail event of the period; key read on consumer health and ads pull-through. Guidance explicitly assumes Prime Day falls in Q2 FY26.</div></div>
+        <div class="tl-item"><div class="date">Late Jul 2026</div><div class="ttl">Q2 FY26 Earnings</div><div class="desc">The print that tests the guide: revenue $194–199B, op income $20–24B. Watch AWS growth rate and any capex re-framing.</div></div>
+        <div class="tl-item"><div class="date">Sep 2026</div><div class="ttl">Fall Devices &amp; Alexa+ event</div><div class="desc">New hardware and the next iteration of generative-AI Alexa; a window into Amazon's consumer-AI monetization path.</div></div>
+        <div class="tl-item"><div class="date">Oct 2026</div><div class="ttl">Q3 FY26 Earnings</div><div class="desc">Pre-holiday read; capex trajectory and Trainium adoption commentary in focus.</div></div>
+        <div class="tl-item"><div class="date">Nov–Dec 2026</div><div class="ttl">re:Invent + Holiday Quarter</div><div class="desc">AWS's flagship conference (new silicon &amp; AI services) overlapping peak retail — the single densest catalyst cluster of the year.</div></div>
+        <div class="tl-item"><div class="date">Ongoing 2026</div><div class="ttl">Amazon Leo &amp; FTC matters</div><div class="desc">Satellite-broadband (Leo) cost ramp (~$1B YoY headwind) and antitrust developments are slow-burn swing factors.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 9 -->
+  <section class="card" id="s9">
+    <div class="card-h"><div class="badge">9</div><h2>Comparable Company Analysis</h2><span class="chev">▼</span></div>
+    <div class="card-b">
+      <p>Amazon's closest mega-cap comps are the other hyperscalers. The table contrasts scale, growth, and valuation. Figures are approximate, June 2026.</p>
+      <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Company</th><th>Mkt Cap</th><th>Cloud Growth</th><th>Fwd P/E</th><th>P/S</th><th>Op. Margin</th><th>Profile</th></tr></thead>
+        <tbody>
+          <tr><td><b>Amazon (AMZN)</b></td><td class="mono">$2.52T</td><td class="mono pos">+28%</td><td class="mono">29.3×</td><td class="mono">~3.5×</td><td class="mono">13.1%</td><td>Cloud+Ads+Retail</td></tr>
+          <tr><td>Microsoft (MSFT)</td><td class="mono">$3.69T</td><td class="mono pos">+40%</td><td class="mono">22.7×</td><td class="mono">~12×</td><td class="mono">~45%</td><td>Cloud+Software</td></tr>
+          <tr><td>Alphabet (GOOGL)</td><td class="mono">$3.37T</td><td class="mono pos">+63%</td><td class="mono">29.4×</td><td class="mono">~7×</td><td class="mono">~33%</td><td>Ads+Cloud+AI</td></tr>
+          <tr><td>Meta (META)</td><td class="mono">~$1.5T</td><td class="mono">n/a</td><td class="mono">~24×</td><td class="mono">~9×</td><td class="mono">~40%</td><td>Ads+AI</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="chart-grid">
+        <div class="chart-box"><div class="ct">Hyperscaler Cloud Growth — Q1 FY26 (%)<span class="zoom" data-c="cCloud">⤢ expand</span></div><div class="cc"><canvas id="cCloud"></canvas></div></div>
+        <div class="chart-box"><div class="ct">Price / Sales — Cheapest of the Cohort (×)<span class="zoom" data-c="cPs">⤢ expand</span></div><div class="cc"><canvas id="cPs"></canvas></div></div>
+      </div>
+      <p><b>Relative-value read:</b> AMZN sports the <i>lowest</i> P/S in the cohort by a wide margin (~3.5× vs MSFT ~12×, GOOGL ~7×), reflecting its low-margin retail dilution. AWS is the slowest-growing of the three clouds on a percentage basis — but off by far the largest base. The investable insight: you are buying the highest-absolute-dollar cloud profit pool, plus a $70B+ ad business, at a sales multiple that implies the retail business is worth roughly nothing. That asymmetry is the heart of the long case.</p>
+    </div>
+  </section>
+
+  <!-- SECTION 10 -->
+  <section class="card" id="s10">
+    <div class="card-h"><div class="badge">10</div><h2>First-Principles KPIs</h2><span class="chev">▼</span></div>
+    <div class="card-b">
+      <p>Forget the headline EPS. These are the fundamental leading indicators that, from first principles, determine whether the thesis is working quarter to quarter.</p>
+      <ul>
+        <li><b>AWS revenue growth rate (%):</b> the single most important number — the velocity of the highest-margin profit pool and the cleanest read on AI-cloud demand.</li>
+        <li><b>AWS segment operating margin (%):</b> tells us whether capex and custom silicon are translating into profit, not just revenue.</li>
+        <li><b>Advertising revenue ($ &amp; growth):</b> the near-software-margin "third pillar"; its trajectory drives consolidated margin mix.</li>
+        <li><b>Consolidated operating margin (%):</b> the scoreboard for operating leverage across the whole system.</li>
+        <li><b>Capex ÷ operating cash flow:</b> the normalization gauge — when this ratio peaks and rolls, FCF re-arms and the multiple re-rates.</li>
+      </ul>
+      <div class="chart-grid">
+        <div class="chart-box"><div class="ct">KPI 1 — AWS Growth Rate Trend (%)<span class="zoom" data-c="cAws">⤢ expand</span></div><div class="cc"><canvas id="cAws"></canvas></div></div>
+        <div class="chart-box"><div class="ct">KPI 2 — Advertising Revenue ($B/qtr)<span class="zoom" data-c="cAds">⤢ expand</span></div><div class="cc"><canvas id="cAds"></canvas></div></div>
+      </div>
+      <div class="callout gold"><b>What to watch next print:</b> Can AWS hold ≥27% growth while segment margin stays north of 35%? If yes, the capex thesis is validated and the FCF normalization clock starts ticking in the bulls' favor.</div>
+    </div>
+  </section>
+
+  <!-- SECTION 11 -->
+  <section class="card" id="s11">
+    <div class="card-h"><div class="badge">11</div><h2>Glossary &amp; Methodology</h2><span class="chev">▼</span></div>
+    <div class="card-b">
+      <dl class="glossary">
+        <dt id="g-fcf">Free Cash Flow (FCF)</dt>
+        <dd>Operating cash flow minus capital expenditures. <i>Formula:</i> FCF = CFO − Capex. <b>Why it matters:</b> the cash a business can return to owners or reinvest after maintaining/growing its asset base. Amazon's TTM FCF fell to ~$1.2B purely because capex rose $59.3B — an investment choice, not deteriorating cash quality. <a class="back" href="#s4">↩ back to §4</a></dd>
+
+        <dt id="g-trainium">Trainium / Custom Silicon</dt>
+        <dd>Amazon-designed AI training/inference chips (Trainium, Inferentia) used inside AWS. <b>Why it matters:</b> by owning the silicon, Amazon captures the margin that would otherwise flow to Nvidia, deepening the cloud cost moat. <a class="back" href="#s3">↩ back to §3</a></dd>
+
+        <dt id="g-ps">Price/Sales (P/S)</dt>
+        <dd>Market capitalization ÷ trailing revenue. <i>House scale:</i> &gt;30 Euphoric · &gt;18 Excited · &gt;8 Optimistic · 4–8 Aware · &lt;4 Cautious · &lt;2 Pessimistic. AMZN at ~3.5× reads "Cautious," unusual for a high-teens grower — explained by retail margin dilution. <a class="back" href="#s2">↩ back to §2</a></dd>
+
+        <dt id="g-pe">Price/Earnings (P/E)</dt>
+        <dd>Price ÷ earnings per share (forward uses next-twelve-month estimates). <b>Why it matters:</b> a quick relative-value gauge. AMZN's ~29× understates true earnings power because heavy depreciation from current capex flows through reported earnings. <a class="back" href="#s2">↩ back to §2</a></dd>
+
+        <dt id="g-sotp">Sum-of-the-Parts (SOTP)</dt>
+        <dd>Valuing each business segment separately and adding them up. <b>Why it matters:</b> for conglomerates like Amazon, a single blended multiple obscures that AWS and Ads deserve far higher multiples than retail. <a class="back" href="#s2">↩ back to §2</a></dd>
+
+        <dt id="g-oplev">Operating Leverage</dt>
+        <dd>The tendency for operating profit to grow faster than revenue as fixed costs are spread over a larger base. <b>Why it matters:</b> Q1 operating income grew ~30% on 17% revenue — leverage in action. <a class="back" href="#s4">↩ back to §4</a></dd>
+
+        <dt id="g-dilution">Share Dilution</dt>
+        <dd>Growth in shares outstanding (e.g., from stock-based comp), which reduces per-share ownership. <b>Why it matters:</b> AMZN's ~2% YoY share growth is modest and, with awards-outstanding falling, well-controlled. <a class="back" href="#s4">↩ back to §4</a></dd>
+
+        <dt id="g-10b5">Rule 10b5-1 Plan</dt>
+        <dd>A pre-scheduled trading plan that lets insiders sell stock on a set schedule regardless of material information. <b>Why it matters:</b> Bezos's sales run through such a plan, so they are not a fundamental signal. <a class="back" href="#s2">↩ back to §2</a></dd>
+      </dl>
+
+      <h3>Methodology &amp; Sources</h3>
+      <p style="font-size:13px">Financial data was retrieved via live web research on 24 June 2026, prioritizing primary sources (Amazon Q1 FY2026 earnings release / IR, SEC 8-K) and corroborated with secondary sources (CNBC, Yahoo Finance, stockanalysis.com, MarketBeat, Simply Wall St, Investing.com, futurumgroup). Scenario targets are the analyst's probability-weighted judgments, not guarantees. Price/market-cap as of the 23 June 2026 close.</p>
+      <div class="callout note" style="font-size:12.5px"><b>Disclaimer:</b> This report is for informational and educational purposes only and is not investment advice, an offer, or a solicitation. The author is not a licensed financial advisor. Markets carry risk of loss; do your own diligence and consult a qualified professional before making investment decisions.</div>
+      <div class="foot">FORTUNA RESEARCH · FTA INVESTMENT HUB<br>Amazon.com (AMZN) · Generated 24 June 2026 · Q1 FY2026 data cycle</div>
+    </div>
+  </section>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<!-- MODAL -->
+<div class="modal" id="modal"><div class="modal-inner"><div class="ct"><span id="modalTitle">Chart</span><span class="x" id="modalX">✕ close</span></div><div class="modal-cc"><canvas id="modalCanvas"></canvas></div></div></div>
+
+<script>
+// collapse
+document.querySelectorAll('.card-h').forEach(h=>h.addEventListener('click',()=>h.parentElement.classList.toggle('collapsed')));
+
+Chart.defaults.font.family="'Quicksand',sans-serif";
+Chart.defaults.font.size=11;
+Chart.defaults.color="#5d6155";
+const G="#145A22",DG="#0A3A14",GOLD="#FCC55B",GOLDD="#e0a838",RED="#a8341f",MUT="#a9a294";
+const gridc="rgba(0,0,0,.06)";
+const baseOpts=(extra={})=>Object.assign({responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+  scales:{x:{grid:{display:false}},y:{grid:{color:gridc},beginAtZero:true}}},extra);
+
+const defs={};
+function reg(id,cfg){defs[id]=cfg;const el=document.getElementById(id);if(el)new Chart(el,JSON.parse(JSON.stringify(cfg)).type?cfg:cfg);}
+// helper to actually build
+function build(id,cfg){const el=document.getElementById(id);if(el){defs[id]=cfg;return new Chart(el,cfg);}}
+
+build('cSeg',{type:'bar',data:{labels:['AWS','NA Retail','Int\'l','Ads'],
+  datasets:[{data:[37.6,106,38,17.2],backgroundColor:[G,GOLDD,'#243D27',GOLD],borderRadius:5}]},
+  options:baseOpts()});
+
+build('cMix',{type:'doughnut',data:{labels:['AWS','North America','International','Advertising (in stores)'],
+  datasets:[{data:[37.6,106,38,17.2],backgroundColor:[G,GOLDD,'#243D27',GOLD],borderWidth:2,borderColor:'#fff'}]},
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:11,font:{size:10}}}}}});
+
+build('cRev',{type:'bar',data:{labels:['Q1 25','Q2 25','Q3 25','Q4 25','Q1 26'],
+  datasets:[{data:[155.7,160,166,193,181.5],backgroundColor:G,borderRadius:5}]},
+  options:baseOpts({scales:{x:{grid:{display:false}},y:{grid:{color:gridc},min:140}}})});
+
+build('cMargin',{type:'line',data:{labels:['Q1 25','Q2 25','Q3 25','Q4 25','Q1 26'],
+  datasets:[{data:[11.8,11.0,11.5,11.3,13.1],borderColor:GOLDD,backgroundColor:'rgba(252,197,91,.18)',fill:true,tension:.35,pointBackgroundColor:G,pointRadius:4}]},
+  options:baseOpts({scales:{x:{grid:{display:false}},y:{grid:{color:gridc},min:10,max:14}}})});
+
+build('cFcf',{type:'bar',data:{labels:['TTM Q1 25','TTM Q2 25','TTM Q3 25','TTM Q4 25','TTM Q1 26'],
+  datasets:[{data:[25.9,22,15,8,1.2],backgroundColor:['#243D27','#3a5e3f','#7a7d4a',GOLDD,RED],borderRadius:5}]},
+  options:baseOpts()});
+
+build('cCapex',{type:'bar',data:{labels:['TTM Q1 25','TTM Q1 26'],
+  datasets:[{label:'Capex',data:[83,142],backgroundColor:[GOLDD,G],borderRadius:5}]},
+  options:baseOpts()});
+
+build('cBeat',{type:'bar',data:{labels:['Q2 24','Q3 24','Q4 24','Q1 25','Q2 25','Q3 25','Q4 25','Q1 26'],
+  datasets:[{label:'Guide mid',data:[12,14,18,16,15,17,20,21],backgroundColor:MUT,borderRadius:4},
+  {label:'Actual op income',data:[13.3,15.3,21,18.4,17,18.5,22,23.9],backgroundColor:G,borderRadius:4}]},
+  options:baseOpts({plugins:{legend:{display:true,labels:{boxWidth:11,font:{size:10}}}}})});
+
+build('cScen',{type:'bar',data:{labels:['1-Year','3-Year','5-Year'],
+  datasets:[
+    {label:'Bear',data:[195,210,250],backgroundColor:RED,borderRadius:4},
+    {label:'Base',data:[285,340,470],backgroundColor:GOLD,borderRadius:4},
+    {label:'Bull',data:[330,470,640],backgroundColor:G,borderRadius:4}]},
+  options:baseOpts({plugins:{legend:{display:true,labels:{boxWidth:11,font:{size:10}}}}})});
+
+build('cCloud',{type:'bar',data:{labels:['AWS','Azure','Google Cloud'],
+  datasets:[{data:[28,40,63],backgroundColor:[G,'#2f6fb0',GOLDD],borderRadius:5}]},
+  options:baseOpts()});
+
+build('cPs',{type:'bar',data:{labels:['AMZN','GOOGL','META','MSFT'],
+  datasets:[{data:[3.5,7,9,12],backgroundColor:[G,GOLDD,'#243D27',MUT],borderRadius:5}]},
+  options:baseOpts()});
+
+build('cAws',{type:'line',data:{labels:['Q1 25','Q2 25','Q3 25','Q4 25','Q1 26'],
+  datasets:[{data:[17,18,20,24,28],borderColor:G,backgroundColor:'rgba(20,90,34,.14)',fill:true,tension:.35,pointBackgroundColor:GOLDD,pointRadius:4}]},
+  options:baseOpts({scales:{x:{grid:{display:false}},y:{grid:{color:gridc},min:14,max:30}}})});
+
+build('cAds',{type:'bar',data:{labels:['Q1 25','Q2 25','Q3 25','Q4 25','Q1 26'],
+  datasets:[{data:[13.9,14.7,15.3,17.3,17.2],backgroundColor:GOLD,borderRadius:5}]},
+  options:baseOpts({scales:{x:{grid:{display:false}},y:{grid:{color:gridc},min:12}}})});
+
+// modal expand
+let modalChart=null;
+document.querySelectorAll('.zoom').forEach(z=>z.addEventListener('click',()=>{
+  const id=z.getAttribute('data-c');const cfg=defs[id];if(!cfg)return;
+  document.getElementById('modalTitle').textContent=z.parentElement.childNodes[0].textContent.trim();
+  document.getElementById('modal').classList.add('open');
+  if(modalChart)modalChart.destroy();
+  modalChart=new Chart(document.getElementById('modalCanvas'),JSON.parse(JSON.stringify(cfg)));
+}));
+document.getElementById('modalX').addEventListener('click',()=>{document.getElementById('modal').classList.remove('open');if(modalChart){modalChart.destroy();modalChart=null;}});
+document.getElementById('modal').addEventListener('click',e=>{if(e.target.id==='modal'){document.getElementById('modal').classList.remove('open');if(modalChart){modalChart.destroy();modalChart=null;}}});
+</script>
+</body>
+</html>
