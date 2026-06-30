@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TeraWulf (WULF) — Institutional Investment Report</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Questrial&family=Quicksand:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  --green:#145A22; --dark-green:#0A3A14; --forest:#243D27;
+  --gold:#FCC55B; --gold-deep:#e0a838;
+  --beige:#EDE8E0; --beige-card:#f6f3ed;
+  --ink:#23241f; --muted:#5d6155;
+  --red:#a8341f; --line:#d8d1c4;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Quicksand',sans-serif;background:var(--beige);color:var(--ink);line-height:1.6;}
+h1,h2,h3,h4{font-family:'Questrial',sans-serif;font-weight:normal;}
+.mono{font-family:'JetBrains Mono',monospace;}
+.serif{font-family:'Cormorant Garamond',serif;}
+a{color:var(--green);}
+.layout{display:flex;min-height:100vh;}
+.sidebar{position:sticky;top:0;align-self:flex-start;width:262px;height:100vh;overflow-y:auto;
+  background:linear-gradient(180deg,#071f0b,#0A3A14 40%,#145A22);
+  border-right:2px solid var(--gold);color:var(--beige);padding:26px 20px;flex-shrink:0;}
+.brand{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:30px;color:var(--gold);line-height:1.1;margin-bottom:4px;}
+.brand-sub{font-family:'Questrial';font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#cdd8c8;margin-bottom:22px;}
+.ticker-box{background:rgba(255,255,255,.06);border:1px solid rgba(252,197,91,.4);border-radius:10px;padding:14px;margin-bottom:24px;}
+.ticker-box .sym{font-family:'JetBrains Mono';font-weight:700;font-size:22px;color:var(--gold);}
+.ticker-box .exch{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#bcc8b6;}
+.ticker-box .px{font-family:'JetBrains Mono';font-size:26px;margin-top:8px;color:#fff;}
+.ticker-box .chg{font-family:'JetBrains Mono';font-size:13px;color:#7fd18d;}
+.nav a{display:block;color:#dde6d8;text-decoration:none;font-size:13.5px;padding:7px 10px;border-radius:7px;margin-bottom:2px;transition:.15s;}
+.nav a:hover{background:rgba(252,197,91,.16);color:#fff;}
+.nav a .num{font-family:'JetBrains Mono';color:var(--gold);font-size:11px;margin-right:8px;}
+.nav .navlabel{font-family:'Questrial';font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#9fb09a;margin:18px 0 8px;}
+.main{flex:1;min-width:0;}
+.content{max-width:1080px;margin:0 auto;padding:0 48px 80px;}
+.hero{position:relative;overflow:hidden;background:linear-gradient(120deg,var(--dark-green),var(--green) 60%);color:var(--beige);padding:52px 48px 46px;}
+.hero::after{content:"";position:absolute;right:-120px;top:-120px;width:420px;height:420px;border-radius:50%;
+  background:radial-gradient(circle,rgba(252,197,91,.32),transparent 70%);}
+.hero .eyebrow{font-family:'Questrial';letter-spacing:4px;text-transform:uppercase;font-size:12px;color:var(--gold);margin-bottom:14px;}
+.hero h1{font-size:46px;font-family:'Cormorant Garamond';font-style:italic;font-weight:600;line-height:1.05;max-width:760px;position:relative;z-index:1;}
+.hero h1 .tick{font-family:'JetBrains Mono';font-style:normal;color:var(--gold);}
+.verdict{display:inline-flex;align-items:center;gap:14px;margin-top:22px;background:rgba(252,197,91,.14);border:1px solid var(--gold);
+  border-radius:40px;padding:10px 22px;position:relative;z-index:1;}
+.verdict .pill-label{font-family:'Questrial';letter-spacing:2px;text-transform:uppercase;font-size:13px;color:#fff;}
+.verdict .conv{font-family:'JetBrains Mono';font-weight:700;color:var(--gold);font-size:18px;}
+.hero .meta{margin-top:18px;font-size:13px;color:#cfe0c9;position:relative;z-index:1;}
+.kpi-strip{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:var(--line);border-bottom:1px solid var(--line);}
+.kpi{background:var(--beige-card);padding:16px 14px;}
+.kpi .l{font-family:'Questrial';font-size:9.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+.kpi .v{font-family:'JetBrains Mono';font-size:21px;font-weight:700;color:var(--green);}
+.kpi .s{font-size:10.5px;color:var(--muted);margin-top:3px;}
+.card{background:var(--beige-card);border-radius:14px;margin:30px 0;box-shadow:0 1px 3px rgba(0,0,0,.05);overflow:hidden;}
+.card-head{display:flex;align-items:center;gap:14px;padding:20px 26px;border-left:5px solid var(--green);cursor:pointer;}
+.badge{width:34px;height:34px;border-radius:9px;background:var(--green);color:#fff;font-family:'JetBrains Mono';font-weight:700;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:15px;}
+.card-head h2{font-family:'Cormorant Garamond';font-style:italic;font-weight:600;font-size:27px;color:var(--dark-green);flex:1;}
+.chev{color:var(--green);font-size:18px;transition:transform .25s;}
+.card.collapsed .chev{transform:rotate(-90deg);}
+.card-body{padding:4px 26px 26px;}
+.card.collapsed .card-body{display:none;}
+.card-body p{margin-bottom:13px;}
+.card-body h3{font-family:'Questrial';font-size:15px;letter-spacing:1px;text-transform:uppercase;color:var(--green);margin:22px 0 10px;}
+.thesis{font-family:'Cormorant Garamond';font-size:23px;line-height:1.4;border-left:4px solid var(--gold);padding:8px 0 8px 22px;margin:6px 0 18px;color:var(--forest);}
+.thesis b{font-weight:700;}
+.chips{display:flex;flex-wrap:wrap;gap:12px;margin:16px 0;}
+.chip{background:#fff;border:1px solid var(--line);border-radius:10px;padding:11px 15px;min-width:120px;}
+.chip .cl{font-family:'Questrial';font-size:9px;letter-spacing:1.3px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;}
+.chip .cv{font-family:'JetBrains Mono';font-size:18px;font-weight:700;color:var(--green);}
+.scen-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:16px 0;}
+.scen{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px;border-top:5px solid var(--muted);}
+.scen.bull{border-top-color:var(--green);}
+.scen.base{border-top-color:var(--gold-deep);}
+.scen.bear{border-top-color:var(--red);}
+.scen h4{font-family:'Questrial';letter-spacing:1.5px;text-transform:uppercase;font-size:13px;margin-bottom:6px;}
+.scen.bull h4{color:var(--green);} .scen.base h4{color:var(--gold-deep);} .scen.bear h4{color:var(--red);}
+.scen .pt{font-family:'JetBrains Mono';font-size:25px;font-weight:700;color:var(--ink);}
+.scen .prob{display:inline-block;font-family:'JetBrains Mono';font-size:11px;background:var(--beige);border-radius:20px;padding:3px 10px;margin:8px 0;}
+.scen ul{list-style:none;font-size:12.5px;color:var(--muted);}
+.scen li{padding:4px 0 4px 16px;position:relative;}
+.scen li::before{content:"▸";position:absolute;left:0;color:var(--gold-deep);}
+.horizon-label{font-family:'Questrial';letter-spacing:2px;text-transform:uppercase;font-size:12px;color:var(--green);margin:24px 0 4px;border-bottom:1px solid var(--line);padding-bottom:6px;}
+.risk{background:#fff;border-left:4px solid var(--red);border-radius:8px;padding:16px 18px;margin:14px 0;}
+.risk h4{font-family:'Questrial';color:var(--red);font-size:15px;letter-spacing:.5px;margin-bottom:8px;}
+.risk .meta-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+.tag{font-family:'JetBrains Mono';font-size:10.5px;background:var(--beige);border:1px solid var(--line);border-radius:16px;padding:3px 10px;color:var(--forest);}
+.timeline{position:relative;margin:18px 0 6px;padding-left:30px;}
+.timeline::before{content:"";position:absolute;left:7px;top:6px;bottom:6px;width:3px;
+  background:linear-gradient(180deg,var(--green),var(--gold));border-radius:3px;}
+.tl-item{position:relative;margin-bottom:22px;}
+.tl-item::before{content:"";position:absolute;left:-30px;top:3px;width:15px;height:15px;border-radius:50%;
+  background:var(--gold);border:3px solid var(--green);}
+.tl-date{font-family:'JetBrains Mono';font-size:12px;color:var(--gold-deep);font-weight:700;}
+.tl-title{font-weight:700;font-size:15px;color:var(--forest);}
+.tl-desc{font-size:13px;color:var(--muted);}
+.tbl-wrap{overflow-x:auto;margin:14px 0;}
+table{width:100%;border-collapse:collapse;font-size:13px;background:#fff;border-radius:10px;overflow:hidden;}
+thead th{background:var(--green);color:#fff;font-family:'Questrial';font-weight:normal;letter-spacing:.5px;padding:11px 12px;text-align:left;font-size:12px;}
+tbody td{padding:10px 12px;border-bottom:1px solid var(--line);}
+tbody tr:nth-child(even){background:#fbf9f4;}
+tbody tr:hover{background:rgba(252,197,91,.12);}
+td.num,th.num{font-family:'JetBrains Mono';text-align:right;}
+.pos{color:var(--green);font-weight:700;} .neg{color:var(--red);font-weight:700;}
+.callout{border-radius:10px;padding:14px 18px;margin:16px 0;font-size:13.5px;}
+.callout.gold{background:rgba(252,197,91,.16);border:1px solid var(--gold);}
+.callout.note{background:rgba(20,90,34,.07);border:1px solid rgba(20,90,34,.25);}
+.callout b{color:var(--dark-green);}
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0;}
+.chart-box{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px;position:relative;}
+.chart-box.solo{max-width:420px;margin:16px auto;}
+.chart-title{font-family:'Questrial';font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--green);margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;}
+.zoom-btn{font-family:'JetBrains Mono';font-size:10px;color:var(--muted);background:var(--beige);border:1px solid var(--line);border-radius:6px;padding:3px 8px;cursor:pointer;}
+.zoom-btn:hover{background:var(--gold);color:var(--dark-green);}
+.canvas-holder{height:160px;position:relative;}
+.modal{display:none;position:fixed;inset:0;background:rgba(10,30,12,.82);z-index:99;align-items:center;justify-content:center;padding:30px;}
+.modal.open{display:flex;}
+.modal-box{background:var(--beige-card);border:2px solid var(--gold);border-radius:16px;padding:24px;width:min(900px,94vw);}
+.modal-box .chart-title{font-size:15px;}
+.modal-canvas{height:60vh;}
+.modal-close{float:right;cursor:pointer;font-family:'JetBrains Mono';color:var(--red);font-weight:700;font-size:18px;}
+.glossary dt{font-family:'JetBrains Mono';font-weight:700;color:var(--dark-green);margin-top:16px;font-size:14px;}
+.glossary dd{font-size:13.5px;color:var(--ink);margin:4px 0 0;}
+.glossary dd .why{color:var(--muted);font-style:italic;}
+.backlink{font-size:11px;font-family:'JetBrains Mono';color:var(--green);text-decoration:none;}
+.gterm{border-bottom:1px dotted var(--gold-deep);text-decoration:none;color:var(--forest);font-weight:600;}
+.disclaimer{font-size:11px;color:var(--muted);border-top:1px solid var(--line);margin-top:36px;padding-top:18px;line-height:1.5;}
+@media(max-width:880px){.chart-grid{grid-template-columns:1fr;} .scen-grid{grid-template-columns:1fr;}}
+@media(max-width:780px){.sidebar{display:none;} .kpi-strip{grid-template-columns:repeat(3,1fr);}
+  .content{padding:0 20px 60px;} .hero{padding:38px 22px;} .hero h1{font-size:33px;}}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside class="sidebar">
+  <div class="brand">Fundamentals<br>Trump Analysis</div>
+  <div class="brand-sub">Independent Equity Research</div>
+  <div class="ticker-box">
+    <div class="sym">WULF</div>
+    <div class="exch">NASDAQ · AI Infra</div>
+    <div class="px">$25.35</div>
+    <div class="chg">+187% LTM · Jun 30</div>
+  </div>
+  <nav class="nav">
+    <div class="navlabel">Report Sections</div>
+    <a href="#s1"><span class="num">01</span>Executive Summary</a>
+    <a href="#s2"><span class="num">02</span>Micro &amp; Valuation</a>
+    <a href="#s3"><span class="num">03</span>Moat &amp; Management</a>
+    <a href="#s4"><span class="num">04</span>Financial Deep Dive</a>
+    <a href="#s5"><span class="num">05</span>Earnings Tracker</a>
+    <a href="#s6"><span class="num">06</span>Bull / Base / Bear</a>
+    <a href="#s7"><span class="num">07</span>Risks &amp; Anti-Thesis</a>
+    <a href="#s8"><span class="num">08</span>Catalyst Timeline</a>
+    <a href="#s9"><span class="num">09</span>Comparable Cos.</a>
+    <a href="#s10"><span class="num">10</span>First-Principles KPIs</a>
+    <a href="#s11"><span class="num">11</span>Glossary &amp; Method</a>
+  </nav>
+</aside>
+
+<div class="main">
+<header class="hero">
+  <div class="eyebrow">Monday Deep-Dive · June 30, 2026</div>
+  <h1>TeraWulf <span class="tick">(WULF)</span> — a Bitcoin miner becoming a Google-backstopped landlord of AI power</h1>
+  <div class="verdict">
+    <span class="pill-label">Verdict: Speculative Buy — Asymmetric Infrastructure Bet</span>
+    <span class="conv">Conviction 6 / 10</span>
+  </div>
+  <div class="meta">AI Data-Center Infrastructure · Last price $25.35 · Mkt cap ~$12.7B · Contracted backlog ~$12.8B · Next earnings ~late Jul 2026</div>
+</header>
+
+<section class="kpi-strip">
+  <div class="kpi"><div class="l">Last Price</div><div class="v">$25.35</div><div class="s">+187% LTM</div></div>
+  <div class="kpi"><div class="l">Market Cap</div><div class="v">~$12.7B</div><div class="s">~500M shares</div></div>
+  <div class="kpi"><div class="l">Contracted Rev</div><div class="v">$12.8B</div><div class="s">522 critical MW</div></div>
+  <div class="kpi"><div class="l">Q1'26 HPC Rev</div><div class="v">$21M</div><div class="s">+117% QoQ</div></div>
+  <div class="kpi"><div class="l">Cash</div><div class="v">~$3.1B</div><div class="s">+ $250M revolver</div></div>
+  <div class="kpi"><div class="l">Street High PT</div><div class="v">$35</div><div class="s">B. Riley (Buy)</div></div>
+</section>
+
+<div class="content">
+
+<!-- 1 -->
+<section class="card" id="s1">
+  <div class="card-head"><div class="badge">1</div><h2>Executive Summary &amp; Investment Thesis</h2><span class="chev">▾</span></div>
+  <div class="card-body">
+    <div class="thesis">TeraWulf is no longer a Bitcoin miner — it is becoming a <b>"power landlord of AI,"</b> converting cheap, low-carbon power and shovel-ready land into long-dated, contracted AI data-center leases. In Q1 2026, for the <b>first time ever, HPC lease revenue ($21M) overtook Bitcoin mining</b>. With <b>~$12.8B of contracted revenue across 522 critical-IT megawatts</b> — and Google backstopping ~$3.2B+ of the lease obligations in exchange for a ~14% equity stake — the market is mid-way through re-rating WULF from a volatile mining multiple to a digital-infrastructure multiple. The asymmetry is real, and so is the single-counterparty risk.</div>
+
+    <p>The bull case is not subtle: a sub-$13B-cap company holds a contracted revenue backlog roughly equal to its entire market value, anchored by one of the most creditworthy backstops on earth. If WULF executes its year-end 2026 buildout, today's ~$130M revenue run-rate is a rounding error against the contracted ramp. The catch — and it is a serious one — is that <b>Fluidstack represents ~91% of contracted revenue</b>, the company is still deeply loss-making on a GAAP basis, and the equity trades at a nosebleed <a class="gterm" href="#g-evebitda">~53x forward EV/EBITDA</a>. This is a high-variance, binary-flavored bet best sized as such.</p>
+
+    <div class="chips">
+      <div class="chip"><div class="cl">Sector</div><div class="cv">AI Infra</div></div>
+      <div class="chip"><div class="cl">Mkt Cap</div><div class="cv">~$12.7B</div></div>
+      <div class="chip"><div class="cl">Contracted</div><div class="cv">$12.8B</div></div>
+      <div class="chip"><div class="cl">Critical MW</div><div class="cv">522</div></div>
+      <div class="chip"><div class="cl">Google stake</div><div class="cv">~14%</div></div>
+      <div class="chip"><div class="cl">Analyst</div><div class="cv">Strong Buy</div></div>
+      <div class="chip"><div class="cl">Avg PT</div><div class="cv">~$31</div></div>
+      <div class="chip"><div class="cl">Conviction</div><div class="cv">6 / 10</div></div>
+    </div>
+
+    <div class="callout gold"><b>Why a 6, not a 9:</b> the contracted backlog + Google validation make the upside genuinely asymmetric, but execution risk (delivering 500+ MW on schedule), counterparty concentration (Fluidstack ~91%), warrant dilution, and a still-unproven path to GAAP profitability cap conviction. Own it small, as the high-beta option on the AI-power build-out it is.</div>
+  </div>
+</section>
+
+<!-- 2 -->
+<section class="card" id="s2">
+  <div class="card-head"><div class="badge">2</div><h2>Microeconomic &amp; Valuation Analysis</h2><span class="chev">▾</span></div>
+  <div class="card-body">
+    <h3>Industry &amp; TAM</h3>
+    <p>WULF sits at the intersection of two scarcities: <b>power</b> and <b>shovel-ready data-center capacity</b>. AI compute demand is bottlenecked not by chips alone but by gigawatts of interconnected, cooled, powered shell — the "<a class="gterm" href="#g-neocloud">neocloud</a>" build-out. Bernstein, initiating coverage of the miners-turned-landlords, framed the group as "the power landlords of AI" and modeled <b>~9x AI revenue growth by 2030</b>. The relevant TAM is the multi-hundred-billion-dollar annual AI data-center capex cycle, where the binding constraint is exactly what WULF owns: large, permitted, low-carbon power sites at Lake Mariner (NY) and Abernathy (TX).</p>
+
+    <div class="chart-grid">
+      <div class="chart-box">
+        <div class="chart-title">AI Data-Center Capacity Pipeline (MW) <button class="zoom-btn" data-c="tamChart">⤢ expand</button></div>
+        <div class="canvas-holder"><canvas id="tamChart"></canvas></div>
+      </div>
+      <div class="chart-box">
+        <div class="chart-title">Market Cap vs Miner-to-AI Peers ($B) <button class="zoom-btn" data-c="mcapChart">⤢ expand</button></div>
+        <div class="canvas-holder"><canvas id="mcapChart"></canvas></div>
+      </div>
+    </div>
+
+    <h3>Valuation</h3>
+    <p>On trailing fundamentals WULF looks absurd — it trades at a huge multiple of today's tiny revenue and is GAAP-unprofitable. The only valuation frame that makes sense is <i>forward, contracted</i>: against the ramping HPC lease stream, the stock trades around <b>~53x NTM EV/EBITDA</b>, roughly in line with Hut 8 (~52x) and at a premium to Core Scientific (~24x). On a <a class="gterm" href="#g-ps">price-to-sales</a> basis versus current revenue the number is so high it lands in "Euphoric" territory — which only underscores that this is a bet on contracted backlog converting to cash, not on present financials.</p>
+
+    <div class="chips">
+      <div class="chip"><div class="cl">EV/EBITDA NTM</div><div class="cv">~53x</div></div>
+      <div class="chip"><div class="cl">P/S (current)</div><div class="cv">Euphoric</div></div>
+      <div class="chip"><div class="cl">Backlog / Mkt Cap</div><div class="cv">~1.0x</div></div>
+      <div class="chip"><div class="cl">Cash</div><div class="cv">~$3.1B</div></div>
+    </div>
+
+    <div class="callout note"><b>Ownership &amp; flows:</b> Google holds warrants for ~73.5M shares (~14% pro-forma) — a strategic, non-financial holder whose presence is itself a valuation signal. Institutional ownership has climbed as the AI-infrastructure narrative attracts crossover funds. Heavy retail interest keeps realized volatility very high (this trades like an option). Warrant and ATM-equity issuance are an ongoing dilution watch-item.</p></div>
+
+    <p>Sell-side is firmly constructive: consensus "Strong Buy," average target ~$31, with B. Riley at $35, BofA initiating Buy at $34, and Jefferies at $32 — most targets sit above the current price even after the +187% LTM run.</p>
+  </div>
+</section>
+
+<!-- 3 -->
+<section class="card" id="s3">
+  <div class="card-head"><div class="badge">3</div><h2>Qualitative Analysis — Moat, Management &amp; Culture</h2><span class="chev">▾</span></div>
+  <div class="card-body">
+    <h3>The Moat — a "power + permits + counterparty" moat, not a tech moat</h3>
+    <p>WULF has no proprietary technology moat; its edge is <i>positional</i>. The scarce, defensible assets are (1) large interconnected power capacity at Lake Mariner, predominantly low-carbon (nuclear/hydro-adjacent) grid power — a genuine ESG and cost advantage; (2) permitted, buildable land that takes years and political capital for rivals to replicate; and (3) a creditworthy anchor in Google's backstop, which lowers WULF's cost of project debt below what an unbacked miner could ever achieve. The moat is therefore a flywheel of <i>financing advantage</i>: Google's backstop → cheaper debt → faster buildout → more contracted MW → more backstop. It is real but rests on relationships and contracts rather than switching costs.</p>
+
+    <h3>Management &amp; capital allocation</h3>
+    <p>WULF is <b>founder-led</b> by Chairman &amp; CEO Paul Prager, an energy-infrastructure veteran whose power-development background is the company's DNA — appropriate for a business whose core asset is power, not silicon. Capital allocation has pivoted decisively: away from bitcoin balance-sheet accumulation and toward non-dilutive, project-level financing of contracted data centers, plus the sale of non-core assets (e.g., the Nautilus mining stake). The strategic clarity is a positive; the execution bar is now enormous.</p>
+
+    <h3>Culture &amp; organizational traits</h3>
+    <p>Culturally WULF behaves like an energy developer that learned to mine bitcoin, not a tech firm that bought power. That orientation — patient site development, low-carbon emphasis, deal-structuring sophistication — is well suited to the AI-power moment. The organizational watch-item is the leap from operating ~60 MW of HPC today to delivering 500+ MW of contracted capacity on tight timelines: that is a construction- and operations-execution muscle the company is still building, with heavy reliance on partners.</p>
+
+    <div class="callout gold"><b>Moat verdict:</b> Durable on power/land/financing; thin on technology and dangerously thin on counterparty diversification. The moat is the megawatts and the Google relationship — not anything that can't be competed away if power becomes abundant.</div>
+  </div>
+</section>
+
+<!-- 4 -->
+<section class="card" id="s4">
+  <div class="card-head"><div class="badge">4</div><h2>Quantitative Analysis — Financial Deep Dive</h2><span class="chev">▾</span></div>
+  <div class="card-body">
+    <p>The income statement is a company mid-transformation. Q3 2025 revenue was $50.6M (+87% YoY) — still mining-heavy. By Q1 2026, total revenue was <b>$34.0M</b> but the <i>mix</i> inverted: <b>HPC lease revenue of $21.0M (+117% QoQ)</b> overtook Bitcoin mining (~$13M) for the first time. The sequential <i>total</i>-revenue dip reflects bitcoin-mining wind-down and capacity being repurposed for higher-quality, contracted HPC — a deliberate quality-over-quantity shift.</p>
+
+    <div class="chart-grid">
+      <div class="chart-box">
+        <div class="chart-title">Quarterly Revenue ($M) <button class="zoom-btn" data-c="revChart">⤢ expand</button></div>
+        <div class="canvas-holder"><canvas id="revChart"></canvas></div>
+      </div>
+      <div class="chart-box">
+        <div class="chart-title">Q1'26 Revenue Mix — HPC vs Mining <button class="zoom-btn" data-c="segChart">⤢ expand</button></div>
+        <div class="canvas-holder"><canvas id="segChart"></canvas></div>
+      </div>
+    </div>
+
+    <h3>Revenue streams, explained simply</h3>
+    <p>Two streams, transitioning. <b>HPC / AI hosting</b> — long-term (10-year) leases where WULF provides powered, cooled data-center capacity to Fluidstack (whose obligations Google backstops). This is recurring, contracted, infrastructure-like revenue: the future. <b>Bitcoin mining</b> — converting power into BTC; volatile, commoditized, and being deliberately de-emphasized: the past. The whole thesis is the migration from the second bucket to the first.</p>
+
+    <div class="chips">
+      <div class="chip"><div class="cl">Q1'26 Rev</div><div class="cv">$34.0M</div></div>
+      <div class="chip"><div class="cl">HPC Rev</div><div class="cv">$21.0M</div></div>
+      <div class="chip"><div class="cl">Mining Rev</div><div class="cv">~$13M</div></div>
+      <div class="chip"><div class="cl">Op. HPC MW</div><div class="cv">60 MW</div></div>
+      <div class="chip"><div class="cl">Cash</div><div class="cv">~$3.1B</div></div>
+      <div class="chip"><div class="cl">FY25 Net</div><div class="cv">Loss</div></div>
+    </div>
+
+    <h3>Cash, balance sheet &amp; the burn</h3>
+    <p>WULF ended Q1 2026 with ~<b>$3.1B of cash and restricted cash</b> and closed a $250M revolving credit facility — an unusually strong liquidity position for a company this size, reflecting capital raised to fund the buildout. The flip side: <a class="gterm" href="#g-fcf">free cash flow</a> is deeply negative as the company pours capital into construction, and the trailing GAAP result is a sizeable net loss (TTM net loss ~$0.56B through late 2025, inflated by non-cash items). This is a <i>build-now, earn-later</i> profile: cash is being consumed to create the contracted earning assets that the bull case monetizes from 2027 onward.</p>
+
+    <div class="chart-grid">
+      <div class="chart-box">
+        <div class="chart-title">HPC Lease Revenue Ramp ($M) <button class="zoom-btn" data-c="hpcChart">⤢ expand</button></div>
+        <div class="canvas-holder"><canvas id="hpcChart"></canvas></div>
+      </div>
+      <div class="chart-box">
+        <div class="chart-title">Operational vs Contracted Critical MW <button class="zoom-btn" data-c="mwChart">⤢ expand</button></div>
+        <div class="canvas-holder"><canvas id="mwChart"></canvas></div>
+      </div>
+    </div>
+
+    <div class="callout note"><b>Flywheel:</b> low-carbon power + land → Google-backstopped lease → cheap project debt → built capacity → contracted lease revenue → balance-sheet strength → next site. The fuel is the global shortage of powered AI capacity; the brake is execution speed and the single-tenant concentration.</div>
+  </div>
+</section>
+
+<!-- 5 -->
+<section class="card" id="s5">
+  <div class="card-head"><div class="badge">5</div><h2>Earnings Tracker — Management Credibility</h2><span class="chev">▾</span></div>
+  <div class="card-body">
+    <p>WULF's credibility is best judged on <i>milestones delivered</i> rather than EPS beats (it is pre-profit). The record on signing and energizing capacity is strong; GAAP EPS has repeatedly missed as build costs and non-cash charges run ahead of revenue.</p>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>Quarter</th><th>Promise / Guidance</th><th>Actual Result</th><th class="num">Credibility</th></tr></thead>
+      <tbody>
+        <tr><td>Q1 2026</td><td>HPC to scale; Core42 ramp</td><td class="pos">HPC $21M (+117% QoQ), overtook mining; 60 MW live. EPS missed.</td><td class="num">7 / 10</td></tr>
+        <tr><td>Q4 2025</td><td>Energize first HPC capacity</td><td class="pos">HPC lease revenue began ($9.7M); contracted 522 MW / $12.8B</td><td class="num">8 / 10</td></tr>
+        <tr><td>Q3 2025</td><td>Mining growth + HPC start</td><td class="pos">Rev $50.6M (+87% YoY); loss wider than expected</td><td class="num">6 / 10</td></tr>
+        <tr><td>Aug 2025</td><td>Land an anchor AI tenant</td><td class="pos">Signed 200+ MW Fluidstack; Google backstop $1.8B, ~8% stake</td><td class="num">9 / 10</td></tr>
+        <tr><td>Aug–Oct 2025</td><td>Expand the platform</td><td class="pos">CB-5 +160 MW &amp; Abernathy +168 MW JV; Google stake → ~14%</td><td class="num">9 / 10</td></tr>
+        <tr><td>2024</td><td>Sharpen focus</td><td>Exited/sold non-core Nautilus mining stake</td><td class="num">7 / 10</td></tr>
+      </tbody>
+    </table></div>
+    <div class="callout gold"><b>Credibility read:</b> Elite at <i>deal-making and financing</i> (9/10s), mediocre at <i>hitting the P&amp;L line</i> (recurring EPS misses). For a build-out story that is the acceptable trade — but it means the stock lives and dies on whether energized-MW milestones land on time.</div>
+  </div>
+</section>
+
+<!-- 6 -->
+<section class="card" id="s6">
+  <div class="card-head"><div class="badge">6</div><h2>Bull / Base / Bear Scenarios</h2><span class="chev">▾</span></div>
+  <div class="card-body">
+    <p>Probability-weighted targets. The distribution is unusually wide — this is a binary-leaning execution story, so tails are fat in both directions.</p>
+
+    <div class="horizon-label">1-Year Horizon (mid-2027)</div>
+    <div class="scen-grid">
+      <div class="scen bull"><h4>Bull</h4><div class="pt">$42</div><span class="prob">30% prob</span>
+        <ul><li>200+ MW &amp; CB-5 energize on schedule</li><li>Second anchor tenant diversifies Fluidstack risk</li><li>Re-rates toward data-center-REIT multiple</li></ul></div>
+      <div class="scen base"><h4>Base</h4><div class="pt">$30</div><span class="prob">45% prob</span>
+        <ul><li>Buildout mostly on time; HPC revenue compounds</li><li>Concentration risk persists, capping the multiple</li><li>Tracks consensus ~$31 target</li></ul></div>
+      <div class="scen bear"><h4>Bear</h4><div class="pt">$12</div><span class="prob">25% prob</span>
+        <ul><li>Construction delay or financing hiccup</li><li>AI-capacity sentiment cools; high-beta unwind</li><li>Dilution overhang weighs</li></ul></div>
+    </div>
+    <p class="mono" style="font-size:12px;color:var(--muted);">Prob-weighted 1-yr ≈ <b>$29</b></p>
+
+    <div class="horizon-label">3-Year Horizon (2029)</div>
+    <div class="scen-grid">
+      <div class="scen bull"><h4>Bull</h4><div class="pt">$75</div><span class="prob">30% prob</span>
+        <ul><li>Full 522 MW contracted base earning; EBITDA inflects hard</li><li>New sites + tenants extend the backlog</li></ul></div>
+      <div class="scen base"><h4>Base</h4><div class="pt">$45</div><span class="prob">45% prob</span>
+        <ul><li>Contracted leases cash-flowing; GAAP profitability reached</li><li>Multiple normalizes to infrastructure-growth level</li></ul></div>
+      <div class="scen bear"><h4>Bear</h4><div class="pt">$10</div><span class="prob">25% prob</span>
+        <ul><li>Fluidstack stress or AI-capex air-pocket</li><li>Backlog converts slower / at lower margin than hoped</li></ul></div>
+    </div>
+    <p class="mono" style="font-size:12px;color:var(--muted);">Prob-weighted 3-yr ≈ <b>$44</b></p>
+
+    <div class="horizon-label">5-Year Horizon (2031)</div>
+    <div class="scen-grid">
+      <div class="scen bull"><h4>Bull</h4><div class="pt">$110</div><span class="prob">30% prob</span>
+        <ul><li>Bernstein's ~9x AI-revenue path materializes</li><li>WULF a recognized AI-power platform, GW-scale</li></ul></div>
+      <div class="scen base"><h4>Base</h4><div class="pt">$60</div><span class="prob">45% prob</span>
+        <ul><li>Durable, contracted cash flows; steady de-risking</li><li>Quality digital-infra compounder</li></ul></div>
+      <div class="scen bear"><h4>Bear</h4><div class="pt">$8</div><span class="prob">25% prob</span>
+        <ul><li>AI overbuild; power no longer scarce; lease renewals at risk</li><li>Reverts toward distressed-miner valuation</li></ul></div>
+    </div>
+    <p class="mono" style="font-size:12px;color:var(--muted);">Prob-weighted 5-yr ≈ <b>$58</b></p>
+
+    <div class="chart-box solo">
+      <div class="chart-title">Scenario Price Targets by Horizon <button class="zoom-btn" data-c="scenChart">⤢ expand</button></div>
+      <div class="canvas-holder"><canvas id="scenChart"></canvas></div>
+    </div>
+  </div>
+</section>
+
+<!-- 7 -->
+<section class="card" id="s7">
+  <div class="card-head"><div class="badge">7</div><h2>Risks &amp; Anti-Thesis — Steelmanning the Bear</h2><span class="chev">▾</span></div>
+  <div class="card-body">
+    <p>If I were short WULF, the case writes itself — and Bernstein, a bull, flags the first risk explicitly.</p>
+
+    <div class="risk"><h4>1. Catastrophic counterparty concentration (Fluidstack ~91%)</h4>
+      <p>Roughly 91% of contracted revenue rests on a single tenant, Fluidstack — a relatively young AI-cloud company. Google backstops the <i>lease obligations</i>, not WULF's equity, and a Fluidstack failure or renegotiation would be deeply disruptive even if the backstop limits credit loss. One customer is the whole story.</p>
+      <div class="meta-tags"><span class="tag">Prob: Medium</span><span class="tag">Impact: Severe</span><span class="tag">Priced in: Partially</span></div></div>
+
+    <div class="risk"><h4>2. Execution &amp; construction risk</h4>
+      <p>Going from ~60 MW live to 500+ MW on tight 2026 timelines is an enormous build. Power-interconnect delays, equipment lead times, and cost overruns are the norm, not the exception, in data-center construction. Any slip pushes revenue right and pressures the multiple.</p>
+      <div class="meta-tags"><span class="tag">Prob: High</span><span class="tag">Impact: High</span><span class="tag">Priced in: No</span></div></div>
+
+    <div class="risk"><h4>3. Valuation prices the backlog as if it's already cash</h4>
+      <p>At ~53x forward EV/EBITDA and a market cap roughly equal to <i>undelivered</i> contracted revenue, the equity discounts near-flawless conversion. GAAP losses persist. Any wobble in the AI-capex narrative could compress this richly-valued, high-beta name violently.</p>
+      <div class="meta-tags"><span class="tag">Prob: Medium</span><span class="tag">Impact: Severe</span><span class="tag">Priced in: No</span></div></div>
+
+    <div class="risk"><h4>4. Dilution &amp; financing dependence</h4>
+      <p>The buildout is capital-hungry. Between Google's ~73.5M warrant shares, potential ATM equity, and project debt, the share count and leverage can keep climbing. Per-share value depends on financing the ramp without excessive dilution — not guaranteed.</p>
+      <div class="meta-tags"><span class="tag">Prob: Medium</span><span class="tag">Impact: Medium</span><span class="tag">Priced in: Partially</span></div></div>
+
+    <div class="risk"><h4>5. AI-power glut / commoditization</h4>
+      <p>The entire thesis rests on power scarcity. If the wave of announced data-center capacity (hyperscalers, neoclouds, sovereigns) actually gets built, powered shell could shift from scarce to abundant, compressing lease economics and renewal pricing across the group.</p>
+      <div class="meta-tags"><span class="tag">Prob: Medium</span><span class="tag">Impact: High</span><span class="tag">Priced in: No</span></div></div>
+
+    <div class="callout note"><b>Anti-thesis synthesis:</b> WULF is a leveraged, single-tenant, pre-profit construction story dressed as an infrastructure compounder. The Google backstop is real risk mitigation, but it does not eliminate execution, concentration, or valuation risk. Position sizing — not conviction in the narrative — is what protects you here.</div>
+  </div>
+</section>
+
+<!-- 8 -->
+<section class="card" id="s8">
+  <div class="card-head"><div class="badge">8</div><h2>Catalyst Timeline</h2><span class="chev">▾</span></div>
+  <div class="card-body">
+    <div class="timeline">
+      <div class="tl-item"><div class="tl-date">~Late Jul 2026</div><div class="tl-title">Q2 2026 Earnings</div><div class="tl-desc">Watch HPC revenue growth, energized-MW progress, and any new tenant. The key test of the buildout cadence.</div></div>
+      <div class="tl-item"><div class="tl-date">H1 2026</div><div class="tl-title">Phase 1 (~40 MW) Fluidstack online</div><div class="tl-desc">First tranche of the 200+ MW Lake Mariner lease energizing — proof of delivery.</div></div>
+      <div class="tl-item"><div class="tl-date">H2 2026</div><div class="tl-title">CB-5 (160 MW) commences</div><div class="tl-desc">New purpose-built building; Google-backstopped. Major step-up in contracted, live capacity.</div></div>
+      <div class="tl-item"><div class="tl-date">H2 2026</div><div class="tl-title">Abernathy, TX (168 MW JV) delivery</div><div class="tl-desc">Second campus serving a global hyperscale AI platform — geographic and (potentially) tenant diversification.</div></div>
+      <div class="tl-item"><div class="tl-date">YE 2026</div><div class="tl-title">Full 200+ MW Lake Mariner deployed</div><div class="tl-desc">Completion of the anchor lease — the inflection toward meaningful contracted lease revenue.</div></div>
+      <div class="tl-item"><div class="tl-date">Ongoing</div><div class="tl-title">New tenant / backlog announcements</div><div class="tl-desc">Any non-Fluidstack anchor would directly attack the #1 risk and likely drive a re-rating.</div></div>
+      <div class="tl-item"><div class="tl-date">Macro overhang</div><div class="tl-title">AI-capex sentiment &amp; rates</div><div class="tl-desc">As a high-beta, capital-intensive name, WULF is highly sensitive to any cooling of AI build sentiment or higher financing costs.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 9 -->
+<section class="card" id="s9">
+  <div class="card-head"><div class="badge">9</div><h2>Comparable Company Analysis</h2><span class="chev">▾</span></div>
+  <div class="card-body">
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>Company</th><th class="num">Mkt Cap</th><th class="num">Model</th><th class="num">EV/EBITDA (NTM)</th><th class="num">AI Pivot Quality</th><th class="num">Anchor</th></tr></thead>
+      <tbody>
+        <tr><td><b>TeraWulf (WULF)</b></td><td class="num">~$12.7B</td><td class="num">Colocation lease</td><td class="num">~53x</td><td class="num pos">High</td><td class="num">Fluidstack / Google</td></tr>
+        <tr><td>Hut 8 (HUT)</td><td class="num">~$10B+</td><td class="num">Colo + power</td><td class="num">~53x</td><td class="num pos">High</td><td class="num">Multiple</td></tr>
+        <tr><td>Core Scientific (CORZ)</td><td class="num">~$5B+</td><td class="num">Colocation (CoreWeave)</td><td class="num">~24x</td><td class="num">Med-High</td><td class="num">CoreWeave</td></tr>
+        <tr><td>IREN (IREN)</td><td class="num">~$15B+</td><td class="num">Own AI cloud + mining</td><td class="num">var.</td><td class="num pos">High</td><td class="num">Own cloud</td></tr>
+        <tr><td>Cipher Mining (CIFR)</td><td class="num">~$4B+</td><td class="num">Colo + mining</td><td class="num">var.</td><td class="num">Med</td><td class="num">AI tenants</td></tr>
+      </tbody>
+    </table></div>
+
+    <div class="chart-grid">
+      <div class="chart-box">
+        <div class="chart-title">Peer NTM EV/EBITDA <button class="zoom-btn" data-c="evChart">⤢ expand</button></div>
+        <div class="canvas-holder"><canvas id="evChart"></canvas></div>
+      </div>
+      <div class="chart-box">
+        <div class="chart-title">Peer Market Cap ($B) <button class="zoom-btn" data-c="peerMcapChart">⤢ expand</button></div>
+        <div class="canvas-holder"><canvas id="peerMcapChart"></canvas></div>
+      </div>
+    </div>
+
+    <p><b>Relative read:</b> WULF and Hut 8 are the "highest-quality pivots" — pairing large-scale power with investment-grade counterparty backstops and non-dilutive financing — and trade at the top of the group (~53x) for it. Core Scientific, anchored to CoreWeave, trades cheaper (~24x) partly on its own concentration profile. IREN takes the riskier but higher-margin path of running its <i>own</i> AI cloud rather than leasing shells. WULF's premium is justified <i>only</i> by the Google backstop and contracted backlog; strip those away and it would trade with the pack. The cleanest pairs hedge for a WULF long is short Hut 8 (similar multiple, more diversified) or a basket of the group.</p>
+  </div>
+</section>
+
+<!-- 10 -->
+<section class="card" id="s10">
+  <div class="card-head"><div class="badge">10</div><h2>First-Principles KPIs</h2><span class="chev">▾</span></div>
+  <div class="card-body">
+    <p>Forget GAAP EPS for now. Four leading indicators tell you whether this transformation is on track before the income statement catches up:</p>
+    <ol style="margin:0 0 14px 18px;font-size:14px;">
+      <li style="margin-bottom:8px;"><b>Energized critical-IT MW</b> — the single truest gauge of execution. Contracted MW only matter once they're <i>live</i> and billing (60 MW today → 522 MW contracted).</li>
+      <li style="margin-bottom:8px;"><b>HPC lease revenue &amp; its share of total</b> — proof the mining-to-infrastructure pivot is converting to recurring cash ($9.7M → $21M in one quarter; HPC now > mining).</li>
+      <li style="margin-bottom:8px;"><b>Tenant concentration</b> — Fluidstack's % of contracted revenue. Falling = de-risking; the most important number for the multiple.</li>
+      <li style="margin-bottom:8px;"><b>Cost of capital / financing terms</b> — the Google-backstop flywheel only works if each tranche of project debt prices attractively.</li>
+    </ol>
+
+    <div class="chart-grid">
+      <div class="chart-box">
+        <div class="chart-title">KPI 1 — Energized HPC Capacity (MW) <button class="zoom-btn" data-c="kpiMwChart">⤢ expand</button></div>
+        <div class="canvas-holder"><canvas id="kpiMwChart"></canvas></div>
+      </div>
+      <div class="chart-box">
+        <div class="chart-title">KPI 2 — HPC % of Total Revenue <button class="zoom-btn" data-c="kpiMixChart">⤢ expand</button></div>
+        <div class="canvas-holder"><canvas id="kpiMixChart"></canvas></div>
+      </div>
+    </div>
+    <div class="chart-box solo">
+      <div class="chart-title">KPI 3 — Contracted Revenue Backlog ($B) <button class="zoom-btn" data-c="kpiBacklogChart">⤢ expand</button></div>
+      <div class="canvas-holder"><canvas id="kpiBacklogChart"></canvas></div>
+    </div>
+  </div>
+</section>
+
+<!-- 11 -->
+<section class="card" id="s11">
+  <div class="card-head"><div class="badge">11</div><h2>Glossary &amp; Methodology</h2><span class="chev">▾</span></div>
+  <div class="card-body">
+    <dl class="glossary">
+      <dt id="g-neocloud">Neocloud</dt>
+      <dd>A new class of specialized AI cloud/data-center providers (e.g., CoreWeave, Fluidstack) built specifically for GPU compute, distinct from the big-three hyperscalers. <span class="why">Why it matters: WULF leases capacity to neoclouds; their demand and creditworthiness drive WULF's revenue.</span> <a class="backlink" href="#s2">↩ back</a></dd>
+
+      <dt id="g-evebitda">EV/EBITDA</dt>
+      <dd>Enterprise value (market cap + debt − cash) ÷ EBITDA. NTM = next-twelve-months forward estimate. WULF ≈ 53x NTM. <span class="why">Why it matters: the only sensible multiple for a pre-profit, capital-intensive infrastructure name; it captures debt and forward cash earnings, not trailing losses.</span> <a class="backlink" href="#s2">↩ back</a></dd>
+
+      <dt id="g-ps">P/S — Price-to-Sales</dt>
+      <dd>Market cap ÷ revenue. Against WULF's tiny <i>current</i> revenue this is astronomically high ("Euphoric" on the house scale, &gt;30). <span class="why">Why it matters: it shows why current financials can't justify the price — the bet is on contracted future revenue, not today's sales.</span> <a class="backlink" href="#s2">↩ back</a></dd>
+
+      <dt id="g-fcf">FCF — Free Cash Flow</dt>
+      <dd>Operating cash flow minus capital expenditures; currently deeply negative as WULF builds. <span class="why">Why it matters: a build-now/earn-later profile means FCF turns positive only after contracted capacity is energized — the central timing risk of the thesis.</span> <a class="backlink" href="#s4">↩ back</a></dd>
+
+      <dt>Critical-IT MW</dt>
+      <dd>Megawatts of power actually delivered to computing equipment (net of cooling/overhead), the standard data-center capacity unit. WULF: 522 MW contracted, ~60 MW live. <span class="why">Why it matters: it's the real measure of how much revenue-generating capacity exists vs is merely promised.</span></dd>
+
+      <dt>Backstop</dt>
+      <dd>A guarantee by a creditworthy party (here, Google) of another company's (Fluidstack's) lease obligations, supporting WULF's project debt. <span class="why">Why it matters: it lowers WULF's cost of capital and de-risks the contracted revenue — the linchpin of the bull case.</span></dd>
+    </dl>
+
+    <h3>Methodology</h3>
+    <p style="font-size:13px;">Figures sourced from TeraWulf's primary filings (8-K earnings releases, investor presentations, press releases on the Fluidstack/Google agreements) and corroborated against secondary aggregators (StockAnalysis.com, Yahoo Finance, MarketBeat, company IR, and analyst notes from BofA, Jefferies, B. Riley, and Bernstein) as of June 30, 2026. Some line items (full-year 2025 totals, exact share count) are approximate pending the audited 10-K. Scenario targets are the analyst's own probability-weighted estimates, not consensus. P/S verdict scale per house methodology: &gt;30 Euphoric, &gt;18 Excited, &gt;8 Optimistic, 4–8 Aware, &lt;4 Cautious, &lt;2 Pessimistic.</p>
+
+    <div class="disclaimer">
+      <b>Disclaimer:</b> This document is independent investment research prepared for informational and educational purposes only. It is not investment advice and not a recommendation to buy or sell any security. The author is not a registered investment adviser or broker-dealer. WULF is an especially high-volatility, high-risk security where you could lose your entire investment. Forward-looking statements and price targets are estimates subject to substantial uncertainty; actual results may differ materially. Always do your own research and consult a licensed financial professional before investing. Data believed accurate as of June 30, 2026 but not guaranteed.
+    </div>
+  </div>
+</section>
+
+</div><!-- /content -->
+</div><!-- /main -->
+</div><!-- /layout -->
+
+<div class="modal" id="modal">
+  <div class="modal-box">
+    <span class="modal-close" id="modalClose">✕ close</span>
+    <div class="chart-title" id="modalTitle">Chart</div>
+    <div class="modal-canvas"><canvas id="modalCanvas"></canvas></div>
+  </div>
+</div>
+
+<script>
+document.querySelectorAll('.card-head').forEach(h=>{
+  h.addEventListener('click',()=>h.parentElement.classList.toggle('collapsed'));
+});
+Chart.defaults.font.family="'JetBrains Mono', monospace";
+Chart.defaults.font.size=10;
+Chart.defaults.color="#5d6155";
+const GREEN="#145A22", GOLD="#FCC55B", FOREST="#243D27", RED="#a8341f", MUTED="#9aa08f";
+const grid={grid:{color:"rgba(0,0,0,.06)"}};
+const charts={};
+function mk(id,cfg){const el=document.getElementById(id);if(!el)return;charts[id]={cfg:cfg,inst:new Chart(el,JSON.parse(JSON.stringify(cfg)))};}
+
+mk('tamChart',{type:'bar',data:{labels:['Live 2026','Contracted','2027E','2028E'],
+  datasets:[{label:'Critical MW',data:[60,522,650,900],backgroundColor:[GREEN,GOLD,MUTED,MUTED]}]},
+  options:{plugins:{legend:{display:false}},scales:{y:{...grid,beginAtZero:true},x:grid}}});
+mk('mcapChart',{type:'bar',data:{labels:['IREN','WULF','Hut 8','CORZ','Cipher'],
+  datasets:[{label:'Mkt Cap ($B)',data:[15,12.7,10,5,4],backgroundColor:[MUTED,GREEN,MUTED,FOREST,RED]}]},
+  options:{indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{...grid,beginAtZero:true},y:grid}}});
+
+mk('revChart',{type:'bar',data:{labels:['Q2 25','Q3 25','Q4 25','Q1 26'],
+  datasets:[{label:'Total Rev ($M)',data:[47,50.6,30,34],backgroundColor:[MUTED,MUTED,'#1f7a30',GREEN]}]},
+  options:{plugins:{legend:{display:false}},scales:{y:{...grid,beginAtZero:true},x:grid}}});
+mk('segChart',{type:'doughnut',data:{labels:['HPC Lease','Bitcoin Mining'],
+  datasets:[{data:[21,13],backgroundColor:[GREEN,GOLD]}]},
+  options:{plugins:{legend:{position:'bottom'}}}});
+mk('hpcChart',{type:'line',data:{labels:['Q3 25','Q4 25','Q1 26'],
+  datasets:[{label:'HPC Rev ($M)',data:[2,9.7,21],borderColor:GREEN,backgroundColor:'rgba(20,90,34,.12)',tension:.3,fill:true,pointRadius:5,pointBackgroundColor:GOLD}]},
+  options:{plugins:{legend:{display:false}},scales:{y:{...grid,beginAtZero:true},x:grid}}});
+mk('mwChart',{type:'bar',data:{labels:['Operational','Contracted'],
+  datasets:[{label:'Critical MW',data:[60,522],backgroundColor:[GREEN,GOLD]}]},
+  options:{plugins:{legend:{display:false}},scales:{y:{...grid,beginAtZero:true},x:grid}}});
+
+mk('scenChart',{type:'bar',data:{labels:['1-Year','3-Year','5-Year'],
+  datasets:[
+   {label:'Bear',data:[12,10,8],backgroundColor:RED},
+   {label:'Base',data:[30,45,60],backgroundColor:GOLD},
+   {label:'Bull',data:[42,75,110],backgroundColor:GREEN}]},
+  options:{plugins:{legend:{position:'bottom'}},scales:{y:{...grid,beginAtZero:true,ticks:{callback:v=>'$'+v}},x:grid}}});
+
+mk('evChart',{type:'bar',data:{labels:['WULF','Hut 8','CORZ'],
+  datasets:[{label:'NTM EV/EBITDA (x)',data:[53.3,52.5,23.6],backgroundColor:[GREEN,MUTED,FOREST]}]},
+  options:{plugins:{legend:{display:false}},scales:{y:{...grid,beginAtZero:true},x:grid}}});
+mk('peerMcapChart',{type:'bar',data:{labels:['IREN','WULF','Hut 8','CORZ','Cipher'],
+  datasets:[{label:'Mkt Cap ($B)',data:[15,12.7,10,5,4],backgroundColor:[MUTED,GREEN,MUTED,FOREST,RED]}]},
+  options:{plugins:{legend:{display:false}},scales:{y:{...grid,beginAtZero:true},x:grid}}});
+
+mk('kpiMwChart',{type:'line',data:{labels:['Q4 25','Q1 26','YE26 target'],
+  datasets:[{label:'Energized MW',data:[20,60,260],borderColor:GREEN,backgroundColor:'rgba(20,90,34,.12)',tension:.3,fill:true,pointRadius:5,pointBackgroundColor:GOLD}]},
+  options:{plugins:{legend:{display:false}},scales:{y:{...grid,beginAtZero:true},x:grid}}});
+mk('kpiMixChart',{type:'line',data:{labels:['Q3 25','Q4 25','Q1 26'],
+  datasets:[{label:'HPC % of revenue',data:[5,32,62],borderColor:GOLD,backgroundColor:'rgba(252,197,91,.18)',tension:.3,fill:true,pointRadius:5,pointBackgroundColor:GREEN}]},
+  options:{plugins:{legend:{display:false}},scales:{y:{...grid,beginAtZero:true,max:100,ticks:{callback:v=>v+'%'}},x:grid}}});
+mk('kpiBacklogChart',{type:'bar',data:{labels:['Aug 25','Oct 25','YE 25'],
+  datasets:[{label:'Contracted Rev ($B)',data:[3.7,6.7,12.8],backgroundColor:[MUTED,'#1f7a30',GREEN]}]},
+  options:{plugins:{legend:{display:false}},scales:{y:{...grid,beginAtZero:true,ticks:{callback:v=>'$'+v+'B'}},x:grid}}});
+
+const modal=document.getElementById('modal'),mTitle=document.getElementById('modalTitle');
+let modalChart=null;
+document.querySelectorAll('.zoom-btn').forEach(b=>{
+  b.addEventListener('click',()=>{
+    const id=b.dataset.c; if(!charts[id])return;
+    mTitle.textContent=b.parentElement.childNodes[0].textContent.trim();
+    modal.classList.add('open');
+    if(modalChart)modalChart.destroy();
+    modalChart=new Chart(document.getElementById('modalCanvas'),JSON.parse(JSON.stringify(charts[id].cfg)));
+    modalChart.options.maintainAspectRatio=false;modalChart.update();
+  });
+});
+function closeModal(){modal.classList.remove('open');if(modalChart){modalChart.destroy();modalChart=null;}}
+document.getElementById('modalClose').addEventListener('click',closeModal);
+modal.addEventListener('click',e=>{if(e.target===modal)closeModal();});
+</script>
+</body>
+</html>
