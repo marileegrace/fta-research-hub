@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AMBA — Ambarella Investment Report | FTA Research Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Questrial&family=Quicksand:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  --green:#145A22; --dark-green:#0A3A14; --forest:#243D27;
+  --gold:#FCC55B; --gold-deep:#e0a838;
+  --beige:#EDE8E0; --beige-card:#f6f3ed;
+  --ink:#23241f; --muted:#5d6155; --red:#a8341f; --line:#d8d1c4;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Quicksand',sans-serif;background:var(--beige);color:var(--ink);line-height:1.6;display:flex;font-size:15px}
+a{color:var(--green);text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* SIDEBAR */
+.sidebar{position:sticky;top:0;width:262px;min-width:262px;height:100vh;overflow-y:auto;
+  background:linear-gradient(180deg,#071f0b,#0A3A14 40%,#145A22);
+  border-right:2px solid var(--gold);color:var(--beige);padding:26px 20px}
+.brand{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:27px;color:var(--gold);line-height:1.1;margin-bottom:4px}
+.brand-sub{font-family:'Questrial',sans-serif;font-size:9.5px;letter-spacing:2px;text-transform:uppercase;color:var(--beige);opacity:.75;margin-bottom:22px}
+.ticker-box{background:rgba(0,0,0,.28);border:1px solid rgba(252,197,91,.4);border-radius:10px;padding:14px;margin-bottom:22px}
+.ticker-box .sym{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;color:var(--gold)}
+.ticker-box .price{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:700;color:#fff;margin-top:4px}
+.ticker-box .chg{font-family:'JetBrains Mono',monospace;font-size:12px;color:#7ec98f;margin-top:2px}
+.ticker-box .meta{font-size:10.5px;opacity:.7;margin-top:6px}
+.nav a{display:block;color:var(--beige);font-size:13px;padding:7px 8px;border-radius:6px;margin-bottom:2px;transition:.15s;text-decoration:none}
+.nav a:hover{background:rgba(252,197,91,.15);color:var(--gold);text-decoration:none}
+.nav a .num{font-family:'JetBrains Mono',monospace;color:var(--gold);font-size:11px;margin-right:8px;opacity:.85}
+.side-foot{margin-top:24px;font-size:9.5px;opacity:.55;line-height:1.5;border-top:1px solid rgba(255,255,255,.12);padding-top:14px}
+
+/* MAIN */
+.main{flex:1;min-width:0}
+.hero{position:relative;overflow:hidden;background:linear-gradient(120deg,var(--dark-green),var(--green) 60%);color:var(--beige);padding:46px 48px 40px}
+.hero::after{content:"";position:absolute;right:-90px;top:-90px;width:340px;height:340px;border-radius:50%;
+  background:radial-gradient(circle,rgba(252,197,91,.28),transparent 68%)}
+.hero .eyebrow{font-family:'Questrial',sans-serif;letter-spacing:3px;text-transform:uppercase;font-size:11px;color:var(--gold);margin-bottom:12px}
+.hero h1{font-family:'Cormorant Garamond',serif;font-size:44px;font-weight:600;line-height:1.05;margin-bottom:6px}
+.hero h1 .tk{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:700;color:var(--gold);vertical-align:middle;margin-left:10px}
+.hero .sub{font-size:15px;max-width:640px;opacity:.92}
+.verdict{display:inline-flex;align-items:center;gap:14px;margin-top:20px;background:rgba(0,0,0,.25);border:1px solid var(--gold);border-radius:40px;padding:9px 20px}
+.verdict .pill{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:2px;font-size:13px;color:var(--gold);font-weight:700}
+.verdict .conv{font-family:'JetBrains Mono',monospace;font-size:13px;color:#fff}
+.verdict .conv b{color:var(--gold);font-size:16px}
+
+/* KPI STRIP */
+.kpi-strip{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:var(--line);border-bottom:1px solid var(--line)}
+.kpi{background:var(--beige-card);padding:16px 14px}
+.kpi .lab{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:9.5px;color:var(--muted);margin-bottom:6px}
+.kpi .val{font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:700;color:var(--green);line-height:1.1}
+.kpi .st{font-size:10px;color:var(--muted);margin-top:3px}
+.kpi .val.red{color:var(--red)}
+
+/* CONTENT */
+.content{max-width:1080px;margin:0 auto;padding:36px 48px 80px}
+.card{background:var(--beige-card);border-radius:14px;margin-bottom:26px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.card-head{display:flex;align-items:center;gap:14px;padding:18px 22px;border-left:5px solid var(--green);cursor:pointer;user-select:none}
+.badge{width:34px;height:34px;min-width:34px;border-radius:9px;background:var(--green);color:#fff;font-family:'JetBrains Mono',monospace;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:15px}
+.card-head h2{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:26px;font-weight:600;color:var(--dark-green);flex:1}
+.chev{font-size:14px;color:var(--muted);transition:.2s}
+.card.collapsed .chev{transform:rotate(-90deg)}
+.card-body{padding:6px 24px 26px}
+.card.collapsed .card-body{display:none}
+.card-body h3{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1.4px;font-size:12.5px;color:var(--green);margin:22px 0 10px}
+.card-body p{margin-bottom:12px}
+.card-body ul{margin:0 0 12px 20px}
+.card-body li{margin-bottom:7px}
+
+/* THESIS */
+.thesis{font-family:'Cormorant Garamond',serif;font-size:22px;line-height:1.4;border-left:4px solid var(--gold);padding:8px 0 8px 20px;margin:8px 0 18px;color:var(--forest)}
+.thesis b{color:var(--dark-green)}
+
+/* CHIPS */
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0}
+.chip{background:#fff;border:1px solid var(--line);border-radius:9px;padding:10px 14px;min-width:120px}
+.chip .l{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:.8px;font-size:9px;color:var(--muted)}
+.chip .v{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;color:var(--green);margin-top:3px}
+.chip .v.red{color:var(--red)}
+
+/* CALLOUT */
+.callout{background:rgba(252,197,91,.16);border:1px solid var(--gold);border-radius:10px;padding:14px 18px;margin:16px 0}
+.callout.note{background:rgba(20,90,34,.08);border-color:var(--green)}
+.callout .ct{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:11px;color:var(--gold-deep);font-weight:700;margin-bottom:5px}
+.callout.note .ct{color:var(--green)}
+
+/* TABLE */
+.tbl-wrap{overflow-x:auto;margin:14px 0}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff;border-radius:10px;overflow:hidden}
+thead th{background:var(--green);color:#fff;font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:.5px;font-size:11px;padding:11px 12px;text-align:left}
+tbody td{padding:10px 12px;border-bottom:1px solid var(--line)}
+tbody tr:nth-child(even){background:var(--beige-card)}
+tbody tr:hover{background:rgba(252,197,91,.14)}
+td.num,th.num{font-family:'JetBrains Mono',monospace;text-align:right}
+.pos{color:var(--green);font-weight:600}
+.neg{color:var(--red);font-weight:600}
+
+/* CHART GRID */
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}
+.chart-box{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px}
+.chart-box .ctitle{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:11px;color:var(--green);display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.chart-box .zoom{cursor:pointer;font-size:9px;color:var(--muted);border:1px solid var(--line);border-radius:5px;padding:2px 7px;font-family:'Questrial',sans-serif}
+.chart-box .zoom:hover{color:var(--gold-deep);border-color:var(--gold)}
+.canvas-h{position:relative;height:160px}
+.chart-solo{max-width:420px;margin:0 auto}
+
+/* SCENARIOS */
+.scen-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:16px 0}
+.scen{background:#fff;border-radius:12px;padding:18px;border-top:4px solid var(--gold);box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.scen.bull{border-top-color:var(--green)}
+.scen.bear{border-top-color:var(--red)}
+.scen .sh{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+.scen .name{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1.5px;font-size:13px;font-weight:700}
+.scen.bull .name{color:var(--green)}
+.scen.base .name{color:var(--gold-deep)}
+.scen.bear .name{color:var(--red)}
+.scen .prob{font-family:'JetBrains Mono',monospace;font-size:11px;background:var(--beige);border-radius:20px;padding:2px 9px;color:var(--muted)}
+.scen .pt{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:700;color:var(--ink);margin-bottom:4px}
+.scen .ptl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+.scen ul{margin:0 0 0 16px;font-size:12.5px}
+.scen li{margin-bottom:5px}
+.horizon-lab{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:2px;font-size:12px;color:var(--forest);margin:22px 0 2px;font-weight:700;border-bottom:1px solid var(--line);padding-bottom:6px}
+
+/* RISK */
+.risk{background:#fff;border-left:4px solid var(--red);border-radius:8px;padding:15px 18px;margin-bottom:14px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.risk h4{color:var(--red);font-family:'Quicksand',sans-serif;font-weight:700;font-size:15px;margin-bottom:6px}
+.risk .rmeta{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.rtag{font-family:'JetBrains Mono',monospace;font-size:10px;background:var(--beige);border-radius:20px;padding:3px 10px;color:var(--muted)}
+.rtag b{color:var(--ink)}
+
+/* TIMELINE */
+.timeline{position:relative;margin:18px 0 6px;padding-left:28px}
+.timeline::before{content:"";position:absolute;left:7px;top:4px;bottom:4px;width:3px;
+  background:linear-gradient(180deg,var(--green),var(--gold))}
+.tl-item{position:relative;margin-bottom:20px}
+.tl-item::before{content:"";position:absolute;left:-27px;top:3px;width:14px;height:14px;border-radius:50%;
+  background:var(--gold);border:3px solid var(--green)}
+.tl-date{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold-deep);font-weight:700}
+.tl-title{font-weight:700;font-size:14.5px;color:var(--forest)}
+.tl-desc{font-size:13px;color:var(--muted)}
+
+/* GLOSSARY */
+.gloss{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin-bottom:12px}
+.gloss h4{font-family:'Quicksand',sans-serif;color:var(--dark-green);font-size:15px;margin-bottom:4px}
+.gloss .formula{font-family:'JetBrains Mono',monospace;font-size:12px;background:var(--beige);border-radius:6px;padding:6px 10px;margin:6px 0;color:var(--forest)}
+.gloss .back{font-size:11px}
+:target{scroll-margin-top:16px}
+
+/* MODAL */
+.modal{display:none;position:fixed;inset:0;z-index:99;background:rgba(7,20,10,.82);align-items:center;justify-content:center;padding:30px}
+.modal.open{display:flex}
+.modal-box{background:var(--beige-card);border:2px solid var(--gold);border-radius:14px;padding:22px;width:min(900px,94vw);max-height:88vh}
+.modal-box .mt{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1px;color:var(--green);margin-bottom:12px;display:flex;justify-content:space-between}
+.modal-box .mx{cursor:pointer;color:var(--red);font-weight:700}
+.modal-canvas{position:relative;height:60vh}
+
+.disc{font-size:11px;color:var(--muted);border-top:1px solid var(--line);margin-top:20px;padding-top:16px;line-height:1.6}
+
+@media(max-width:880px){
+  .chart-grid,.scen-grid{grid-template-columns:1fr}
+}
+@media(max-width:780px){
+  .sidebar{display:none}
+  .kpi-strip{grid-template-columns:repeat(3,1fr)}
+  .hero{padding:32px 24px}
+  .hero h1{font-size:32px}
+  .content{padding:24px 20px 60px}
+}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="brand">Foundational<br>Trading Academy</div>
+  <div class="brand-sub">Investment Research</div>
+  <div class="ticker-box">
+    <div class="sym">AMBA</div>
+    <div class="price">$78.36</div>
+    <div class="chg">+$2.55 pre-mkt · Jul 6</div>
+    <div class="meta">NASDAQ · Edge-AI Semiconductors<br>Mkt Cap $3.44B</div>
+  </div>
+  <nav class="nav">
+    <a href="#s1"><span class="num">01</span>Executive Summary</a>
+    <a href="#s2"><span class="num">02</span>Micro &amp; Valuation</a>
+    <a href="#s3"><span class="num">03</span>Moat &amp; Management</a>
+    <a href="#s4"><span class="num">04</span>Financial Deep Dive</a>
+    <a href="#s5"><span class="num">05</span>Earnings Tracker</a>
+    <a href="#s6"><span class="num">06</span>Bull / Base / Bear</a>
+    <a href="#s7"><span class="num">07</span>Risks &amp; Anti-Thesis</a>
+    <a href="#s8"><span class="num">08</span>Catalyst Timeline</a>
+    <a href="#s9"><span class="num">09</span>Comparables</a>
+    <a href="#s10"><span class="num">10</span>First-Principles KPIs</a>
+    <a href="#s11"><span class="num">11</span>Glossary &amp; Method</a>
+  </nav>
+  <div class="side-foot">
+    Generated Jul 6, 2026 · FTA Advanced Analysis Framework. Educational use only — not investment advice.
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+  <header class="hero">
+    <div class="eyebrow">Deep-Dive Equity Research · Edge / Physical AI</div>
+    <h1>Ambarella, Inc. <span class="tk">AMBA</span></h1>
+    <div class="sub">A decade-long "video SoC" stock re-cast as a physical-AI inference pure play. The debate is no longer <i>whether</i> the technology works — it's whether the market is paying a growth multiple for a business that has finally reached escape velocity, or for another false dawn.</div>
+    <div class="verdict">
+      <span class="pill">Constructive — Bull</span>
+      <span class="conv">Conviction <b>7 / 10</b></span>
+    </div>
+  </header>
+
+  <!-- KPI STRIP -->
+  <section class="kpi-strip">
+    <div class="kpi"><div class="lab">Last Close</div><div class="val">$78.36</div><div class="st">Jul 2 · pre-mkt $80.91</div></div>
+    <div class="kpi"><div class="lab">Market Cap</div><div class="val">$3.44B</div><div class="st">43.9M shares · β 2.11</div></div>
+    <div class="kpi"><div class="lab">Rev Growth (TTM)</div><div class="val">+28.1%</div><div class="st">$405M TTM</div></div>
+    <div class="kpi"><div class="lab">FCF (FY26)</div><div class="val">$58.0M</div><div class="st">14.9% margin</div></div>
+    <div class="kpi"><div class="lab">P/S (TTM)</div><div class="val">8.5×</div><div class="st">"Optimistic" band</div></div>
+    <div class="kpi"><div class="lab">Analyst PT</div><div class="val">$95</div><div class="st">Buy · +21% upside</div></div>
+  </section>
+
+  <div class="content">
+
+  <!-- SECTION 1 -->
+  <section class="card" id="s1">
+    <div class="card-head"><div class="badge">1</div><h2>Executive Summary &amp; Investment Thesis</h2><span class="chev">▾</span></div>
+    <div class="card-body">
+      <div class="thesis">
+        <b>Ambarella is a leveraged, founder-led call option on the transition of AI from the data-center to the physical edge.</b> After a decade trapped in the $220–340M revenue band as a commoditizing video-processing chip vendor, the company has quietly become a full-stack <a href="#g-edge">edge-AI</a> inference platform — and FY2026's +37% revenue growth, record automotive sales, and an $800M+ Hanwha long-term agreement suggest the inflection is real, not narrative. We are <b>constructive (Bull), conviction 7/10</b>, while explicitly flagging that this is a high-beta security whose valuation already prices in success.
+      </div>
+      <p>The core asymmetry: Ambarella owns a genuinely differentiated architecture — its <a href="#g-cvflow">CVflow</a> neural-processing SoCs run perception, sensor fusion, an AI accelerator, and CPU on a single low-power die — precisely the capability required as AI inference migrates into cameras, vehicles, robots, and industrial endpoints. Management's claim that new products carry ASPs "well in excess" of the current base is the crux of the bull case: the same unit footprint (46M+ AI SoCs installed) re-priced upward as workloads grow more complex.</p>
+      <p>The offsetting reality is sobering and must not be glossed over: AMBA remains <b>GAAP-unprofitable</b> (FY26 net loss –$75.9M), stock-based compensation consumes ~25% of revenue, revenue has historically been lumpy and cyclical, and at ~8.5× sales the market is already extending the company substantial benefit of the doubt. The stock swung from –22% to +28% in a matter of weeks in mid-2026 — a reminder that this is an emotionally-priced story stock as much as a fundamental compounder.</p>
+      <div class="chips">
+        <div class="chip"><div class="l">Sector</div><div class="v" style="font-size:13px">Semiconductors</div></div>
+        <div class="chip"><div class="l">Fiscal Yr</div><div class="v" style="font-size:13px">Feb–Jan</div></div>
+        <div class="chip"><div class="l">FY26 Rev</div><div class="v">$390.7M</div></div>
+        <div class="chip"><div class="l">Gross Margin</div><div class="v">59.2%</div></div>
+        <div class="chip"><div class="l">Cash (net)</div><div class="v">$277.8M</div></div>
+        <div class="chip"><div class="l">Debt</div><div class="v">$0</div></div>
+        <div class="chip"><div class="l">52-wk Range</div><div class="v" style="font-size:13px">$48–97</div></div>
+      </div>
+      <div class="callout note">
+        <div class="ct">Bottom Line</div>
+        Own AMBA as a <b>sized, volatility-tolerant</b> position in a physical-AI basket — not as a low-beta core holding. The 1-year risk/reward is roughly balanced around consensus ($95); the multi-year optionality is what earns the 7/10 conviction. Valuation discipline (buying weakness, not chasing 28% gap-ups) is the entire game here.
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 2 -->
+  <section class="card" id="s2">
+    <div class="card-head"><div class="badge">2</div><h2>Microeconomic &amp; Valuation Analysis</h2><span class="chev">▾</span></div>
+    <div class="card-body">
+      <h3>Industry &amp; TAM</h3>
+      <p>Ambarella sits at the intersection of three secular waves: <a href="#g-edge">edge AI</a> inference, automotive ADAS/autonomy, and robotics/"physical AI." The edge-AI silicon market is broadly modeled to compound at a <b>~25–35% CAGR</b> through the end of the decade as inference decentralizes away from the cloud for latency, cost, privacy, and power reasons. Automotive computer-vision and radar content per vehicle continues to rise structurally. Management now describes robotics and edge-infrastructure (running <a href="#g-vlm">VLMs</a> and GenAI locally) as emerging revenue vectors with materially higher ASPs.</p>
+      <div class="chart-grid">
+        <div class="chart-box">
+          <div class="ctitle">Revenue Trajectory (FY, $M) <span class="zoom" onclick="zoom('cRev')">⤢ expand</span></div>
+          <div class="canvas-h"><canvas id="cRev"></canvas></div>
+        </div>
+        <div class="chart-box">
+          <div class="ctitle">Est. Revenue Mix (Edge-AI vs Legacy) <span class="zoom" onclick="zoom('cMix')">⤢ expand</span></div>
+          <div class="canvas-h"><canvas id="cMix"></canvas></div>
+        </div>
+      </div>
+      <h3>Valuation — Price-to-Sales Discipline</h3>
+      <p>On the FTA <a href="#g-ps">P/S framework</a>, AMBA at ~<b>8.5× TTM sales</b> ($3.44B / $405M) sits in the <b>"Optimistic"</b> band (8–18×). That is defensible <i>only</i> if the ~20–28% growth rate is durable and margin/ASP expansion follows. It is expensive for a company whose 10-year revenue CAGR is barely positive (~2%), and cheap only relative to hyper-growth AI comps like Lattice (~31× sales). The market is explicitly paying for the <i>second derivative</i> — the acceleration — not the base.</p>
+      <div class="chips">
+        <div class="chip"><div class="l">P/S (TTM)</div><div class="v">8.5×</div></div>
+        <div class="chip"><div class="l">Fwd P/E</div><div class="v">95×</div></div>
+        <div class="chip"><div class="l">P/E (TTM)</div><div class="v red">n/a</div></div>
+        <div class="chip"><div class="l">EV/Sales</div><div class="v">~7.8×</div></div>
+        <div class="chip"><div class="l">Inst. Own.</div><div class="v">~89%</div></div>
+        <div class="chip"><div class="l">Insider Own.</div><div class="v">~4.5%</div></div>
+      </div>
+      <h3>Ownership &amp; Flow</h3>
+      <p>Institutional ownership is high (~89%; Vanguard ~13%, BlackRock ~9.5%), which cuts both ways — deep sponsorship, but also crowded positioning that amplifies drawdowns when the AI trade wobbles. Insider signaling is a clear <b>negative</b>: zero insider buys and ~33 insider sells over the trailing year, including routine sales by CEO Fermi Wang (who still holds ~773,600 shares). The board authorized a fresh <b>$50M buyback</b> through June 2027 — modest (~1.5% of cap) but a reasonable use of the debt-free balance sheet.</p>
+      <div class="callout">
+        <div class="ct">Valuation Verdict</div>
+        Fairly-to-fully valued on 1-year numbers; the multiple is a bet on ASP-led acceleration. We would treat sub-$65 as attractive accumulation and &gt;$110 as requiring fresh evidence of a durable growth step-up.
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 3 -->
+  <section class="card" id="s3">
+    <div class="card-head"><div class="badge">3</div><h2>Qualitative Analysis — Moat, Management &amp; Culture</h2><span class="chev">▾</span></div>
+    <div class="card-body">
+      <h3>The Moat — Systemic, Not Merely Technical</h3>
+      <p>Ambarella's edge is not one clever chip; it is the <i>co-design</i> of silicon, low-power neural architecture (CVflow), and a full software/algorithm stack — extending now to agentic frameworks that coordinate perception, decision and control. Viewed systemically, the moat is a <b>compounding integration advantage</b>: each generation folds more of the customer's system (ISP, radar, fusion, CPU, AI accelerator) onto one power-efficient die, raising switching costs because the customer's entire product architecture becomes entangled with Ambarella's toolchain. Power-efficiency-per-inference is the true scarce resource at the edge, and that is where Ambarella has spent 20 years accumulating know-how. The weakness of the moat is that it is <i>narrow</i> — it does not protect against a well-capitalized entrant (Qualcomm, Nvidia at the edge, NXP, or Chinese SoC vendors) choosing to prioritize the same niche.</p>
+      <h3>Founder-Led &amp; Management</h3>
+      <p>AMBA is <b>founder-led</b> — Dr. Fermi (Feng-Ming) Wang co-founded the company in 2004 and serves as President, CEO and Chairman; co-founder Les Kohn remains CTO. This is a genuine engineering culture (R&amp;D has run at ~60% of revenue — extraordinary, and both a strength and a profitability drag). Wang was awarded the inaugural IEEE 2026 video-analytics award, underscoring deep technical credibility. CFO John Young oversees a conservative, debt-free balance sheet.</p>
+      <h3>Capital Allocation &amp; Culture</h3>
+      <p>Capital allocation has been R&amp;D-first and dilution-tolerant: share count has crept up ~3–5%/yr on stock-comp, the durable criticism of this management team. Offsetting that, they have kept the balance sheet pristine, made one sensible tuck-in (Oculii radar), and now layer in a small buyback. Organizationally the traits that matter here are <b>innovation pace</b> (consistent multi-generation SoC cadence, 5nm→2nm roadmap) and <b>high talent density</b> (959 employees generating $407K revenue/head). The cultural risk is the classic deep-tech trap — brilliant engineering that has, for a decade, struggled to convert into operating leverage.</p>
+      <div class="chips">
+        <div class="chip"><div class="l">Founded</div><div class="v">2004</div></div>
+        <div class="chip"><div class="l">Employees</div><div class="v">959</div></div>
+        <div class="chip"><div class="l">R&amp;D / Rev</div><div class="v">~61%</div></div>
+        <div class="chip"><div class="l">Rev / Head</div><div class="v">$407K</div></div>
+        <div class="chip"><div class="l">Founder CEO</div><div class="v" style="font-size:12px">F. Wang</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 4 -->
+  <section class="card" id="s4">
+    <div class="card-head"><div class="badge">4</div><h2>Quantitative Analysis — Financial Deep Dive</h2><span class="chev">▾</span></div>
+    <div class="card-body">
+      <h3>The Numbers in Plain English</h3>
+      <p>Ambarella sells AI vision chips (and licenses IP). It books a <b>~59–60% gross margin</b> — very healthy — but has historically spent <i>more</i> than its gross profit on R&amp;D and SG&amp;A, which is why the company is GAAP-unprofitable despite good product economics. The FY26 GAAP net loss of –$75.9M is dominated by <b>$98M of stock-based compensation</b> (~25% of revenue). Strip out SBC and the business is modestly non-GAAP profitable and clearly free-cash-flow positive.</p>
+      <div class="chart-grid">
+        <div class="chart-box">
+          <div class="ctitle">Free Cash Flow &amp; FCF Margin <span class="zoom" onclick="zoom('cFcf')">⤢ expand</span></div>
+          <div class="canvas-h"><canvas id="cFcf"></canvas></div>
+        </div>
+        <div class="chart-box">
+          <div class="ctitle">Gross vs Operating Margin (%) <span class="zoom" onclick="zoom('cMargin')">⤢ expand</span></div>
+          <div class="canvas-h"><canvas id="cMargin"></canvas></div>
+        </div>
+      </div>
+      <h3>Free Cash Flow &amp; Operating Leverage</h3>
+      <p>FY26 was a genuine positive turn: operating cash flow more than doubled to $73.5M and FCF hit $58.0M (14.9% margin), up from $23.5M. The catch: TTM FCF has fallen back to $18.2M because of a deliberate <b>inventory build</b> ($80.4M, up from $52.2M) ahead of anticipated demand — a working-capital, not a profitability, drag. This is the single clearest evidence of operating leverage finally appearing: revenue +37% while cash generation inflected. The bull thesis lives or dies on whether that leverage persists as revenue scales toward $460–490M+.</p>
+      <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Metric ($M)</th><th class="num">FY22</th><th class="num">FY23</th><th class="num">FY24</th><th class="num">FY25</th><th class="num">FY26</th><th class="num">TTM</th></tr></thead>
+        <tbody>
+          <tr><td>Revenue</td><td class="num">331.9</td><td class="num">337.6</td><td class="num">226.5</td><td class="num">284.9</td><td class="num">390.7</td><td class="num">405.2</td></tr>
+          <tr><td>Rev Growth</td><td class="num pos">+48.8%</td><td class="num pos">+1.7%</td><td class="num neg">−32.9%</td><td class="num pos">+25.8%</td><td class="num pos">+37.2%</td><td class="num pos">+28.1%</td></tr>
+          <tr><td>Gross Margin</td><td class="num">62.7%</td><td class="num">61.9%</td><td class="num">60.4%</td><td class="num">60.5%</td><td class="num">59.2%</td><td class="num">58.8%</td></tr>
+          <tr><td>Operating Inc.</td><td class="num neg">−29.6</td><td class="num neg">−74.3</td><td class="num neg">−154.6</td><td class="num neg">−126.6</td><td class="num neg">−82.5</td><td class="num neg">−76.1</td></tr>
+          <tr><td>Net Income</td><td class="num neg">−26.4</td><td class="num neg">−65.4</td><td class="num neg">−169.4</td><td class="num neg">−117.1</td><td class="num neg">−75.9</td><td class="num neg">−69.6</td></tr>
+          <tr><td>Op. Cash Flow</td><td class="num pos">38.8</td><td class="num pos">44.1</td><td class="num pos">19.0</td><td class="num pos">33.8</td><td class="num pos">73.5</td><td class="num pos">33.1</td></tr>
+          <tr><td>Free Cash Flow</td><td class="num pos">29.1</td><td class="num pos">29.0</td><td class="num pos">7.1</td><td class="num pos">23.5</td><td class="num pos">58.0</td><td class="num pos">18.2</td></tr>
+          <tr><td>SBC</td><td class="num">87.8</td><td class="num">111.2</td><td class="num">111.3</td><td class="num">107.8</td><td class="num">98.0</td><td class="num">93.8</td></tr>
+          <tr><td>Shares (M)</td><td class="num">37</td><td class="num">38</td><td class="num">40</td><td class="num">41</td><td class="num">43</td><td class="num">44</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <h3>Balance Sheet &amp; Dilution</h3>
+      <p>The balance sheet is a fortress relative to peers: <b>$277.8M cash &amp; marketable securities, zero debt</b>, current ratio ~2.4×. The blemish is dilution — shares outstanding have grown from 37M (FY22) to ~44M, ~3–4%/yr, driven entirely by stock-comp. FCF/share of $1.36 in FY26 is real but must be weighed against that share creep. Net-net: financially <b>de-risked on solvency</b>, at the cost of persistent per-share dilution.</p>
+      <div class="callout note">
+        <div class="ct">Flywheel</div>
+        Differentiated low-power SoC → design wins across auto/IoT/robotics → larger installed base (46M+ units) → richer software/AI workloads → higher ASP per socket → funds next-gen R&amp;D → wider architectural lead. The flywheel is credible; the question is <i>rotational speed</i> vs. cash burn on R&amp;D.
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 5 -->
+  <section class="card" id="s5">
+    <div class="card-head"><div class="badge">5</div><h2>Earnings Tracker — Management Credibility</h2><span class="chev">▾</span></div>
+    <div class="card-body">
+      <p>Ambarella guides revenue as a range each quarter. The trailing pattern is one of <b>consistent, if unspectacular, reliability</b>: revenue has landed at or above the guided midpoint, and non-GAAP EPS has generally met or narrowly beaten consensus. Credibility is scored 1–10 on delivery vs. the company's own guide. (Older-quarter guidance midpoints are approximations; see methodology.)</p>
+      <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Quarter</th><th>Reported</th><th>Guidance / Consensus</th><th>Actual</th><th class="num">Credibility</th></tr></thead>
+        <tbody>
+          <tr><td>Q1 FY27</td><td>May 28 '26</td><td>Rev mid ~$100M; EPS cons $0.10</td><td>Rev $100.4M · EPS $0.11 (beat)</td><td class="num pos">9</td></tr>
+          <tr><td>Q4 FY26</td><td>Feb/Mar '26</td><td>Rev mid ~$99M</td><td>Rev $100.9M (+20% YoY, beat)</td><td class="num pos">9</td></tr>
+          <tr><td>Q3 FY26</td><td>Nov '25</td><td>Rev mid ~$82M</td><td>Rev in-line to slightly ahead</td><td class="num pos">8</td></tr>
+          <tr><td>Q2 FY26</td><td>Aug '25</td><td>Rev mid ~$78M</td><td>Rev met guide, GM in-line</td><td class="num pos">8</td></tr>
+          <tr><td>Q1 FY26</td><td>May '25</td><td>Rev mid ~$85M</td><td>Rev $85.9M · met</td><td class="num pos">8</td></tr>
+          <tr><td>Q4 FY25</td><td>Feb '25</td><td>Rev mid ~$76M</td><td>Rev met; strong auto commentary</td><td class="num pos">8</td></tr>
+          <tr><td>Q3 FY25</td><td>Nov '24</td><td>Rev mid ~$77M</td><td>Rev beat; raised outlook</td><td class="num pos">8</td></tr>
+          <tr><td>Q2 FY25</td><td>Aug '24</td><td>Rev mid ~$62M</td><td>Rev met; inventory normalizing</td><td class="num pos">7</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="callout note">
+        <div class="ct">Credibility Read</div>
+        Management does not over-promise. The risk is the opposite — a conservative, engineering-led team that <i>under-communicates</i> the ASP/mix story, leaving the multiple to whipsaw on analyst narrative (see the –22% then +28% swings of mid-2026). Average credibility ~<b>8.1/10</b>: dependable operators, inconsistent stock-narrative managers.
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 6 -->
+  <section class="card" id="s6">
+    <div class="card-head"><div class="badge">6</div><h2>Bull / Base / Bear Scenarios</h2><span class="chev">▾</span></div>
+    <div class="card-body">
+      <p>Probability-weighted price targets across 1-, 3-, and 5-year horizons. Reference price ~$78. Multiples are applied to modeled forward revenue; AMBA's valuation is P/S-driven given GAAP losses.</p>
+
+      <div class="horizon-lab">1-Year Horizon · Weighted ≈ $95</div>
+      <div class="scen-grid">
+        <div class="scen bull"><div class="sh"><span class="name">Bull</span><span class="prob">30%</span></div><div class="pt">$130</div><div class="ptl">+66%</div>
+          <ul><li>FY27 rev &gt;$490M (~26%)</li><li>Re-rate to ~11–12× sales on AI momentum</li><li>Hanwha ramp begins visibly</li><li>2nm inference SoC design wins land</li></ul></div>
+        <div class="scen base"><div class="sh"><span class="name">Base</span><span class="prob">45%</span></div><div class="pt">$95</div><div class="ptl">+21%</div>
+          <ul><li>FY27 rev ~$465M (~19%)</li><li>Multiple holds ~8–9× sales</li><li>Non-GAAP profits, GAAP still red</li><li>Consensus PT realized</li></ul></div>
+        <div class="scen bear"><div class="sh"><span class="name">Bear</span><span class="prob">25%</span></div><div class="pt">$52</div><div class="ptl">−34%</div>
+          <ul><li>AI trade de-rates broadly</li><li>Growth slips to ~10–12%</li><li>Multiple compresses to ~4–5× sales</li><li>SBC/dilution scrutiny returns</li></ul></div>
+      </div>
+
+      <div class="horizon-lab">3-Year Horizon · Weighted ≈ $138</div>
+      <div class="scen-grid">
+        <div class="scen bull"><div class="sh"><span class="name">Bull</span><span class="prob">30%</span></div><div class="pt">$220</div><div class="ptl">+181%</div>
+          <ul><li>Rev ~$750M, edge-AI inflection</li><li>Sustained GAAP profitability</li><li>Robotics/edge-infra scale</li></ul></div>
+        <div class="scen base"><div class="sh"><span class="name">Base</span><span class="prob">45%</span></div><div class="pt">$135</div><div class="ptl">+72%</div>
+          <ul><li>Rev ~$620M (~17% CAGR)</li><li>Margins expand modestly</li><li>Steady multiple ~8×</li></ul></div>
+        <div class="scen bear"><div class="sh"><span class="name">Bear</span><span class="prob">25%</span></div><div class="pt">$45</div><div class="ptl">−43%</div>
+          <ul><li>Competitive share loss</li><li>Growth reverts to LDD%</li><li>Re-rated as cyclical SoC</li></ul></div>
+      </div>
+
+      <div class="horizon-lab">5-Year Horizon · Weighted ≈ $178</div>
+      <div class="scen-grid">
+        <div class="scen bull"><div class="sh"><span class="name">Bull</span><span class="prob">30%</span></div><div class="pt">$320</div><div class="ptl">+308%</div>
+          <ul><li>Rev &gt;$1.1B, category leader</li><li>15–20% GAAP net margins</li><li>Physical-AI standard-setter</li></ul></div>
+        <div class="scen base"><div class="sh"><span class="name">Base</span><span class="prob">45%</span></div><div class="pt">$175</div><div class="ptl">+123%</div>
+          <ul><li>Rev ~$850M</li><li>Durable profitability</li><li>Multiple normalizes ~7×</li></ul></div>
+        <div class="scen bear"><div class="sh"><span class="name">Bear</span><span class="prob">25%</span></div><div class="pt">$40</div><div class="ptl">−49%</div>
+          <ul><li>Edge inference commoditizes</li><li>Perennial ~$400M plateau</li><li>Value-trap re-rating</li></ul></div>
+      </div>
+
+      <div class="chart-grid">
+        <div class="chart-box">
+          <div class="ctitle">Scenario Price Targets by Horizon <span class="zoom" onclick="zoom('cScen')">⤢ expand</span></div>
+          <div class="canvas-h"><canvas id="cScen"></canvas></div>
+        </div>
+        <div class="chart-box">
+          <div class="ctitle">Probability-Weighted Target Path <span class="zoom" onclick="zoom('cWeighted')">⤢ expand</span></div>
+          <div class="canvas-h"><canvas id="cWeighted"></canvas></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 7 -->
+  <section class="card" id="s7">
+    <div class="card-head"><div class="badge">7</div><h2>Risks &amp; Anti-Thesis (Steelman the Bear)</h2><span class="chev">▾</span></div>
+    <div class="card-body">
+      <p>If we were short AMBA, this is the case we would make — engaged seriously, not as a checklist.</p>
+
+      <div class="risk">
+        <h4>1. A decade of no revenue growth, re-labeled as "AI"</h4>
+        <div class="rmeta"><span class="rtag">Probability <b>Medium</b></span><span class="rtag">Impact <b>High</b></span><span class="rtag">Priced in? <b>Partially</b></span></div>
+        <p>FY2016 revenue was $316M; FY2026 was $391M — a ~2% 10-year CAGR. The bear argues the "physical AI" framing is the latest in a series of narratives (drones, security, ADAS) that generated hype but never a durable growth curve. If FY26's acceleration proves cyclical, an 8.5× multiple is indefensible.</p>
+      </div>
+      <div class="risk">
+        <h4>2. Stock-based comp masks the true economics</h4>
+        <div class="rmeta"><span class="rtag">Probability <b>High</b></span><span class="rtag">Impact <b>Medium</b></span><span class="rtag">Priced in? <b>No</b></span></div>
+        <p>SBC of ~$98M is ~25% of revenue and the reason "non-GAAP profit" exists at all. GAAP losses persist and shares dilute 3–4%/yr. A bear values the company on GAAP and finds a business that has never earned its cost of capital.</p>
+      </div>
+      <div class="risk">
+        <h4>3. Big, well-funded competitors can target the niche</h4>
+        <div class="rmeta"><span class="rtag">Probability <b>Medium</b></span><span class="rtag">Impact <b>High</b></span><span class="rtag">Priced in? <b>No</b></span></div>
+        <p>Qualcomm, Nvidia (Jetson), NXP, Renesas, and aggressive Chinese SoC vendors all covet edge inference. Ambarella's moat is narrow and deep; a determined entrant with more scale in process nodes and software could compress ASPs precisely where the bull thesis needs expansion.</p>
+      </div>
+      <div class="risk">
+        <h4>4. Customer &amp; geographic concentration + lumpy design cycles</h4>
+        <div class="rmeta"><span class="rtag">Probability <b>Medium</b></span><span class="rtag">Impact <b>Medium</b></span><span class="rtag">Priced in? <b>Partially</b></span></div>
+        <p>Revenue depends on a handful of large customers and China-exposed IoT/security demand; design-in cycles are multi-year and binary. Tariff/export-control shifts or a single lost socket can swing a quarter materially — as the FY24 –33% revenue collapse demonstrated.</p>
+      </div>
+      <div class="risk">
+        <h4>5. Insider selling &amp; a story-stock valuation</h4>
+        <div class="rmeta"><span class="rtag">Probability <b>High</b></span><span class="rtag">Impact <b>Medium</b></span><span class="rtag">Priced in? <b>No</b></span></div>
+        <p>Zero insider buys and ~33 sells in a year is not the signal of a team that thinks the stock is cheap. With β 2.11 and 28% single-day moves, the security behaves like a leveraged sentiment instrument; a broad AI de-rating could halve it regardless of fundamentals.</p>
+      </div>
+      <div class="callout">
+        <div class="ct">Our Rebuttal</div>
+        The bear case on <i>history</i> is strong; the bear case on the <i>present</i> is weakening. Record automotive revenue, the $800M Hanwha LTA, and inflecting operating cash flow are new, hard data points — not narrative. We hold the position <b>sized for the volatility the bear correctly identifies</b>.
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 8 -->
+  <section class="card" id="s8">
+    <div class="card-head"><div class="badge">8</div><h2>Catalyst Timeline</h2><span class="chev">▾</span></div>
+    <div class="card-body">
+      <div class="timeline">
+        <div class="tl-item"><div class="tl-date">Late Aug 2026</div><div class="tl-title">Q2 FY27 Earnings</div><div class="tl-desc">Guided rev $105–111M (midpoint above cons $107M). Watch: automotive record continuation, ASP commentary, inventory drawdown.</div></div>
+        <div class="tl-item"><div class="tl-date">H2 2026</div><div class="tl-title">2nm / next-gen inference SoC launches</div><div class="tl-desc">New products targeting complex AI workloads (VLM/GenAI at the edge) at ASPs "well in excess" of current base — the core ASP-expansion catalyst.</div></div>
+        <div class="tl-item"><div class="tl-date">FY27–FY28</div><div class="tl-title">Hanwha $800M+ LTA ramp</div><div class="tl-desc">Broadest partnership in company history; revenue recognition cadence and initial deployments are the key proof points.</div></div>
+        <div class="tl-item"><div class="tl-date">Ongoing</div><div class="tl-title">Robotics &amp; edge-infrastructure design wins</div><div class="tl-desc">New market vectors management is explicitly cultivating; each announced win re-rates the growth narrative.</div></div>
+        <div class="tl-item"><div class="tl-date">Nov 2026 / Feb 2027</div><div class="tl-title">Q3 &amp; Q4 FY27 Earnings</div><div class="tl-desc">Full-year growth trajectory confirmed or broken; will define whether FY27 sustains the ~20%+ path.</div></div>
+        <div class="tl-item"><div class="tl-date">Through Jun 2027</div><div class="tl-title">$50M buyback execution</div><div class="tl-desc">Pace of repurchases signals management's own read on valuation.</div></div>
+        <div class="tl-item"><div class="tl-date">Macro</div><div class="tl-title">AI-trade sentiment &amp; export controls</div><div class="tl-desc">High-beta exposure to the broad AI cycle; tariff/China policy shifts are two-way catalysts.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 9 -->
+  <section class="card" id="s9">
+    <div class="card-head"><div class="badge">9</div><h2>Comparable Company Analysis</h2><span class="chev">▾</span></div>
+    <div class="card-body">
+      <p>AMBA has no perfect comp — it straddles edge-AI vision, automotive silicon, and programmable logic. We benchmark against three adjacent names: Mobileye (auto vision/autonomy), Lattice (low-power programmable, the AI-multiple anchor), and indie Semiconductor (auto SoC growth story).</p>
+      <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Company</th><th class="num">Mkt Cap</th><th class="num">Rev TTM</th><th class="num">Rev Gr YoY</th><th class="num">P/S</th><th class="num">Gross Mgn</th><th class="num">FCF Mgn</th><th class="num">EV/EBITDA</th></tr></thead>
+        <tbody>
+          <tr><td><b>Ambarella (AMBA)</b></td><td class="num">$3.44B</td><td class="num">$405M</td><td class="num pos">+28%</td><td class="num">8.5×</td><td class="num">59%</td><td class="num">4.5%</td><td class="num neg">n/m</td></tr>
+          <tr><td>Mobileye (MBLY)</td><td class="num">$7.28B</td><td class="num">$1.93B</td><td class="num pos">+27%</td><td class="num">3.8×</td><td class="num">~48%</td><td class="num">~8%</td><td class="num">~24×</td></tr>
+          <tr><td>Lattice (LSCC)</td><td class="num">$18.2B</td><td class="num">$574M</td><td class="num pos">+17%</td><td class="num">31.5×</td><td class="num">~69%</td><td class="num">~30%</td><td class="num">~70×</td></tr>
+          <tr><td>indie Semi (INDI)</td><td class="num">$0.92B</td><td class="num">$219M</td><td class="num neg">~flat</td><td class="num">4.2×</td><td class="num">~50%</td><td class="num neg">neg</td><td class="num neg">n/m</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="chart-grid">
+        <div class="chart-box">
+          <div class="ctitle">Peer Price-to-Sales <span class="zoom" onclick="zoom('cPS')">⤢ expand</span></div>
+          <div class="canvas-h"><canvas id="cPS"></canvas></div>
+        </div>
+        <div class="chart-box">
+          <div class="ctitle">Revenue Growth vs P/S (bubble = mkt cap) <span class="zoom" onclick="zoom('cScatter')">⤢ expand</span></div>
+          <div class="canvas-h"><canvas id="cScatter"></canvas></div>
+        </div>
+      </div>
+      <div class="callout note">
+        <div class="ct">Relative-Value Read</div>
+        AMBA's 8.5× sales looks rich vs. Mobileye (3.8×, similar growth, far larger) but cheap vs. Lattice (31.5×, slower growth, higher margin). The market is <b>splitting the difference</b> — paying a premium to auto-vision peers for AMBA's edge-AI optionality, but a steep discount to the highest-multiple programmable names. That positioning is reasonable; a re-rating toward Lattice requires proof of sustained &gt;25% growth <i>and</i> margin expansion.
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 10 -->
+  <section class="card" id="s10">
+    <div class="card-head"><div class="badge">10</div><h2>First-Principles KPIs</h2><span class="chev">▾</span></div>
+    <div class="card-body">
+      <p>Beyond the income statement, four fundamental leading indicators will tell you whether the thesis is compounding — before it shows up in reported EPS.</p>
+      <div class="chips">
+        <div class="chip"><div class="l">Installed AI SoCs</div><div class="v">46M+</div></div>
+        <div class="chip"><div class="l">Rev / Employee</div><div class="v">$407K</div></div>
+        <div class="chip"><div class="l">R&amp;D / Rev</div><div class="v">~61%</div></div>
+        <div class="chip"><div class="l">Hanwha LTA</div><div class="v">$800M+</div></div>
+      </div>
+      <div class="chart-grid">
+        <div class="chart-box">
+          <div class="ctitle">KPI 1 — Quarterly Revenue &amp; YoY Trend <span class="zoom" onclick="zoom('cQtr')">⤢ expand</span></div>
+          <div class="canvas-h"><canvas id="cQtr"></canvas></div>
+        </div>
+        <div class="chart-box">
+          <div class="ctitle">KPI 2 — SBC as % of Revenue (falling = healthy) <span class="zoom" onclick="zoom('cSbc')">⤢ expand</span></div>
+          <div class="canvas-h"><canvas id="cSbc"></canvas></div>
+        </div>
+      </div>
+      <div class="chart-grid">
+        <div class="chart-box">
+          <div class="ctitle">KPI 3 — Revenue per Employee ($K) <span class="zoom" onclick="zoom('cRpe')">⤢ expand</span></div>
+          <div class="canvas-h"><canvas id="cRpe"></canvas></div>
+        </div>
+        <div class="chart-box">
+          <div class="ctitle">KPI 4 — Inventory ($M, demand signal) <span class="zoom" onclick="zoom('cInv')">⤢ expand</span></div>
+          <div class="canvas-h"><canvas id="cInv"></canvas></div>
+        </div>
+      </div>
+      <div class="callout note">
+        <div class="ct">What to Watch</div>
+        The two KPIs that most cheaply reveal the thesis: <b>revenue/employee</b> rising (operating leverage on a fixed R&amp;D-heavy base) and <b>SBC/revenue</b> falling below ~20% (proof that dilution is decelerating relative to growth). Both moved the right way in FY26. If they reverse, cut conviction.
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 11 -->
+  <section class="card" id="s11">
+    <div class="card-head"><div class="badge">11</div><h2>Glossary &amp; Methodology</h2><span class="chev">▾</span></div>
+    <div class="card-body">
+      <div class="gloss" id="g-edge">
+        <h4>Edge AI / Physical AI</h4>
+        <p>Running AI inference <i>on-device</i> — in the camera, car, drone or robot — rather than in a remote data center. "Physical AI" extends this to machines that perceive, decide and act in the real world.</p>
+        <p><b>Why it matters:</b> latency, privacy, power and cost all favor moving inference to the edge, which is the entire structural tailwind behind AMBA. <a class="back" href="#s1">↩ back to Summary</a></p>
+      </div>
+      <div class="gloss" id="g-cvflow">
+        <h4>CVflow</h4>
+        <p>Ambarella's proprietary computer-vision neural-network architecture, integrated with an AI accelerator, image signal processor and CPU on a single low-power SoC.</p>
+        <p><b>Why it matters:</b> it is the technical core of the moat — power-efficiency-per-inference is the scarce resource at the edge. <a class="back" href="#s3">↩ back to Moat</a></p>
+      </div>
+      <div class="gloss" id="g-ps">
+        <h4>Price-to-Sales (P/S)</h4>
+        <div class="formula">P/S = Market Cap ÷ Trailing 12-Month Revenue</div>
+        <p>Used because AMBA is GAAP-unprofitable, so P/E is meaningless. <b>FTA bands:</b> &gt;30 Euphoric · &gt;18 Excited · 8–18 Optimistic · 4–8 Aware · &lt;4 Cautious · &lt;2 Pessimistic.</p>
+        <p><b>Why it matters:</b> anchors valuation for growth companies with no earnings. AMBA ≈ 8.5× = "Optimistic." <a class="back" href="#s2">↩ back to Valuation</a></p>
+      </div>
+      <div class="gloss" id="g-vlm">
+        <h4>VLM (Vision-Language Model) &amp; GenAI at the Edge</h4>
+        <p>Multimodal models that combine image understanding with language reasoning, increasingly deployable on edge silicon.</p>
+        <p><b>Why it matters:</b> more complex workloads justify Ambarella's higher-ASP next-gen chips — the mechanical driver of the ASP-expansion thesis. <a class="back" href="#s2">↩ back to Valuation</a></p>
+      </div>
+      <div class="gloss">
+        <h4>Free Cash Flow (FCF)</h4>
+        <div class="formula">FCF = Operating Cash Flow − Capital Expenditures</div>
+        <p><b>Why it matters:</b> the truest measure of self-funding capacity for a GAAP-loss company. AMBA is reliably FCF-positive despite net losses. <a class="back" href="#s4">↩ back to Financials</a></p>
+      </div>
+      <div class="gloss">
+        <h4>Stock-Based Compensation (SBC)</h4>
+        <p>Non-cash equity paid to employees; excluded from non-GAAP but real to shareholders via dilution.</p>
+        <p><b>Why it matters:</b> at ~25% of revenue it is the swing factor between GAAP losses and non-GAAP profits, and the single biggest bear talking point. <a class="back" href="#s4">↩ back to Financials</a></p>
+      </div>
+      <div class="gloss">
+        <h4>Long-Term Agreement (LTA) — Hanwha</h4>
+        <p>A multi-year commercial commitment (here &gt;$800M in potential revenue over ~10 years) that de-risks the demand outlook.</p>
+        <p><b>Why it matters:</b> converts pipeline into contracted visibility — the highest-quality catalyst in the story. <a class="back" href="#s8">↩ back to Catalysts</a></p>
+      </div>
+      <div class="gloss">
+        <h4>Methodology &amp; Sources</h4>
+        <p>Financials are drawn from Ambarella's Q1 FY27 press release / SEC filings and aggregated data (StockAnalysis / Fiscal.ai) as of Jul 6, 2026. Prices reflect the Jul 2 close ($78.36) and Jul 6 pre-market ($80.91). Scenario targets are illustrative, multiple-based (P/S) given GAAP losses, and probability-weighted by the analyst. Earnings-tracker guidance midpoints for quarters prior to Q4 FY26 are approximations. This document is educational, not investment advice. <a class="back" href="#s1">↩ back to top</a></p>
+      </div>
+    </div>
+  </section>
+
+  <div class="disc">
+    <b>Disclaimer.</b> Foundational Trading Academy · FTA Advanced Analysis Framework. This report is for informational and educational purposes only and does not constitute investment, legal, or tax advice, nor a recommendation to buy or sell any security. The author is not a licensed financial advisor. Figures are sourced from public filings and third-party data providers believed reliable but not guaranteed. Forward-looking scenarios are estimates, not forecasts. Past performance does not indicate future results. Conduct your own due diligence. Generated Jul 6, 2026.
+  </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+  <div class="modal-box">
+    <div class="mt"><span id="modalTitle">Chart</span><span class="mx" onclick="closeZoom()">✕ close</span></div>
+    <div class="modal-canvas"><canvas id="modalCanvas"></canvas></div>
+  </div>
+</div>
+
+<script>
+// collapsible cards
+document.querySelectorAll('.card-head').forEach(h=>{
+  h.addEventListener('click',()=>h.parentElement.classList.toggle('collapsed'));
+});
+
+const GREEN='#145A22',GOLD='#FCC55B',RED='#a8341f',FOREST='#243D27',MUTED='#5d6155',LINE='#d8d1c4';
+Chart.defaults.font.family="'Quicksand',sans-serif";
+Chart.defaults.font.size=11;
+Chart.defaults.color=MUTED;
+const chartStore={};
+function mk(id,cfg){const c=document.getElementById(id);if(!c)return;chartStore[id]={cfg};new Chart(c.getContext('2d'),cfg);}
+const noLegend={legend:{display:false}};
+const gridOpt={grid:{color:'rgba(0,0,0,.05)'}};
+
+// 1 Revenue
+mk('cRev',{type:'bar',data:{labels:['FY22','FY23','FY24','FY25','FY26','TTM'],datasets:[{label:'Revenue $M',data:[331.9,337.6,226.5,284.9,390.7,405.2],backgroundColor:[FOREST,FOREST,RED,GREEN,GREEN,GOLD],borderRadius:5}]},options:{responsive:true,maintainAspectRatio:false,plugins:noLegend,scales:{y:gridOpt,x:{grid:{display:false}}}}});
+// 2 Mix doughnut
+mk('cMix',{type:'doughnut',data:{labels:['Edge-AI (~80%)','Legacy Video/Other (~20%)'],datasets:[{data:[80,20],backgroundColor:[GREEN,GOLD],borderColor:'#fff',borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:10}}}},cutout:'58%'}});
+// 3 FCF
+mk('cFcf',{type:'bar',data:{labels:['FY22','FY23','FY24','FY25','FY26','TTM'],datasets:[{type:'bar',label:'FCF $M',data:[29.1,29.0,7.1,23.5,58.0,18.2],backgroundColor:GREEN,borderRadius:5,yAxisID:'y'},{type:'line',label:'FCF Margin %',data:[8.8,8.6,3.1,8.2,14.9,4.5],borderColor:GOLD,backgroundColor:GOLD,tension:.3,yAxisID:'y1'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:9}}}},scales:{y:gridOpt,y1:{position:'right',grid:{display:false}},x:{grid:{display:false}}}}});
+// 4 Margins
+mk('cMargin',{type:'line',data:{labels:['FY22','FY23','FY24','FY25','FY26','TTM'],datasets:[{label:'Gross %',data:[62.7,61.9,60.4,60.5,59.2,58.8],borderColor:GREEN,backgroundColor:'rgba(20,90,34,.08)',fill:true,tension:.3},{label:'Operating %',data:[-8.9,-22.0,-68.3,-44.4,-21.1,-18.8],borderColor:RED,backgroundColor:'rgba(168,52,31,.06)',fill:true,tension:.3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:9}}}},scales:{y:gridOpt,x:{grid:{display:false}}}}});
+// 6a Scenario
+mk('cScen',{type:'bar',data:{labels:['1-Year','3-Year','5-Year'],datasets:[{label:'Bear',data:[52,45,40],backgroundColor:RED,borderRadius:4},{label:'Base',data:[95,135,175],backgroundColor:GOLD,borderRadius:4},{label:'Bull',data:[130,220,320],backgroundColor:GREEN,borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:10}}}},scales:{y:gridOpt,x:{grid:{display:false}}}}});
+// 6b weighted
+mk('cWeighted',{type:'line',data:{labels:['Today','1-Yr','3-Yr','5-Yr'],datasets:[{label:'Weighted PT',data:[78,95,138,178],borderColor:GREEN,backgroundColor:'rgba(20,90,34,.10)',fill:true,tension:.3,pointBackgroundColor:GOLD,pointRadius:5}]},options:{responsive:true,maintainAspectRatio:false,plugins:noLegend,scales:{y:gridOpt,x:{grid:{display:false}}}}});
+// 9a peer P/S
+mk('cPS',{type:'bar',data:{labels:['MBLY','INDI','AMBA','LSCC'],datasets:[{label:'P/S',data:[3.8,4.2,8.5,31.5],backgroundColor:['#8aa98f','#8aa98f',GREEN,GOLD],borderRadius:5}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:noLegend,scales:{x:gridOpt,y:{grid:{display:false}}}}});
+// 9b scatter growth vs P/S
+mk('cScatter',{type:'bubble',data:{datasets:[
+ {label:'AMBA',data:[{x:28,y:8.5,r:16}],backgroundColor:'rgba(20,90,34,.75)'},
+ {label:'MBLY',data:[{x:27,y:3.8,r:24}],backgroundColor:'rgba(93,97,85,.6)'},
+ {label:'LSCC',data:[{x:17,y:31.5,r:30}],backgroundColor:'rgba(252,197,91,.75)'},
+ {label:'INDI',data:[{x:1,y:4.2,r:9}],backgroundColor:'rgba(168,52,31,.55)'}
+]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:9}}}},scales:{x:{title:{display:true,text:'Rev Growth YoY %'},...gridOpt},y:{title:{display:true,text:'P/S'},...gridOpt}}}});
+// 10a quarterly rev
+mk('cQtr',{type:'bar',data:{labels:['Q1·26','Q2·26','Q3·26','Q4·26','Q1·27'],datasets:[{label:'Rev $M',data:[85.9,82.6,121.3,100.9,100.4],backgroundColor:GREEN,borderRadius:4,yAxisID:'y'},{type:'line',label:'YoY %',data:[3,40,63,20,16.9],borderColor:GOLD,backgroundColor:GOLD,tension:.3,yAxisID:'y1'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:9}}}},scales:{y:gridOpt,y1:{position:'right',grid:{display:false}},x:{grid:{display:false}}}}});
+// 10b SBC %
+mk('cSbc',{type:'line',data:{labels:['FY22','FY23','FY24','FY25','FY26','TTM'],datasets:[{label:'SBC / Rev %',data:[26.5,32.9,49.2,37.8,25.1,23.1],borderColor:RED,backgroundColor:'rgba(168,52,31,.10)',fill:true,tension:.3,pointBackgroundColor:GREEN}]},options:{responsive:true,maintainAspectRatio:false,plugins:noLegend,scales:{y:gridOpt,x:{grid:{display:false}}}}});
+// 10c rev/employee
+mk('cRpe',{type:'bar',data:{labels:['FY24','FY25','FY26'],datasets:[{label:'$K/employee',data:[236,297,407],backgroundColor:[FOREST,GREEN,GOLD],borderRadius:5}]},options:{responsive:true,maintainAspectRatio:false,plugins:noLegend,scales:{y:gridOpt,x:{grid:{display:false}}}}});
+// 10d inventory
+mk('cInv',{type:'line',data:{labels:['Q4 FY26','Q1 FY27'],datasets:[{label:'Inventory $M',data:[52.2,80.4],borderColor:GREEN,backgroundColor:'rgba(20,90,34,.10)',fill:true,tension:.2,pointBackgroundColor:GOLD,pointRadius:6}]},options:{responsive:true,maintainAspectRatio:false,plugins:noLegend,scales:{y:gridOpt,x:{grid:{display:false}}}}});
+
+// modal zoom
+let modalChart=null;
+function zoom(id){
+  const src=chartStore[id];if(!src)return;
+  document.getElementById('modal').classList.add('open');
+  document.getElementById('modalTitle').textContent=document.querySelector('[onclick="zoom(\''+id+'\')"]').parentElement.childNodes[0].textContent.trim();
+  const cfg=JSON.parse(JSON.stringify(src.cfg));
+  if(modalChart)modalChart.destroy();
+  modalChart=new Chart(document.getElementById('modalCanvas').getContext('2d'),cfg);
+}
+function closeZoom(){document.getElementById('modal').classList.remove('open');if(modalChart){modalChart.destroy();modalChart=null;}}
+document.getElementById('modal').addEventListener('click',e=>{if(e.target.id==='modal')closeZoom();});
+</script>
+</body>
+</html>
