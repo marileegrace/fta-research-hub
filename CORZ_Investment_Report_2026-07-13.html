@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CORZ — Core Scientific Investment Report | FTA Research Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Questrial&family=Quicksand:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  --green:#145A22; --dark-green:#0A3A14; --forest:#243D27;
+  --gold:#FCC55B; --gold-deep:#e0a838;
+  --beige:#EDE8E0; --beige-card:#f6f3ed;
+  --ink:#23241f; --muted:#5d6155; --red:#a8341f; --line:#d8d1c4;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Quicksand',sans-serif;background:var(--beige);color:var(--ink);line-height:1.6;font-weight:400}
+a{color:var(--green);text-decoration:none}
+a:hover{text-decoration:underline}
+.layout{display:flex;min-height:100vh}
+
+/* SIDEBAR */
+.sidebar{position:sticky;top:0;align-self:flex-start;width:262px;min-width:262px;height:100vh;overflow-y:auto;
+  background:linear-gradient(180deg,#071f0b,#0A3A14 40%,#145A22);border-right:2px solid var(--gold);
+  padding:28px 20px;color:#e9e4d8}
+.brand{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.9rem;font-weight:600;color:var(--gold);line-height:1.1;margin-bottom:4px}
+.brand-sub{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:2px;font-size:.58rem;color:#b9c7ad;margin-bottom:22px}
+.ticker-box{background:rgba(255,255,255,.06);border:1px solid rgba(252,197,91,.4);border-radius:10px;padding:14px;margin-bottom:24px}
+.ticker-box .sym{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:1.5rem;color:#fff;letter-spacing:1px}
+.ticker-box .co{font-size:.72rem;color:#b9c7ad;margin-bottom:8px}
+.ticker-box .px{font-family:'JetBrains Mono',monospace;font-size:1.35rem;color:var(--gold);font-weight:700}
+.ticker-box .chg{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:#9fce9f}
+nav a{display:flex;gap:9px;align-items:baseline;color:#dce4d2;font-size:.82rem;padding:6px 8px;border-radius:6px;margin-bottom:2px}
+nav a:hover{background:rgba(252,197,91,.12);text-decoration:none;color:#fff}
+nav a .n{font-family:'JetBrains Mono',monospace;color:var(--gold);font-size:.72rem;min-width:20px}
+.side-disc{margin-top:22px;font-size:.6rem;color:#8fa086;line-height:1.4;border-top:1px solid rgba(255,255,255,.12);padding-top:12px}
+
+/* MAIN */
+.main{flex:1;min-width:0}
+.hero{position:relative;overflow:hidden;background:linear-gradient(120deg,var(--dark-green),var(--green) 60%);color:#fff;padding:44px 48px 40px}
+.hero::after{content:"";position:absolute;top:-120px;right:-80px;width:360px;height:360px;border-radius:50%;
+  background:radial-gradient(circle,rgba(252,197,91,.28),transparent 70%);pointer-events:none}
+.hero .eyebrow{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:3px;font-size:.66rem;color:var(--gold);margin-bottom:10px}
+.hero h1{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:2.7rem;line-height:1.05;margin-bottom:6px}
+.hero .sub{font-size:.95rem;color:#d6e2cd;max-width:640px;position:relative;z-index:2}
+.verdict{display:inline-flex;align-items:center;gap:14px;margin-top:20px;background:rgba(255,255,255,.08);border:1px solid var(--gold);border-radius:40px;padding:9px 20px}
+.verdict .pill{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:2px;font-size:.72rem;color:var(--gold)}
+.verdict .rating{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:1.05rem;color:#fff}
+.verdict .rating span{color:var(--gold)}
+
+/* KPI STRIP */
+.kpi-strip{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:var(--line);border-bottom:2px solid var(--gold)}
+.kpi{background:var(--beige-card);padding:16px 14px;text-align:left}
+.kpi .lab{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:.56rem;color:var(--muted);margin-bottom:5px}
+.kpi .val{font-family:'JetBrains Mono',monospace;font-size:1.15rem;font-weight:700;color:var(--green);line-height:1.1}
+.kpi .st{font-size:.62rem;color:var(--muted);margin-top:3px}
+
+/* CONTENT */
+.content{max-width:1080px;margin:0 auto;padding:36px 48px 80px}
+.card{background:var(--beige-card);border-radius:14px;margin-bottom:26px;box-shadow:0 1px 3px rgba(0,0,0,.05);overflow:hidden}
+.card-head{display:flex;align-items:center;gap:14px;padding:20px 24px;border-left:5px solid var(--green);cursor:pointer;user-select:none}
+.badge{width:34px;height:34px;min-width:34px;border-radius:9px;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;
+  font-family:'JetBrains Mono',monospace;font-weight:700;font-size:1rem}
+.card-head h2{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:1.5rem;color:var(--dark-green);flex:1}
+.chev{font-family:'JetBrains Mono',monospace;color:var(--gold-deep);font-size:1.1rem;transition:transform .25s}
+.card.collapsed .chev{transform:rotate(-90deg)}
+.card-body{padding:4px 26px 26px}
+.card.collapsed .card-body{display:none}
+.card-body p{margin-bottom:12px}
+.card-body h3{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1.5px;font-size:.8rem;color:var(--green);margin:18px 0 8px}
+
+/* THESIS */
+.thesis{font-family:'Cormorant Garamond',serif;font-size:1.45rem;line-height:1.45;color:var(--dark-green);
+  border-left:4px solid var(--gold);padding:6px 0 6px 22px;margin:6px 0 16px}
+.thesis b{font-weight:700}
+
+/* CHIPS */
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0}
+.chip{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;min-width:120px}
+.chip .lab{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:.54rem;color:var(--muted);margin-bottom:3px}
+.chip .val{font-family:'JetBrains Mono',monospace;font-size:1.05rem;font-weight:700;color:var(--green)}
+.chip .val.red{color:var(--red)}
+
+/* CALLOUT */
+.callout{background:rgba(252,197,91,.14);border:1px solid var(--gold);border-radius:10px;padding:14px 18px;margin:14px 0;font-size:.92rem}
+.callout.note{background:rgba(20,90,34,.08);border-color:var(--green)}
+.callout b{color:var(--dark-green)}
+
+/* CHART */
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}
+.chart-box{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px}
+.chart-box .ctitle{display:flex;justify-content:space-between;align-items:center;font-family:'Questrial',sans-serif;
+  text-transform:uppercase;letter-spacing:1.2px;font-size:.68rem;color:var(--green);margin-bottom:10px}
+.chart-box .zoom{cursor:pointer;color:var(--gold-deep);font-size:.64rem;border:1px solid var(--line);border-radius:5px;padding:2px 7px;background:var(--beige-card)}
+.chart-wrap{position:relative;height:160px}
+.chart-box.solo{max-width:420px;margin:16px auto}
+
+/* SCENARIO */
+.scen-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:16px 0}
+.scen{background:#fff;border:1px solid var(--line);border-top:4px solid var(--muted);border-radius:12px;padding:16px}
+.scen.bull{border-top-color:var(--green)}
+.scen.base{border-top-color:var(--gold)}
+.scen.bear{border-top-color:var(--red)}
+.scen .h{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1.5px;font-size:.72rem;margin-bottom:8px}
+.scen.bull .h{color:var(--green)}.scen.base .h{color:var(--gold-deep)}.scen.bear .h{color:var(--red)}
+.scen .pt{font-family:'JetBrains Mono',monospace;font-size:1.5rem;font-weight:700;color:var(--ink)}
+.scen .prob{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:.62rem;background:var(--beige);border-radius:20px;padding:2px 9px;margin:6px 0 8px;color:var(--muted)}
+.scen ul{list-style:none;font-size:.78rem;color:var(--muted)}
+.scen ul li{padding:3px 0 3px 14px;position:relative}
+.scen ul li::before{content:"▸";position:absolute;left:0;color:var(--gold-deep)}
+.scen h4{font-family:'Questrial';font-size:.62rem;text-transform:uppercase;letter-spacing:1px;color:var(--ink);margin:8px 0 4px}
+
+/* RISK */
+.risk{background:#fff;border-left:4px solid var(--red);border-radius:8px;padding:14px 18px;margin-bottom:12px}
+.risk .rh{color:var(--red);font-family:'Questrial',sans-serif;font-size:.92rem;letter-spacing:.5px;margin-bottom:6px}
+.risk .meta{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.risk .tag{font-family:'JetBrains Mono',monospace;font-size:.6rem;background:var(--beige);border:1px solid var(--line);border-radius:16px;padding:2px 9px;color:var(--muted)}
+.risk p{font-size:.85rem;margin:0}
+
+/* TIMELINE */
+.timeline{position:relative;margin:18px 0 4px;padding-left:26px}
+.timeline::before{content:"";position:absolute;left:7px;top:4px;bottom:4px;width:3px;
+  background:linear-gradient(180deg,var(--green),var(--gold))}
+.tl-item{position:relative;margin-bottom:18px}
+.tl-item::before{content:"";position:absolute;left:-23px;top:3px;width:13px;height:13px;border-radius:50%;
+  background:var(--gold);border:3px solid var(--green)}
+.tl-date{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--gold-deep);font-weight:700}
+.tl-title{font-weight:600;color:var(--dark-green)}
+.tl-desc{font-size:.82rem;color:var(--muted)}
+
+/* TABLE */
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:.84rem;background:#fff;border-radius:10px;overflow:hidden}
+thead th{background:var(--green);color:#fff;font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:.5px;
+  font-size:.68rem;padding:10px 12px;text-align:left;font-weight:400}
+tbody td{padding:9px 12px;border-bottom:1px solid var(--line)}
+tbody tr:nth-child(even){background:rgba(237,232,224,.5)}
+tbody tr:hover{background:rgba(252,197,91,.14)}
+td.num{font-family:'JetBrains Mono',monospace;text-align:right}
+.pos{color:var(--green);font-weight:700}.neg{color:var(--red);font-weight:700}
+.cred{font-family:'JetBrains Mono',monospace;font-weight:700}
+
+/* GLOSSARY */
+.gloss dt{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:.82rem;color:var(--green);margin-top:16px}
+.gloss dd{font-size:.86rem;color:var(--ink);margin:4px 0 0}
+.gloss dd .formula{font-family:'JetBrains Mono',monospace;font-size:.76rem;background:#fff;border:1px solid var(--line);border-radius:6px;padding:3px 8px;display:inline-block;margin:5px 0;color:var(--forest)}
+.gloss dd .back{font-size:.7rem}
+.term{border-bottom:1px dotted var(--gold-deep);cursor:help}
+
+/* MODAL */
+.modal{display:none;position:fixed;inset:0;background:rgba(10,20,10,.82);z-index:100;align-items:center;justify-content:center;padding:30px}
+.modal.open{display:flex}
+.modal-box{background:var(--beige-card);border:2px solid var(--gold);border-radius:14px;padding:22px;width:min(900px,94vw);height:min(80vh,600px);position:relative}
+.modal-box .x{position:absolute;top:12px;right:16px;cursor:pointer;font-family:'JetBrains Mono',monospace;color:var(--red);font-size:1.2rem}
+.modal-box canvas{width:100%!important;height:calc(100% - 20px)!important}
+
+@media(max-width:880px){.chart-grid,.scen-grid{grid-template-columns:1fr}}
+@media(max-width:780px){.sidebar{display:none}.kpi-strip{grid-template-columns:repeat(3,1fr)}.content,.hero{padding-left:22px;padding-right:22px}.hero h1{font-size:2rem}}
+</style>
+</head>
+<body>
+<div class="layout">
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="brand">Foundational<br>Trading Academy</div>
+  <div class="brand-sub">Investment Research Hub</div>
+  <div class="ticker-box">
+    <div class="sym">CORZ</div>
+    <div class="co">Core Scientific, Inc. · NASDAQ</div>
+    <div class="px">$23.45</div>
+    <div class="chg">Mkt Cap $7.47B · as of 07/12/26</div>
+  </div>
+  <nav>
+    <a href="#s1"><span class="n">01</span> Executive Summary &amp; Thesis</a>
+    <a href="#s2"><span class="n">02</span> Micro &amp; Valuation</a>
+    <a href="#s3"><span class="n">03</span> Moat, Management &amp; Culture</a>
+    <a href="#s4"><span class="n">04</span> Financial Deep Dive</a>
+    <a href="#s5"><span class="n">05</span> Earnings Tracker</a>
+    <a href="#s6"><span class="n">06</span> Bull / Base / Bear</a>
+    <a href="#s7"><span class="n">07</span> Risks &amp; Anti-Thesis</a>
+    <a href="#s8"><span class="n">08</span> Catalyst Timeline</a>
+    <a href="#s9"><span class="n">09</span> Comparable Companies</a>
+    <a href="#s10"><span class="n">10</span> First-Principles KPIs</a>
+    <a href="#s11"><span class="n">11</span> Glossary &amp; Methodology</a>
+  </nav>
+  <div class="side-disc">Educational &amp; informational only. Not investment advice. Data retrieved from primary filings &amp; market sources, 12–13 Jul 2026.</div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+  <div class="hero">
+    <div class="eyebrow">Deep-Dive Analysis · FTA Framework · Generated 13 Jul 2026</div>
+    <h1>Core Scientific (CORZ)</h1>
+    <div class="sub">The jilted bride becomes the landlord: how a rejected $9B takeover left shareholders holding a $10B+ AI-infrastructure backlog the market is still mispricing as a bitcoin miner.</div>
+    <div class="verdict">
+      <span class="pill">Verdict · Constructive Bull</span>
+      <span class="rating">Conviction <span>7 / 10</span></span>
+    </div>
+  </div>
+
+  <!-- KPI STRIP -->
+  <div class="kpi-strip">
+    <div class="kpi"><div class="lab">Price</div><div class="val">$23.45</div><div class="st">52w: $12.42–$30.46</div></div>
+    <div class="kpi"><div class="lab">Market Cap</div><div class="val">$7.47B</div><div class="st">~318M shares</div></div>
+    <div class="kpi"><div class="lab">Colo Rev Growth</div><div class="val">+801%</div><div class="st">Q1 YoY ($8.6M→$77.5M)</div></div>
+    <div class="kpi"><div class="lab">Contracted Backlog</div><div class="val">$10.2B</div><div class="st">12-yr take-or-pay</div></div>
+    <div class="kpi"><div class="lab">Fwd P/S*</div><div class="val">~8.8x</div><div class="st">on full-ramp run-rate</div></div>
+    <div class="kpi"><div class="lab">Analyst PT</div><div class="val">$29–32</div><div class="st">Buy · high $37</div></div>
+  </div>
+
+  <div class="content">
+
+  <!-- SECTION 1 -->
+  <section class="card" id="s1">
+    <div class="card-head"><div class="badge">01</div><h2>Executive Summary &amp; Investment Thesis</h2><span class="chev">▾</span></div>
+    <div class="card-body">
+      <div class="thesis"><b>BULL.</b> Core Scientific is no longer a bitcoin miner — it is a contracted AI-data-center landlord in disguise, and the market has not finished re-rating it. When shareholders <b>rejected CoreWeave's $9B all-stock bid in October 2025</b>, they didn't kill the story; they kept the <b>$10.2B, 12-year take-or-pay backlog</b> for themselves. At ~$23.45 the equity is priced closer to a cyclical crypto shell than to a 57%-gross-margin power-and-cooling REIT with 4.5 GW of pipeline. The gap between what CORZ <i>is becoming</i> and what it is <i>quoted as</i> is the alpha.</div>
+
+      <p>The core asymmetry: contracted colocation revenue is legally committed and largely insensitive to the bitcoin price that still dominates the ticker's reputation and its beta. As <span class="term">billable capacity</span> ramps from 243 MW today toward the full 590 MW by early 2027, an <span class="term">annuity-like</span> revenue stream north of $350M (colocation alone) switches on — against a self-mining segment the company is deliberately shrinking. The bear's strongest card is real and we do not dismiss it: extreme customer concentration in a single counterparty (CoreWeave) plus a freshly levered balance sheet ($3.3B of 7.75% notes). But those are <i>known, priced, and structurally mitigated</i> risks against an <i>underappreciated, structurally growing</i> cash engine.</p>
+
+      <div class="chips">
+        <div class="chip"><div class="lab">Current Price</div><div class="val">$23.45</div></div>
+        <div class="chip"><div class="lab">Market Cap</div><div class="val">$7.47B</div></div>
+        <div class="chip"><div class="lab">Sector</div><div class="val" style="font-size:.8rem">AI Data Ctr / Digital Infra</div></div>
+        <div class="chip"><div class="lab">TTM Revenue</div><div class="val">~$355M</div></div>
+        <div class="chip"><div class="lab">Contracted MW</div><div class="val">590 MW</div></div>
+        <div class="chip"><div class="lab">Pipeline</div><div class="val">4.5 GW</div></div>
+        <div class="chip"><div class="lab">Conviction</div><div class="val">7 / 10</div></div>
+      </div>
+
+      <div class="callout"><b>The one-line thesis:</b> Buy the landlord the market still labels a miner — a $10B+ contracted backlog and 4.5 GW pipeline priced at a discount to pure-play data-center peers, with the failed-merger overhang the entry point rather than the risk.</div>
+
+      <div class="chart-grid">
+        <div class="chart-box"><div class="ctitle">Quarterly Revenue ($M)<span class="zoom" data-c="cRev">⤢ expand</span></div><div class="chart-wrap"><canvas id="cRev"></canvas></div></div>
+        <div class="chart-box"><div class="ctitle">Q1'26 Revenue Mix<span class="zoom" data-c="cMix">⤢ expand</span></div><div class="chart-wrap"><canvas id="cMix"></canvas></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 2 -->
+  <section class="card" id="s2">
+    <div class="card-head"><div class="badge">02</div><h2>Microeconomic &amp; Valuation Analysis</h2><span class="chev">▾</span></div>
+    <div class="card-body">
+      <h3>Industry &amp; TAM</h3>
+      <p>Core Scientific competes in the AI/HPC <span class="term">colocation</span> and power-delivery layer — the "picks and shovels" beneath the neocloud boom. Independent estimates put global data-center capex on a multi-hundred-billion-dollar annual trajectory through the decade, with AI-ready, high-density (liquid-cooled) capacity the binding constraint. The relevant sub-market — contracted power delivery to GPU cloud operators — is expanding at a mid-to-high double-digit CAGR, gated not by demand but by <b>available power, land, and construction speed</b>. CORZ's differentiator is a portfolio of already-energized, grid-interconnected sites — the scarcest input in the entire stack.</p>
+
+      <h3>Valuation Framing</h3>
+      <p>On a trailing basis CORZ screens rich: ~$7.47B market cap on ~$355M TTM revenue implies a <span class="term">P/S ratio</span> near <b>21x — "Excited" on the FTA scale (&gt;18)</b>. But trailing revenue is the wrong denominator for a company mid-transition. On the full-ramp contracted run-rate (~$850M/yr implied by the $10.2B / 12-yr backlog), forward P/S compresses to <b>~8.8x — "Optimistic" (&gt;8)</b>, and on an EV/contracted-MW basis (~$9.7B EV ÷ 590 MW ≈ $16M/MW) it sits <i>below</i> several pure-play peers. The valuation you see depends entirely on whether you underwrite the backlog — which is precisely the market inefficiency.</p>
+
+      <div class="chips">
+        <div class="chip"><div class="lab">P/S (TTM)</div><div class="val">~21x</div></div>
+        <div class="chip"><div class="lab">P/S (Fwd run-rate)</div><div class="val">~8.8x</div></div>
+        <div class="chip"><div class="lab">EV / Contracted MW</div><div class="val">~$16M</div></div>
+        <div class="chip"><div class="lab">Enterprise Value</div><div class="val">~$9.7B</div></div>
+        <div class="chip"><div class="lab">Net Debt</div><div class="val red">~$2.2B</div></div>
+        <div class="chip"><div class="lab">Consensus PT</div><div class="val">~$29–32</div></div>
+      </div>
+
+      <h3>Ownership, Insiders &amp; Sentiment</h3>
+      <p>Institutional ownership is high and activist-influenced — <b>Two Seas Capital</b> led the successful campaign to reject the CoreWeave bid, signaling sophisticated holders who believe standalone value exceeds the offer. Analyst sentiment is constructive: of ~16 covering analysts, roughly 56% rate Strong Buy and 31% Buy, with 0% Sell; the consensus one-year target clusters at <b>$29–32</b> (high $37, low $20).</p>
+
+      <div class="chart-grid">
+        <div class="chart-box"><div class="ctitle">Analyst Rating Distribution<span class="zoom" data-c="cRate">⤢ expand</span></div><div class="chart-wrap"><canvas id="cRate"></canvas></div></div>
+        <div class="chart-box"><div class="ctitle">P/S — Trailing vs Forward Run-Rate<span class="zoom" data-c="cPS">⤢ expand</span></div><div class="chart-wrap"><canvas id="cPS"></canvas></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 3 -->
+  <section class="card" id="s3">
+    <div class="card-head"><div class="badge">03</div><h2>Qualitative Analysis — Moat, Management &amp; Culture</h2><span class="chev">▾</span></div>
+    <div class="card-body">
+      <h3>The Moat — Think in Watts, Not Servers</h3>
+      <p>Core Scientific's moat is not software or brand; it is <b>interconnected power at scale in the right places</b>. The binding constraint on AI buildout is not GPUs — Nvidia will make more — but megawatts that are permitted, energized, and grid-connected today. CORZ controls a portfolio approaching <b>1.3 GW of operational/near-term capacity within a 4.5 GW gross pipeline</b>, including large greenfield expansions at Muskogee (OK) and Pecos (TX) and a fresh ~430 MW land-and-power position in Hunt County, TX. Replicating this from a standing start takes years of utility queues and construction — a durable, time-based moat.</p>
+      <p>The second moat layer is the <span class="term">take-or-pay</span> contract structure itself: a 12-year commitment where the customer pays whether or not it uses the capacity. That converts an operationally cyclical business into something closer to an infrastructure bond with equity upside — a systemic re-rating catalyst if the market ever fully recognizes it.</p>
+
+      <h3>Management &amp; Capital Allocation</h3>
+      <p>Leadership under CEO Adam Sullivan steered the company through Chapter 11 restructuring (emerged early 2024) and pivoted decisively from bitcoin self-mining to HPC hosting — a genuinely contrarian, well-timed reallocation of infrastructure toward higher-margin demand. The willingness to <b>walk away from a $9B acquisition</b> (backed by the board and major holders) reflects conviction that standalone execution creates more value. Capital allocation is now aggressive-but-funded: the $3.3B notes raise pre-funds the buildout, trading balance-sheet risk for growth optionality.</p>
+
+      <h3>Culture &amp; Organizational Traits</h3>
+      <p>Traits that matter here: <b>failure tolerance</b> (survived bankruptcy and a crypto winter and re-emerged), <b>pace</b> (contract-to-energization timelines measured in quarters), and <b>customer intimacy</b> — deep operational integration with a single anchor tenant. The obvious cultural risk is the flip side of that intimacy: an organization optimized around one customer. Diversifying the tenant base is the key organizational test of the next 12–24 months.</p>
+
+      <div class="callout note"><b>Founder-led?</b> No — professional management post-restructuring rather than founder-run. This trades visionary intensity for operational discipline, which suits an infrastructure buildout but means the "mission lock-in" premium is lower.</div>
+    </div>
+  </section>
+
+  <!-- SECTION 4 -->
+  <section class="card" id="s4">
+    <div class="card-head"><div class="badge">04</div><h2>Quantitative Analysis — Financial Deep Dive</h2><span class="chev">▾</span></div>
+    <div class="card-body">
+      <p>The financials tell a two-speed story: a <b>collapsing legacy mining line</b> and an <b>exploding colocation line</b>, with reported GAAP results distorted by large non-cash impairments as mining assets are written down. Reading through the noise is essential.</p>
+
+      <h3>Revenue Streams, Explained Simply</h3>
+      <p><b>1) High-density colocation (the future):</b> CORZ rents powered, cooled data-center space to CoreWeave under long contracts. Q1'26 colocation revenue was <b>$77.5M at a 57% gross margin</b> — up from just $8.6M a year earlier (roughly +800% YoY). This is the annuity.</p>
+      <p><b>2) Digital-asset self-mining (the past):</b> CORZ mines bitcoin on its own account. Q1'26 self-mining revenue was <b>$30.1M at a negative gross margin</b> — a segment being intentionally wound down and converted to higher-value hosting.</p>
+
+      <div class="chart-grid">
+        <div class="chart-box"><div class="ctitle">Colocation Revenue Ramp ($M)<span class="zoom" data-c="cColo">⤢ expand</span></div><div class="chart-wrap"><canvas id="cColo"></canvas></div></div>
+        <div class="chart-box"><div class="ctitle">Segment Gross Margin (Q1'26)<span class="zoom" data-c="cGM">⤢ expand</span></div><div class="chart-wrap"><canvas id="cGM"></canvas></div></div>
+      </div>
+
+      <h3>Profitability, Cash &amp; Leverage</h3>
+      <p>GAAP results are ugly on the surface — a <b>Q1'26 net loss of $347.2M</b>, driven by <b>$266.5M of non-cash impairments</b> on mining equipment. Strip those out and <span class="term">Adjusted EBITDA</span> was modestly positive at <b>+$4.4M</b>, versus a negative print a year earlier — evidence the underlying business is crossing into normalized breakeven as colocation scales. Full-year 2025 revenue was $319.0M (down 38% as mining shrank) with the net loss narrowing 74% YoY.</p>
+      <p>Liquidity is ample post-raise: ~$1.0–1.15B cash against ~$3.3B of newly issued 7.75% senior secured notes due 2031, for roughly <b>$2.2B net debt</b>. Shares outstanding ~318M — dilution has been meaningful through the restructuring/growth phase and remains a watch-item, but the notes raise reduces near-term equity-issuance pressure.</p>
+
+      <div class="chips">
+        <div class="chip"><div class="lab">Q1'26 Revenue</div><div class="val">$115.2M</div></div>
+        <div class="chip"><div class="lab">Colo Gross Margin</div><div class="val">57%</div></div>
+        <div class="chip"><div class="lab">Adj. EBITDA</div><div class="val">+$4.4M</div></div>
+        <div class="chip"><div class="lab">Net Loss (GAAP)</div><div class="val red">-$347.2M</div></div>
+        <div class="chip"><div class="lab">Impairment (non-cash)</div><div class="val red">$266.5M</div></div>
+        <div class="chip"><div class="lab">Cash</div><div class="val">~$1.1B</div></div>
+        <div class="chip"><div class="lab">Debt (notes)</div><div class="val red">$3.3B</div></div>
+      </div>
+
+      <div class="chart-grid">
+        <div class="chart-box"><div class="ctitle">Adjusted EBITDA Trend ($M)<span class="zoom" data-c="cEbitda">⤢ expand</span></div><div class="chart-wrap"><canvas id="cEbitda"></canvas></div></div>
+        <div class="chart-box"><div class="ctitle">Cash vs Debt ($B)<span class="zoom" data-c="cCashDebt">⤢ expand</span></div><div class="chart-wrap"><canvas id="cCashDebt"></canvas></div></div>
+      </div>
+
+      <div class="callout"><b>Flywheel:</b> energize MW → contracted colocation cash flow → fund next MW of buildout → widen backlog → improve financing terms → energize more MW. The constraint is execution speed and capital cost, not demand.</div>
+    </div>
+  </section>
+
+  <!-- SECTION 5 -->
+  <section class="card" id="s5">
+    <div class="card-head"><div class="badge">05</div><h2>Earnings Tracker — Management Credibility</h2><span class="chev">▾</span></div>
+    <div class="card-body">
+      <p>Credibility here is measured less by EPS beats (GAAP is impairment-distorted) and more by whether management delivers <b>megawatts on schedule</b> and hits its contract milestones. Scoring 1–5 (5 = fully delivered/ahead).</p>
+      <table>
+        <thead><tr><th>Quarter</th><th>Guidance / Promise</th><th>Actual Result</th><th>Credibility</th></tr></thead>
+        <tbody>
+          <tr><td>Q1'26</td><td>Ramp billable MW toward 450+ by summer</td><td>243 MW billing; on track, guided 450+ by end of summer</td><td class="cred pos">4/5</td></tr>
+          <tr><td>Q4'25</td><td>Complete Marble NC (65MW) &amp; Dalton GA Ph.I</td><td>Delivered; Marble + Dalton Ph.I energized</td><td class="cred pos">5/5</td></tr>
+          <tr><td>Q3'25</td><td>Advance CoreWeave 590MW delivery schedule</td><td>On schedule; construction milestones met</td><td class="cred pos">4/5</td></tr>
+          <tr><td>Q2'25</td><td>Expand contract / grow HPC backlog</td><td>+70MW Denton expansion; backlog to $10.2B</td><td class="cred pos">5/5</td></tr>
+          <tr><td>Q1'25</td><td>Pivot mining capacity to HPC hosting</td><td>Executed; colocation began scaling</td><td class="cred pos">4/5</td></tr>
+          <tr><td>Q4'24</td><td>Grow contracted HPC capacity</td><td>Exercised final CoreWeave options (+120MW)</td><td class="cred pos">5/5</td></tr>
+          <tr><td>Q3'24</td><td>Deliver initial HPC infrastructure</td><td>Delivered; additional 70MW contract signed</td><td class="cred pos">4/5</td></tr>
+          <tr><td>Q2'24</td><td>Emerge from Ch.11 &amp; relist</td><td>Emerged Jan '24; relisted on Nasdaq</td><td class="cred pos">5/5</td></tr>
+        </tbody>
+      </table>
+      <div class="callout note"><b>Read-through:</b> Management's operational delivery record on capacity milestones is strong (avg ~4.5/5). The credibility gap is not "can they build?" but "can they diversify the customer base and fund it without punitive dilution?"</div>
+      <div class="chart-box solo"><div class="ctitle">Milestone Credibility (last 8 qtrs)<span class="zoom" data-c="cCred">⤢ expand</span></div><div class="chart-wrap"><canvas id="cCred"></canvas></div></div>
+    </div>
+  </section>
+
+  <!-- SECTION 6 -->
+  <section class="card" id="s6">
+    <div class="card-head"><div class="badge">06</div><h2>Bull / Base / Bear Scenarios</h2><span class="chev">▾</span></div>
+    <div class="card-body">
+      <p>Probability-weighted price paths across 1-, 3-, and 5-year horizons. Anchored to the $23.45 base.</p>
+
+      <h3>1-Year Horizon</h3>
+      <div class="scen-grid">
+        <div class="scen bull"><div class="h">Bull</div><div class="pt">$40</div><span class="prob">P ≈ 30%</span>
+          <ul><li>590MW ramp accelerates; first non-CoreWeave tenant signed</li><li>Re-rated to data-center multiple, not miner</li><li>Adj EBITDA turns firmly positive</li></ul></div>
+        <div class="scen base"><div class="h">Base</div><div class="pt">$30</div><span class="prob">P ≈ 45%</span>
+          <ul><li>Capacity delivered on schedule to 450MW+</li><li>Consensus PT ~$29–32 realized</li><li>Backlog steadily de-risks</li></ul></div>
+        <div class="scen bear"><div class="h">Bear</div><div class="pt">$15</div><span class="prob">P ≈ 25%</span>
+          <ul><li>Construction/energization slips</li><li>Rate/leverage fears + BTC drawdown hit sentiment</li><li>Dilutive equity raise</li></ul></div>
+      </div>
+
+      <h3>3-Year Horizon</h3>
+      <div class="scen-grid">
+        <div class="scen bull"><div class="h">Bull</div><div class="pt">$70</div><span class="prob">P ≈ 30%</span>
+          <ul><li>Full 590MW billing + 2nd/3rd anchor tenants</li><li>Pipeline conversions from 4.5GW begin</li><li>FCF-positive infra compounder</li></ul></div>
+        <div class="scen base"><div class="h">Base</div><div class="pt">$45</div><span class="prob">P ≈ 45%</span>
+          <ul><li>Backlog fully billing; ~$850M run-rate revenue</li><li>Moderate pipeline conversion</li><li>Multiple normalizes to infra peers</li></ul></div>
+        <div class="scen bear"><div class="h">Bear</div><div class="pt">$12</div><span class="prob">P ≈ 25%</span>
+          <ul><li>CoreWeave counterparty stress</li><li>AI capex digestion / power cost inflation</li><li>Leverage impairs equity value</li></ul></div>
+      </div>
+
+      <h3>5-Year Horizon</h3>
+      <div class="scen-grid">
+        <div class="scen bull"><div class="h">Bull</div><div class="pt">$110</div><span class="prob">P ≈ 28%</span>
+          <ul><li>Multi-GW operator, diversified tenants</li><li>Investment-grade financing unlocked</li><li>Re-rated as core AI-infra REIT</li></ul></div>
+        <div class="scen base"><div class="h">Base</div><div class="pt">$62</div><span class="prob">P ≈ 45%</span>
+          <ul><li>~1.5–2GW operational, steady FCF</li><li>Backlog renewals at maturity</li><li>Durable mid-teens growth</li></ul></div>
+        <div class="scen bear"><div class="h">Bear</div><div class="pt">$10</div><span class="prob">P ≈ 27%</span>
+          <ul><li>AI-infra oversupply cycle</li><li>Refinancing at higher cost</li><li>Structural single-tenant fragility exposed</li></ul></div>
+      </div>
+
+      <div class="chart-box solo" style="max-width:560px"><div class="ctitle">Probability-Weighted Targets<span class="zoom" data-c="cScen">⤢ expand</span></div><div class="chart-wrap" style="height:180px"><canvas id="cScen"></canvas></div></div>
+      <div class="callout"><b>Expected value (1yr):</b> 0.30·$40 + 0.45·$30 + 0.25·$15 ≈ <b>$29.3</b> — ~25% above spot, skewed favorably but with a fat left tail. The trade is a bet on execution and re-rating, not a coin-flip.</div>
+    </div>
+  </section>
+
+  <!-- SECTION 7 -->
+  <section class="card" id="s7">
+    <div class="card-head"><div class="badge">07</div><h2>Risks &amp; Anti-Thesis — Steelman the Bear</h2><span class="chev">▾</span></div>
+    <div class="card-body">
+      <p>If I were short CORZ, here is the case I would make — engaged seriously, not as a strawman.</p>
+
+      <div class="risk"><div class="rh">1. Single-customer concentration — the whole thesis rests on CoreWeave</div>
+        <div class="meta"><span class="tag">Prob: High</span><span class="tag">Impact: Severe</span><span class="tag">Priced in: Partially</span></div>
+        <p>Essentially 100% of colocation revenue and the entire $10.2B backlog depend on one counterparty that is itself a young, heavily-financed neocloud. If CoreWeave's own funding or demand falters, the "annuity" becomes a liability. Take-or-pay only protects you if the payer can pay.</p></div>
+
+      <div class="risk"><div class="rh">2. Balance-sheet leverage at 7.75%</div>
+        <div class="meta"><span class="tag">Prob: Medium</span><span class="tag">Impact: High</span><span class="tag">Priced in: Partially</span></div>
+        <p>$3.3B of high-coupon secured notes fund a capital-intensive buildout. If energization slips or rates stay high, interest burden compounds against a business not yet consistently FCF-positive. Refinancing risk lands in 2031 but sentiment reacts sooner.</p></div>
+
+      <div class="risk"><div class="rh">3. It still trades — and is beta'd — as a bitcoin miner</div>
+        <div class="meta"><span class="tag">Prob: High</span><span class="tag">Impact: Medium</span><span class="tag">Priced in: Yes</span></div>
+        <p>The re-rating thesis assumes the market reclassifies CORZ. It may not, for years. Crypto drawdowns will keep dragging the multiple and the residual mining segment bleeds negative-margin revenue in the meantime.</p></div>
+
+      <div class="risk"><div class="rh">4. AI-infrastructure capex digestion / oversupply</div>
+        <div class="meta"><span class="tag">Prob: Medium</span><span class="tag">Impact: High</span><span class="tag">Priced in: No</span></div>
+        <p>The entire neocloud/colocation cohort is pricing in perpetual GPU scarcity. A capex pause by hyperscalers, or a glut of energized capacity in 2027–28, would compress lease economics on the 4.5 GW pipeline that today underwrites the bull case.</p></div>
+
+      <div class="risk"><div class="rh">5. Execution &amp; dilution risk on the growth pipeline</div>
+        <div class="meta"><span class="tag">Prob: Medium</span><span class="tag">Impact: Medium</span><span class="tag">Priced in: Partially</span></div>
+        <p>Converting 4.5 GW of pipeline into contracted, energized MW requires flawless construction, utility interconnection, and likely additional capital. The share count has already grown materially; further equity issuance would cap per-share upside even if the business succeeds.</p></div>
+
+      <div class="callout note"><b>Net assessment:</b> Risks 1 and 4 are the ones that can permanently impair capital; both are partially unpriced. Position sizing — not conviction alone — should reflect the fat left tail. This is a satellite, not a core, allocation.</div>
+    </div>
+  </section>
+
+  <!-- SECTION 8 -->
+  <section class="card" id="s8">
+    <div class="card-head"><div class="badge">08</div><h2>Catalyst Timeline</h2><span class="chev">▾</span></div>
+    <div class="card-body">
+      <div class="timeline">
+        <div class="tl-item"><div class="tl-date">Early Aug 2026</div><div class="tl-title">Q2 FY2026 Earnings</div><div class="tl-desc">Key watch: billable MW progress toward 450+, colocation margin durability, any new-customer commentary.</div></div>
+        <div class="tl-item"><div class="tl-date">End of Summer 2026</div><div class="tl-title">450+ MW Billable Milestone</div><div class="tl-desc">Management-guided step-up in energized capacity fully billing to CoreWeave — the clearest near-term de-risking event.</div></div>
+        <div class="tl-item"><div class="tl-date">H2 2026</div><div class="tl-title">Potential Tenant Diversification</div><div class="tl-desc">First non-CoreWeave anchor lease would materially cut concentration risk and support a re-rating — the highest-value catalyst.</div></div>
+        <div class="tl-item"><div class="tl-date">H2 2026 – 2027</div><div class="tl-title">Muskogee / Pecos 1.5 GW Expansions</div><div class="tl-desc">Progress on greenfield buildouts and Hunt County (~430 MW) power converts pipeline into contracted capacity.</div></div>
+        <div class="tl-item"><div class="tl-date">Early 2027</div><div class="tl-title">Full 590 MW Energized</div><div class="tl-desc">Completion of the CoreWeave contracted footprint → &gt;$350M annualized colocation revenue run-rate switches fully on.</div></div>
+        <div class="tl-item"><div class="tl-date">Ongoing</div><div class="tl-title">Bitcoin Price &amp; Macro Rates</div><div class="tl-desc">Residual mining exposure and leverage make BTC and the rate path swing factors for sentiment and the multiple.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 9 -->
+  <section class="card" id="s9">
+    <div class="card-head"><div class="badge">09</div><h2>Comparable Company Analysis</h2><span class="chev">▾</span></div>
+    <div class="card-body">
+      <p>The right comp set is the miner-to-AI-infra converts plus pure-play HPC hosts. The cleanest cross-sectional metric in a pre-earnings-power cohort is <b>market cap per operating MW</b>.</p>
+      <table>
+        <thead><tr><th>Company</th><th>Ticker</th><th>Positioning</th><th>Mkt Cap / MW*</th><th>Rev Growth</th><th>Anchor Tenants</th></tr></thead>
+        <tbody>
+          <tr><td>Core Scientific</td><td>CORZ</td><td>HPC colo + legacy mining</td><td class="num">~$30M</td><td class="num pos">+801% colo YoY</td><td>CoreWeave</td></tr>
+          <tr><td>IREN</td><td>IREN</td><td>AI cloud + mining</td><td class="num">~$25M</td><td class="num pos">+94% AI QoQ</td><td>Nvidia ($3.4B)</td></tr>
+          <tr><td>TeraWulf</td><td>WULF</td><td>HPC hosting convert</td><td class="num">~$38M</td><td class="num">transitioning</td><td>Multiple</td></tr>
+          <tr><td>Cipher Mining</td><td>CIFR</td><td>HPC hosting convert</td><td class="num">~$50M</td><td class="num">ramping</td><td>Google, AWS</td></tr>
+          <tr><td>Applied Digital</td><td>APLD</td><td>AI data-center host</td><td class="num">~$56M</td><td class="num pos">+139% YoY</td><td>CoreWeave, others</td></tr>
+        </tbody>
+      </table>
+      <p style="font-size:.72rem;color:var(--muted)">*Market cap per operating MW, approximate, per June 2026 cross-sectional data; positioning/tenants per company disclosures.</p>
+      <p><b>Relative-value read:</b> CORZ sits at the <i>cheap end</i> of the per-MW range (~$30M vs $50–56M for CIFR/APLD), yet carries the <i>largest single contracted backlog</i> ($10.2B). The discount is explained by (a) single-tenant concentration and (b) residual miner stigma. Peers like CIFR and APLD earn their premium partly through tenant diversification (Google, AWS, multiple). The pair trade the thesis implies: <b>own CORZ for the backlog-vs-price gap; the re-rating trigger is diversification</b>.</p>
+      <div class="chart-grid">
+        <div class="chart-box"><div class="ctitle">Market Cap per Operating MW ($M)<span class="zoom" data-c="cPeerMW">⤢ expand</span></div><div class="chart-wrap"><canvas id="cPeerMW"></canvas></div></div>
+        <div class="chart-box"><div class="ctitle">Contracted Backlog Anchor ($B)<span class="zoom" data-c="cBacklog">⤢ expand</span></div><div class="chart-wrap"><canvas id="cBacklog"></canvas></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 10 -->
+  <section class="card" id="s10">
+    <div class="card-head"><div class="badge">10</div><h2>First-Principles KPIs</h2><span class="chev">▾</span></div>
+    <div class="card-body">
+      <p>Forget quarterly EPS. For a power-and-cooling landlord in ramp, four leading indicators tell you whether the thesis is compounding or breaking:</p>
+      <h3>KPI 1 — Billable Megawatts Energized</h3>
+      <p>The single truest measure of realized value. 243 MW today → ~450 MW guided by end of summer → 590 MW early 2027. Every MW is contracted cash flow switched on.</p>
+      <h3>KPI 2 — Colocation Gross Margin</h3>
+      <p>57% in Q1'26. Durability at or above the mid-50s proves the infrastructure model economics and separates CORZ from commodity hosting.</p>
+      <h3>KPI 3 — Customer Count (Diversification)</h3>
+      <p>Currently 1 (CoreWeave). Any move to 2+ anchor tenants is the highest-signal event for de-risking and re-rating.</p>
+      <h3>KPI 4 — Contracted Backlog vs Pipeline Conversion</h3>
+      <p>$10.2B contracted against 4.5 GW gross pipeline. Watching pipeline-to-contract conversion tells you the durability of future growth.</p>
+      <div class="chart-grid">
+        <div class="chart-box"><div class="ctitle">Billable MW Ramp (leading KPI)<span class="zoom" data-c="cMW">⤢ expand</span></div><div class="chart-wrap"><canvas id="cMW"></canvas></div></div>
+        <div class="chart-box"><div class="ctitle">Capacity: Operating vs Contracted vs Pipeline (MW)<span class="zoom" data-c="cCap">⤢ expand</span></div><div class="chart-wrap"><canvas id="cCap"></canvas></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 11 -->
+  <section class="card" id="s11">
+    <div class="card-head"><div class="badge">11</div><h2>Glossary &amp; Methodology</h2><span class="chev">▾</span></div>
+    <div class="card-body">
+      <dl class="gloss">
+        <dt id="g-colocation">Colocation</dt>
+        <dd>Renting powered, cooled, physically-secure data-center space to a customer who installs their own compute (here, CoreWeave's GPUs). <b>Why it matters:</b> it converts CORZ's core asset — energized real estate — into recurring, high-margin rent. <a class="back" href="#s2">↩ back to §2</a></dd>
+
+        <dt id="g-takeorpay">Take-or-Pay Contract</dt>
+        <dd>A contract where the customer pays a committed amount whether or not it actually uses the capacity. <b>Why it matters:</b> it converts a cyclical hosting business into bond-like contracted cash flow — but only as strong as the payer's solvency. <a class="back" href="#s3">↩ back to §3</a></dd>
+
+        <dt id="g-billable">Billable Capacity (MW)</dt>
+        <dd>Megawatts of data-center capacity that are energized, occupied, and actively generating revenue. <b>Why it matters:</b> the truest leading indicator of realized value for an infrastructure landlord — contracts only pay once MW are billing. <a class="back" href="#s1">↩ back to §1</a></dd>
+
+        <dt id="g-ps">P/S Ratio (Price-to-Sales)</dt>
+        <dd><span class="formula">P/S = Market Cap ÷ Revenue</span> Measures how many dollars investors pay per dollar of sales. FTA scale: &gt;30 Euphoric · &gt;18 Excited · &gt;8 Optimistic · 4–8 Aware · &lt;4 Cautious · &lt;2 Pessimistic. <b>Why it matters:</b> for pre-profit growth infra, sales-based multiples are more meaningful than earnings — but the choice of trailing vs forward revenue changes the verdict entirely. <a class="back" href="#s2">↩ back to §2</a></dd>
+
+        <dt id="g-ebitda">Adjusted EBITDA</dt>
+        <dd><span class="formula">EBITDA ± non-cash &amp; one-off items</span> Earnings before interest, tax, depreciation, amortization, adjusted for items like impairments and stock comp. <b>Why it matters:</b> for CORZ, GAAP is distorted by huge non-cash mining write-downs; Adj EBITDA reveals the normalized operating trajectory. <a class="back" href="#s4">↩ back to §4</a></dd>
+
+        <dt id="g-annuity">Annuity / Annuity-like Revenue</dt>
+        <dd>Predictable, recurring cash flow over a long, contracted horizon. <b>Why it matters:</b> the market pays a higher multiple for annuity streams than for cyclical ones — the crux of the re-rating thesis. <a class="back" href="#s1">↩ back to §1</a></dd>
+
+        <dt>Enterprise Value (EV)</dt>
+        <dd><span class="formula">EV = Market Cap + Debt − Cash</span> The takeover value of the whole business. <b>Why it matters:</b> EV/MW and EV/backlog normalize for CORZ's heavy debt, giving a truer cross-peer comparison than equity-only P/S. <a class="back" href="#s2">↩ back to §2</a></dd>
+      </dl>
+
+      <h3>Methodology &amp; Sources</h3>
+      <p>All financial figures were retrieved from primary sources (Core Scientific Q1 FY2026 and FY2025 results, investor materials, SEC filings) and reputable secondary sources (Yahoo Finance, stockanalysis.com, MarketBeat, DataCenterDynamics, Investing.com, businesswire), 12–13 July 2026. Price and market cap as of the 12 July 2026 close ($23.45 / $7.47B). Scenario probabilities and price targets are the analyst's independent judgment, not consensus. Forward P/S uses the implied ~$850M/yr run-rate from the $10.2B / 12-year contracted backlog. Peer per-MW figures are approximate cross-sectional estimates.</p>
+      <div class="callout note"><b>Disclaimer:</b> This report is for informational and educational purposes only and does not constitute investment advice, a recommendation, or an offer to buy or sell any security. It is not personalized to any individual's circumstances. Markets involve risk of loss; past performance does not indicate future results. Conduct your own due diligence and consult a licensed advisor before investing.</p></div>
+    </div>
+  </section>
+
+  </div><!-- /content -->
+</main>
+</div>
+
+<!-- MODAL -->
+<div class="modal" id="modal"><div class="modal-box"><span class="x" id="modalX">✕ close</span><canvas id="modalCanvas"></canvas></div></div>
+
+<script>
+// Collapsible cards
+document.querySelectorAll('.card-head').forEach(h=>{
+  h.addEventListener('click',()=>h.parentElement.classList.toggle('collapsed'));
+});
+
+// Chart theme
+const G='#145A22',DG='#0A3A14',GOLD='#FCC55B',GOLDD='#e0a838',RED='#a8341f',MUT='#5d6155',LINE='#d8d1c4';
+Chart.defaults.font.family="'Quicksand',sans-serif";
+Chart.defaults.font.size=10;
+Chart.defaults.color=MUT;
+const gridC={grid:{color:'rgba(0,0,0,.06)'},ticks:{font:{size:9}}};
+const noLegend={plugins:{legend:{display:false}}};
+
+const configs={};
+function reg(id,cfg){configs[id]=cfg;const el=document.getElementById(id);if(el)new Chart(el,JSON.parse(JSON.stringify(cfg)).__proto__?cfg:cfg);}
+
+// helper to build fresh config (Chart.js mutates), so store factory
+const factory={};
+function make(id,cfg){factory[id]=cfg;new Chart(document.getElementById(id),cfg);}
+
+// 1. Quarterly revenue
+make('cRev',{type:'bar',data:{labels:['Q1 25','Q2 25','Q3 25','Q4 25','Q1 26'],
+  datasets:[{label:'Revenue $M',data:[79.5,74,73,92.5,115.2],backgroundColor:G,borderRadius:4}]},
+  options:{responsive:true,maintainAspectRatio:false,...noLegend,scales:{y:gridC,x:gridC}}});
+
+// 2. Revenue mix doughnut
+make('cMix',{type:'doughnut',data:{labels:['Colocation $77.5M','Self-Mining $30.1M','Other ~$7.6M'],
+  datasets:[{data:[77.5,30.1,7.6],backgroundColor:[G,GOLD,MUT],borderWidth:2,borderColor:'#fff'}]},
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:9},boxWidth:10}}}}});
+
+// Rating distribution
+make('cRate',{type:'bar',data:{labels:['Strong Buy','Buy','Hold','Sell'],
+  datasets:[{data:[56,31,13,0],backgroundColor:[G,GOLDD,MUT,RED],borderRadius:4}]},
+  options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,...noLegend,scales:{x:{...gridC,max:70,ticks:{callback:v=>v+'%'}},y:gridC}}});
+
+// P/S trailing vs fwd
+make('cPS',{type:'bar',data:{labels:['P/S Trailing','P/S Fwd Run-Rate','Peer Avg (illustr.)'],
+  datasets:[{data:[21,8.8,12],backgroundColor:[RED,G,MUT],borderRadius:4}]},
+  options:{responsive:true,maintainAspectRatio:false,...noLegend,scales:{y:gridC,x:gridC}}});
+
+// Colo ramp
+make('cColo',{type:'bar',data:{labels:['Q1 25','Q2 25','Q3 25','Q4 25','Q1 26'],
+  datasets:[{label:'Colo $M',data:[8.6,22,40,60,77.5],backgroundColor:GOLDD,borderRadius:4}]},
+  options:{responsive:true,maintainAspectRatio:false,...noLegend,scales:{y:gridC,x:gridC}}});
+
+// Segment gross margin
+make('cGM',{type:'bar',data:{labels:['Colocation','Self-Mining'],
+  datasets:[{data:[57,-12],backgroundColor:[G,RED],borderRadius:4}]},
+  options:{responsive:true,maintainAspectRatio:false,...noLegend,scales:{y:{...gridC,ticks:{callback:v=>v+'%'}},x:gridC}}});
+
+// Adj EBITDA
+make('cEbitda',{type:'bar',data:{labels:['Q1 25','Q2 25','Q3 25','Q4 25','Q1 26'],
+  datasets:[{data:[-6.1,-15,-25,-42.7,4.4],borderRadius:4,
+  backgroundColor:['#a8341f','#a8341f','#a8341f','#a8341f','#145A22']}]},
+  options:{responsive:true,maintainAspectRatio:false,...noLegend,scales:{y:gridC,x:gridC}}});
+
+// Cash vs Debt
+make('cCashDebt',{type:'bar',data:{labels:['Cash','Debt (notes)','Net Debt'],
+  datasets:[{data:[1.1,3.3,2.2],backgroundColor:[G,RED,GOLDD],borderRadius:4}]},
+  options:{responsive:true,maintainAspectRatio:false,...noLegend,scales:{y:{...gridC,ticks:{callback:v=>'$'+v+'B'}},x:gridC}}});
+
+// Credibility
+make('cCred',{type:'line',data:{labels:['Q2 24','Q3 24','Q4 24','Q1 25','Q2 25','Q3 25','Q4 25','Q1 26'],
+  datasets:[{data:[5,4,5,4,5,4,5,4],borderColor:G,backgroundColor:'rgba(20,90,34,.12)',fill:true,tension:.3,pointBackgroundColor:GOLD,pointBorderColor:G,pointRadius:4}]},
+  options:{responsive:true,maintainAspectRatio:false,...noLegend,scales:{y:{...gridC,min:0,max:5},x:gridC}}});
+
+// Scenario
+make('cScen',{type:'bar',data:{labels:['1-Year','3-Year','5-Year'],
+  datasets:[
+   {label:'Bear',data:[15,12,10],backgroundColor:RED,borderRadius:3},
+   {label:'Base',data:[30,45,62],backgroundColor:GOLD,borderRadius:3},
+   {label:'Bull',data:[40,70,110],backgroundColor:G,borderRadius:3}]},
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:9}}}},scales:{y:{...gridC,ticks:{callback:v=>'$'+v}},x:gridC}}});
+
+// Peer per MW
+make('cPeerMW',{type:'bar',data:{labels:['IREN','CORZ','WULF','CIFR','APLD'],
+  datasets:[{data:[25,30,38,50,56],backgroundColor:['#5d6155',G,'#5d6155','#5d6155','#5d6155'],borderRadius:4}]},
+  options:{responsive:true,maintainAspectRatio:false,...noLegend,scales:{y:{...gridC,ticks:{callback:v=>'$'+v+'M'}},x:gridC}}});
+
+// Backlog
+make('cBacklog',{type:'bar',data:{labels:['CORZ','IREN','CIFR','Others'],
+  datasets:[{data:[10.2,3.4,2,1],backgroundColor:[G,GOLDD,MUT,LINE],borderRadius:4}]},
+  options:{responsive:true,maintainAspectRatio:false,...noLegend,scales:{y:{...gridC,ticks:{callback:v=>'$'+v+'B'}},x:gridC}}});
+
+// MW ramp
+make('cMW',{type:'line',data:{labels:['Q1 26','Summer 26','Q4 26','Early 27'],
+  datasets:[{data:[243,450,520,590],borderColor:G,backgroundColor:'rgba(252,197,91,.18)',fill:true,tension:.35,pointBackgroundColor:GOLD,pointBorderColor:G,pointRadius:4}]},
+  options:{responsive:true,maintainAspectRatio:false,...noLegend,scales:{y:{...gridC,ticks:{callback:v=>v+'MW'}},x:gridC}}});
+
+// Capacity tiers
+make('cCap',{type:'bar',data:{labels:['Billable Now','Contracted','Gross Pipeline'],
+  datasets:[{data:[243,590,4500],backgroundColor:[G,GOLDD,MUT],borderRadius:4}]},
+  options:{responsive:true,maintainAspectRatio:false,...noLegend,scales:{y:{...gridC,ticks:{callback:v=>v+'MW'}},x:gridC}}});
+
+// Modal expand
+let modalChart=null;
+document.querySelectorAll('.zoom').forEach(z=>{
+  z.addEventListener('click',()=>{
+    const id=z.dataset.c;const cfg=factory[id];if(!cfg)return;
+    document.getElementById('modal').classList.add('open');
+    if(modalChart)modalChart.destroy();
+    const c=JSON.parse(JSON.stringify(cfg));
+    c.options=c.options||{};c.options.maintainAspectRatio=false;
+    modalChart=new Chart(document.getElementById('modalCanvas'),cfg);
+  });
+});
+document.getElementById('modalX').addEventListener('click',()=>{document.getElementById('modal').classList.remove('open');if(modalChart){modalChart.destroy();modalChart=null;}});
+document.getElementById('modal').addEventListener('click',e=>{if(e.target.id==='modal'){document.getElementById('modal').classList.remove('open');if(modalChart){modalChart.destroy();modalChart=null;}}});
+</script>
+</body>
+</html>
