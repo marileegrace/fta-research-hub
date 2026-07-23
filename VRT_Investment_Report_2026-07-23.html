@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VRT — Vertiv Holdings | Investment Report (2026-07-23)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Questrial&family=Quicksand:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  --green:#145A22; --dark-green:#0A3A14; --forest:#243D27;
+  --gold:#FCC55B; --gold-deep:#e0a838;
+  --beige:#EDE8E0; --beige-card:#f6f3ed;
+  --ink:#23241f; --muted:#5d6155;
+  --red:#a8341f; --line:#d8d1c4;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Quicksand',sans-serif;background:var(--beige);color:var(--ink);line-height:1.6;}
+.layout{display:flex;}
+/* SIDEBAR */
+.sidebar{position:sticky;top:0;height:100vh;width:262px;flex-shrink:0;
+  background:linear-gradient(180deg,#071f0b,#0A3A14 40%,#145A22);
+  border-right:2px solid var(--gold);color:var(--beige);
+  display:flex;flex-direction:column;overflow-y:auto;}
+.brand{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;
+  font-size:30px;color:var(--gold);padding:26px 22px 6px;line-height:1;}
+.brand small{display:block;font-family:'Questrial',sans-serif;font-style:normal;
+  font-size:10px;letter-spacing:3px;color:var(--beige);opacity:.7;margin-top:8px;}
+.ticker-box{margin:16px 20px;background:rgba(255,255,255,.06);border:1px solid rgba(252,197,91,.35);
+  border-radius:12px;padding:14px 16px;}
+.ticker-box .sym{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:22px;color:var(--gold);}
+.ticker-box .px{font-family:'JetBrains Mono',monospace;font-size:20px;margin-top:4px;}
+.ticker-box .chg{font-family:'JetBrains Mono',monospace;font-size:12px;color:#f0b8ac;margin-top:2px;}
+.ticker-box .name{font-size:11px;opacity:.7;margin-top:6px;letter-spacing:.5px;}
+nav{padding:6px 12px 30px;}
+nav a{display:flex;gap:10px;align-items:baseline;text-decoration:none;color:var(--beige);
+  font-size:13px;padding:8px 12px;border-radius:8px;transition:.15s;}
+nav a:hover{background:rgba(252,197,91,.14);color:var(--gold);}
+nav a .num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold);opacity:.85;width:18px;}
+/* MAIN */
+.main{flex:1;min-width:0;}
+.hero{position:relative;overflow:hidden;color:var(--beige);
+  background:linear-gradient(120deg,var(--dark-green),var(--green) 60%);padding:44px 48px 40px;}
+.hero::after{content:"";position:absolute;right:-120px;top:-120px;width:380px;height:380px;border-radius:50%;
+  background:radial-gradient(circle,rgba(252,197,91,.28),transparent 70%);}
+.hero .eyebrow{font-family:'Questrial',sans-serif;letter-spacing:4px;font-size:11px;color:var(--gold);text-transform:uppercase;}
+.hero h1{font-family:'Cormorant Garamond',serif;font-weight:700;font-size:44px;margin:8px 0 4px;line-height:1.05;}
+.hero h1 span{font-style:italic;color:var(--gold);}
+.hero .sub{font-size:15px;max-width:640px;opacity:.92;}
+.verdict{display:inline-flex;gap:14px;align-items:center;margin-top:20px;
+  background:rgba(252,197,91,.14);border:1px solid var(--gold);border-radius:40px;padding:8px 20px;}
+.verdict .pill{font-family:'Questrial',sans-serif;letter-spacing:2px;text-transform:uppercase;font-size:13px;color:var(--gold);}
+.verdict .conv{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--beige);}
+.hero .meta{margin-top:14px;font-family:'JetBrains Mono',monospace;font-size:12px;opacity:.8;}
+/* KPI STRIP */
+.kpi-strip{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:var(--line);border-bottom:1px solid var(--line);}
+.kpi{background:var(--beige-card);padding:16px 18px;}
+.kpi .label{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1.5px;font-size:9.5px;color:var(--muted);}
+.kpi .val{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:21px;color:var(--green);margin-top:6px;}
+.kpi .st{font-size:10.5px;color:var(--muted);margin-top:2px;}
+/* CONTENT */
+.content{max-width:1080px;margin:0 auto;padding:36px 48px 80px;}
+.card{background:var(--beige-card);border-radius:14px;margin-bottom:26px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.05);}
+.card-head{display:flex;align-items:center;gap:14px;padding:18px 22px;border-left:5px solid var(--green);cursor:pointer;}
+.badge{width:34px;height:34px;border-radius:9px;background:var(--green);color:#fff;
+  font-family:'JetBrains Mono',monospace;font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.card-head h2{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:26px;color:var(--dark-green);flex:1;}
+.chev{font-size:16px;color:var(--muted);transition:.2s;}
+.card.collapsed .chev{transform:rotate(-90deg);}
+.card-body{padding:4px 24px 26px;}
+.card.collapsed .card-body{display:none;}
+.card-body p{margin:12px 0;font-size:14.5px;}
+.card-body h3{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1.5px;font-size:12px;
+  color:var(--green);margin:22px 0 8px;}
+.card-body ul{margin:10px 0 10px 20px;}
+.card-body li{margin:6px 0;font-size:14px;}
+a.gloss{color:var(--green);border-bottom:1px dotted var(--gold-deep);text-decoration:none;font-weight:600;}
+a.gloss:hover{background:rgba(252,197,91,.2);}
+/* THESIS */
+.thesis{font-family:'Cormorant Garamond',serif;font-size:23px;line-height:1.45;color:var(--dark-green);
+  border-left:4px solid var(--gold);padding:8px 0 8px 22px;margin:14px 0;font-weight:500;}
+.thesis b{color:var(--green);font-weight:700;}
+/* CHIPS */
+.chips{display:flex;flex-wrap:wrap;gap:12px;margin:16px 0;}
+.chip{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;min-width:120px;}
+.chip .l{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:9px;color:var(--muted);}
+.chip .v{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:18px;color:var(--green);margin-top:3px;}
+/* CALLOUT */
+.callout{background:rgba(252,197,91,.14);border:1px solid var(--gold);border-radius:10px;padding:14px 18px;margin:16px 0;font-size:14px;}
+.note{background:rgba(20,90,34,.08);border:1px solid rgba(20,90,34,.3);border-radius:10px;padding:14px 18px;margin:16px 0;font-size:13.5px;}
+/* CHARTS */
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0;}
+.chart-box{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px;position:relative;}
+.chart-box.solo{max-width:420px;margin:18px auto;}
+.chart-title{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1.5px;font-size:11px;color:var(--muted);margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;}
+.zoom-btn{background:var(--green);color:#fff;border:none;border-radius:6px;font-size:10px;padding:3px 8px;cursor:pointer;font-family:'Questrial',sans-serif;letter-spacing:.5px;}
+.chart-box canvas{max-height:160px;}
+/* TABLES */
+table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px;}
+th{background:var(--green);color:#fff;font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:.5px;
+  font-size:11px;padding:10px 12px;text-align:left;font-weight:400;}
+td{padding:9px 12px;border-bottom:1px solid var(--line);}
+tbody tr:nth-child(even){background:rgba(255,255,255,.5);}
+tbody tr:hover{background:rgba(252,197,91,.16);}
+td.num{font-family:'JetBrains Mono',monospace;}
+.pos{color:var(--green);font-weight:700;}
+.neg{color:var(--red);font-weight:700;}
+/* SCENARIO */
+.scen-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:18px 0;}
+.scen{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px;border-top:4px solid var(--muted);}
+.scen.bull{border-top-color:var(--green);}
+.scen.base{border-top-color:var(--gold-deep);}
+.scen.bear{border-top-color:var(--red);}
+.scen h4{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1.5px;font-size:12px;margin-bottom:8px;}
+.scen.bull h4{color:var(--green);} .scen.base h4{color:var(--gold-deep);} .scen.bear h4{color:var(--red);}
+.scen .pt{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:24px;color:var(--ink);}
+.scen .prob{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:11px;background:var(--beige);border-radius:20px;padding:2px 10px;margin:6px 0;}
+.scen ul{margin:8px 0 0 16px;} .scen li{font-size:12px;margin:4px 0;}
+.horizon-label{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:2px;font-size:12px;color:var(--green);margin:22px 0 4px;border-bottom:1px solid var(--line);padding-bottom:6px;}
+/* RISK */
+.risk{background:#fff;border-left:4px solid var(--red);border-radius:0 10px 10px 0;padding:14px 18px;margin:14px 0;}
+.risk h4{color:var(--red);font-family:'Quicksand',sans-serif;font-weight:700;font-size:15px;margin-bottom:6px;}
+.risk .meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;}
+.risk .tag{font-family:'JetBrains Mono',monospace;font-size:10.5px;background:var(--beige);border:1px solid var(--line);border-radius:20px;padding:2px 10px;}
+/* TIMELINE */
+.timeline{position:relative;margin:20px 0 8px;padding-left:28px;}
+.timeline::before{content:"";position:absolute;left:7px;top:4px;bottom:4px;width:3px;
+  background:linear-gradient(180deg,var(--green),var(--gold));border-radius:2px;}
+.tl-item{position:relative;margin-bottom:20px;}
+.tl-item::before{content:"";position:absolute;left:-27px;top:3px;width:14px;height:14px;border-radius:50%;
+  background:var(--gold);border:3px solid var(--green);}
+.tl-date{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold-deep);font-weight:700;}
+.tl-title{font-weight:700;font-size:14px;margin:2px 0;}
+.tl-desc{font-size:13px;color:var(--muted);}
+/* MODAL */
+.modal{display:none;position:fixed;inset:0;background:rgba(10,20,10,.82);z-index:100;align-items:center;justify-content:center;padding:30px;}
+.modal.open{display:flex;}
+.modal-box{background:var(--beige-card);border:2px solid var(--gold);border-radius:14px;padding:24px;max-width:900px;width:100%;}
+.modal-box canvas{max-height:70vh;}
+.modal-close{float:right;background:var(--red);color:#fff;border:none;border-radius:6px;padding:5px 12px;cursor:pointer;font-family:'Questrial',sans-serif;}
+footer{background:var(--dark-green);color:var(--beige);padding:26px 48px;font-size:12px;text-align:center;opacity:.95;}
+footer a{color:var(--gold);}
+@media(max-width:880px){.chart-grid,.scen-grid{grid-template-columns:1fr;}}
+@media(max-width:780px){.sidebar{display:none;}.kpi-strip{grid-template-columns:repeat(3,1fr);}.content,.hero,footer{padding-left:22px;padding-right:22px;}.hero h1{font-size:34px;}}
+</style>
+</head>
+<body>
+<div class="layout">
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="brand">FTA Research<small>ALPHA · CONVICTION · FIRST PRINCIPLES</small></div>
+  <div class="ticker-box">
+    <div class="sym">VRT</div>
+    <div class="px">$302.33</div>
+    <div class="chg">▼ 6.7% from 52w-adj high</div>
+    <div class="name">Vertiv Holdings Co · NYSE</div>
+  </div>
+  <nav>
+    <a href="#s1"><span class="num">01</span> Executive Summary &amp; Thesis</a>
+    <a href="#s2"><span class="num">02</span> Micro &amp; Valuation</a>
+    <a href="#s3"><span class="num">03</span> Moat, Management &amp; Culture</a>
+    <a href="#s4"><span class="num">04</span> Financial Deep Dive</a>
+    <a href="#s5"><span class="num">05</span> Earnings Tracker</a>
+    <a href="#s6"><span class="num">06</span> Bull / Base / Bear</a>
+    <a href="#s7"><span class="num">07</span> Risks &amp; Anti-Thesis</a>
+    <a href="#s8"><span class="num">08</span> Catalyst Timeline</a>
+    <a href="#s9"><span class="num">09</span> Comparable Companies</a>
+    <a href="#s10"><span class="num">10</span> First-Principles KPIs</a>
+    <a href="#s11"><span class="num">11</span> Glossary &amp; Method</a>
+  </nav>
+</aside>
+
+<main class="main">
+  <!-- HERO -->
+  <header class="hero">
+    <div class="eyebrow">Institutional Deep-Dive · Thursday Queue Slot 05</div>
+    <h1>Vertiv Holdings <span>— the picks &amp; shovels of the AI thermal era</span></h1>
+    <p class="sub">The full-stack power &amp; liquid-cooling backbone under the world's AI data centers. A three-bagger already — but a &gt;$15B backlog and 30% organic growth are re-writing the arithmetic.</p>
+    <div class="verdict">
+      <span class="pill">Constructive Bull · Accumulate on weakness</span>
+      <span class="conv">Conviction 7.5 / 10</span>
+    </div>
+    <div class="meta">Report date 2026-07-23 · Price $302.33 · Mkt cap ~$115.7B · Next print Q2'26 on Jul 29</div>
+  </header>
+
+  <!-- KPI STRIP -->
+  <section class="kpi-strip">
+    <div class="kpi"><div class="label">Price</div><div class="val">$302.33</div><div class="st">NYSE · Jul 23 '26</div></div>
+    <div class="kpi"><div class="label">Market Cap</div><div class="val">$115.7B</div><div class="st">384.1M shares</div></div>
+    <div class="kpi"><div class="label">Organic Growth '26E</div><div class="val">~30%</div><div class="st">FY guide midpoint</div></div>
+    <div class="kpi"><div class="label">Adj FCF (FY25)</div><div class="val">$1.9B</div><div class="st">+66% YoY</div></div>
+    <div class="kpi"><div class="label">TTM P/S</div><div class="val">10.7x</div><div class="st">"Optimistic" band</div></div>
+    <div class="kpi"><div class="label">Analyst Avg PT</div><div class="val">$380</div><div class="st">Strong Buy · +26%</div></div>
+  </section>
+
+  <div class="content">
+
+  <!-- SECTION 1 -->
+  <section class="card" id="s1">
+    <div class="card-head"><div class="badge">1</div><h2>Executive Summary &amp; Investment Thesis</h2><span class="chev">▾</span></div>
+    <div class="card-body">
+      <div class="thesis"><b>BULL.</b> Vertiv is the closest thing to a pure-play "arms dealer" on AI compute density. As racks jump from ~15kW to 130kW+ and toward the megawatt era, the binding constraint on every data center shifts from chips to <a class="gloss" href="#g-thermal">power &amp; heat rejection</a> — exactly Vertiv's full-stack franchise. A &gt;$15B backlog (more than doubled YoY), 30% organic growth, and 400+ bps of operating-margin expansion say the demand is real, not a narrative. The stock has tripled; the earnings base is tripling too.</div>
+
+      <div class="chips">
+        <div class="chip"><div class="l">Sector</div><div class="v" style="font-size:14px">Digital Infra / Electrical Eq.</div></div>
+        <div class="chip"><div class="l">Q1'26 Revenue</div><div class="v">$2.65B</div></div>
+        <div class="chip"><div class="l">Adj Op Margin Q1'26</div><div class="v">20.8%</div></div>
+        <div class="chip"><div class="l">Backlog</div><div class="v">&gt;$15B</div></div>
+        <div class="chip"><div class="l">FY26 Adj EPS Guide</div><div class="v">$6.30–6.40</div></div>
+        <div class="chip"><div class="l">Net Debt</div><div class="v">~$0.76B</div></div>
+      </div>
+
+      <h3>The one-paragraph thesis</h3>
+      <p>The market debate is no longer "does Vertiv grow" — it is "what multiple do you pay for durable 25–30% compounding into a secular thermal-and-power upgrade cycle." Vertiv sells the un-glamorous but non-optional layer of AI: <a class="gloss" href="#g-greyspace">grey-space</a> power distribution, switchgear, busway, UPS, and — increasingly — <a class="gloss" href="#g-liquid">direct-to-chip liquid cooling</a> and coolant distribution units co-designed with NVIDIA reference architectures. It is asset-light relative to the GPU cloud, throws off ~$1.9B of <a class="gloss" href="#g-fcf">free cash flow</a>, and just raised guidance for the fourth consecutive quarter. The risk is entirely on the <em>valuation</em> side, not the <em>business</em> side.</p>
+
+      <h3>Why 7.5 and not 9</h3>
+      <p>We dock conviction for three reasons: (1) a trailing <a class="gloss" href="#g-pe">P/E</a> in the 70s prices multiple years of flawless execution; (2) revenue is umbilically tied to hyperscaler capex, which is cyclical even inside a secular uptrend; and (3) competition from Schneider Electric and Eaton is intensifying precisely where margins are richest. This is a business to <em>own on pullbacks</em>, not to chase after a 3x run.</p>
+
+      <div class="callout"><b>Verdict:</b> Constructive Bull. The secular thesis is intact and arguably strengthening, but the entry multiple demands discipline. Accumulate into AI-capex scares; do not pay up into euphoria. Q2 print (Jul 29) is the next test of the backlog-to-revenue conversion.</div>
+    </div>
+  </section>
+
+  <!-- SECTION 2 -->
+  <section class="card" id="s2">
+    <div class="card-head"><div class="badge">2</div><h2>Microeconomic &amp; Valuation Analysis</h2><span class="chev">▾</span></div>
+    <div class="card-body">
+      <h3>TAM &amp; industry CAGR</h3>
+      <p>Vertiv addresses the "critical digital infrastructure" stack — data center thermal management, power continuity, and integrated modular systems. Management frames a served market compounding at a high-teens-to-20%+ <a class="gloss" href="#g-cagr">CAGR</a> through the decade, driven by AI training/inference build-outs. The thermal-management sub-market alone is inflecting as rack densities blow past air-cooling limits, pulling liquid cooling from niche to default. Data-center power capacity additions — measured in gigawatts — are the true unit of demand, and every incremental GW pulls Vertiv content.</p>
+
+      <div class="chart-grid">
+        <div class="chart-box"><div class="chart-title">Revenue Trajectory ($B)<button class="zoom-btn" data-c="cRev">EXPAND</button></div><canvas id="cRev"></canvas></div>
+        <div class="chart-box"><div class="chart-title">FY25 Sales Mix (illustrative)<button class="zoom-btn" data-c="cMix">EXPAND</button></div><canvas id="cMix"></canvas></div>
+      </div>
+
+      <h3>Valuation — premium, but decompressing on forward numbers</h3>
+      <p>At ~$302 and a ~$115.7B market cap on ~$10.84B <a class="gloss" href="#g-ttm">TTM</a> revenue, VRT trades at a <a class="gloss" href="#g-ps">P/S</a> of ~10.7x. On the FTA P/S scale that lands in the <b>"Optimistic" (&gt;8)</b> band — rich, but a full tier below the "Euphoric" multiples we've flagged on neocloud names. Critically, on FY26 guided revenue of ~$13.75B, forward P/S compresses to ~8.4x, and the ~48x forward P/E on $6.35 guided EPS (falling toward ~38x on FY27 estimates near ~$8) is a rich but defensible price for 25–30% compounding with expanding margins. The trailing P/E in the ~70s is the scary optics; the forward math is the real story.</p>
+
+      <div class="chips">
+        <div class="chip"><div class="l">TTM P/S</div><div class="v">10.7x</div></div>
+        <div class="chip"><div class="l">Fwd P/S (FY26E)</div><div class="v">~8.4x</div></div>
+        <div class="chip"><div class="l">Fwd P/E (FY26E)</div><div class="v">~48x</div></div>
+        <div class="chip"><div class="l">Inst. Ownership</div><div class="v">78.9%</div></div>
+        <div class="chip"><div class="l">Insider Own.</div><div class="v">0.23%</div></div>
+        <div class="chip"><div class="l">Analyst Rating</div><div class="v" style="font-size:14px">Strong Buy</div></div>
+      </div>
+
+      <h3>Ownership &amp; positioning</h3>
+      <p>Roughly 79% institutionally owned (Vanguard ~10%), with retail ~21% and negligible insider stakes (~0.23%) — a legacy of the SPAC origin and secondary sell-downs. Insider selling has been routine rather than alarming (Rule 10b5-1 programs and option exercises); there is no cluster of open-market insider <em>buying</em> to lean on as a signal. Analyst consensus is a Strong Buy with an average target near $380 (range ~$260–$500), implying ~26% upside from spot.</p>
+
+      <div class="note"><b>P/S scale read:</b> >30 Euphoric · >18 Excited · >8 Optimistic · 4–8 Aware · &lt;4 Cautious · &lt;2 Pessimistic. VRT sits at the low end of "Optimistic" on trailing revenue and would slip toward "Aware" if it hits its own FY26–27 growth path — i.e., growth can bail out the multiple.</div>
+    </div>
+  </section>
+
+  <!-- SECTION 3 -->
+  <section class="card" id="s3">
+    <div class="card-head"><div class="badge">3</div><h2>Qualitative Analysis — Moat, Management &amp; Culture</h2><span class="chev">▾</span></div>
+    <div class="card-body">
+      <h3>The moat — systemic, not a single feature</h3>
+      <p>Vertiv's edge is not one patent; it is <em>integration + installed base + time</em>. Data-center operators buy power and thermal as a co-engineered system because a mismatch is catastrophic (a cooling fault can brick millions in GPUs). Vertiv's ability to deliver reference-designed, factory-integrated power-and-cooling skids — validated against NVIDIA's rack roadmaps — creates high switching costs and a design-win flywheel: once specified into a hyperscaler's standard, it recurs across every new hall. Layer on a large global <a class="gloss" href="#g-services">services &amp; spares</a> franchise (~20% of sales, sticky and high-margin) that compounds with every unit shipped.</p>
+
+      <h3>Management &amp; capital allocation</h3>
+      <p>Vertiv is not founder-led; it is <em>operator-led</em>. Executive Chairman Dave Cote (the legendary former Honeywell CEO) anchors the board and culture, with CEO Giordano (Gio) Albertazzi running operations. The Cote imprint — relentless operational rigor, the "Honeywell Operating System" DNA, disciplined pricing and cost-out — shows up directly in the 400+ bps of margin expansion during a hyper-growth phase, which is rare. Capital allocation has pivoted from deleveraging (post-SPAC) to a balanced mix: bolt-on M&amp;A in liquid cooling (e.g., CoolTera), a modest buyback, and a token dividend ($0.25/yr) that signals confidence without diverting growth capital.</p>
+
+      <h3>Culture &amp; structural traits</h3>
+      <ul>
+        <li><b>Customer obsession:</b> co-development with a concentrated set of hyperscalers forces a fast, spec-driven cadence.</li>
+        <li><b>Innovation pace:</b> pushed to the front of the 800VDC / direct-to-chip transition rather than defending legacy air-cooling.</li>
+        <li><b>Failure tolerance / idea meritocracy:</b> the Cote operating culture prizes measurable results over hierarchy; margin discipline is enforced structurally.</li>
+        <li><b>Talent density &amp; decentralization:</b> regional segment structure (Americas / EMEA / APAC) with global product platforms lets it localize delivery while standardizing engineering.</li>
+      </ul>
+      <div class="callout"><b>Philosophical read:</b> Vertiv's durable advantage is that it sells <em>certainty</em> — uptime — into a market where the cost of failure is astronomical and rising with each GPU generation. That is a structurally defensible position that widens, not narrows, as compute density climbs.</div>
+    </div>
+  </section>
+
+  <!-- SECTION 4 -->
+  <section class="card" id="s4">
+    <div class="card-head"><div class="badge">4</div><h2>Quantitative Analysis — Financial Deep Dive</h2><span class="chev">▾</span></div>
+    <div class="card-body">
+      <h3>Free cash flow &amp; margins</h3>
+      <p>FY2025 delivered ~$1.9B adjusted <a class="gloss" href="#g-fcf">FCF</a>, up ~66% YoY — an FCF margin near ~18% on $10.2B sales, strong for a hardware-heavy industrial. Adjusted operating margin reached 20.4% for FY25 (+100 bps) and expanded again to 20.8% in Q1'26 (+430 bps YoY), evidence of real <a class="gloss" href="#g-oplev">operating leverage</a> as volume scales against a fixed engineering and plant base.</p>
+
+      <div class="chart-grid">
+        <div class="chart-box"><div class="chart-title">Adj Operating Margin (%)<button class="zoom-btn" data-c="cMargin">EXPAND</button></div><canvas id="cMargin"></canvas></div>
+        <div class="chart-box"><div class="chart-title">Adjusted FCF ($B)<button class="zoom-btn" data-c="cFcf">EXPAND</button></div><canvas id="cFcf"></canvas></div>
+      </div>
+
+      <h3>Revenue streams — explained simply</h3>
+      <p>Think of Vertiv's revenue in two buckets. <b>Products (~80%)</b>: the boxes and systems — thermal management (chillers, CDUs, direct-to-chip cooling), power (UPS, switchgear, busway, power distribution), and integrated modular/prefab solutions. <b>Services &amp; Spares (~20%)</b>: installation, monitoring, maintenance contracts, and parts — the recurring, high-margin annuity that grows with the installed base. Geographically it reports three segments: Americas (the engine, +46% organic in FY25), EMEA (soft in FY25 but "a coiled spring uncoiling" on Q4 order acceleration), and APAC (-9%, dragged by China).</p>
+
+      <div class="chart-grid">
+        <div class="chart-box"><div class="chart-title">Backlog ($B, period-end)<button class="zoom-btn" data-c="cBacklog">EXPAND</button></div><canvas id="cBacklog"></canvas></div>
+        <div class="chart-box"><div class="chart-title">Adjusted Diluted EPS ($)<button class="zoom-btn" data-c="cEps">EXPAND</button></div><canvas id="cEps"></canvas></div>
+      </div>
+
+      <h3>Growth, dilution &amp; balance sheet</h3>
+      <p>Revenue CAGR since 2021 (~$5.0B) to FY26E (~$13.75B) runs near ~22–25% — comfortably above the mid-teens industry pace. Share count (~384M) has crept up modestly from equity comp but there is no dilution alarm; adjusted <a class="gloss" href="#g-fcfps">FCF/share</a> is rising faster than shares. The balance sheet is healthy: ~$2.5B cash against ~$3.26B debt = ~$0.76B net debt, an easily serviceable ~0.3x leverage on FY26 EBITDA. Working capital is a watch item — hyper-growth consumes it — but the current ratio remains above 1 and cash conversion has improved.</p>
+
+      <div class="chips">
+        <div class="chip"><div class="l">FY25 Net Sales</div><div class="v">$10.2B</div></div>
+        <div class="chip"><div class="l">Adj FCF Margin</div><div class="v">~18%</div></div>
+        <div class="chip"><div class="l">Rev CAGR '21–'26E</div><div class="v">~23%</div></div>
+        <div class="chip"><div class="l">Cash</div><div class="v">$2.5B</div></div>
+        <div class="chip"><div class="l">Total Debt</div><div class="v">$3.26B</div></div>
+        <div class="chip"><div class="l">Net Leverage</div><div class="v">~0.3x</div></div>
+      </div>
+
+      <div class="callout"><b>Flywheel:</b> more AI capex → more design wins → larger installed base → more high-margin services → more R&amp;D funding for next-gen cooling → deeper spec lock-in. Operating leverage turns each turn of the flywheel into margin, and margin into FCF that funds the next turn.</div>
+    </div>
+  </section>
+
+  <!-- SECTION 5 -->
+  <section class="card" id="s5">
+    <div class="card-head"><div class="badge">5</div><h2>Earnings Tracker — Management Credibility</h2><span class="chev">▾</span></div>
+    <div class="card-body">
+      <p>Vertiv has raised full-year guidance in each of the last several quarters and consistently beaten or met the Street on adjusted EPS. The pattern is one of conservative-set, reliably-exceeded targets — a credibility profile that supports paying a premium multiple.</p>
+      <table>
+        <thead><tr><th>Quarter / Date</th><th>Promise / Guidance</th><th>Actual Result</th><th>Credibility</th></tr></thead>
+        <tbody>
+          <tr><td class="num">Q2'25 · Jul '25</td><td>Raise FY25 sales &amp; EPS on AI demand</td><td class="num pos">Beat; raised guide; orders strong</td><td class="num">9/10</td></tr>
+          <tr><td class="num">Q3'25 · Oct '25</td><td>Organic orders re-accelerate</td><td class="num pos">Organic orders +60%; EPS +63% adj; raised '25</td><td class="num">9/10</td></tr>
+          <tr><td class="num">Q4'25 · Feb '26</td><td>Backlog to build; deliver FY25 ~$10.2B</td><td class="num pos">Orders +252% organic; backlog doubled; EPS +37% adj</td><td class="num">10/10</td></tr>
+          <tr><td class="num">FY2025 · Feb '26</td><td>~26% organic growth; ~$1.9B FCF</td><td class="num pos">$10.2B sales (+26% org); ~$1.9B FCF (+66%)</td><td class="num">10/10</td></tr>
+          <tr><td class="num">Q1'26 · Apr '26</td><td>Sustain 20%+ margins; grow backlog</td><td class="num pos">Rev $2.65B; margin 20.8% (+430bps); backlog &gt;$15B; raised FY26</td><td class="num">10/10</td></tr>
+          <tr><td class="num">FY2026 Guide</td><td>$13.5–14.0B sales; $6.30–6.40 adj EPS</td><td class="num">Pending — tracking to plan</td><td class="num">—</td></tr>
+          <tr><td class="num">Q2'26 Guide</td><td>Net sales $3.25–3.45B</td><td class="num">Reports Jul 29 '26</td><td class="num">—</td></tr>
+          <tr><td class="num">Consensus Q2'26</td><td>Street adj EPS ~$1.43 (+50% YoY)</td><td class="num">TBD Jul 29</td><td class="num">—</td></tr>
+        </tbody>
+      </table>
+      <div class="note"><b>Credibility read:</b> A near-perfect recent scorecard of raise-and-beat. The only caveat is that guidance has been set into a demand tailwind so strong that beating it has been comparatively easy — the true test comes if/when AI-capex momentum cools.</div>
+    </div>
+  </section>
+
+  <!-- SECTION 6 -->
+  <section class="card" id="s6">
+    <div class="card-head"><div class="badge">6</div><h2>Bull / Base / Bear Scenarios</h2><span class="chev">▾</span></div>
+    <div class="card-body">
+      <p>Probability-weighted targets across 1/3/5-year horizons. Anchored on FY26 guided EPS ~$6.35 and a forward multiple that we let compress as growth normalizes. Base case blends toward a ~30x-on-forward framework as VRT matures.</p>
+
+      <div class="horizon-label">1-Year Horizon (mid-2027)</div>
+      <div class="scen-grid">
+        <div class="scen bull"><h4>Bull</h4><div class="pt">$430</div><span class="prob">P ≈ 30%</span><ul><li>AI capex accelerates; backlog &gt;$20B</li><li>Margins push toward 22%</li><li>Multiple holds ~40x fwd</li></ul></div>
+        <div class="scen base"><h4>Base</h4><div class="pt">$355</div><span class="prob">P ≈ 45%</span><ul><li>FY26 delivered in-line; FY27 ~25% growth</li><li>Margins ~21%</li><li>Fwd P/E de-rates to ~34x</li></ul></div>
+        <div class="scen bear"><h4>Bear</h4><div class="pt">$205</div><span class="prob">P ≈ 25%</span><ul><li>Capex-digestion scare; orders slow</li><li>Multiple compresses to ~24x</li><li>EMEA/China stay soft</li></ul></div>
+      </div>
+      <p style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted)">Prob-weighted 1yr ≈ <b>$340</b> (~+12%)</p>
+
+      <div class="horizon-label">3-Year Horizon (mid-2029)</div>
+      <div class="scen-grid">
+        <div class="scen bull"><h4>Bull</h4><div class="pt">$720</div><span class="prob">P ≈ 30%</span><ul><li>EPS compounds to ~$14</li><li>Liquid cooling scales globally</li><li>Premium multiple sustained</li></ul></div>
+        <div class="scen base"><h4>Base</h4><div class="pt">$500</div><span class="prob">P ≈ 45%</span><ul><li>EPS ~$11; ~25x fwd</li><li>Services mix lifts margins</li><li>Share gains vs peers</li></ul></div>
+        <div class="scen bear"><h4>Bear</h4><div class="pt">$250</div><span class="prob">P ≈ 25%</span><ul><li>AI overbuild → air-pocket</li><li>Margin give-back on price competition</li><li>De-rate to industrial multiple</li></ul></div>
+      </div>
+      <p style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted)">Prob-weighted 3yr ≈ <b>$504</b> (~+67%)</p>
+
+      <div class="horizon-label">5-Year Horizon (2031)</div>
+      <div class="scen-grid">
+        <div class="scen bull"><h4>Bull</h4><div class="pt">$1,050</div><span class="prob">P ≈ 30%</span><ul><li>Vertiv = default AI thermal/power layer</li><li>EPS ~$22; durable 20%+ growth</li><li>Compounder premium intact</li></ul></div>
+        <div class="scen base"><h4>Base</h4><div class="pt">$700</div><span class="prob">P ≈ 45%</span><ul><li>EPS ~$18; ~22x</li><li>Growth normalizes to mid-teens</li><li>Strong FCF, buybacks</li></ul></div>
+        <div class="scen bear"><h4>Bear</h4><div class="pt">$300</div><span class="prob">P ≈ 25%</span><ul><li>AI cycle matures / commoditizes</li><li>Multiple = 15x mature industrial</li><li>Margin compression</li></ul></div>
+      </div>
+      <p style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted)">Prob-weighted 5yr ≈ <b>$705</b> (~+133%)</p>
+
+      <div class="chart-box solo"><div class="chart-title">Scenario Targets by Horizon<button class="zoom-btn" data-c="cScen">EXPAND</button></div><canvas id="cScen"></canvas></div>
+    </div>
+  </section>
+
+  <!-- SECTION 7 -->
+  <section class="card" id="s7">
+    <div class="card-head"><div class="badge">7</div><h2>Risks &amp; Anti-Thesis (Steelman the Bear)</h2><span class="chev">▾</span></div>
+    <div class="card-body">
+      <p>If we were short VRT, here is the case we would press. Each risk is rated on probability, impact, and whether it is priced in.</p>
+
+      <div class="risk"><h4>1. AI-capex digestion / overbuild</h4>
+        <p>Vertiv's entire acceleration rides hyperscaler capex. A pause, air-pocket, or "digestion" year — as sometimes follows a build frenzy — would hit orders first and revenue soon after. At 70x trailing earnings, even a growth <em>deceleration</em> (not decline) could halve the multiple.</p>
+        <div class="meta"><span class="tag">Prob: Medium</span><span class="tag">Impact: Severe</span><span class="tag">Priced in: Partially</span></div></div>
+
+      <div class="risk"><h4>2. Valuation / multiple compression</h4>
+        <p>The stock has tripled in a year. A ~70x trailing P/E leaves no room for error; a de-rate toward Eaton/Schneider's ~25–32x — with no change to the business — is a 40–55% price hit. Multiple risk is the dominant risk here.</p>
+        <div class="meta"><span class="tag">Prob: Medium-High</span><span class="tag">Impact: High</span><span class="tag">Priced in: No</span></div></div>
+
+      <div class="risk"><h4>3. Customer concentration &amp; pricing power erosion</h4>
+        <p>A handful of hyperscalers drive the backlog. Their scale gives them leverage to squeeze price, dual-source, or in-source cooling designs over time — pressuring the very margins the bull case extrapolates.</p>
+        <div class="meta"><span class="tag">Prob: Medium</span><span class="tag">Impact: Medium-High</span><span class="tag">Priced in: No</span></div></div>
+
+      <div class="risk"><h4>4. Intensifying competition (Schneider, Eaton, nVent, ODMs)</h4>
+        <p>Every industrial giant sees the same TAM. Schneider (scale + margins), Eaton (electrical breadth), and nVent (liquid-cooling focus) are investing aggressively, while ODMs and NVIDIA reference designs could commoditize parts of the CDU stack.</p>
+        <div class="meta"><span class="tag">Prob: High</span><span class="tag">Impact: Medium</span><span class="tag">Priced in: Partially</span></div></div>
+
+      <div class="risk"><h4>5. Geographic drag &amp; execution/supply chain</h4>
+        <p>APAC (esp. China) is contracting and EMEA has been soft; a stalled recovery caps growth. Meanwhile hyper-growth strains working capital, factory ramp, tariffs, and integration of cooling acquisitions — any stumble dents the flawless-execution premium.</p>
+        <div class="meta"><span class="tag">Prob: Medium</span><span class="tag">Impact: Medium</span><span class="tag">Priced in: Partially</span></div></div>
+
+      <div class="callout"><b>Honest synthesis:</b> The bear case is almost entirely about <em>price paid</em>, not business quality. The fundamental risks (capex cyclicality, competition) are real but slow-moving; the acute risk is a valuation air-pocket. That is precisely why our stance is "accumulate on weakness" rather than "buy at any price."</div>
+    </div>
+  </section>
+
+  <!-- SECTION 8 -->
+  <section class="card" id="s8">
+    <div class="card-head"><div class="badge">8</div><h2>Catalyst Timeline</h2><span class="chev">▾</span></div>
+    <div class="card-body">
+      <div class="timeline">
+        <div class="tl-item"><div class="tl-date">Jul 29, 2026</div><div class="tl-title">Q2 2026 Earnings</div><div class="tl-desc">Guide $3.25–3.45B sales; Street ~$1.43 adj EPS. Watch orders, book-to-bill, backlog conversion, and any FY26 raise.</div></div>
+        <div class="tl-item"><div class="tl-date">Aug–Sep 2026</div><div class="tl-title">Hyperscaler capex commentary</div><div class="tl-desc">Microsoft / Meta / Amazon / Google capex updates set the demand tape for Vertiv's forward orders.</div></div>
+        <div class="tl-item"><div class="tl-date">Q4 2026</div><div class="tl-title">NVIDIA Rubin / next-gen rack ramp</div><div class="tl-desc">Higher-density, higher-power racks pull incremental liquid-cooling + 800VDC power content per rack.</div></div>
+        <div class="tl-item"><div class="tl-date">Oct 2026</div><div class="tl-title">Q3 2026 Earnings</div><div class="tl-desc">Test of EMEA "coiled spring" recovery and continued margin expansion.</div></div>
+        <div class="tl-item"><div class="tl-date">Feb 2027</div><div class="tl-title">Q4/FY2026 Results + FY2027 Guide</div><div class="tl-desc">The big one — initial FY27 framework will reset the multiple debate.</div></div>
+        <div class="tl-item"><div class="tl-date">Ongoing</div><div class="tl-title">Liquid-cooling M&amp;A &amp; capacity adds</div><div class="tl-desc">Bolt-ons and factory expansions to scale direct-to-chip and CDU supply.</div></div>
+        <div class="tl-item"><div class="tl-date">Macro</div><div class="tl-title">Rates, tariffs, power availability</div><div class="tl-desc">Grid/power constraints and tariff policy are swing factors for data-center timing and Vertiv input costs.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 9 -->
+  <section class="card" id="s9">
+    <div class="card-head"><div class="badge">9</div><h2>Comparable Company Analysis</h2><span class="chev">▾</span></div>
+    <div class="card-body">
+      <p>VRT is the highest-growth, highest-multiple name in its cohort — the "pure-play" premium over diversified electrical giants. SMCI is included as an AI-infra beta reference (very different, thin-margin server model).</p>
+      <table>
+        <thead><tr><th>Company</th><th>Mkt Cap</th><th>Rev TTM</th><th>Rev Gr YoY</th><th>Fwd P/E</th><th>P/S</th><th>FCF Mgn</th><th>Net Mgn</th><th>EV/EBITDA</th></tr></thead>
+        <tbody>
+          <tr><td><b>VRT</b> · Vertiv</td><td class="num">$115.7B</td><td class="num">$10.8B</td><td class="num pos">~29%</td><td class="num">~48x</td><td class="num">10.7x</td><td class="num">~18%</td><td class="num">~10%</td><td class="num">~40x</td></tr>
+          <tr><td>ETN · Eaton</td><td class="num">~$156B</td><td class="num">~$26.5B</td><td class="num">~9%</td><td class="num">~30x</td><td class="num">~5.9x</td><td class="num">~15%</td><td class="num">~15%</td><td class="num">~22x</td></tr>
+          <tr><td>SBGSY · Schneider</td><td class="num">~$183B</td><td class="num">~$47B</td><td class="num">~8%</td><td class="num">~24x</td><td class="num">~3.9x</td><td class="num">~13%</td><td class="num">~13%</td><td class="num">~18x</td></tr>
+          <tr><td>NVT · nVent</td><td class="num">~$22B</td><td class="num">~$4.0B</td><td class="num pos">~26%</td><td class="num">~28x</td><td class="num">~5.5x</td><td class="num">~14%</td><td class="num">~13%</td><td class="num">~19x</td></tr>
+          <tr><td>SMCI · Super Micro</td><td class="num">~$19.8B</td><td class="num">~$33.7B</td><td class="num pos">~40%</td><td class="num">~14x</td><td class="num">~0.6x</td><td class="num neg">low/neg</td><td class="num">~3.7%</td><td class="num">~10x</td></tr>
+        </tbody>
+      </table>
+
+      <div class="chart-grid">
+        <div class="chart-box"><div class="chart-title">Peer P/S Multiple<button class="zoom-btn" data-c="cPeerPS">EXPAND</button></div><canvas id="cPeerPS"></canvas></div>
+        <div class="chart-box"><div class="chart-title">Peer Revenue Growth YoY (%)<button class="zoom-btn" data-c="cPeerGr">EXPAND</button></div><canvas id="cPeerGr"></canvas></div>
+      </div>
+
+      <h3>Relative-value read</h3>
+      <p>VRT commands roughly a 2x P/S premium to Eaton and ~2.7x to Schneider — justified <em>only</em> by its far superior growth and best-in-cohort FCF margin. It is not cheap, but the premium is earned by fundamentals, not hype. SMCI illustrates the difference between selling <em>systems with pricing power</em> (Vertiv, ~10% net margin) versus <em>assembled boxes</em> (SMCI, ~3.7% net margin) in the same AI-infra theme. Note peer figures are approximate, drawn from mid-2026 web sources for relative context, not precise line items.</p>
+    </div>
+  </section>
+
+  <!-- SECTION 10 -->
+  <section class="card" id="s10">
+    <div class="card-head"><div class="badge">10</div><h2>First-Principles KPIs</h2><span class="chev">▾</span></div>
+    <div class="card-body">
+      <p>Strip Vertiv to its physics and four leading indicators tell you almost everything. They front-run reported revenue by 2–4 quarters.</p>
+      <ul>
+        <li><b>1. Backlog ($B)</b> — the single best forward-revenue signal; &gt;$15B covers ~12–18 months. Watch the level <em>and</em> the rate of change.</li>
+        <li><b>2. Organic order growth (%)</b> — demand's leading edge (Q4'25 hit +252% organic). Decelerating orders would be the first crack.</li>
+        <li><b>3. <a class="gloss" href="#g-b2b">Book-to-bill</a> (&gt;1.0)</b> — orders vs revenue; above 1.0 means backlog still building. The tell for whether growth is sustaining.</li>
+        <li><b>4. Adjusted operating margin (%)</b> — proof that scale converts to profit; 20.8% and climbing validates operating leverage.</li>
+      </ul>
+      <div class="chart-grid">
+        <div class="chart-box"><div class="chart-title">KPI 1 — Backlog Trend ($B)<button class="zoom-btn" data-c="cKpiBacklog">EXPAND</button></div><canvas id="cKpiBacklog"></canvas></div>
+        <div class="chart-box"><div class="chart-title">KPI 2 — Organic Order Growth (%)<button class="zoom-btn" data-c="cKpiOrders">EXPAND</button></div><canvas id="cKpiOrders"></canvas></div>
+      </div>
+      <div class="chart-grid">
+        <div class="chart-box"><div class="chart-title">KPI 4 — Margin Expansion (%)<button class="zoom-btn" data-c="cKpiMargin">EXPAND</button></div><canvas id="cKpiMargin"></canvas></div>
+        <div class="chart-box"><div class="chart-title">Revenue vs Op Profit ($B)<button class="zoom-btn" data-c="cKpiLev">EXPAND</button></div><canvas id="cKpiLev"></canvas></div>
+      </div>
+      <div class="note"><b>What to watch on Jul 29:</b> if book-to-bill stays &gt;1.0 and backlog holds/grows off a &gt;$15B base while margin ticks up, the bull thesis compounds. A book-to-bill dip below 1.0 would be the earliest warning worth respecting.</div>
+    </div>
+  </section>
+
+  <!-- SECTION 11 -->
+  <section class="card" id="s11">
+    <div class="card-head"><div class="badge">11</div><h2>Glossary &amp; Methodology</h2><span class="chev">▾</span></div>
+    <div class="card-body">
+      <p style="font-size:13px;color:var(--muted)">Definitions for hyperlinked terms. Each links back to where it appears.</p>
+
+      <h3 id="g-thermal">Power &amp; heat rejection (thermal management)</h3>
+      <p><b>What:</b> Removing the heat that servers generate and delivering clean, continuous power. <b>Why it matters:</b> As chips draw more watts, cooling and power — not compute — become the binding constraint on a data center. That constraint is Vertiv's market. <a href="#s1">↩ back</a></p>
+
+      <h3 id="g-greyspace">Grey space</h3>
+      <p><b>What:</b> The data-center area for power &amp; cooling gear (UPS, switchgear, cooling), as opposed to "white space" where servers live. <b>Why:</b> Vertiv dominates grey-space content per megawatt. <a href="#s1">↩ back</a></p>
+
+      <h3 id="g-liquid">Direct-to-chip liquid cooling / CDU</h3>
+      <p><b>What:</b> Circulating coolant directly across chips via cold plates, managed by a Coolant Distribution Unit (CDU). <b>Why:</b> Above ~50–100kW/rack, air can't cope; liquid becomes mandatory, expanding Vertiv's dollar content per rack. <a href="#s1">↩ back</a></p>
+
+      <h3 id="g-fcf">Free cash flow (FCF)</h3>
+      <p><b>What:</b> Operating cash flow minus capex — cash truly available to owners. <b>Formula:</b> FCF = CFO − CapEx. <b>Why:</b> The purest measure of value creation; VRT's ~$1.9B is what funds the flywheel. <a href="#s4">↩ back</a></p>
+
+      <h3 id="g-fcfps">FCF per share</h3>
+      <p><b>What:</b> FCF divided by shares outstanding. <b>Why:</b> Shows whether per-owner cash generation is rising faster than dilution — for VRT it is. <a href="#s4">↩ back</a></p>
+
+      <h3 id="g-pe">Price / Earnings (P/E)</h3>
+      <p><b>What:</b> Price ÷ earnings per share. <b>Formula:</b> P/E = Price / EPS. <b>Why:</b> Quick gauge of how many years of current earnings you pay for; VRT's high trailing P/E is the crux of the valuation debate. <a href="#s1">↩ back</a></p>
+
+      <h3 id="g-ps">Price / Sales (P/S)</h3>
+      <p><b>What:</b> Market cap ÷ revenue. <b>Formula:</b> P/S = Mkt Cap / Revenue. <b>Why:</b> Useful for high-growth names; FTA scale: &gt;30 Euphoric, &gt;18 Excited, &gt;8 Optimistic, 4–8 Aware, &lt;4 Cautious, &lt;2 Pessimistic. <a href="#s2">↩ back</a></p>
+
+      <h3 id="g-ttm">TTM (Trailing Twelve Months)</h3>
+      <p><b>What:</b> The most recent four reported quarters summed. <b>Why:</b> Smooths seasonality for a current run-rate view. <a href="#s2">↩ back</a></p>
+
+      <h3 id="g-cagr">CAGR</h3>
+      <p><b>What:</b> Compound Annual Growth Rate. <b>Formula:</b> (End/Start)^(1/years) − 1. <b>Why:</b> The apples-to-apples growth yardstick used for TAM and revenue. <a href="#s2">↩ back</a></p>
+
+      <h3 id="g-services">Services &amp; spares</h3>
+      <p><b>What:</b> Recurring installation, maintenance, monitoring, and parts revenue (~20% of sales). <b>Why:</b> High-margin, sticky annuity that grows with the installed base. <a href="#s3">↩ back</a></p>
+
+      <h3 id="g-oplev">Operating leverage</h3>
+      <p><b>What:</b> Profit rising faster than revenue as fixed costs are spread over more volume. <b>Why:</b> Explains VRT's +430 bps margin jump — the engine behind EPS growth outpacing sales. <a href="#s4">↩ back</a></p>
+
+      <h3 id="g-b2b">Book-to-bill</h3>
+      <p><b>What:</b> Orders booked ÷ revenue billed in a period. <b>Why:</b> &gt;1.0 means backlog is still building (demand &gt; deliveries) — a leading demand signal. <a href="#s10">↩ back</a></p>
+
+      <h3>Methodology &amp; sources</h3>
+      <p style="font-size:13px">Financials web-sourced July 2026 from primary filings (Vertiv IR, 8-K/10-Q, earnings releases and call transcripts) and secondary aggregators (StockAnalysis, Yahoo Finance, MarketBeat, Simply Wall St, Motley Fool, macro/finance charts). Price ($302.33), market cap (~$115.7B), shares (~384.1M), TTM revenue ($10.84B), balance sheet (cash $2.5B / debt $3.26B), and guidance ($13.5–14.0B sales; $6.30–6.40 adj EPS; Q2 $3.25–3.45B) reflect the latest available reads as of 2026-07-23. Peer metrics are approximate, for relative context. Scenario targets are illustrative, probability-weighted analytical constructs — not price predictions.</p>
+      <div class="callout"><b>Disclaimer:</b> Generated autonomously for the FTA research queue. Educational research only — <b>not investment advice</b>. Do your own due diligence. The author holds no stated position.</div>
+    </div>
+  </section>
+
+  </div><!-- /content -->
+
+  <footer>
+    FTA Research · VRT — Vertiv Holdings Co · Report 2026-07-23 · Constructive Bull, Conviction 7.5/10 ·
+    Live hub: <a href="https://marileegrace.github.io/fta-research-hub/">marileegrace.github.io/fta-research-hub</a> · Educational research, not investment advice.
+  </footer>
+</main>
+</div>
+
+<!-- MODAL -->
+<div class="modal" id="modal"><div class="modal-box"><button class="modal-close" id="mClose">CLOSE ✕</button><canvas id="mCanvas"></canvas></div></div>
+
+<script>
+Chart.defaults.font.family="'JetBrains Mono', monospace";
+Chart.defaults.font.size=10;
+Chart.defaults.color="#5d6155";
+const G="#145A22",GD="#0A3A14",GO="#FCC55B",GOD="#e0a838",RED="#a8341f",FOR="#243D27";
+const grid={grid:{color:"rgba(0,0,0,.06)"}};
+const noLeg={plugins:{legend:{display:false}}};
+const charts={};
+function mk(id,cfg){const el=document.getElementById(id);if(el){charts[id]=new Chart(el,cfg);}return cfg;}
+const cfgs={};
+
+cfgs.cRev={type:"bar",data:{labels:["2021","2022","2023","2024","2025","2026E"],datasets:[{data:[5.0,5.7,6.86,8.0,10.2,13.75],backgroundColor:[FOR,FOR,FOR,G,G,GO],borderRadius:4}]},options:{...noLeg,scales:{y:grid,x:{grid:{display:false}}}}};
+cfgs.cMix={type:"doughnut",data:{labels:["Products","Services & Spares"],datasets:[{data:[80,20],backgroundColor:[G,GO],borderWidth:0}]},options:{plugins:{legend:{position:"bottom"}},cutout:"58%"}};
+cfgs.cMargin={type:"line",data:{labels:["2022","2023","2024","FY25","Q1'26"],datasets:[{data:[11.6,14.6,19.4,20.4,20.8],borderColor:G,backgroundColor:"rgba(20,90,34,.12)",fill:true,tension:.3,pointBackgroundColor:GO,pointRadius:4}]},options:{...noLeg,scales:{y:{...grid,suggestedMin:8},x:{grid:{display:false}}}}};
+cfgs.cFcf={type:"bar",data:{labels:["2022","2023","2024","2025"],datasets:[{data:[0.28,0.78,1.14,1.9],backgroundColor:[FOR,FOR,G,GO],borderRadius:4}]},options:{...noLeg,scales:{y:grid,x:{grid:{display:false}}}}};
+cfgs.cBacklog={type:"bar",data:{labels:["Q4'24","Q2'25","Q4'25","Q1'26"],datasets:[{data:[6.9,7.4,14.4,15.0],backgroundColor:[FOR,FOR,G,GO],borderRadius:4}]},options:{...noLeg,scales:{y:grid,x:{grid:{display:false}}}}};
+cfgs.cEps={type:"bar",data:{labels:["2022","2023","2024","2025","2026E"],datasets:[{data:[0.82,1.71,2.86,4.20,6.35],backgroundColor:[FOR,FOR,G,G,GO],borderRadius:4}]},options:{...noLeg,scales:{y:grid,x:{grid:{display:false}}}}};
+cfgs.cScen={type:"bar",data:{labels:["1-Year","3-Year","5-Year"],datasets:[
+  {label:"Bear",data:[205,250,300],backgroundColor:RED,borderRadius:3},
+  {label:"Base",data:[355,500,700],backgroundColor:GO,borderRadius:3},
+  {label:"Bull",data:[430,720,1050],backgroundColor:G,borderRadius:3}]},options:{plugins:{legend:{position:"bottom"}},scales:{y:grid,x:{grid:{display:false}}}}};
+cfgs.cPeerPS={type:"bar",data:{labels:["VRT","ETN","NVT","SBGSY","SMCI"],datasets:[{data:[10.7,5.9,5.5,3.9,0.6],backgroundColor:[GO,FOR,FOR,FOR,FOR],borderRadius:4}]},options:{...noLeg,scales:{y:grid,x:{grid:{display:false}}}}};
+cfgs.cPeerGr={type:"bar",data:{labels:["VRT","SMCI","NVT","ETN","SBGSY"],datasets:[{data:[29,40,26,9,8],backgroundColor:[GO,G,G,FOR,FOR],borderRadius:4}]},options:{...noLeg,scales:{y:grid,x:{grid:{display:false}}}}};
+cfgs.cKpiBacklog={type:"line",data:{labels:["Q4'24","Q2'25","Q4'25","Q1'26"],datasets:[{data:[6.9,7.4,14.4,15.0],borderColor:G,backgroundColor:"rgba(20,90,34,.12)",fill:true,tension:.3,pointBackgroundColor:GO,pointRadius:4}]},options:{...noLeg,scales:{y:grid,x:{grid:{display:false}}}}};
+cfgs.cKpiOrders={type:"bar",data:{labels:["Q2'25","Q3'25","Q4'25","Q1'26"],datasets:[{data:[30,60,252,60],backgroundColor:[FOR,G,GO,G],borderRadius:4}]},options:{...noLeg,scales:{y:grid,x:{grid:{display:false}}}}};
+cfgs.cKpiMargin={type:"line",data:{labels:["FY23","FY24","FY25","Q1'26"],datasets:[{data:[14.6,19.4,20.4,20.8],borderColor:GOD,backgroundColor:"rgba(224,168,56,.15)",fill:true,tension:.3,pointBackgroundColor:G,pointRadius:4}]},options:{...noLeg,scales:{y:{...grid,suggestedMin:12},x:{grid:{display:false}}}}};
+cfgs.cKpiLev={type:"bar",data:{labels:["2023","2024","2025","2026E"],datasets:[
+  {label:"Revenue",data:[6.86,8.0,10.2,13.75],backgroundColor:G,borderRadius:3},
+  {label:"Adj Op Profit",data:[1.0,1.55,2.1,2.9],backgroundColor:GO,borderRadius:3}]},options:{plugins:{legend:{position:"bottom"}},scales:{y:grid,x:{grid:{display:false}}}}};
+
+Object.keys(cfgs).forEach(id=>mk(id,cfgs[id]));
+
+// collapse
+document.querySelectorAll('.card-head').forEach(h=>h.addEventListener('click',()=>h.parentElement.classList.toggle('collapsed')));
+
+// modal zoom
+let mChart=null;
+document.querySelectorAll('.zoom-btn').forEach(b=>b.addEventListener('click',e=>{
+  e.stopPropagation();
+  const id=b.dataset.c;const cfg=JSON.parse(JSON.stringify(cfgs[id]));
+  cfg.options=cfg.options||{};cfg.options.maintainAspectRatio=false;
+  document.getElementById('modal').classList.add('open');
+  if(mChart)mChart.destroy();
+  mChart=new Chart(document.getElementById('mCanvas'),cfg);
+}));
+document.getElementById('mClose').addEventListener('click',()=>{document.getElementById('modal').classList.remove('open');if(mChart){mChart.destroy();mChart=null;}});
+document.getElementById('modal').addEventListener('click',e=>{if(e.target.id==='modal'){document.getElementById('modal').classList.remove('open');if(mChart){mChart.destroy();mChart=null;}}});
+</script>
+</body>
+</html>
