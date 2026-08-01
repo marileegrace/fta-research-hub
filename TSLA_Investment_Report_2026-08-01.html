@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TSLA — Institutional Investment Report</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Questrial&family=Quicksand:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  --green:#145A22; --dark-green:#0A3A14; --forest:#243D27;
+  --gold:#FCC55B; --gold-deep:#e0a838; --beige:#EDE8E0; --beige-card:#f6f3ed;
+  --ink:#23241f; --muted:#5d6155; --red:#a8341f; --line:#d8d1c4;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Quicksand',sans-serif;background:var(--beige);color:var(--ink);line-height:1.6;display:flex}
+h1,h2,h3,h4{font-family:'Questrial',sans-serif;font-weight:normal}
+.mono{font-family:'JetBrains Mono',monospace}
+.pos{color:var(--green)} .neg{color:var(--red)}
+a{color:var(--green)}
+
+/* SIDEBAR */
+.sidebar{width:262px;min-width:262px;height:100vh;position:sticky;top:0;
+  background:linear-gradient(180deg,#071f0b,#0A3A14 40%,#145A22);
+  border-right:3px solid var(--gold);color:var(--beige);padding:26px 20px;overflow-y:auto}
+.brand{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:26px;color:var(--gold);line-height:1.1;margin-bottom:4px}
+.brand small{display:block;font-family:'Questrial';font-style:normal;font-size:10px;letter-spacing:2px;color:var(--beige);opacity:.7;margin-top:6px}
+.ticker-box{margin:22px 0;padding:16px;background:rgba(0,0,0,.25);border:1px solid rgba(252,197,91,.35);border-radius:12px}
+.ticker-box .sym{font-family:'JetBrains Mono';font-size:22px;font-weight:700;color:var(--gold)}
+.ticker-box .price{font-family:'JetBrains Mono';font-size:28px;font-weight:700;color:#fff;margin-top:4px}
+.ticker-box .chg{font-family:'JetBrains Mono';font-size:13px;margin-top:2px}
+.ticker-box .as-of{font-size:10px;opacity:.65;margin-top:6px;letter-spacing:.5px}
+.nav a{display:flex;gap:10px;align-items:baseline;color:var(--beige);text-decoration:none;font-size:13.5px;padding:7px 8px;border-radius:7px;transition:.15s}
+.nav a:hover{background:rgba(252,197,91,.15);color:var(--gold)}
+.nav a .n{font-family:'JetBrains Mono';font-size:11px;color:var(--gold);min-width:18px}
+.disclaimer{margin-top:20px;font-size:9.5px;opacity:.55;line-height:1.5}
+
+/* MAIN */
+.main{flex:1;min-width:0}
+.hero{position:relative;overflow:hidden;background:linear-gradient(120deg,var(--dark-green),var(--green) 60%);color:#fff;padding:46px 48px 40px}
+.hero:after{content:"";position:absolute;right:-120px;top:-120px;width:360px;height:360px;border-radius:50%;
+  background:radial-gradient(circle,rgba(252,197,91,.30),transparent 70%)}
+.hero .eyebrow{font-family:'Questrial';letter-spacing:4px;font-size:12px;color:var(--gold);text-transform:uppercase}
+.hero h1{font-size:40px;margin:8px 0 6px;font-family:'Questrial'}
+.hero .co{font-family:'Cormorant Garamond';font-style:italic;font-size:24px;color:var(--beige);opacity:.95}
+.verdict{display:inline-flex;align-items:center;gap:12px;margin-top:20px;background:rgba(0,0,0,.25);
+  border:1.5px solid var(--gold);border-radius:40px;padding:10px 20px}
+.verdict .badge{font-family:'Questrial';letter-spacing:2px;text-transform:uppercase;font-size:14px;color:var(--gold)}
+.verdict .conv{font-family:'JetBrains Mono';font-size:14px;color:#fff;border-left:1px solid rgba(255,255,255,.3);padding-left:12px}
+
+/* KPI STRIP */
+.kpi-strip{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:var(--line);border-bottom:1px solid var(--line)}
+.kpi{background:var(--beige-card);padding:16px 14px}
+.kpi .lab{font-family:'Questrial';text-transform:uppercase;letter-spacing:1px;font-size:10px;color:var(--muted)}
+.kpi .val{font-family:'JetBrains Mono';font-weight:700;font-size:20px;color:var(--green);margin-top:5px;line-height:1.1}
+.kpi .sub{font-size:10.5px;color:var(--muted);margin-top:3px}
+
+/* CONTENT */
+.content{max-width:1080px;margin:0 auto;padding:34px 48px 80px}
+.card{background:var(--beige-card);border-radius:14px;margin-bottom:24px;box-shadow:0 1px 3px rgba(0,0,0,.05);overflow:hidden}
+.card-head{display:flex;align-items:center;gap:14px;padding:18px 22px;border-left:5px solid var(--green);cursor:pointer;user-select:none}
+.card-head .num{width:34px;height:34px;min-width:34px;border-radius:9px;background:var(--green);color:#fff;
+  font-family:'JetBrains Mono';font-weight:700;display:flex;align-items:center;justify-content:center;font-size:15px}
+.card-head h2{font-family:'Cormorant Garamond';font-style:italic;font-size:26px;color:var(--dark-green);flex:1}
+.card-head .chev{color:var(--green);font-size:18px;transition:.2s}
+.card.collapsed .chev{transform:rotate(-90deg)}
+.card-body{padding:4px 24px 24px}
+.card.collapsed .card-body{display:none}
+.card-body p{margin:12px 0}
+.card-body h3{font-family:'Cormorant Garamond';font-style:italic;font-size:20px;color:var(--green);margin:18px 0 6px}
+
+/* THESIS */
+.thesis{font-family:'Cormorant Garamond';font-size:23px;line-height:1.45;color:var(--ink);
+  border-left:4px solid var(--gold);padding:12px 20px;margin:14px 0;background:rgba(252,197,91,.07)}
+
+/* CHIPS */
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0}
+.chip{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;min-width:120px}
+.chip .lab{font-family:'Questrial';text-transform:uppercase;letter-spacing:.5px;font-size:9.5px;color:var(--muted)}
+.chip .val{font-family:'JetBrains Mono';font-weight:700;font-size:18px;color:var(--green);margin-top:3px}
+
+/* CHARTS */
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0}
+.chart-box{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px 14px}
+.chart-box.solo{max-width:420px;margin:18px auto}
+.chart-box .ct{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.chart-box .ct h4{font-family:'Questrial';text-transform:uppercase;letter-spacing:1px;font-size:11px;color:var(--forest)}
+.chart-box .zoom{background:var(--beige);border:1px solid var(--line);border-radius:6px;font-size:9px;
+  font-family:'Questrial';letter-spacing:.5px;color:var(--muted);padding:3px 7px;cursor:pointer;text-transform:uppercase}
+.chart-box canvas{height:155px!important}
+
+/* TABLES */
+table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13.5px;background:#fff;border-radius:10px;overflow:hidden}
+thead th{background:var(--green);color:#fff;font-family:'Questrial';text-transform:uppercase;letter-spacing:.5px;
+  font-size:11px;padding:10px 12px;text-align:left}
+tbody td{padding:9px 12px;border-bottom:1px solid var(--line)}
+tbody tr:nth-child(even){background:var(--beige-card)}
+tbody tr:hover{background:rgba(252,197,91,.14)}
+td.mono,th.mono{font-family:'JetBrains Mono';font-size:12.5px}
+
+/* SCENARIO */
+.scen-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:18px 0}
+.scen{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px;border-top:4px solid var(--muted)}
+.scen.bull{border-top-color:var(--green)} .scen.base{border-top-color:var(--gold)} .scen.bear{border-top-color:var(--red)}
+.scen h4{font-family:'Questrial';text-transform:uppercase;letter-spacing:1px;font-size:13px;margin-bottom:4px}
+.scen.bull h4{color:var(--green)} .scen.base h4{color:var(--gold-deep)} .scen.bear h4{color:var(--red)}
+.scen .pt{font-family:'JetBrains Mono';font-weight:700;font-size:24px;color:var(--ink);margin:4px 0}
+.scen .prob{display:inline-block;font-family:'JetBrains Mono';font-size:11px;background:var(--beige);
+  border-radius:20px;padding:3px 10px;margin-bottom:8px;color:var(--muted)}
+.scen ul{margin-left:16px;font-size:12.5px} .scen li{margin:4px 0}
+.horizon-lab{font-family:'Questrial';text-transform:uppercase;letter-spacing:2px;font-size:12px;color:var(--forest);margin:18px 0 2px}
+
+/* RISK */
+.risk{background:#fff;border-left:4px solid var(--red);border-radius:8px;padding:14px 16px;margin:12px 0}
+.risk h4{color:var(--red);font-family:'Questrial';font-size:15px;margin-bottom:4px}
+.risk .meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.risk .tag{font-family:'JetBrains Mono';font-size:10.5px;background:var(--beige);border:1px solid var(--line);
+  border-radius:20px;padding:3px 10px;color:var(--muted)}
+
+/* TIMELINE */
+.timeline{position:relative;margin:18px 0 8px;padding-left:26px}
+.timeline:before{content:"";position:absolute;left:6px;top:4px;bottom:4px;width:3px;
+  background:linear-gradient(180deg,var(--green),var(--gold))}
+.tl-item{position:relative;margin-bottom:18px}
+.tl-item:before{content:"";position:absolute;left:-24px;top:3px;width:13px;height:13px;border-radius:50%;
+  background:var(--gold);border:3px solid var(--green)}
+.tl-item .date{font-family:'JetBrains Mono';font-size:12px;color:var(--gold-deep);font-weight:700}
+.tl-item .ev{font-weight:700;font-size:14px;margin-top:1px}
+.tl-item .desc{font-size:12.5px;color:var(--muted)}
+
+/* CALLOUTS */
+.callout{border-radius:10px;padding:14px 18px;margin:16px 0;font-size:13.5px}
+.callout.gold{background:rgba(252,197,91,.12);border:1px solid var(--gold)}
+.callout.note{background:rgba(20,90,34,.07);border:1px solid var(--green)}
+.callout .ct{font-family:'Questrial';text-transform:uppercase;letter-spacing:1px;font-size:11px;color:var(--forest);margin-bottom:4px}
+
+/* GLOSSARY */
+.gloss{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:12px 0}
+.gloss h4{font-family:'JetBrains Mono';font-size:14px;color:var(--green)}
+.gloss .formula{font-family:'JetBrains Mono';font-size:12px;background:var(--beige);padding:6px 10px;border-radius:6px;margin:6px 0;display:inline-block}
+.gloss a{font-size:11px}
+
+/* MODAL */
+.modal{display:none;position:fixed;inset:0;background:rgba(10,20,10,.82);z-index:100;align-items:center;justify-content:center;padding:30px}
+.modal.open{display:flex}
+.modal-box{background:var(--beige-card);border:2px solid var(--gold);border-radius:16px;padding:24px;width:min(900px,94vw)}
+.modal-box .mh{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.modal-box h4{font-family:'Questrial';text-transform:uppercase;letter-spacing:1px;color:var(--forest)}
+.modal-box .x{cursor:pointer;font-size:22px;color:var(--red);background:none;border:none}
+.modal-box canvas{height:60vh!important}
+
+sup a{text-decoration:none;color:var(--gold-deep);font-family:'JetBrains Mono';font-size:10px}
+
+@media(max-width:880px){.chart-grid,.scen-grid{grid-template-columns:1fr}}
+@media(max-width:780px){.sidebar{display:none}.kpi-strip{grid-template-columns:repeat(3,1fr)}
+  .hero,.content{padding-left:22px;padding-right:22px}}
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="brand">Aligned Solutions<small>DEEP-ALPHA RESEARCH</small></div>
+  <div class="ticker-box">
+    <div class="sym">TSLA</div>
+    <div class="price">$311.21</div>
+    <div class="chg neg mono">−0.9% • P/E 291</div>
+    <div class="as-of">Close Jul 31, 2026 • NASDAQ</div>
+  </div>
+  <nav class="nav">
+    <a href="#s1"><span class="n">01</span> Executive Summary &amp; Thesis</a>
+    <a href="#s2"><span class="n">02</span> Micro &amp; Valuation</a>
+    <a href="#s3"><span class="n">03</span> Moat, Management &amp; Culture</a>
+    <a href="#s4"><span class="n">04</span> Financial Deep Dive</a>
+    <a href="#s5"><span class="n">05</span> Earnings Tracker</a>
+    <a href="#s6"><span class="n">06</span> Bull / Base / Bear</a>
+    <a href="#s7"><span class="n">07</span> Risks &amp; Anti-Thesis</a>
+    <a href="#s8"><span class="n">08</span> Catalyst Timeline</a>
+    <a href="#s9"><span class="n">09</span> Comparable Companies</a>
+    <a href="#s10"><span class="n">10</span> First-Principles KPIs</a>
+    <a href="#s11"><span class="n">11</span> Glossary &amp; Methodology</a>
+  </nav>
+  <div class="disclaimer">For research/education only. Not investment advice. Figures sourced from public filings &amp; market data as of Aug 1, 2026 and may contain errors. Author is not a registered advisor.</div>
+</aside>
+
+<div class="main">
+  <header class="hero">
+    <div class="eyebrow">Institutional Deep-Dive · Thursday Slot</div>
+    <h1>Tesla, Inc.</h1>
+    <div class="co">The market is pricing a robotics &amp; autonomy company. The financials still show a car company in transition.</div>
+    <div class="verdict">
+      <span class="badge">Verdict: Neutral / Hold</span>
+      <span class="conv mono">Conviction 5 / 10</span>
+    </div>
+  </header>
+
+  <div class="kpi-strip">
+    <div class="kpi"><div class="lab">Price</div><div class="val">$311.21</div><div class="sub">52-wk 297 – 499</div></div>
+    <div class="kpi"><div class="lab">Market Cap</div><div class="val">$1.16T</div><div class="sub">Mega-cap</div></div>
+    <div class="kpi"><div class="lab">Rev Growth (Q2)</div><div class="val">+26%</div><div class="sub">TTM &gt; $100B</div></div>
+    <div class="kpi"><div class="lab">Q2 FCF</div><div class="val neg">−$1.09B</div><div class="sub">Capex +142%</div></div>
+    <div class="kpi"><div class="lab">P/E · P/S</div><div class="val">291 · 11.6</div><div class="sub">"Optimistic" P/S</div></div>
+    <div class="kpi"><div class="lab">Analyst PT (avg)</div><div class="val">~$421</div><div class="sub">Range $25–$600</div></div>
+  </div>
+
+  <div class="content">
+
+  <!-- S1 -->
+  <section class="card" id="s1">
+    <div class="card-head"><div class="num">1</div><h2>Executive Summary &amp; Investment Thesis</h2><div class="chev">▾</div></div>
+    <div class="card-body">
+      <div class="thesis">Tesla is two companies trapped in one ticker: a decelerating, margin-compressed automaker priced at a discount to peers, bolted onto an embryonic autonomy-and-robotics platform priced for near-certain success. At $311 and a <a href="#g-pe">P/E</a> near 290, roughly 85–90% of the market cap is a call option on Robotaxi, Full Self-Driving (FSD) and Optimus executing on schedule. The Q2 2026 print — record revenue, but a 57% collapse in operating profit and negative <a href="#g-fcf">free cash flow</a> — is the tension in miniature. We rate TSLA a <strong>Hold</strong> with a barbell risk profile: the core auto business does not justify the price, yet the optionality is real enough that shorting is dangerous.</div>
+
+      <p>The bull and bear cases are unusually far apart because they value entirely different things. Bulls (Wedbush's Dan Ives at a $600 target) capitalize a future in which Tesla operates a million-vehicle autonomous network and ships humanoid robots at scale. Bears (GLJ Research near $25) value the cash-flow reality: an auto franchise whose deliveries are growing again but whose <a href="#g-gm">gross margin</a> has slid to 16.8% as average selling prices fall and high-margin regulatory credits evaporate. Our neutral stance reflects genuine two-sided uncertainty, not fence-sitting.</p>
+
+      <div class="chips">
+        <div class="chip"><div class="lab">Sector</div><div class="val" style="font-size:14px">Auto / AI-Robotics</div></div>
+        <div class="chip"><div class="lab">Q2'26 Revenue</div><div class="val">$28.24B</div></div>
+        <div class="chip"><div class="lab">Q2 Deliveries</div><div class="val">480,126</div></div>
+        <div class="chip"><div class="lab">GAAP EPS</div><div class="val">$0.32</div></div>
+        <div class="chip"><div class="lab">Gross Margin</div><div class="val">16.8%</div></div>
+        <div class="chip"><div class="lab">Liquidity</div><div class="val">~$44B</div></div>
+      </div>
+
+      <div class="callout gold"><div class="ct">The one thing to watch</div>Tesla now spends more on capex than it generates from operations. FCF went negative for the first time in years as capex surged +142% to $5.79B to fund AI5/AI6 chips, the Texas "Terafab," and Optimus. The thesis lives or dies on whether that spend converts into autonomy revenue before the balance-sheet cushion (~$44B liquidity) is meaningfully drawn down.</div>
+    </div>
+  </section>
+
+  <!-- S2 -->
+  <section class="card" id="s2">
+    <div class="card-head"><div class="num">2</div><h2>Microeconomic &amp; Valuation Analysis</h2><div class="chev">▾</div></div>
+    <div class="card-body">
+      <p>Tesla straddles three markets: global battery-electric vehicles (a ~$0.7–1.0T TAM growing high-single-digit as EV penetration matures), stationary energy storage (a fast-growing ~$150B+ market compounding ~20%+), and — the valuation crux — autonomous mobility and humanoid robotics, TAMs measured in the trillions but with near-zero current revenue. The stock's multiple only makes sense if you underwrite the third bucket.</p>
+
+      <div class="chart-grid">
+        <div class="chart-box"><div class="ct"><h4>Annual Revenue ($B)</h4><button class="zoom" data-t="Annual Revenue ($B)" data-c="revAnnual">Expand ⤢</button></div><canvas id="revAnnual"></canvas></div>
+        <div class="chart-box"><div class="ct"><h4>Q2'26 Revenue Mix</h4><button class="zoom" data-t="Q2'26 Revenue Mix" data-c="segMix">Expand ⤢</button></div><canvas id="segMix"></canvas></div>
+      </div>
+
+      <h3>Valuation posture</h3>
+      <p>On a <a href="#g-ps">price-to-sales</a> basis, TSLA trades near 11.6× TTM revenue — squarely in "Optimistic" territory on our scale (>8), and extreme for a business with mid-teens gross margin and single-digit net margin. The ~290× <a href="#g-pe">P/E</a> is not a value metric here; it reflects depressed trailing earnings plus embedded autonomy optionality. Against auto peers (Toyota, GM, Ford at 5–9× earnings) Tesla is priced as a technology platform; against AI/robotics peers (Nvidia) its <em>current</em> economics look thin. This is the definition of a narrative-premium stock.</p>
+
+      <div class="chips">
+        <div class="chip"><div class="lab">P/S (TTM)</div><div class="val">11.6×</div></div>
+        <div class="chip"><div class="lab">P/S Verdict</div><div class="val" style="font-size:14px">Optimistic</div></div>
+        <div class="chip"><div class="lab">P/E</div><div class="val">~290×</div></div>
+        <div class="chip"><div class="lab">Insider Selling</div><div class="val" style="font-size:13px">Net Sales</div></div>
+        <div class="chip"><div class="lab">Inst. Own.</div><div class="val">~46%</div></div>
+      </div>
+
+      <p><strong>Ownership &amp; flows.</strong> Institutional ownership sits near 46% with retail unusually high for a mega-cap — a structural source of both volatility and multiple support. Insider activity has skewed toward sales (option-driven), though the CEO's compensation package keeps interests tied to a very high market-cap milestone ladder. Analyst growth estimates remain wide: consensus models mid-teens revenue CAGR near-term, but earnings estimates have been cut repeatedly as margins compress and the 2026 average price target has drifted to ~$421 from ~$422 — essentially flat, masking enormous dispersion ($25 to $600).</p>
+    </div>
+  </section>
+
+  <!-- S3 -->
+  <section class="card" id="s3">
+    <div class="card-head"><div class="num">3</div><h2>Qualitative Analysis — Moat, Management &amp; Culture</h2><div class="chev">▾</div></div>
+    <div class="card-body">
+      <p><strong>The moat, philosophically.</strong> Tesla's durable advantages are not the cars — legacy autos and BYD have closed much of the product gap — but three compounding systems: (1) a real-world driving <em>data flywheel</em> feeding FSD that no competitor can easily replicate; (2) vertical integration in batteries, silicon (Dojo/AI5-AI6), and manufacturing that lowers unit cost over time; and (3) a brand + charging network (now an industry standard) that creates switching friction. The question is whether these translate into <em>autonomy</em> economics or merely a slightly-better car company.</p>
+
+      <h3>Management &amp; founder dynamics</h3>
+      <p>Tesla is emphatically founder-led. Elon Musk remains the central capital allocator, product visionary, and — candidly — the single largest idiosyncratic risk. The track record on ambitious hardware and cost-down engineering is elite; the track record on <em>self-imposed autonomy timelines</em> is poor (multiple "next year" robotaxi promises since 2019). Capital allocation has pivoted hard toward AI compute and robotics, funded internally rather than via dilution — a shareholder-friendly choice, but one now consuming all operating cash and more.</p>
+
+      <div class="callout note"><div class="ct">Structural traits</div>Very high talent density in AI/silicon; a genuine idea-meritocracy and high failure tolerance ("move fast, blow up rockets") that accelerates innovation but also produces missed deadlines and reputational volatility. Decentralization is moderate — strategy remains highly centralized around the CEO, a strength for speed and a weakness for key-person risk.</div>
+
+      <p><strong>Culture &amp; ethics.</strong> Customer obsession is real on product; less so on service consistency and communications discipline. The CEO's public/political profile has become a demand-side variable in several markets — an unusual, non-financial factor that a serious analyst must price. Organizationally the innovation pace is exceptional; the governance and key-person concentration are the recurring red flags.</p>
+    </div>
+  </section>
+
+  <!-- S4 -->
+  <section class="card" id="s4">
+    <div class="card-head"><div class="num">4</div><h2>Quantitative Analysis — Financial Deep Dive</h2><div class="chev">▾</div></div>
+    <div class="card-body">
+      <p>The Q2 2026 quarter crystallizes the transition. Revenue hit a record $28.24B (+26% YoY), pushing trailing-twelve-month revenue above $100B for the first time. But the quality of that growth deteriorated: total GAAP <a href="#g-gm">gross margin</a> fell to 16.8% (from 17.2%), operating profit dropped 57%, and <a href="#g-fcf">free cash flow</a> turned negative at −$1.09B as capex spiked +142% to $5.79B even while operating cash flow rose 85% to $4.70B.</p>
+
+      <div class="chart-grid">
+        <div class="chart-box"><div class="ct"><h4>Quarterly Revenue ($B)</h4><button class="zoom" data-t="Quarterly Revenue ($B)" data-c="revQ">Expand ⤢</button></div><canvas id="revQ"></canvas></div>
+        <div class="chart-box"><div class="ct"><h4>Free Cash Flow ($B)</h4><button class="zoom" data-t="Free Cash Flow ($B)" data-c="fcfQ">Expand ⤢</button></div><canvas id="fcfQ"></canvas></div>
+      </div>
+      <div class="chart-grid">
+        <div class="chart-box"><div class="ct"><h4>Deliveries (000s)</h4><button class="zoom" data-t="Deliveries (000s)" data-c="delQ">Expand ⤢</button></div><canvas id="delQ"></canvas></div>
+        <div class="chart-box"><div class="ct"><h4>GAAP Gross Margin (%)</h4><button class="zoom" data-t="GAAP Gross Margin (%)" data-c="gmQ">Expand ⤢</button></div><canvas id="gmQ"></canvas></div>
+      </div>
+
+      <h3>Revenue streams, in plain English</h3>
+      <p><strong>Automotive ($20.52B, +23% YoY)</strong> — selling cars; still ~73% of revenue and the margin battleground as ASPs fall. <strong>Energy generation &amp; storage ($3.14B, +13%)</strong> — Powerwall/Megapack battery systems; deployed a record 13.5 GWh in the quarter and is the most reliably-margin-accretive growth engine today. <strong>Services &amp; other ($4.58B, +50%)</strong> — Supercharging, insurance, used cars, parts; grew fastest and hit record profitability. The mix is slowly shifting toward higher-margin non-auto lines, which is the quiet bull point inside a soft quarter.</p>
+
+      <div class="chips">
+        <div class="chip"><div class="lab">Op. Cash Flow Q2</div><div class="val">$4.70B</div></div>
+        <div class="chip"><div class="lab">Capex Q2</div><div class="val">$5.79B</div></div>
+        <div class="chip"><div class="lab">Reg. Credits</div><div class="val neg">$146M</div></div>
+        <div class="chip"><div class="lab">Cash + ST Inv</div><div class="val">~$44B</div></div>
+        <div class="chip"><div class="lab">Total Debt</div><div class="val">~$14.7B</div></div>
+        <div class="chip"><div class="lab">Net Cash</div><div class="val">~$29B</div></div>
+      </div>
+
+      <h3>Balance sheet &amp; operating leverage</h3>
+      <p>Tesla remains fortress-capitalized: ~$44B cash and short-term investments against ~$14.7B total debt (including finance leases) leaves ~$29B net cash and a healthy current ratio (~2×). That cushion is what makes the aggressive capex survivable. The concern is <em>reverse</em> operating leverage: revenue grew 26% while operating profit fell 57%, meaning costs (COGS, R&D, capex depreciation to come) are scaling faster than the top line during the investment phase. The 5-year revenue CAGR remains impressive (roughly high-teens from ~$54B in 2021 to ~$95B in 2025), but 2025 was the first annual revenue decline — a genuine inflection that the multiple has not fully digested.</p>
+
+      <div class="callout gold"><div class="ct">Flywheel status</div>The classic Tesla flywheel — lower cost → lower price → more volume → more data → better FSD → higher-margin software — is intact on volume (deliveries reaccelerated to +25%) but currently <em>stalled on margin</em>. Regulatory-credit collapse and ASP erosion are draining the profit that historically funded the next turn. The autonomy/software leg has to start monetizing to restart the wheel.</div>
+    </div>
+  </section>
+
+  <!-- S5 -->
+  <section class="card" id="s5">
+    <div class="card-head"><div class="num">5</div><h2>Earnings Tracker — Management Credibility</h2><div class="chev">▾</div></div>
+    <div class="card-body">
+      <p>Tesla's management is highly credible on <em>volume and cost engineering</em> and chronically optimistic on <em>timelines and margins</em>. The pattern below — beat on deliveries/revenue, miss on profitability guidance, slip on autonomy dates — is the single most useful lens for handicapping future guidance.</p>
+      <table>
+        <thead><tr><th>Quarter</th><th>Specific Promise / Guidance</th><th>Actual Result</th><th class="mono">Credibility</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">Q2 2026</td><td>Robotaxi expansion "on track"; margins to stabilize</td><td>Deliveries beat (480k); GM fell to 16.8%, op profit −57%</td><td class="mono neg">4/10</td></tr>
+          <tr><td class="mono">Q1 2026</td><td>Volume growth to resume; FCF positive</td><td>Deliveries missed (358k) but FCF +$1.44B ✓</td><td class="mono">6/10</td></tr>
+          <tr><td class="mono">Q4 2025</td><td>2025 to show growth vs 2024</td><td>FY25 revenue declined to $94.8B (first-ever decline) ✗</td><td class="mono neg">3/10</td></tr>
+          <tr><td class="mono">Q3 2025</td><td>Record quarter; robotaxi ramp underway</td><td>Record rev $28.1B, FCF $3.99B ✓; robotaxi limited</td><td class="mono">7/10</td></tr>
+          <tr><td class="mono">Q2 2025</td><td>Affordable model on track for 2025/26</td><td>Delayed / re-scoped; deliveries pressured</td><td class="mono neg">4/10</td></tr>
+          <tr><td class="mono">Q1 2025</td><td>Return to growth in 2H; FSD unsupervised "this year"</td><td>Partial; unsupervised FSD limited to pilot geos</td><td class="mono neg">4/10</td></tr>
+          <tr><td class="mono">Q4 2024</td><td>2025 vehicle growth 20–30%</td><td>Materially missed; deliveries roughly flat-to-down</td><td class="mono neg">2/10</td></tr>
+          <tr><td class="mono">Q3 2024</td><td>Cost per vehicle to keep falling</td><td>Achieved ✓ — COGS/vehicle hit record lows</td><td class="mono">8/10</td></tr>
+        </tbody>
+      </table>
+      <div class="callout note"><div class="ct">Read-through</div>Trust the hardware/cost guidance; heavily discount the autonomy timeline and margin-recovery guidance. Weighted credibility ≈ 4.5/10 — a company that reliably ships product and reliably slips on the promises that justify its valuation.</div>
+    </div>
+  </section>
+
+  <!-- S6 -->
+  <section class="card" id="s6">
+    <div class="card-head"><div class="num">6</div><h2>Bull / Base / Bear Scenarios</h2><div class="chev">▾</div></div>
+    <div class="card-body">
+      <div class="chart-grid">
+        <div class="chart-box"><div class="ct"><h4>1-Year Price Targets ($)</h4><button class="zoom" data-t="1-Year Price Targets ($)" data-c="scen1">Expand ⤢</button></div><canvas id="scen1"></canvas></div>
+        <div class="chart-box"><div class="ct"><h4>5-Year Price Targets ($)</h4><button class="zoom" data-t="5-Year Price Targets ($)" data-c="scen5">Expand ⤢</button></div><canvas id="scen5"></canvas></div>
+      </div>
+
+      <div class="horizon-lab">1-Year Horizon (mid-2027)</div>
+      <div class="scen-grid">
+        <div class="scen bull"><h4>Bull</h4><div class="pt">$520</div><span class="prob">Prob 25%</span><ul><li>Robotaxi live &amp; scaling in 8–10 states</li><li>Margins stabilize as ASPs bottom</li><li>Optimus commercial orders land</li></ul></div>
+        <div class="scen base"><h4>Base</h4><div class="pt">$340</div><span class="prob">Prob 50%</span><ul><li>Deliveries grow ~10%; GM ~17%</li><li>Robotaxi expands but pre-revenue</li><li>Multiple holds on optionality</li></ul></div>
+        <div class="scen bear"><h4>Bear</h4><div class="pt">$180</div><span class="prob">Prob 25%</span><ul><li>Margin compression continues</li><li>Autonomy timeline slips again</li><li>Multiple de-rates toward auto peers</li></ul></div>
+      </div>
+      <p class="mono" style="font-size:12px;color:var(--muted)">Prob-weighted 1yr ≈ $345 (~+11%)</p>
+
+      <div class="horizon-lab">3-Year Horizon (2029)</div>
+      <div class="scen-grid">
+        <div class="scen bull"><h4>Bull</h4><div class="pt">$800</div><span class="prob">Prob 30%</span><ul><li>Robotaxi network profitable, 10k+ fleet</li><li>Optimus at meaningful volume</li><li>Energy storage a $20B+ line</li></ul></div>
+        <div class="scen base"><h4>Base</h4><div class="pt">$420</div><span class="prob">Prob 45%</span><ul><li>FSD software revenue ramps</li><li>Auto margins recover to ~20%</li><li>Robotics still early</li></ul></div>
+        <div class="scen bear"><h4>Bear</h4><div class="pt">$160</div><span class="prob">Prob 25%</span><ul><li>Autonomy commoditized by rivals</li><li>Chinese OEMs win price war</li><li>Narrative premium collapses</li></ul></div>
+      </div>
+      <p class="mono" style="font-size:12px;color:var(--muted)">Prob-weighted 3yr ≈ $470 (~+51%)</p>
+
+      <div class="horizon-lab">5-Year Horizon (2031)</div>
+      <div class="scen-grid">
+        <div class="scen bull"><h4>Bull</h4><div class="pt">$1,300</div><span class="prob">Prob 30%</span><ul><li>Autonomy + robotics are majority of value</li><li>Millions of FSD-miles monetized</li><li>Optimus a genuine product line</li></ul></div>
+        <div class="scen base"><h4>Base</h4><div class="pt">$560</div><span class="prob">Prob 45%</span><ul><li>Successful but slower platform pivot</li><li>Blended margins mid-20s%</li><li>Re-rated as diversified tech-industrial</li></ul></div>
+        <div class="scen bear"><h4>Bear</h4><div class="pt">$150</div><span class="prob">Prob 25%</span><ul><li>Robotics never scales economically</li><li>Values as premium automaker only</li><li>Key-person shock</li></ul></div>
+      </div>
+      <p class="mono" style="font-size:12px;color:var(--muted)">Prob-weighted 5yr ≈ $660 (~+112%) — heavily right-skewed by the bull tail.</p>
+    </div>
+  </section>
+
+  <!-- S7 -->
+  <section class="card" id="s7">
+    <div class="card-head"><div class="num">7</div><h2>Risks &amp; Anti-Thesis (Steelman the Bear)</h2><div class="chev">▾</div></div>
+    <div class="card-body">
+      <p>If I were short TSLA, here is the case I would make — engaged seriously, not strawmanned.</p>
+
+      <div class="risk"><h4>1. The valuation is ~90% narrative, and narratives de-rate fast</h4>
+        <p>Strip out autonomy/robotics optionality and TSLA is an automaker with 16.8% gross margin trading at 290× earnings. Any credible delay resets the multiple toward auto comps (5–10× earnings), implying catastrophic downside from here.</p>
+        <div class="meta"><span class="tag">Prob: High</span><span class="tag">Impact: Severe</span><span class="tag">Priced in: Partially</span></div></div>
+
+      <div class="risk"><h4>2. Autonomy timelines have slipped for six-plus years</h4>
+        <p>"Unsupervised FSD next year" has been promised since 2019. Management concedes meaningful robotaxi revenue is unlikely before 2027. Every slip compounds the discount rate the market applies to the option.</p>
+        <div class="meta"><span class="tag">Prob: High</span><span class="tag">Impact: High</span><span class="tag">Priced in: Partially</span></div></div>
+
+      <div class="risk"><h4>3. Chinese competition (BYD et al.) is winning the volume war</h4>
+        <p>BYD and domestic Chinese OEMs offer competitive EVs at lower price points, pressuring Tesla's ASPs globally and eroding the very margins needed to fund the AI pivot. The auto business is structurally deflating.</p>
+        <div class="meta"><span class="tag">Prob: High</span><span class="tag">Impact: High</span><span class="tag">Priced in: Mostly</span></div></div>
+
+      <div class="risk"><h4>4. Negative FCF during a capex super-cycle</h4>
+        <p>Capex +142% pushed FCF negative. If autonomy revenue doesn't arrive on schedule, Tesla burns its balance-sheet cushion funding compute and robotics with no near-term payback — the worst kind of growth capex.</p>
+        <div class="meta"><span class="tag">Prob: Medium</span><span class="tag">Impact: High</span><span class="tag">Priced in: Poorly</span></div></div>
+
+      <div class="risk"><h4>5. Key-person &amp; brand/political risk</h4>
+        <p>The CEO is simultaneously the moat and the tail risk. His attention is split across multiple ventures and his public profile has become a measurable demand headwind in key markets. A departure, health event, or further brand damage is un-hedgeable and only loosely priced.</p>
+        <div class="meta"><span class="tag">Prob: Low-Med</span><span class="tag">Impact: Severe</span><span class="tag">Priced in: No</span></div></div>
+
+      <div class="callout note"><div class="ct">Why we're not short</div>The bear case is strong on the auto business but the right-tail (autonomy + Optimus actually working) is a genuine multi-hundred-percent outcome, and Tesla has repeatedly turned skeptics into losers by eventually shipping. Asymmetry cuts both ways — hence Hold, not Sell.</div>
+    </div>
+  </section>
+
+  <!-- S8 -->
+  <section class="card" id="s8">
+    <div class="card-head"><div class="num">8</div><h2>Catalyst Timeline</h2><div class="chev">▾</div></div>
+    <div class="card-body">
+      <div class="timeline">
+        <div class="tl-item"><div class="date">Aug–Sep 2026</div><div class="ev">Robotaxi geographic expansion</div><div class="desc">Unsupervised operations targeted in Miami; Phoenix, Orlando, Tampa, Las Vegas on deck. Watch for true driver-out scale, not pilots.</div></div>
+        <div class="tl-item"><div class="date">Q3 2026 (Oct)</div><div class="ev">Q3 2026 earnings</div><div class="desc">Key tests: does gross margin stabilize above 17%? Does FCF return to positive? Any FSD/robotaxi revenue recognition?</div></div>
+        <div class="tl-item"><div class="date">Late 2026</div><div class="ev">Optimus Gen-3 commercial orders</div><div class="desc">Mass production started Jan 2026; first external commercial customers targeted for late 2026 at a $20–30k price point.</div></div>
+        <div class="tl-item"><div class="date">Q4 2026</div><div class="ev">~Dozen-state robotaxi footprint</div><div class="desc">Management target for service availability across ~12 US states by year-end — a credibility checkpoint.</div></div>
+        <div class="tl-item"><div class="date">2026–2027</div><div class="ev">AI5 / AI6 chips &amp; Texas "Terafab"</div><div class="desc">In-house silicon ramp underpinning FSD and Optimus; capex &gt;$25B through 2026 funds this build-out.</div></div>
+        <div class="tl-item"><div class="date">2027</div><div class="ev">First "meaningful" robotaxi revenue</div><div class="desc">Management's own framing. The year the optionality either starts converting to cash — or slips again.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S9 -->
+  <section class="card" id="s9">
+    <div class="card-head"><div class="num">9</div><h2>Comparable Company Analysis</h2><div class="chev">▾</div></div>
+    <div class="card-body">
+      <p>Tesla defies clean comps — that is itself the analysis. Against automakers it is absurdly expensive; against AI/robotics platforms its current economics are thin. Peer figures below are approximate, drawn from latest available market data, and intended for relative framing rather than precision.</p>
+      <table>
+        <thead><tr><th>Company</th><th class="mono">Mkt Cap</th><th class="mono">Rev TTM</th><th class="mono">Rev Gr</th><th class="mono">P/E</th><th class="mono">P/S</th><th class="mono">Net Mgn</th></tr></thead>
+        <tbody>
+          <tr><td>Tesla (TSLA)</td><td class="mono">$1.16T</td><td class="mono">~$100B</td><td class="mono pos">+26%</td><td class="mono">~290</td><td class="mono">11.6</td><td class="mono">~4%</td></tr>
+          <tr><td>BYD</td><td class="mono">~$150B</td><td class="mono">~$110B</td><td class="mono pos">+high teens</td><td class="mono">~18</td><td class="mono">1.4</td><td class="mono">~5%</td></tr>
+          <tr><td>Toyota</td><td class="mono">~$280B</td><td class="mono">~$300B</td><td class="mono">low-single</td><td class="mono">~8</td><td class="mono">0.9</td><td class="mono">~9%</td></tr>
+          <tr><td>General Motors</td><td class="mono">~$55B</td><td class="mono">~$185B</td><td class="mono">flat</td><td class="mono">~6</td><td class="mono">0.3</td><td class="mono">~5%</td></tr>
+          <tr><td>Rivian (RIVN)</td><td class="mono">~$15B</td><td class="mono">~$6B</td><td class="mono pos">+30%</td><td class="mono neg">n/m</td><td class="mono">2.5</td><td class="mono neg">neg</td></tr>
+          <tr><td>Nvidia (NVDA)</td><td class="mono">~$4T+</td><td class="mono">~$180B</td><td class="mono pos">+50%+</td><td class="mono">~45</td><td class="mono">~22</td><td class="mono pos">~50%</td></tr>
+        </tbody>
+      </table>
+      <p><strong>Relative-value read.</strong> On any auto metric Tesla is 3–15× the peer multiple. It only "makes sense" alongside Nvidia — but Nvidia earns ~50% net margins today versus Tesla's ~4%. The comp table is the bear case in one screen: you are paying a technology multiple for automaker economics, underwritten by autonomy revenue that does not yet exist.</p>
+    </div>
+  </section>
+
+  <!-- S10 -->
+  <section class="card" id="s10">
+    <div class="card-head"><div class="num">10</div><h2>First-Principles KPIs</h2><div class="chev">▾</div></div>
+    <div class="card-body">
+      <p>Forget the P/E. The variables that will actually determine whether the thesis works are physical and operational leading indicators. Track these:</p>
+      <div class="chart-grid">
+        <div class="chart-box"><div class="ct"><h4>Energy Storage Deployed (GWh)</h4><button class="zoom" data-t="Energy Storage Deployed (GWh)" data-c="kpiStorage">Expand ⤢</button></div><canvas id="kpiStorage"></canvas></div>
+        <div class="chart-box"><div class="ct"><h4>Regulatory Credit Rev ($M)</h4><button class="zoom" data-t="Regulatory Credit Revenue ($M)" data-c="kpiCredits">Expand ⤢</button></div><canvas id="kpiCredits"></canvas></div>
+      </div>
+      <ul style="margin:14px 0 0 20px;font-size:14px">
+        <li style="margin:8px 0"><strong>Driver-out robotaxi miles per week</strong> — the purest read on whether autonomy is real. Pilots don't count; scaled, unsupervised, revenue-generating miles do.</li>
+        <li style="margin:8px 0"><strong>Automotive gross margin ex-credits</strong> — strips out the vanishing regulatory-credit sugar (now just $146M) to reveal true unit economics. The 16.8% headline is flattered; the underlying number is the one to watch.</li>
+        <li style="margin:8px 0"><strong>Energy storage GWh deployed</strong> — a record 13.5 GWh in Q2; the highest-conviction growth line and a real, cash-generating business independent of the autonomy story.</li>
+        <li style="margin:8px 0"><strong>Optimus units shipped to external customers</strong> — currently ~zero. The first non-trivial number reprices the robotics option overnight.</li>
+        <li style="margin:8px 0"><strong>Capex-to-operating-cash-flow ratio</strong> — above 1.0 in Q2 (FCF negative). Sustained &gt;1 without autonomy revenue is the balance-sheet warning light.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- S11 -->
+  <section class="card" id="s11">
+    <div class="card-head"><div class="num">11</div><h2>Glossary &amp; Methodology</h2><div class="chev">▾</div></div>
+    <div class="card-body">
+      <div class="gloss" id="g-pe"><h4>P/E — Price-to-Earnings</h4><div class="formula">P/E = Price ÷ EPS (TTM)</div><p>How many dollars investors pay per dollar of annual profit. <strong>Why it matters:</strong> TSLA's ~290× reflects depressed earnings plus embedded optionality — it is a narrative gauge here, not a value one.</p><a href="#s1">↑ back to thesis</a></div>
+      <div class="gloss" id="g-ps"><h4>P/S — Price-to-Sales</h4><div class="formula">P/S = Market Cap ÷ Revenue (TTM)</div><p>Revenue multiple, useful when earnings are volatile. <strong>Scale used:</strong> &gt;30 Euphoric · &gt;18 Excited · &gt;8 Optimistic · 4–8 Aware · &lt;4 Cautious · &lt;2 Pessimistic. TSLA ≈ 11.6× → "Optimistic."</p><a href="#s2">↑ back to valuation</a></div>
+      <div class="gloss" id="g-fcf"><h4>FCF — Free Cash Flow</h4><div class="formula">FCF = Operating Cash Flow − Capex</div><p>Cash left after maintaining/growing the business. <strong>Why it matters:</strong> TSLA's Q2 FCF of −$1.09B signals it is now spending ahead of its cash generation to fund the AI/robotics pivot.</p><a href="#s4">↑ back to financials</a></div>
+      <div class="gloss" id="g-gm"><h4>Gross Margin</h4><div class="formula">GM = (Revenue − COGS) ÷ Revenue</div><p>Profitability of the core product before overhead. <strong>Why it matters:</strong> TSLA's slide to 16.8% (ex-credits lower) is the clearest sign the auto business is being commoditized.</p><a href="#s4">↑ back to financials</a></div>
+      <div class="gloss"><h4>Methodology</h4><p>Data gathered from Tesla's Q2 2026 shareholder update &amp; 8-K, prior quarterly releases, the FY2025 10-K, and market data as of Aug 1, 2026 (price as of Jul 31 close). Scenario probabilities are the analyst's subjective estimates; price targets combine multiple-based and DCF-style reasoning. Peer figures are approximate. This is independent research for education, not investment advice.</p></div>
+    </div>
+  </section>
+
+  </div>
+</div>
+
+<div class="modal" id="modal"><div class="modal-box"><div class="mh"><h4 id="mTitle"></h4><button class="x" onclick="closeModal()">✕</button></div><canvas id="mCanvas"></canvas></div></div>
+
+<script>
+const G='#145A22',GD='#0A3A14',GOLD='#FCC55B',RED='#a8341f',MUT='#5d6155',LINE='#d8d1c4';
+Chart.defaults.font.family="'JetBrains Mono', monospace";
+Chart.defaults.font.size=10;Chart.defaults.color=MUT;
+const noLeg={plugins:{legend:{display:false}}};
+const grid={x:{grid:{display:false}},y:{grid:{color:'#e7e0d4'},beginAtZero:true}};
+
+const defs={
+  revAnnual:{type:'bar',data:{labels:['2022','2023','2024','2025'],datasets:[{data:[81.46,96.77,97.69,94.83],backgroundColor:[G,G,G,GOLD]}]},options:{...noLeg,scales:grid}},
+  segMix:{type:'doughnut',data:{labels:['Automotive','Services & Other','Energy'],datasets:[{data:[20.52,4.58,3.14],backgroundColor:[G,GOLD,'#7a9c5b']}]},options:{plugins:{legend:{position:'right',labels:{boxWidth:11,font:{size:9}}}},cutout:'58%'}},
+  revQ:{type:'bar',data:{labels:["Q3'25","Q4'25","Q1'26","Q2'26"],datasets:[{data:[28.1,24.9,22.4,28.24],backgroundColor:[G,G,G,GOLD]}]},options:{...noLeg,scales:grid}},
+  fcfQ:{type:'bar',data:{labels:["Q3'25","Q4'25","Q1'26","Q2'26"],datasets:[{data:[3.99,1.42,1.44,-1.09],backgroundColor:d=>0}]},options:{...noLeg,scales:{x:{grid:{display:false}},y:{grid:{color:'#e7e0d4'}}}}},
+  delQ:{type:'bar',data:{labels:["Q3'25","Q4'25","Q1'26","Q2'26"],datasets:[{data:[497,418,358,480],backgroundColor:[G,G,'#b08a2e',GOLD]}]},options:{...noLeg,scales:grid}},
+  gmQ:{type:'line',data:{labels:["Q2'25","Q3'25","Q4'25","Q1'26","Q2'26"],datasets:[{data:[17.2,17.9,16.3,16.0,16.8],borderColor:G,backgroundColor:'rgba(20,90,34,.12)',fill:true,tension:.3,pointBackgroundColor:GOLD,pointRadius:3}]},options:{...noLeg,scales:{x:{grid:{display:false}},y:{grid:{color:'#e7e0d4'},min:14,max:20}}}},
+  scen1:{type:'bar',data:{labels:['Bear','Base','Bull'],datasets:[{data:[180,340,520],backgroundColor:[RED,GOLD,G]}]},options:{...noLeg,scales:grid}},
+  scen5:{type:'bar',data:{labels:['Bear','Base','Bull'],datasets:[{data:[150,560,1300],backgroundColor:[RED,GOLD,G]}]},options:{...noLeg,scales:grid}},
+  kpiStorage:{type:'bar',data:{labels:["Q3'25","Q4'25","Q1'26","Q2'26"],datasets:[{data:[12.5,14.2,8.8,13.5],backgroundColor:['#7a9c5b','#7a9c5b','#c29a4a',G]}]},options:{...noLeg,scales:grid}},
+  kpiCredits:{type:'line',data:{labels:["Q2'25","Q3'25","Q4'25","Q1'26","Q2'26"],datasets:[{data:[439,380,300,220,146],borderColor:RED,backgroundColor:'rgba(168,52,31,.1)',fill:true,tension:.3,pointBackgroundColor:RED,pointRadius:3}]},options:{...noLeg,scales:grid}}
+};
+// fcf color per sign
+defs.fcfQ.data.datasets[0].backgroundColor=[G,G,G,RED];
+
+const charts={};
+for(const id in defs){const el=document.getElementById(id);if(el)charts[id]=new Chart(el,defs[id]);}
+
+// modal expand
+let mChart=null;
+document.querySelectorAll('.zoom').forEach(b=>b.addEventListener('click',()=>{
+  const t=b.dataset.t,cid=b.dataset.c;
+  document.getElementById('mTitle').textContent=t;
+  document.getElementById('modal').classList.add('open');
+  if(mChart)mChart.destroy();
+  mChart=new Chart(document.getElementById('mCanvas'),JSON.parse(JSON.stringify(defs[cid])));
+}));
+function closeModal(){document.getElementById('modal').classList.remove('open');if(mChart){mChart.destroy();mChart=null;}}
+document.getElementById('modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal();});
+
+// collapsible
+document.querySelectorAll('.card-head').forEach(h=>h.addEventListener('click',()=>h.parentElement.classList.toggle('collapsed')));
+</script>
+</body>
+</html>

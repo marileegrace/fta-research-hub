@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CBRS — Institutional Investment Report</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Questrial&family=Quicksand:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  --green:#145A22; --dark-green:#0A3A14; --forest:#243D27;
+  --gold:#FCC55B; --gold-deep:#e0a838; --beige:#EDE8E0; --beige-card:#f6f3ed;
+  --ink:#23241f; --muted:#5d6155; --red:#a8341f; --line:#d8d1c4;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Quicksand',sans-serif;background:var(--beige);color:var(--ink);line-height:1.6;display:flex}
+h1,h2,h3,h4{font-family:'Questrial',sans-serif;font-weight:normal}
+.mono{font-family:'JetBrains Mono',monospace}
+.pos{color:var(--green)} .neg{color:var(--red)}
+a{color:var(--green)}
+.sidebar{width:262px;min-width:262px;height:100vh;position:sticky;top:0;
+  background:linear-gradient(180deg,#071f0b,#0A3A14 40%,#145A22);
+  border-right:3px solid var(--gold);color:var(--beige);padding:26px 20px;overflow-y:auto}
+.brand{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:26px;color:var(--gold);line-height:1.1;margin-bottom:4px}
+.brand small{display:block;font-family:'Questrial';font-style:normal;font-size:10px;letter-spacing:2px;color:var(--beige);opacity:.7;margin-top:6px}
+.ticker-box{margin:22px 0;padding:16px;background:rgba(0,0,0,.25);border:1px solid rgba(252,197,91,.35);border-radius:12px}
+.ticker-box .sym{font-family:'JetBrains Mono';font-size:22px;font-weight:700;color:var(--gold)}
+.ticker-box .price{font-family:'JetBrains Mono';font-size:28px;font-weight:700;color:#fff;margin-top:4px}
+.ticker-box .chg{font-family:'JetBrains Mono';font-size:13px;margin-top:2px}
+.ticker-box .as-of{font-size:10px;opacity:.65;margin-top:6px;letter-spacing:.5px}
+.nav a{display:flex;gap:10px;align-items:baseline;color:var(--beige);text-decoration:none;font-size:13.5px;padding:7px 8px;border-radius:7px;transition:.15s}
+.nav a:hover{background:rgba(252,197,91,.15);color:var(--gold)}
+.nav a .n{font-family:'JetBrains Mono';font-size:11px;color:var(--gold);min-width:18px}
+.disclaimer{margin-top:20px;font-size:9.5px;opacity:.55;line-height:1.5}
+.main{flex:1;min-width:0}
+.hero{position:relative;overflow:hidden;background:linear-gradient(120deg,var(--dark-green),var(--green) 60%);color:#fff;padding:46px 48px 40px}
+.hero:after{content:"";position:absolute;right:-120px;top:-120px;width:360px;height:360px;border-radius:50%;
+  background:radial-gradient(circle,rgba(252,197,91,.30),transparent 70%)}
+.hero .eyebrow{font-family:'Questrial';letter-spacing:4px;font-size:12px;color:var(--gold);text-transform:uppercase}
+.hero h1{font-size:40px;margin:8px 0 6px;font-family:'Questrial'}
+.hero .co{font-family:'Cormorant Garamond';font-style:italic;font-size:24px;color:var(--beige);opacity:.95}
+.verdict{display:inline-flex;align-items:center;gap:12px;margin-top:20px;background:rgba(0,0,0,.25);
+  border:1.5px solid var(--gold);border-radius:40px;padding:10px 20px}
+.verdict .badge{font-family:'Questrial';letter-spacing:2px;text-transform:uppercase;font-size:14px;color:var(--gold)}
+.verdict .conv{font-family:'JetBrains Mono';font-size:14px;color:#fff;border-left:1px solid rgba(255,255,255,.3);padding-left:12px}
+.kpi-strip{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:var(--line);border-bottom:1px solid var(--line)}
+.kpi{background:var(--beige-card);padding:16px 14px}
+.kpi .lab{font-family:'Questrial';text-transform:uppercase;letter-spacing:1px;font-size:10px;color:var(--muted)}
+.kpi .val{font-family:'JetBrains Mono';font-weight:700;font-size:20px;color:var(--green);margin-top:5px;line-height:1.1}
+.kpi .sub{font-size:10.5px;color:var(--muted);margin-top:3px}
+.content{max-width:1080px;margin:0 auto;padding:34px 48px 80px}
+.card{background:var(--beige-card);border-radius:14px;margin-bottom:24px;box-shadow:0 1px 3px rgba(0,0,0,.05);overflow:hidden}
+.card-head{display:flex;align-items:center;gap:14px;padding:18px 22px;border-left:5px solid var(--green);cursor:pointer;user-select:none}
+.card-head .num{width:34px;height:34px;min-width:34px;border-radius:9px;background:var(--green);color:#fff;
+  font-family:'JetBrains Mono';font-weight:700;display:flex;align-items:center;justify-content:center;font-size:15px}
+.card-head h2{font-family:'Cormorant Garamond';font-style:italic;font-size:26px;color:var(--dark-green);flex:1}
+.card-head .chev{color:var(--green);font-size:18px;transition:.2s}
+.card.collapsed .chev{transform:rotate(-90deg)}
+.card-body{padding:4px 24px 24px}
+.card.collapsed .card-body{display:none}
+.card-body p{margin:12px 0}
+.card-body h3{font-family:'Cormorant Garamond';font-style:italic;font-size:20px;color:var(--green);margin:18px 0 6px}
+.thesis{font-family:'Cormorant Garamond';font-size:23px;line-height:1.45;color:var(--ink);
+  border-left:4px solid var(--gold);padding:12px 20px;margin:14px 0;background:rgba(252,197,91,.07)}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0}
+.chip{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;min-width:120px}
+.chip .lab{font-family:'Questrial';text-transform:uppercase;letter-spacing:.5px;font-size:9.5px;color:var(--muted)}
+.chip .val{font-family:'JetBrains Mono';font-weight:700;font-size:18px;color:var(--green);margin-top:3px}
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0}
+.chart-box{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px 14px}
+.chart-box.solo{max-width:420px;margin:18px auto}
+.chart-box .ct{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.chart-box .ct h4{font-family:'Questrial';text-transform:uppercase;letter-spacing:1px;font-size:11px;color:var(--forest)}
+.chart-box .zoom{background:var(--beige);border:1px solid var(--line);border-radius:6px;font-size:9px;
+  font-family:'Questrial';letter-spacing:.5px;color:var(--muted);padding:3px 7px;cursor:pointer;text-transform:uppercase}
+.chart-box canvas{height:155px!important}
+table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13.5px;background:#fff;border-radius:10px;overflow:hidden}
+thead th{background:var(--green);color:#fff;font-family:'Questrial';text-transform:uppercase;letter-spacing:.5px;
+  font-size:11px;padding:10px 12px;text-align:left}
+tbody td{padding:9px 12px;border-bottom:1px solid var(--line)}
+tbody tr:nth-child(even){background:var(--beige-card)}
+tbody tr:hover{background:rgba(252,197,91,.14)}
+td.mono,th.mono{font-family:'JetBrains Mono';font-size:12.5px}
+.scen-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:18px 0}
+.scen{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px;border-top:4px solid var(--muted)}
+.scen.bull{border-top-color:var(--green)} .scen.base{border-top-color:var(--gold)} .scen.bear{border-top-color:var(--red)}
+.scen h4{font-family:'Questrial';text-transform:uppercase;letter-spacing:1px;font-size:13px;margin-bottom:4px}
+.scen.bull h4{color:var(--green)} .scen.base h4{color:var(--gold-deep)} .scen.bear h4{color:var(--red)}
+.scen .pt{font-family:'JetBrains Mono';font-weight:700;font-size:24px;color:var(--ink);margin:4px 0}
+.scen .prob{display:inline-block;font-family:'JetBrains Mono';font-size:11px;background:var(--beige);
+  border-radius:20px;padding:3px 10px;margin-bottom:8px;color:var(--muted)}
+.scen ul{margin-left:16px;font-size:12.5px} .scen li{margin:4px 0}
+.horizon-lab{font-family:'Questrial';text-transform:uppercase;letter-spacing:2px;font-size:12px;color:var(--forest);margin:18px 0 2px}
+.risk{background:#fff;border-left:4px solid var(--red);border-radius:8px;padding:14px 16px;margin:12px 0}
+.risk h4{color:var(--red);font-family:'Questrial';font-size:15px;margin-bottom:4px}
+.risk .meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.risk .tag{font-family:'JetBrains Mono';font-size:10.5px;background:var(--beige);border:1px solid var(--line);
+  border-radius:20px;padding:3px 10px;color:var(--muted)}
+.timeline{position:relative;margin:18px 0 8px;padding-left:26px}
+.timeline:before{content:"";position:absolute;left:6px;top:4px;bottom:4px;width:3px;
+  background:linear-gradient(180deg,var(--green),var(--gold))}
+.tl-item{position:relative;margin-bottom:18px}
+.tl-item:before{content:"";position:absolute;left:-24px;top:3px;width:13px;height:13px;border-radius:50%;
+  background:var(--gold);border:3px solid var(--green)}
+.tl-item .date{font-family:'JetBrains Mono';font-size:12px;color:var(--gold-deep);font-weight:700}
+.tl-item .ev{font-weight:700;font-size:14px;margin-top:1px}
+.tl-item .desc{font-size:12.5px;color:var(--muted)}
+.callout{border-radius:10px;padding:14px 18px;margin:16px 0;font-size:13.5px}
+.callout.gold{background:rgba(252,197,91,.12);border:1px solid var(--gold)}
+.callout.note{background:rgba(20,90,34,.07);border:1px solid var(--green)}
+.callout .ct{font-family:'Questrial';text-transform:uppercase;letter-spacing:1px;font-size:11px;color:var(--forest);margin-bottom:4px}
+.gloss{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:12px 0}
+.gloss h4{font-family:'JetBrains Mono';font-size:14px;color:var(--green)}
+.gloss .formula{font-family:'JetBrains Mono';font-size:12px;background:var(--beige);padding:6px 10px;border-radius:6px;margin:6px 0;display:inline-block}
+.gloss a{font-size:11px}
+.modal{display:none;position:fixed;inset:0;background:rgba(10,20,10,.82);z-index:100;align-items:center;justify-content:center;padding:30px}
+.modal.open{display:flex}
+.modal-box{background:var(--beige-card);border:2px solid var(--gold);border-radius:16px;padding:24px;width:min(900px,94vw)}
+.modal-box .mh{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.modal-box h4{font-family:'Questrial';text-transform:uppercase;letter-spacing:1px;color:var(--forest)}
+.modal-box .x{cursor:pointer;font-size:22px;color:var(--red);background:none;border:none}
+.modal-box canvas{height:60vh!important}
+sup a{text-decoration:none;color:var(--gold-deep);font-family:'JetBrains Mono';font-size:10px}
+@media(max-width:880px){.chart-grid,.scen-grid{grid-template-columns:1fr}}
+@media(max-width:780px){.sidebar{display:none}.kpi-strip{grid-template-columns:repeat(3,1fr)}
+  .hero,.content{padding-left:22px;padding-right:22px}}
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="brand">Aligned Solutions<small>DEEP-ALPHA RESEARCH</small></div>
+  <div class="ticker-box">
+    <div class="sym">CBRS</div>
+    <div class="price">~$193</div>
+    <div class="chg pos mono">Post-IPO • P/S 72×</div>
+    <div class="as-of">NASDAQ • IPO May 14, 2026</div>
+  </div>
+  <nav class="nav">
+    <a href="#s1"><span class="n">01</span> Executive Summary &amp; Thesis</a>
+    <a href="#s2"><span class="n">02</span> Micro &amp; Valuation</a>
+    <a href="#s3"><span class="n">03</span> Moat, Management &amp; Culture</a>
+    <a href="#s4"><span class="n">04</span> Financial Deep Dive</a>
+    <a href="#s5"><span class="n">05</span> Earnings Tracker</a>
+    <a href="#s6"><span class="n">06</span> Bull / Base / Bear</a>
+    <a href="#s7"><span class="n">07</span> Risks &amp; Anti-Thesis</a>
+    <a href="#s8"><span class="n">08</span> Catalyst Timeline</a>
+    <a href="#s9"><span class="n">09</span> Comparable Companies</a>
+    <a href="#s10"><span class="n">10</span> First-Principles KPIs</a>
+    <a href="#s11"><span class="n">11</span> Glossary &amp; Methodology</a>
+  </nav>
+  <div class="disclaimer">For research/education only. Not investment advice. Figures sourced from Cerebras S-1/prospectus, Q1'26 release &amp; market data as of Aug 1, 2026 and may contain errors. Author is not a registered advisor.</div>
+</aside>
+
+<div class="main">
+  <header class="hero">
+    <div class="eyebrow">Institutional Deep-Dive · Added Ticker</div>
+    <h1>Cerebras Systems, Inc.</h1>
+    <div class="co">The fastest AI inference on Earth, wrapped around the most concentrated customer base in large-cap semis.</div>
+    <div class="verdict">
+      <span class="badge">Verdict: Speculative Buy (small)</span>
+      <span class="conv mono">Conviction 6 / 10</span>
+    </div>
+  </header>
+
+  <div class="kpi-strip">
+    <div class="kpi"><div class="lab">Price</div><div class="val">~$193</div><div class="sub">IPO'd $150–160</div></div>
+    <div class="kpi"><div class="lab">Market Cap</div><div class="val">~$43.7B</div><div class="sub">226.5M shares</div></div>
+    <div class="kpi"><div class="lab">Rev Growth '25</div><div class="val">+76%</div><div class="sub">TTM $604M</div></div>
+    <div class="kpi"><div class="lab">Net Income '25</div><div class="val">$238M</div><div class="sub">First profit</div></div>
+    <div class="kpi"><div class="lab">P/S (TTM)</div><div class="val">~72×</div><div class="sub">"Euphoric"</div></div>
+    <div class="kpi"><div class="lab">Analyst PT (avg)</div><div class="val">~$298</div><div class="sub">+50% implied</div></div>
+  </div>
+
+  <div class="content">
+
+  <!-- S1 -->
+  <section class="card" id="s1">
+    <div class="card-head"><div class="num">1</div><h2>Executive Summary &amp; Investment Thesis</h2><div class="chev">▾</div></div>
+    <div class="card-body">
+      <div class="thesis">Cerebras is the purest public bet on the single most important shift in AI economics — from training to <em>inference</em> — and it owns a genuinely differentiated weapon: the wafer-scale engine, a dinner-plate-sized chip with ~900,000 cores that delivers order-of-magnitude faster token generation than clustered GPUs. The technology is real, the growth is explosive (revenue +76% to $510M in 2025, first-ever profit of $238M), and the backlog is stunning ($20B+ OpenAI deal, an AWS partnership). But at ~72× trailing sales with ~86% of revenue historically tied to two Gulf-linked customers, this is a high-variance, small-position instrument, not a core holding. We rate it a <strong>Speculative Buy</strong> — own the option on inference winning, size it for the concentration risk.</div>
+
+      <p>The asymmetry here is the opposite of Tesla's. Where Tesla is a mega-cap priced for autonomy, Cerebras is a small-float, freshly-IPO'd disruptor priced for hyperscale adoption that has barely begun. If Cerebras converts even a fraction of its OpenAI/AWS backlog and diversifies away from G42/MBZUAI, the revenue base could 3–5× and the multiple would look prescient. If the concentrated customers slip or a capacity-constrained ramp stalls, the stock has 60%+ downside. The <a href="#g-ps">P/S</a> of ~72× ("Euphoric" on our scale) tells you the market is already underwriting the good outcome.</p>
+
+      <div class="chips">
+        <div class="chip"><div class="lab">Sector</div><div class="val" style="font-size:14px">AI Semiconductors</div></div>
+        <div class="chip"><div class="lab">FY25 Revenue</div><div class="val">$510M</div></div>
+        <div class="chip"><div class="lab">FY26 Guide</div><div class="val">$855–865M</div></div>
+        <div class="chip"><div class="lab">Q1'26 Rev</div><div class="val">$193M</div></div>
+        <div class="chip"><div class="lab">Q1 Core Gr</div><div class="val">+92%</div></div>
+        <div class="chip"><div class="lab">IPO Raise</div><div class="val">$6.4B</div></div>
+      </div>
+
+      <div class="callout gold"><div class="ct">The one thing to watch</div>Customer concentration. G42 was 85% of 2024 revenue and ~24% of 2025; MBZUAI ~62% of 2025. The entire bull case rests on the OpenAI/AWS/enterprise pipeline broadening this base fast enough to make the concentration a footnote rather than the story. The Aug 12, 2026 Q2 print is the first public read on that diversification.</div>
+    </div>
+  </section>
+
+  <!-- S2 -->
+  <section class="card" id="s2">
+    <div class="card-head"><div class="num">2</div><h2>Microeconomic &amp; Valuation Analysis</h2><div class="chev">▾</div></div>
+    <div class="card-body">
+      <p>Cerebras sits in the fastest-compounding slice of the AI stack. The AI inference market is projected to grow from ~$106B (2025) to ~$255B by 2030 — a ~19% <a href="#g-cagr">CAGR</a> — and inference (running models) is structurally larger and more recurring than training (building them). Cerebras' pitch: for latency-sensitive inference, one wafer-scale system replaces racks of networked GPUs, collapsing cost and complexity. Capturing even low-single-digit share of a $255B market implies a multi-billion-dollar revenue base.</p>
+
+      <div class="chart-grid">
+        <div class="chart-box"><div class="ct"><h4>Annual Revenue ($M)</h4><button class="zoom" data-t="Annual Revenue ($M)" data-c="revAnnual">Expand ⤢</button></div><canvas id="revAnnual"></canvas></div>
+        <div class="chart-box"><div class="ct"><h4>AI Inference TAM ($B)</h4><button class="zoom" data-t="AI Inference TAM ($B)" data-c="tam">Expand ⤢</button></div><canvas id="tam"></canvas></div>
+      </div>
+
+      <h3>Valuation posture</h3>
+      <p>There is no gentle way to say it: at ~72× trailing sales (and ~54× forward), Cerebras is priced in the "Euphoric" zone of our <a href="#g-ps">P/S</a> scale (>30). That is nearly double Nvidia's ~30× forward sales — and Nvidia is a proven, ~50%-net-margin hyperscale supplier. The premium is a bet on (a) the inference-first thesis, (b) hyperscale-grade backlog converting to revenue, and (c) small-float scarcity after the largest semiconductor IPO ever ($6.4B raised). This multiple leaves zero margin for execution error.</p>
+
+      <div class="chips">
+        <div class="chip"><div class="lab">P/S (TTM)</div><div class="val">~72×</div></div>
+        <div class="chip"><div class="lab">P/S Verdict</div><div class="val" style="font-size:14px">Euphoric</div></div>
+        <div class="chip"><div class="lab">Fwd P/S</div><div class="val">~54×</div></div>
+        <div class="chip"><div class="lab">Shares Out</div><div class="val">226.5M</div></div>
+        <div class="chip"><div class="lab">Analyst PT</div><div class="val">~$298</div></div>
+      </div>
+
+      <p><strong>Ownership &amp; flows.</strong> As a May-2026 IPO, the ownership base is still forming: heavy insider/pre-IPO holders (founders, Benchmark, G42-affiliated capital) alongside new institutional buyers. That creates two forces to watch — lock-up expirations (a supply overhang later in 2026) and index inclusion (a demand event). Analyst coverage is early and bullish-skewed, with an average target near $298 (~+50%) — but small-float, high-multiple newly-public semis are notoriously volatile (the stock already fell ~19% in a month post-IPO).</p>
+    </div>
+  </section>
+
+  <!-- S3 -->
+  <section class="card" id="s3">
+    <div class="card-head"><div class="num">3</div><h2>Qualitative Analysis — Moat, Management &amp; Culture</h2><div class="chev">▾</div></div>
+    <div class="card-body">
+      <p><strong>The moat, philosophically.</strong> Cerebras' edge is architectural, not incremental. By building a single wafer-scale chip (the WSE-3) instead of stitching thousands of GPUs together with networking, it sidesteps the memory-bandwidth and interconnect bottlenecks that define GPU clusters. For real-time inference this yields dramatically faster token throughput. The durable question: is wafer-scale a <em>defensible platform</em> (like x86 or CUDA) or a <em>point-in-time performance lead</em> that GPUs, ASICs (Broadcom/Google TPU) and rivals (Groq's LPU, SambaNova's RDU) eventually erode? The honest answer is "unproven" — the moat is a technical head-start plus early software ecosystem, not yet a lock-in.</p>
+
+      <h3>Management &amp; founder dynamics</h3>
+      <p>Emphatically founder-led. Co-founder/CEO Andrew Feldman (previously sold SeaMicro to AMD) leads a deep bench of the original 2015 founding team (Sean Lie, Gary Lauterbach, et al.) — rare technical continuity a decade in. This is elite silicon talent density. Capital allocation is now flush post-IPO ($6.4B raised), which funds the manufacturing scale-up needed to relieve the capacity constraint that is currently <em>capping</em> revenue (guidance is capacity-limited, not demand-limited — a good problem).</p>
+
+      <div class="callout note"><div class="ct">Structural traits</div>Extreme talent density in chip architecture; a genuine first-principles engineering culture (they built something the entire industry said was impossible — a working wafer-scale chip). High failure tolerance and fast iteration. The organizational risk is the mirror image: a still-young company scaling manufacturing, sales, and a public-company apparatus simultaneously, with heavy dependence on a small circle of founders and anchor customers.</div>
+
+      <p><strong>Culture &amp; ethics — the elephant.</strong> The deep G42 (UAE) relationship is both the growth engine and the governance question. It creates geopolitical exposure (export controls, national-security scrutiny of Gulf AI capital) and concentration that a serious analyst cannot wave away. Management's stated strategy — diversify via OpenAI, AWS and enterprise — is the correct answer; execution is the open question.</p>
+    </div>
+  </section>
+
+  <!-- S4 -->
+  <section class="card" id="s4">
+    <div class="card-head"><div class="num">4</div><h2>Quantitative Analysis — Financial Deep Dive</h2><div class="chev">▾</div></div>
+    <div class="card-body">
+      <p>The financial trajectory is one of the steepest in public semis. Revenue went $24.6M (2022) → $78.7M (2023) → $290.3M (2024) → $510.0M (2025), a ~174% three-year <a href="#g-cagr">CAGR</a>. More importantly, 2025 flipped to a $237.8M net profit from a $481.6M loss in 2024 — the inference ramp is not just growing, it's operating-leveraged. Q1 2026 kept the pace: GAAP revenue $193.4M, core revenue $191.3M (+92% YoY).</p>
+
+      <div class="chart-grid">
+        <div class="chart-box"><div class="ct"><h4>Revenue Ramp ($M)</h4><button class="zoom" data-t="Revenue Ramp ($M)" data-c="revRamp">Expand ⤢</button></div><canvas id="revRamp"></canvas></div>
+        <div class="chart-box"><div class="ct"><h4>Net Income ($M)</h4><button class="zoom" data-t="Net Income ($M)" data-c="ni">Expand ⤢</button></div><canvas id="ni"></canvas></div>
+      </div>
+      <div class="chart-grid">
+        <div class="chart-box"><div class="ct"><h4>2025 Customer Concentration</h4><button class="zoom" data-t="2025 Customer Concentration" data-c="conc">Expand ⤢</button></div><canvas id="conc"></canvas></div>
+        <div class="chart-box"><div class="ct"><h4>Q2'26 Guidance ($M)</h4><button class="zoom" data-t="Q2'26 Guidance ($M)" data-c="guide">Expand ⤢</button></div><canvas id="guide"></canvas></div>
+      </div>
+
+      <h3>Revenue streams, in plain English</h3>
+      <p>Cerebras sells two things: <strong>systems</strong> (the CS-3 / wafer-scale hardware, sold or deployed in racks) and, increasingly, <strong>cloud inference</strong> (renting access to that speed via its own cloud and partners like AWS). The 2024→2025 story was G42-anchored systems deployments; the 2026+ story management is selling is a shift toward recurring, diversified <em>inference-as-a-service</em> revenue (OpenAI 750MW / $20B+ multi-year; AWS distribution). If that mix shift is real, gross margins (guided 36–38% near-term) should expand and revenue quality improves markedly.</p>
+
+      <div class="chips">
+        <div class="chip"><div class="lab">FY25 Net Margin</div><div class="val">~47%*</div></div>
+        <div class="chip"><div class="lab">Gross Margin</div><div class="val">36–38%</div></div>
+        <div class="chip"><div class="lab">Op Margin (guide)</div><div class="val neg">−30 to −32%</div></div>
+        <div class="chip"><div class="lab">Cash (post-IPO)</div><div class="val">Strong</div></div>
+        <div class="chip"><div class="lab">Backlog</div><div class="val">$20B+</div></div>
+      </div>
+
+      <div class="callout gold"><div class="ct">Read the margin footnote carefully</div>The 2025 net income of $238M is flattered by one-off items and the mix of large systems deals; Q2'26 <em>operating</em> margin is guided to −30% to −32% as the company invests to scale. In other words: GAAP profitability is real but lumpy, and the near-term operating model is still investment-mode. Don't extrapolate a 47% net margin — the sustainable model is the 36–38% gross margin, high-opex growth company. *Net margin skewed by non-operating items.</div>
+
+      <h3>Flywheel &amp; operating leverage</h3>
+      <p>The intended flywheel: faster inference → more developers/enterprises adopt → more cloud usage → funds bigger fabs → lower cost per token → faster inference. It is early but visibly turning (revenue +76%, first profit, capacity-constrained demand). The risk to the flywheel is capital intensity — wafer-scale manufacturing is expensive and lumpy, which is exactly what the $6.4B IPO war-chest is meant to smooth.</p>
+    </div>
+  </section>
+
+  <!-- S5 -->
+  <section class="card" id="s5">
+    <div class="card-head"><div class="num">5</div><h2>Earnings Tracker — Management Credibility</h2><div class="chev">▾</div></div>
+    <div class="card-body">
+      <p>Cerebras has a short public track record (IPO May 2026), so credibility scoring leans on pre-IPO disclosures, S-1 revisions, and the single reported quarter. The early read: aggressive but so-far-delivered on revenue, with the honesty flag being how transparently they frame concentration and capacity limits.</p>
+      <table>
+        <thead><tr><th>Quarter / Event</th><th>Specific Promise / Guidance</th><th>Actual Result</th><th class="mono">Credibility</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">Q2 2026 (pending)</td><td>Guide $194M rev, 36–38% GM</td><td>Reports Aug 12, 2026 — first diversification test</td><td class="mono">TBD</td></tr>
+          <tr><td class="mono">Q1 2026</td><td>Continued rapid core-revenue growth</td><td>Rev $193.4M; core +92% YoY ✓</td><td class="mono">7/10</td></tr>
+          <tr><td class="mono">FY2025</td><td>Path to profitability</td><td>$510M rev (+76%), net income $238M — first profit ✓</td><td class="mono">8/10</td></tr>
+          <tr><td class="mono">IPO (May '26)</td><td>Price $150–160; ~$48.8B FDV</td><td>Priced in range; raised $6.4B (largest semi IPO) ✓</td><td class="mono">7/10</td></tr>
+          <tr><td class="mono">S-1 revisions</td><td>Restated to show profitability &amp; diversification</td><td>Refiled "with profit"; disclosed concentration candidly</td><td class="mono">6/10</td></tr>
+          <tr><td class="mono">OpenAI deal</td><td>750MW, &gt;$20B multi-year</td><td>Announced; revenue recognition timing unproven</td><td class="mono">5/10</td></tr>
+          <tr><td class="mono">AWS partnership</td><td>Bring fast inference to AWS Marketplace</td><td>Announced; ramp/scale still to be demonstrated</td><td class="mono">5/10</td></tr>
+          <tr><td class="mono">FY2024</td><td>Scale G42 deployments</td><td>Rev $290M but 85% single-customer; net loss $482M</td><td class="mono neg">4/10</td></tr>
+        </tbody>
+      </table>
+      <div class="callout note"><div class="ct">Read-through</div>Weighted early credibility ≈ 6/10. They deliver on revenue growth and were transparent about risks in the S-1. The unproven items — converting the OpenAI/AWS backlog into recognized, diversified revenue — are precisely the ones the valuation depends on. Aug 12 is the first real scorecard.</div>
+    </div>
+  </section>
+
+  <!-- S6 -->
+  <section class="card" id="s6">
+    <div class="card-head"><div class="num">6</div><h2>Bull / Base / Bear Scenarios</h2><div class="chev">▾</div></div>
+    <div class="card-body">
+      <div class="chart-grid">
+        <div class="chart-box"><div class="ct"><h4>1-Year Price Targets ($)</h4><button class="zoom" data-t="1-Year Price Targets ($)" data-c="scen1">Expand ⤢</button></div><canvas id="scen1"></canvas></div>
+        <div class="chart-box"><div class="ct"><h4>5-Year Price Targets ($)</h4><button class="zoom" data-t="5-Year Price Targets ($)" data-c="scen5">Expand ⤢</button></div><canvas id="scen5"></canvas></div>
+      </div>
+
+      <div class="horizon-lab">1-Year Horizon (mid-2027)</div>
+      <div class="scen-grid">
+        <div class="scen bull"><h4>Bull</h4><div class="pt">$330</div><span class="prob">Prob 30%</span><ul><li>Q2/Q3 show real customer diversification</li><li>OpenAI/AWS revenue starts recognizing</li><li>FY26 beats $865M guide</li></ul></div>
+        <div class="scen base"><h4>Base</h4><div class="pt">$205</div><span class="prob">Prob 45%</span><ul><li>Hits $855–865M FY26 guide</li><li>Concentration eases but slowly</li><li>Multiple compresses modestly</li></ul></div>
+        <div class="scen bear"><h4>Bear</h4><div class="pt">$95</div><span class="prob">Prob 25%</span><ul><li>Lock-up supply + a soft quarter</li><li>G42 timing wobble</li><li>Multiple de-rates toward ~25× sales</li></ul></div>
+      </div>
+      <p class="mono" style="font-size:12px;color:var(--muted)">Prob-weighted 1yr ≈ $215 (~+11%)</p>
+
+      <div class="horizon-lab">3-Year Horizon (2029)</div>
+      <div class="scen-grid">
+        <div class="scen bull"><h4>Bull</h4><div class="pt">$550</div><span class="prob">Prob 30%</span><ul><li>Revenue &gt;$2.5B, broad customer base</li><li>Inference-as-a-service recurring mix</li><li>Established #2 to Nvidia in inference</li></ul></div>
+        <div class="scen base"><h4>Base</h4><div class="pt">$260</div><span class="prob">Prob 45%</span><ul><li>Revenue ~$1.5B, profitable</li><li>Durable niche in fast inference</li><li>Multiple normalizes to ~15× sales</li></ul></div>
+        <div class="scen bear"><h4>Bear</h4><div class="pt">$70</div><span class="prob">Prob 25%</span><ul><li>GPUs/ASICs close the speed gap</li><li>Anchor customer churn</li><li>Capital-intensity crushes returns</li></ul></div>
+      </div>
+      <p class="mono" style="font-size:12px;color:var(--muted)">Prob-weighted 3yr ≈ $300 (~+55%)</p>
+
+      <div class="horizon-lab">5-Year Horizon (2031)</div>
+      <div class="scen-grid">
+        <div class="scen bull"><h4>Bull</h4><div class="pt">$900</div><span class="prob">Prob 30%</span><ul><li>Wafer-scale a standard inference platform</li><li>Multi-billion recurring cloud revenue</li><li>Software/ecosystem lock-in emerges</li></ul></div>
+        <div class="scen base"><h4>Base</h4><div class="pt">$340</div><span class="prob">Prob 40%</span><ul><li>Solid, profitable specialist</li><li>Grows with the inference market</li><li>Trades as a quality growth semi</li></ul></div>
+        <div class="scen bear"><h4>Bear</h4><div class="pt">$50</div><span class="prob">Prob 30%</span><ul><li>Architecture out-competed</li><li>Never diversifies from anchors</li><li>Re-rates to distressed multiple</li></ul></div>
+      </div>
+      <p class="mono" style="font-size:12px;color:var(--muted)">Prob-weighted 5yr ≈ $410 (~+112%) — extreme dispersion; a true option-like payoff.</p>
+    </div>
+  </section>
+
+  <!-- S7 -->
+  <section class="card" id="s7">
+    <div class="card-head"><div class="num">7</div><h2>Risks &amp; Anti-Thesis (Steelman the Bear)</h2><div class="chev">▾</div></div>
+    <div class="card-body">
+      <p>If I were short CBRS, this is the case — and it is a strong one.</p>
+
+      <div class="risk"><h4>1. Customer concentration is the whole company</h4>
+        <p>G42 was 85% of 2024 revenue; G42 + MBZUAI ~86% of 2025. A single anchor customer delay, dispute, or geopolitical restriction could wipe out a huge slice of revenue overnight. This is the highest-probability, highest-impact risk and it is only partly offset by the (still-unproven) OpenAI/AWS pipeline.</p>
+        <div class="meta"><span class="tag">Prob: High</span><span class="tag">Impact: Severe</span><span class="tag">Priced in: Partially</span></div></div>
+
+      <div class="risk"><h4>2. The valuation demands flawless execution</h4>
+        <p>~72× trailing / ~54× forward sales versus Nvidia at ~30× forward. Any growth stumble triggers brutal multiple compression. At these levels you can be right on the business and still lose money for years as the multiple normalizes.</p>
+        <div class="meta"><span class="tag">Prob: High</span><span class="tag">Impact: High</span><span class="tag">Priced in: No</span></div></div>
+
+      <div class="risk"><h4>3. Nvidia + ASICs close the inference gap</h4>
+        <p>Nvidia is pouring resources into inference; Broadcom/Google (TPU), Groq and SambaNova all target the same workloads. Wafer-scale's speed lead is a head-start, not a CUDA-style moat. If GPUs get "fast enough," the differentiation — and premium — erodes.</p>
+        <div class="meta"><span class="tag">Prob: Medium</span><span class="tag">Impact: High</span><span class="tag">Priced in: Poorly</span></div></div>
+
+      <div class="risk"><h4>4. Geopolitical / export-control exposure</h4>
+        <p>Deep Gulf (UAE/G42) ties invite national-security scrutiny and potential export restrictions on advanced AI hardware. A policy shift could sever a core revenue channel with little warning — a fat-tail risk outside management's control.</p>
+        <div class="meta"><span class="tag">Prob: Low-Med</span><span class="tag">Impact: Severe</span><span class="tag">Priced in: No</span></div></div>
+
+      <div class="risk"><h4>5. Lock-up expiry &amp; capital intensity</h4>
+        <p>Post-IPO lock-up expirations will add share supply into a thin float, a mechanical headwind later in 2026. Meanwhile wafer-scale manufacturing is capital-heavy and lumpy; a capacity mis-step could turn a "good problem" (constrained supply) into missed revenue and margin volatility.</p>
+        <div class="meta"><span class="tag">Prob: Medium</span><span class="tag">Impact: Medium</span><span class="tag">Priced in: Partially</span></div></div>
+
+      <div class="callout note"><div class="ct">Why we're still a (small) buyer</div>The inference-first thesis is, in our view, correct, and Cerebras owns the most differentiated hardware expression of it with real revenue, real profit, and hyperscale validation (OpenAI/AWS). That combination is rare. The concentration and valuation risks are exactly why this is a <em>small, speculative</em> position sized to survive a 60% drawdown — not a core holding.</div>
+    </div>
+  </section>
+
+  <!-- S8 -->
+  <section class="card" id="s8">
+    <div class="card-head"><div class="num">8</div><h2>Catalyst Timeline</h2><div class="chev">▾</div></div>
+    <div class="card-body">
+      <div class="timeline">
+        <div class="tl-item"><div class="date">Aug 12, 2026</div><div class="ev">First public Q2 2026 earnings</div><div class="desc">The single biggest near-term catalyst. Watch revenue vs. $194M guide, gross margin (36–38%), and — above all — any disclosure of customer diversification beyond G42/MBZUAI.</div></div>
+        <div class="tl-item"><div class="date">2H 2026</div><div class="ev">OpenAI 750MW ramp begins</div><div class="desc">$20B+ multi-year deal; first revenue recognition would be a major de-risking event for the concentration thesis.</div></div>
+        <div class="tl-item"><div class="date">2H 2026</div><div class="ev">AWS inference availability scales</div><div class="desc">Distribution via AWS could broaden the enterprise customer base — the diversification the bull case needs.</div></div>
+        <div class="tl-item"><div class="date">Late 2026</div><div class="ev">IPO lock-up expiration</div><div class="desc">Insider/pre-IPO shares become sellable into a thin float — a mechanical supply overhang to monitor.</div></div>
+        <div class="tl-item"><div class="date">2026–2027</div><div class="ev">Manufacturing capacity expansion</div><div class="desc">$6.4B war-chest deployed to relieve the capacity constraint currently capping guidance. Execution here gates the revenue ceiling.</div></div>
+        <div class="tl-item"><div class="date">2027</div><div class="ev">Potential index inclusion</div><div class="desc">As float and market cap mature, index addition would be a structural demand catalyst offsetting lock-up supply.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S9 -->
+  <section class="card" id="s9">
+    <div class="card-head"><div class="num">9</div><h2>Comparable Company Analysis</h2><div class="chev">▾</div></div>
+    <div class="card-body">
+      <p>Cerebras trades at a premium to every AI-chip comparable on sales multiples, justified only if its growth durability exceeds theirs. Peer figures are approximate, from latest available market data, for relative framing.</p>
+      <table>
+        <thead><tr><th>Company</th><th class="mono">Mkt Cap</th><th class="mono">Rev TTM</th><th class="mono">Rev Gr</th><th class="mono">P/S</th><th class="mono">Gross Mgn</th><th class="mono">Profitable?</th></tr></thead>
+        <tbody>
+          <tr><td>Cerebras (CBRS)</td><td class="mono">~$43.7B</td><td class="mono">~$604M</td><td class="mono pos">+76%</td><td class="mono">~72</td><td class="mono">36–38%</td><td class="mono pos">Yes ('25)</td></tr>
+          <tr><td>Nvidia (NVDA)</td><td class="mono">~$4T+</td><td class="mono">~$180B</td><td class="mono pos">+50%+</td><td class="mono">~22</td><td class="mono">~75%</td><td class="mono pos">Yes</td></tr>
+          <tr><td>AMD</td><td class="mono">~$260B</td><td class="mono">~$32B</td><td class="mono pos">+25%</td><td class="mono">8</td><td class="mono">~50%</td><td class="mono pos">Yes</td></tr>
+          <tr><td>Broadcom (AVGO)</td><td class="mono">~$800B+</td><td class="mono">~$60B</td><td class="mono pos">+20%</td><td class="mono">~14</td><td class="mono">~65%</td><td class="mono pos">Yes</td></tr>
+          <tr><td>SambaNova (pvt)</td><td class="mono">~$5B*</td><td class="mono">n/d</td><td class="mono">n/d</td><td class="mono">n/d</td><td class="mono">n/d</td><td class="mono neg">No</td></tr>
+          <tr><td>Groq (pvt)</td><td class="mono">~$6B*</td><td class="mono">n/d</td><td class="mono pos">high</td><td class="mono">n/d</td><td class="mono">n/d</td><td class="mono neg">No</td></tr>
+        </tbody>
+      </table>
+      <p><strong>Relative-value read.</strong> Cerebras' ~72× sales is ~3× Nvidia's forward multiple and ~9× AMD's — despite thinner gross margins (36–38% vs 50–75%) and vastly smaller scale. The bull rebuttal: growth rate (+76–92%) and inference-purity justify a premium, and the private peers (Groq, SambaNova) validate the category's scarcity value. Net: the multiple is defensible only under the fastest-growth scenarios. *Private valuations are last-round estimates, not market caps.</p>
+    </div>
+  </section>
+
+  <!-- S10 -->
+  <section class="card" id="s10">
+    <div class="card-head"><div class="num">10</div><h2>First-Principles KPIs</h2><div class="chev">▾</div></div>
+    <div class="card-body">
+      <p>Ignore the headline multiple. The variables that determine whether this works are about <em>diversification, capacity, and unit economics</em>:</p>
+      <div class="chart-grid">
+        <div class="chart-box"><div class="ct"><h4>Revenue Concentration Over Time</h4><button class="zoom" data-t="Top-Customer Revenue Share (%)" data-c="kpiConc">Expand ⤢</button></div><canvas id="kpiConc"></canvas></div>
+        <div class="chart-box"><div class="ct"><h4>Core Revenue Growth (YoY %)</h4><button class="zoom" data-t="Core Revenue Growth (YoY %)" data-c="kpiGrowth">Expand ⤢</button></div><canvas id="kpiGrowth"></canvas></div>
+      </div>
+      <ul style="margin:14px 0 0 20px;font-size:14px">
+        <li style="margin:8px 0"><strong>Revenue % from top customer</strong> — the master KPI. G42's share falling from 85% (2024) toward the low-20s%s and beyond is the single cleanest sign the business is de-risking. Watch it every quarter.</li>
+        <li style="margin:8px 0"><strong>Number of $10M+ customers</strong> — a direct read on diversification. Going from a handful to dozens changes the entire risk profile and would justify the multiple.</li>
+        <li style="margin:8px 0"><strong>Inference tokens/sec per system &amp; $/token</strong> — the physical performance edge. Sustained leadership vs. Nvidia/Groq is the moat; if it narrows, the thesis weakens.</li>
+        <li style="margin:8px 0"><strong>Cloud / recurring revenue mix</strong> — shift from lumpy system sales toward recurring inference-as-a-service improves revenue quality and multiple durability.</li>
+        <li style="margin:8px 0"><strong>Capacity utilization &amp; fab throughput</strong> — guidance is capacity-constrained; every unit of new capacity that comes online is directly convertible to revenue. Track the ramp.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- S11 -->
+  <section class="card" id="s11">
+    <div class="card-head"><div class="num">11</div><h2>Glossary &amp; Methodology</h2><div class="chev">▾</div></div>
+    <div class="card-body">
+      <div class="gloss" id="g-ps"><h4>P/S — Price-to-Sales</h4><div class="formula">P/S = Market Cap ÷ Revenue (TTM)</div><p>Revenue multiple, the key gauge for pre-scale, high-growth companies. <strong>Scale used:</strong> &gt;30 Euphoric · &gt;18 Excited · &gt;8 Optimistic · 4–8 Aware · &lt;4 Cautious · &lt;2 Pessimistic. CBRS ≈ 72× → "Euphoric."</p><a href="#s2">↑ back to valuation</a></div>
+      <div class="gloss" id="g-cagr"><h4>CAGR — Compound Annual Growth Rate</h4><div class="formula">CAGR = (End ÷ Start)^(1/years) − 1</div><p>The smoothed annual growth rate over a period. <strong>Why it matters:</strong> Cerebras' ~174% three-year revenue CAGR is what the market is extrapolating; the AI-inference market's ~19% CAGR is the tailwind it rides.</p><a href="#s2">↑ back to valuation</a></div>
+      <div class="gloss"><h4>Inference vs. Training</h4><p><strong>Training</strong> = building/teaching an AI model (compute-heavy, episodic). <strong>Inference</strong> = running the trained model to answer queries (recurring, latency-sensitive, larger long-run market). Cerebras is optimized for fast inference — the structurally bigger, more recurring pool. <a href="#s2">↑ back</a></p></div>
+      <div class="gloss"><h4>Wafer-Scale Engine (WSE)</h4><p>Cerebras' signature chip: an entire silicon wafer (~900,000 cores) used as one processor, versus stitching thousands of GPUs together. Eliminates most chip-to-chip networking, boosting inference speed. The source of the moat — and the capital intensity. <a href="#s3">↑ back</a></p></div>
+      <div class="gloss"><h4>Methodology</h4><p>Data from Cerebras' S-1/prospectus, the Q1 2026 results release (June 2026), IPO disclosures, and market data as of Aug 1, 2026. Price shown (~$193) is derived to be consistent with the ~$43.7B market cap on 226.5M shares; recent quotes have traded around $193–198. Scenario probabilities and price targets are the analyst's subjective estimates. Peer figures are approximate; private-company valuations are last-round estimates. Independent research for education — not investment advice.</p></div>
+    </div>
+  </section>
+
+  </div>
+</div>
+
+<div class="modal" id="modal"><div class="modal-box"><div class="mh"><h4 id="mTitle"></h4><button class="x" onclick="closeModal()">✕</button></div><canvas id="mCanvas"></canvas></div></div>
+
+<script>
+const G='#145A22',GD='#0A3A14',GOLD='#FCC55B',RED='#a8341f',MUT='#5d6155',OLV='#7a9c5b';
+Chart.defaults.font.family="'JetBrains Mono', monospace";
+Chart.defaults.font.size=10;Chart.defaults.color=MUT;
+const noLeg={plugins:{legend:{display:false}}};
+const grid={x:{grid:{display:false}},y:{grid:{color:'#e7e0d4'},beginAtZero:true}};
+
+const defs={
+  revAnnual:{type:'bar',data:{labels:['2022','2023','2024','2025'],datasets:[{data:[24.6,78.7,290.3,510.0],backgroundColor:[G,G,G,GOLD]}]},options:{...noLeg,scales:grid}},
+  tam:{type:'bar',data:{labels:['2025','2030E'],datasets:[{data:[106,255],backgroundColor:[OLV,G]}]},options:{...noLeg,scales:grid}},
+  revRamp:{type:'line',data:{labels:['2022','2023','2024','2025','Q1×4\'26'],datasets:[{data:[24.6,78.7,290.3,510.0,774],borderColor:G,backgroundColor:'rgba(20,90,34,.12)',fill:true,tension:.3,pointBackgroundColor:GOLD,pointRadius:3}]},options:{...noLeg,scales:grid}},
+  ni:{type:'bar',data:{labels:['2023','2024','2025'],datasets:[{data:[-127,-481.6,237.8],backgroundColor:[RED,RED,G]}]},options:{...noLeg,scales:{x:{grid:{display:false}},y:{grid:{color:'#e7e0d4'}}}}},
+  conc:{type:'doughnut',data:{labels:['MBZUAI ~62%','G42 ~24%','Other ~14%'],datasets:[{data:[62,24,14],backgroundColor:[RED,GOLD,OLV]}]},options:{plugins:{legend:{position:'right',labels:{boxWidth:11,font:{size:9}}}},cutout:'58%'}},
+  guide:{type:'bar',data:{labels:['Q1\'26 Act','Q2\'26 Guide'],datasets:[{data:[193.4,194],backgroundColor:[G,GOLD]}]},options:{...noLeg,scales:grid}},
+  scen1:{type:'bar',data:{labels:['Bear','Base','Bull'],datasets:[{data:[95,205,330],backgroundColor:[RED,GOLD,G]}]},options:{...noLeg,scales:grid}},
+  scen5:{type:'bar',data:{labels:['Bear','Base','Bull'],datasets:[{data:[50,340,900],backgroundColor:[RED,GOLD,G]}]},options:{...noLeg,scales:grid}},
+  kpiConc:{type:'line',data:{labels:['2024','2025','2026E'],datasets:[{label:'Top customer %',data:[85,62,45],borderColor:RED,backgroundColor:'rgba(168,52,31,.1)',fill:true,tension:.3,pointBackgroundColor:RED,pointRadius:3}]},options:{...noLeg,scales:{x:{grid:{display:false}},y:{grid:{color:'#e7e0d4'},min:0,max:100}}}},
+  kpiGrowth:{type:'bar',data:{labels:['2023','2024','2025','Q1\'26'],datasets:[{data:[220,269,76,92],backgroundColor:[OLV,OLV,G,GOLD]}]},options:{...noLeg,scales:grid}}
+};
+
+const charts={};
+for(const id in defs){const el=document.getElementById(id);if(el)charts[id]=new Chart(el,defs[id]);}
+
+let mChart=null;
+document.querySelectorAll('.zoom').forEach(b=>b.addEventListener('click',()=>{
+  const t=b.dataset.t,cid=b.dataset.c;
+  document.getElementById('mTitle').textContent=t;
+  document.getElementById('modal').classList.add('open');
+  if(mChart)mChart.destroy();
+  mChart=new Chart(document.getElementById('mCanvas'),JSON.parse(JSON.stringify(defs[cid])));
+}));
+function closeModal(){document.getElementById('modal').classList.remove('open');if(mChart){mChart.destroy();mChart=null;}}
+document.getElementById('modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal();});
+
+document.querySelectorAll('.card-head').forEach(h=>h.addEventListener('click',()=>h.parentElement.classList.toggle('collapsed')));
+</script>
+</body>
+</html>
