@@ -104,14 +104,71 @@ color: rgba(255,255,255,0.6);
 margin-top: 2px;
 }
 
-/* FILTER BAR */
-.filter-bar {
+/* CONTROLS (sticky wrapper for search + filters) */
+.controls {
 position: sticky;
 top: 0;
 z-index: 50;
 background: var(--beige-light);
 border-bottom: 1px solid var(--line);
 padding: 14px 48px;
+}
+
+/* SEARCH BAR */
+.search-wrap {
+max-width: 520px;
+margin: 0 auto 12px;
+position: relative;
+display: flex;
+align-items: center;
+}
+.search-input {
+width: 100%;
+font-family: 'Quicksand', sans-serif;
+font-weight: 500;
+font-size: 0.92rem;
+padding: 11px 42px 11px 42px;
+border: 1px solid var(--line);
+border-radius: 30px;
+background: var(--white);
+color: var(--dark);
+outline: none;
+transition: all 0.2s;
+}
+.search-input:focus {
+border-color: var(--green);
+box-shadow: 0 0 0 3px rgba(20,90,34,0.12);
+}
+.search-input::placeholder {
+color: var(--muted);
+font-style: italic;
+}
+.search-icon {
+position: absolute;
+left: 15px;
+color: var(--muted);
+font-size: 1.05rem;
+pointer-events: none;
+line-height: 1;
+}
+.search-clear {
+position: absolute;
+right: 12px;
+background: none;
+border: none;
+cursor: pointer;
+color: var(--muted);
+font-size: 1.4rem;
+line-height: 1;
+display: none;
+padding: 0 4px;
+transition: color 0.2s;
+}
+.search-clear:hover { color: var(--green); }
+.search-wrap.has-text .search-clear { display: block; }
+
+/* FILTER BAR */
+.filter-bar {
 display: flex;
 gap: 10px;
 flex-wrap: wrap;
@@ -156,6 +213,7 @@ background: rgba(255,255,255,0.2);
 /* SECTOR GROUP */
 .sector-group { margin: 32px 0; }
 .sector-group.hidden { display: none; }
+.report-card.hidden { display: none; }
 .sector-header {
 display: flex;
 align-items: center;
@@ -291,6 +349,16 @@ font-size: 0.9rem;
 }
 .sector-empty .empty-icon { font-size: 2rem; margin-bottom: 8px; opacity: 0.4; }
 
+/* NO RESULTS */
+.no-results {
+text-align: center;
+padding: 60px 20px;
+color: var(--muted);
+font-size: 0.95rem;
+}
+.no-results .nr-icon { font-size: 2.4rem; margin-bottom: 12px; opacity: 0.4; }
+.no-results strong { color: var(--dark-green); font-family: 'JetBrains Mono', monospace; }
+
 /* LOADING */
 .loading {
 text-align: center;
@@ -353,7 +421,7 @@ line-height: 1.5;
 .hero h1 { font-size: 2.2rem; }
 .hero-stats { gap: 24px; }
 .hero-stat .num { font-size: 1.6rem; }
-.filter-bar { padding: 12px 16px; }
+.controls { padding: 12px 16px; }
 .content { padding: 20px 16px 60px; }
 .report-grid { grid-template-columns: 1fr; }
 .site-footer { padding: 24px 20px; }
@@ -384,8 +452,15 @@ line-height: 1.5;
 </div>
 </header>
 
+<div class="controls">
+<div class="search-wrap" id="searchWrap">
+<span class="search-icon">&#9906;</span>
+<input type="text" id="searchInput" class="search-input" placeholder="Search by ticker or company name&hellip;" autocomplete="off" spellcheck="false" aria-label="Search reports by ticker or company name">
+<button class="search-clear" id="searchClear" type="button" aria-label="Clear search">&times;</button>
+</div>
 <div class="filter-bar" id="filterBar">
 <!-- Populated by JS -->
+</div>
 </div>
 
 <main class="content" id="mainContent">
@@ -453,6 +528,7 @@ return Array.isArray(s) ? s : [s];
 // ==================== MAIN ====================
 let allReports = [];
 let activeSector = 'all';
+let searchTerm = '';
 
 async function init() {
 try {
@@ -482,6 +558,7 @@ allReports.sort((a, b) => b.date.localeCompare(a.date));
 renderStats();
 renderFilters();
 renderReports();
+applyFilters();
 
 } catch (err) {
 console.error(err);
@@ -575,6 +652,12 @@ if (j === -1) return null;
 return str.substring(i + start.length, j);
 }
 
+function escapeHtml(str) {
+return String(str).replace(/[&<>"']/g, c => (
+{ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]
+));
+}
+
 // ==================== RENDERING ====================
 function renderStats() {
 document.getElementById('totalReports').textContent = allReports.length;
@@ -590,13 +673,13 @@ allReports.forEach(r => {
 r.sectors.forEach(s => { sectorCounts[s] = (sectorCounts[s] || 0) + 1; });
 });
 
-let html = `<button class="filter-btn active" onclick="filterSector('all')">All<span class="count">${allReports.length}</span></button>`;
+let html = `<button class="filter-btn active" onclick="filterSector('all', this)">All<span class="count">${allReports.length}</span></button>`;
 
 Object.entries(SECTOR_META)
 .sort((a, b) => a[1].order - b[1].order)
 .forEach(([key, meta]) => {
 const count = sectorCounts[key] || 0;
-html += `<button class="filter-btn" onclick="filterSector('${key}')">${meta.title}<span class="count">${count}</span></button>`;
+html += `<button class="filter-btn" onclick="filterSector('${key}', this)">${meta.title}<span class="count">${count}</span></button>`;
 });
 
 bar.innerHTML = html;
@@ -621,9 +704,8 @@ Object.entries(SECTOR_META)
 .forEach(([key, meta]) => {
 const reports = grouped[key] || [];
 const totalInSector = Object.keys(SECTOR_MAP).filter(t => sectorsFor(t).includes(key)).length;
-const isHidden = activeSector !== 'all' && activeSector !== key;
 
-html += `<div class="sector-group${isHidden ? ' hidden' : ''}" data-sector="${key}">`;
+html += `<div class="sector-group" data-sector="${key}">`;
 html += `<div class="sector-header">`;
 html += `<div class="sector-icon">${meta.icon}</div>`;
 html += `<div><div class="sector-title">${meta.title}</div></div>`;
@@ -638,8 +720,10 @@ reports.forEach(r => {
 const convictionNum = parseFloat(r.conviction) || 0;
 const convictionClass = convictionNum >= 7 ? ' high' : '';
 const dateFormatted = formatDate(r.date);
+const tickerAttr = escapeHtml((r.ticker || '').toLowerCase());
+const companyAttr = escapeHtml((r.company || '').toLowerCase());
 
-html += `<a href="${r.filename}" class="report-card">`;
+html += `<a href="${r.filename}" class="report-card" data-ticker="${tickerAttr}" data-company="${companyAttr}">`;
 html += `<div class="card-top">`;
 html += `<div class="ticker">${r.ticker}</div>`;
 if (r.conviction) html += `<div class="conviction${convictionClass}">${r.conviction}/10</div>`;
@@ -672,31 +756,104 @@ html += `</a>`;
 html += `</div></div>`;
 });
 
+// Persistent "no results" element (hidden until needed)
+html += `<div class="no-results" id="noResults" style="display:none;"></div>`;
+
 main.innerHTML = html;
 }
 
-function filterSector(sector) {
+function filterSector(sector, btn) {
 activeSector = sector;
 
-// Update active state on buttons properly
-const btns = document.querySelectorAll('.filter-btn');
-btns.forEach(btn => btn.classList.remove('active'));
-event.target.closest('.filter-btn').classList.add('active');
+// Update active state on buttons
+document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+const target = btn || (typeof event !== 'undefined' && event.target ? event.target.closest('.filter-btn') : null);
+if (target) target.classList.add('active');
 
-// Show/hide sectors
-document.querySelectorAll('.sector-group').forEach(g => {
-if (sector === 'all') {
-g.classList.remove('hidden');
-} else {
-g.classList.toggle('hidden', g.dataset.sector !== sector);
+applyFilters();
 }
+
+// Combined filter: sector selection + text search
+function applyFilters() {
+const term = searchTerm.trim().toLowerCase();
+let anyVisible = false;
+
+document.querySelectorAll('.sector-group').forEach(group => {
+const sector = group.dataset.sector;
+const sectorMatchesFilter = (activeSector === 'all' || activeSector === sector);
+const cards = group.querySelectorAll('.report-card');
+let visibleInSector = 0;
+
+cards.forEach(card => {
+const t = card.dataset.ticker || '';
+const c = card.dataset.company || '';
+const matchesSearch = !term || t.includes(term) || c.includes(term);
+const show = sectorMatchesFilter && matchesSearch;
+card.classList.toggle('hidden', !show);
+if (show) visibleInSector++;
 });
+
+let showGroup;
+if (cards.length === 0) {
+// Empty sector: show "coming soon" only when browsing (no search term)
+showGroup = sectorMatchesFilter && !term;
+} else {
+showGroup = sectorMatchesFilter && visibleInSector > 0;
+}
+group.classList.toggle('hidden', !showGroup);
+if (showGroup && (cards.length === 0 ? false : visibleInSector > 0)) anyVisible = true;
+});
+
+// No-results message
+const nores = document.getElementById('noResults');
+if (nores) {
+if (!anyVisible) {
+nores.style.display = '';
+if (term) {
+nores.innerHTML = `<div class="nr-icon">🔍</div>No reports match &ldquo;<strong>${escapeHtml(searchTerm.trim())}</strong>&rdquo;.<br><small>Try a different ticker or company name.</small>`;
+} else {
+nores.innerHTML = `<div class="nr-icon">📋</div>No reports in this sector yet.`;
+}
+} else {
+nores.style.display = 'none';
+}
+}
 }
 
 function formatDate(dateStr) {
 const d = new Date(dateStr + 'T00:00:00');
 return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 }
+
+// ==================== SEARCH WIRING ====================
+(function initSearch() {
+const input = document.getElementById('searchInput');
+const wrap = document.getElementById('searchWrap');
+const clear = document.getElementById('searchClear');
+
+input.addEventListener('input', () => {
+searchTerm = input.value;
+wrap.classList.toggle('has-text', searchTerm.length > 0);
+applyFilters();
+});
+
+input.addEventListener('keydown', (e) => {
+if (e.key === 'Escape') {
+input.value = '';
+searchTerm = '';
+wrap.classList.remove('has-text');
+applyFilters();
+}
+});
+
+clear.addEventListener('click', () => {
+input.value = '';
+searchTerm = '';
+wrap.classList.remove('has-text');
+applyFilters();
+input.focus();
+});
+})();
 
 // ==================== INIT ====================
 init();
