@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TLN — Talen Energy Corp. | FTA Investment Research | 2026-09-17</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Questrial&family=Quicksand:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  --green:#145A22;--dark-green:#0A3A14;--forest:#243D27;--gold:#FCC55B;--gold-deep:#e0a838;
+  --beige:#EDE8E0;--beige-card:#f6f3ed;--ink:#23241f;--muted:#5d6155;--red:#a8341f;--line:#d8d1c4;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Quicksand',sans-serif;background:var(--beige);color:var(--ink);line-height:1.6;font-weight:400;display:flex;min-height:100vh}
+a{color:var(--green)}
+/* Sidebar */
+.sidebar{width:262px;flex:0 0 262px;position:sticky;top:0;height:100vh;overflow-y:auto;background:linear-gradient(180deg,#071f0b,#0A3A14 40%,#145A22);border-right:2px solid var(--gold);padding:28px 20px;color:#fff}
+.brand{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:26px;font-weight:600;color:var(--gold);letter-spacing:.3px;line-height:1.1}
+.brand small{display:block;font-family:'Questrial',sans-serif;font-style:normal;font-size:10px;letter-spacing:2.2px;text-transform:uppercase;color:rgba(255,255,255,.65);margin-top:6px}
+.ticker-box{margin:22px 0;background:rgba(255,255,255,.07);border:1px solid rgba(252,197,91,.35);border-radius:12px;padding:14px}
+.ticker-box .sym{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;color:var(--gold)}
+.ticker-box .nm{font-family:'Questrial',sans-serif;font-size:11px;letter-spacing:1.4px;text-transform:uppercase;color:rgba(255,255,255,.7)}
+.ticker-box .px{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:600;margin-top:6px}
+.ticker-box .chg{font-family:'JetBrains Mono',monospace;font-size:12px;color:#9fd8a8}
+.nav a{display:flex;align-items:center;gap:10px;color:rgba(255,255,255,.82);text-decoration:none;font-size:13px;padding:7px 8px;border-radius:8px;font-family:'Questrial',sans-serif;letter-spacing:.3px}
+.nav a:hover{background:rgba(252,197,91,.12);color:#fff}
+.nav a span.n{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold);min-width:20px}
+.side-foot{margin-top:24px;font-size:10.5px;color:rgba(255,255,255,.5);line-height:1.5}
+/* Main */
+.main{flex:1;min-width:0}
+.hero{background:linear-gradient(120deg,var(--dark-green),var(--green) 60%);color:#fff;padding:54px 48px 40px;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;right:-120px;top:-120px;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(252,197,91,.35),rgba(252,197,91,0) 65%)}
+.hero .kicker{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:2.4px;font-size:11px;color:var(--gold)}
+.hero h1{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:46px;line-height:1.05;margin:10px 0 6px}
+.hero h1 em{font-style:italic;color:var(--gold)}
+.hero .sub{font-size:15px;color:rgba(255,255,255,.85);max-width:720px}
+.hero .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px;align-items:center}
+.pill{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);border:1px solid rgba(252,197,91,.5);border-radius:999px;padding:6px 14px;font-family:'Questrial',sans-serif;font-size:11.5px;letter-spacing:1.2px;text-transform:uppercase}
+.pill.verdict{background:var(--gold);color:var(--dark-green);border-color:var(--gold);font-weight:700}
+.pill .mono{font-family:'JetBrains Mono',monospace;font-weight:700;letter-spacing:0}
+.kpi-strip{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;padding:16px 48px;background:var(--beige)}
+.kpi{background:var(--beige-card);border:1px solid var(--line);border-radius:12px;padding:14px 14px 12px}
+.kpi .l{font-family:'Questrial',sans-serif;font-size:10px;letter-spacing:1.6px;text-transform:uppercase;color:var(--muted)}
+.kpi .v{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;color:var(--green);margin-top:4px;line-height:1.1}
+.kpi .s{font-size:11px;color:var(--muted);margin-top:4px}
+.content{max-width:1080px;padding:20px 48px 80px}
+/* Cards */
+.card{background:var(--beige-card);border:1px solid var(--line);border-radius:14px;margin:22px 0;overflow:hidden}
+.card-h{display:flex;align-items:center;gap:14px;padding:18px 22px;border-left:5px solid var(--green);cursor:pointer;user-select:none}
+.card-h .badge{width:34px;height:34px;border-radius:9px;background:var(--green);color:#fff;font-family:'JetBrains Mono',monospace;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 34px}
+.card-h h2{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:28px;color:var(--dark-green);line-height:1.1;flex:1}
+.card-h .chev{width:26px;height:26px;border-radius:50%;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--green);transition:transform .25s;font-size:14px}
+.card.collapsed .chev{transform:rotate(-90deg)}
+.card-b{padding:6px 24px 26px}
+.card.collapsed .card-b{display:none}
+.card-b p{margin:12px 0;font-size:15px}
+.card-b h3{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1.8px;font-size:12px;color:var(--green);margin:24px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+.card-b h4{font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:600;color:var(--dark-green);margin:18px 0 4px}
+.card-b ul{margin:8px 0 12px 22px}
+.card-b li{margin:5px 0;font-size:14.5px}
+.thesis{font-family:'Cormorant Garamond',serif;font-size:24px;line-height:1.35;border-left:4px solid var(--gold);padding:16px 22px;margin:16px 0;color:var(--dark-green);background:#fff;border-radius:0 12px 12px 0}
+.thesis strong{font-weight:700}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0}
+.chip{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;min-width:130px}
+.chip .l{font-family:'Questrial',sans-serif;font-size:9.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
+.chip .v{font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:700;color:var(--green);line-height:1.15;margin-top:2px}
+.chip .v.neg{color:var(--red)}
+.chip .s{font-size:10.5px;color:var(--muted)}
+.callout{border-radius:12px;padding:14px 18px;margin:14px 0;font-size:14.5px}
+.callout.gold{background:rgba(252,197,91,.18);border:1px solid var(--gold-deep)}
+.callout.green{background:rgba(20,90,34,.08);border:1px solid rgba(20,90,34,.35)}
+.callout .t{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1.5px;font-size:10.5px;color:var(--green);margin-bottom:4px}
+.callout.gold .t{color:#8a5e0a}
+/* Tables */
+.tbl-wrap{overflow-x:auto;margin:14px 0}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff;border-radius:10px;overflow:hidden}
+th{background:var(--green);color:#fff;font-family:'Questrial',sans-serif;font-size:11px;letter-spacing:1.2px;text-transform:uppercase;padding:10px 12px;text-align:left}
+td{padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:nth-child(even) td{background:#faf8f3}
+tbody tr:hover td{background:rgba(252,197,91,.18)}
+td.num,th.num{font-family:'JetBrains Mono',monospace;text-align:right;white-space:nowrap}
+.pos{color:var(--green);font-weight:600}.neg{color:var(--red);font-weight:600}
+.score{display:inline-block;font-family:'JetBrains Mono',monospace;font-weight:700;padding:2px 8px;border-radius:6px;background:rgba(20,90,34,.12);color:var(--green)}
+/* Charts */
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}
+.chart-box{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px 10px;position:relative}
+.chart-box.solo{max-width:420px}
+.chart-box .ct{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.chart-box .ct h5{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1.5px;font-size:10.5px;color:var(--muted);font-weight:400}
+.chart-box .zoom{font-family:'Questrial',sans-serif;font-size:9.5px;letter-spacing:1px;text-transform:uppercase;color:var(--green);border:1px solid var(--line);border-radius:999px;padding:3px 9px;background:transparent;cursor:pointer}
+.chart-box .zoom:hover{background:rgba(252,197,91,.25)}
+.chart-box canvas{width:100%!important;height:158px!important}
+.chart-box .note{font-size:10.5px;color:var(--muted);margin-top:6px}
+/* Modal */
+.modal{position:fixed;inset:0;background:rgba(7,31,11,.82);display:none;align-items:center;justify-content:center;z-index:99;padding:30px}
+.modal.open{display:flex}
+.modal-box{background:var(--beige-card);border:2px solid var(--gold);border-radius:16px;width:min(1000px,96vw);padding:22px 26px;position:relative}
+.modal-box h5{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1.8px;font-size:12px;color:var(--green);margin-bottom:10px}
+.modal-box canvas{width:100%!important;height:min(520px,65vh)!important}
+.modal-close{position:absolute;top:12px;right:14px;border:none;background:var(--green);color:#fff;border-radius:50%;width:30px;height:30px;cursor:pointer;font-size:15px}
+/* Scenario cards */
+.scen-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:16px 0}
+.scen{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;border-top:5px solid var(--gold)}
+.scen.bull{border-top-color:var(--green)}.scen.bear{border-top-color:var(--red)}
+.scen .t{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1.8px;font-size:11px;color:var(--muted)}
+.scen .pt{font-family:'JetBrains Mono',monospace;font-size:30px;font-weight:700;color:var(--green);line-height:1.1;margin:6px 0 2px}
+.scen.bear .pt{color:var(--red)}.scen.base .pt{color:var(--gold-deep)}
+.scen .prob{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:11.5px;background:var(--beige);border:1px solid var(--line);border-radius:999px;padding:2px 10px;margin-bottom:8px}
+.scen ul{margin:6px 0 0 18px}.scen li{font-size:13px;margin:4px 0}
+.horizon{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--dark-green);margin:18px 0 4px}
+/* Risk cards */
+.risk{background:#fff;border:1px solid var(--line);border-left:4px solid var(--red);border-radius:10px;padding:14px 18px;margin:12px 0}
+.risk h4{color:var(--red);font-family:'Cormorant Garamond',serif;font-size:21px;margin:0 0 6px}
+.risk .meta{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 8px}
+.risk .tag{font-family:'Questrial',sans-serif;font-size:10px;letter-spacing:1.2px;text-transform:uppercase;border-radius:999px;padding:3px 10px;background:var(--beige);border:1px solid var(--line)}
+.risk .tag b{font-family:'JetBrains Mono',monospace;letter-spacing:0}
+.risk p{font-size:14px;margin:6px 0}
+/* Timeline */
+.timeline{position:relative;margin:18px 0 10px 12px;padding-left:28px}
+.timeline::before{content:"";position:absolute;left:6px;top:4px;bottom:4px;width:3px;border-radius:3px;background:linear-gradient(180deg,var(--green),var(--gold))}
+.tl{position:relative;margin:0 0 18px}
+.tl::before{content:"";position:absolute;left:-28px;top:5px;width:14px;height:14px;border-radius:50%;background:var(--gold);border:3px solid var(--green)}
+.tl .d{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--green);font-weight:600}
+.tl .e{font-weight:700;font-size:15px}
+.tl .x{color:var(--muted);font-size:13.5px}
+/* Glossary */
+.gl{background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 16px;margin:10px 0}
+.gl h4{font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--dark-green);margin:0}
+.gl .f{font-family:'JetBrains Mono',monospace;font-size:12px;background:var(--beige);padding:4px 8px;border-radius:6px;display:inline-block;margin:6px 0}
+.gl p{font-size:13.5px;margin:4px 0}
+.gl .back{font-family:'Questrial',sans-serif;font-size:10.5px;letter-spacing:1px;text-transform:uppercase}
+.src{font-size:12px;color:var(--muted)}
+.src a{color:var(--muted)}
+@media (max-width:880px){.chart-grid,.scen-grid{grid-template-columns:1fr}}
+@media (max-width:780px){.sidebar{display:none}.kpi-strip{grid-template-columns:repeat(3,1fr);padding:14px 18px}.hero,.content{padding-left:18px;padding-right:18px}.hero h1{font-size:34px}}
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="brand">Foundational Trading Academy<small>Investment Research</small></div>
+  <div class="ticker-box">
+    <div class="sym">TLN</div>
+    <div class="nm">Talen Energy Corp. · NASDAQ</div>
+    <div class="px">$293.31</div>
+    <div class="chg">+1.99% · close 2026-09-17</div>
+  </div>
+  <nav class="nav">
+    <a href="#s1"><span class="n">01</span>Executive Summary</a>
+    <a href="#s2"><span class="n">02</span>Micro &amp; Valuation</a>
+    <a href="#s3"><span class="n">03</span>Moat &amp; Management</a>
+    <a href="#s4"><span class="n">04</span>Financial Deep Dive</a>
+    <a href="#s5"><span class="n">05</span>Earnings Tracker</a>
+    <a href="#s6"><span class="n">06</span>Bull / Base / Bear</a>
+    <a href="#s7"><span class="n">07</span>Risks &amp; Anti-Thesis</a>
+    <a href="#s8"><span class="n">08</span>Catalyst Timeline</a>
+    <a href="#s9"><span class="n">09</span>Comparables</a>
+    <a href="#s10"><span class="n">10</span>First-Principles KPIs</a>
+    <a href="#s11"><span class="n">11</span>Glossary &amp; Method</a>
+  </nav>
+  <div class="side-foot">Report date: Sep 17, 2026<br>Data through Q2 2026 (Jun 30, 2026)<br>Fiscal year ends Dec 31<br><br>For educational purposes only. Not investment advice.</div>
+</aside>
+
+<main class="main">
+  <header class="hero">
+    <div class="kicker">Deep-Dive Investment Report · Independent Power · Nuclear / Gas · AI Power</div>
+    <h1>Talen Energy <em>(TLN)</em></h1>
+    <div class="sub">The market de-rated the purest listed "power-for-AI" merchant generator ~35% off its 2025 high — into raised guidance, a doubling of forward EBITDA, and near-max PJM capacity clears — because leverage jumped to fund two gas acquisitions. We think it is discounting the wrong variable, and the mispricing is the opportunity.</div>
+    <div class="meta">
+      <span class="pill verdict">Verdict: BULL · Conviction <span class="mono">7 / 10</span></span>
+      <span class="pill">Price <span class="mono">$293.31</span></span>
+      <span class="pill">Mkt Cap <span class="mono">$14.05B</span></span>
+      <span class="pill">Sector · Independent Power Producer</span>
+      <span class="pill">FY ends Dec 31</span>
+    </div>
+  </header>
+
+  <section class="kpi-strip">
+    <div class="kpi"><div class="l">Price</div><div class="v">$293.31</div><div class="s">52w $279.77–$451.28 · 1y −28%</div></div>
+    <div class="kpi"><div class="l">Market Cap</div><div class="v">$14.05B</div><div class="s">EV ≈ $23.4B · 47.9M sh</div></div>
+    <div class="kpi"><div class="l">2026E Adj EBITDA</div><div class="v">$2.13B</div><div class="s">guide $2.03–2.23B · +105% YoY</div></div>
+    <div class="kpi"><div class="l">2026E Adj FCF</div><div class="v">$1.28B</div><div class="s">guide $1.20–1.35B · ~9% yield</div></div>
+    <div class="kpi"><div class="l">Fwd P/E</div><div class="v">9.8x</div><div class="s">EV/EBITDA ~11x fwd</div></div>
+    <div class="kpi"><div class="l">Street PT</div><div class="v">$459.94</div><div class="s">17 analysts · Buy · +57%</div></div>
+  </section>
+
+  <div class="content">
+
+  <!-- ================= SECTION 1 ================= -->
+  <section class="card" id="s1">
+    <div class="card-h" onclick="toggle(this)"><div class="badge">1</div><h2>Executive Summary &amp; Investment Thesis</h2><div class="chev">▾</div></div>
+    <div class="card-b">
+      <div class="thesis"><strong>Thesis (Bull):</strong> Talen owns the scarcest asset of the AI build-out — 2.2 GW of already-interconnected, carbon-free <a href="#g-ipp">merchant</a> nuclear plus a ~15.7 GW dispatchable fleet — at the exact moment McKinsey calls power, not chips, the binding constraint on AI ("time to energy"). Its flagship <a href="#g-ppa">PPA</a> sells up to <strong>1,920 MW</strong> of Susquehanna nuclear to AWS through 2042, its acquired gas fleet is levered to <a href="#g-capacity-auction">PJM capacity auctions</a> clearing at the price cap two years running, and management is guiding 2026 <a href="#g-adj-ebitda">Adjusted EBITDA</a> to roughly double to ~$2.13B with ~$1.28B of <a href="#g-adj-fcf">Adjusted FCF</a>. Yet the stock trades at <strong>9.8x forward earnings and ~11x forward EV/EBITDA</strong> — the cheapest in the IPP group — after a ~35% de-rate. We assign a 1-year probability-weighted target of <strong>$360</strong> (+23%) and a 3-year target of <strong>$470</strong> (+60%).</div>
+
+      <p>Talen reported Q2 2026 on August 5. It <em>raised</em> full-year guidance for the second time this year — 2026 Adjusted EBITDA to $2,025–2,225M and Adjusted FCF to $1,200–1,350M — on the strength of higher capacity revenue, the ramping AWS contract, and the June 15 close of its second gas acquisition. Despite that, TLN sits ~35% below its October 2025 high near $451 and near its 52-week low, having fallen roughly in line with the whole merchant-power complex (VST −32%, NRG −35%, CEG −19% over 52 weeks). This is a <strong>sector de-rating, not a Talen-specific fundamental break.</strong></p>
+
+      <p>Why the drop? Three surface concerns: (1) net debt jumped from ~$6.1B to ~$9.3B to fund the Freedom/Guernsey and Cornerstone gas deals, pushing spot <a href="#g-net-debt">net-debt/EBITDA</a> to ~4.4x on guidance; (2) GAAP earnings are erratic and often negative (a −$92M Q2 loss) because of unrealized <a href="#g-merchant">mark-to-market</a> derivative swings and a one-time comp charge; and (3) after a parabolic 2024–25 run, the "AI power" trade simply cooled. We address each in Section 7. Our view: leverage is temporary (management targets sub-3.5x by year-end as a full year of the enlarged fleet's EBITDA arrives), GAAP noise is irrelevant to a cash-return story management runs on <a href="#g-adj-fcf">Adjusted FCF</a>, and the de-rating has handed a rare entry into a business whose earnings power is structurally higher than a year ago.</p>
+
+      <h3>What the market is missing</h3>
+      <ul>
+        <li><strong>Forward earnings power has roughly doubled, but the multiple compressed.</strong> 2025 Adjusted EBITDA was $1,035M; 2026 guidance midpoint is ~$2,125M. Analysts model ~$4.47B of revenue (+70%) and ~$22 of adjusted EPS in 2026. The stock fell while the "E" doubled — the definition of multiple compression.</li>
+        <li><strong>The AWS deal converted to a cleaner structure and is ramping.</strong> After FERC rejected the behind-the-meter ISA amendment in Nov 2024, Talen and Amazon signed a revised <em>front-of-the-meter</em> PPA in June 2025 for 1,920 MW through 2042 (full volume by 2032) — a structure that needed no FERC approval and went live during the spring 2026 refueling outage. Contracted, long-dated nuclear cash flow now underpins the fleet.</li>
+        <li><strong>Capacity revenue is a multi-year tailwind.</strong> PJM's Base Residual Auction cleared at the FERC-approved cap of <strong>$329.17/MW-day for 2026/27 and $333.44/MW-day for 2027/28</strong> — up from $269.92 in 2025/26 and a trivial $28.92 in 2024/25. Talen's large uncontracted capacity earns near-maximum revenue two delivery years running.</li>
+        <li><strong>A cash-return machine.</strong> ~$2.3B of stock (~15M shares) repurchased since 2024, a $2.0B authorization (~$1.7B remaining) through 2028, and a stated intent to return ≥$2.8B (~70% of a ~$4B cumulative FCF pool) over 2026–2028. Shares outstanding are down ~7% year-on-year despite the Cornerstone stock consideration.</li>
+      </ul>
+
+      <div class="chips">
+        <div class="chip"><div class="l">2026E Adj EBITDA</div><div class="v">~$2.13B</div><div class="s">guide $2.03–2.23B · ~+105% YoY</div></div>
+        <div class="chip"><div class="l">2026E Adj FCF</div><div class="v">~$1.28B</div><div class="s">guide $1.20–1.35B</div></div>
+        <div class="chip"><div class="l">AWS Nuclear PPA</div><div class="v">1,920 MW</div><div class="s">through 2042 · full by 2032</div></div>
+        <div class="chip"><div class="l">Fleet Capacity</div><div class="v">~15.7 GW</div><div class="s">2.2 GW nuclear · approx.</div></div>
+        <div class="chip"><div class="l">Net Debt</div><div class="v neg">~$9.3B</div><div class="s">~4.4x EBITDA · target &lt;3.5x</div></div>
+        <div class="chip"><div class="l">Buyback (since '24)</div><div class="v">~$2.3B</div><div class="s">~15M sh · ~$1.7B left</div></div>
+        <div class="chip"><div class="l">Conviction</div><div class="v">7/10</div><div class="s">Bull</div></div>
+      </div>
+
+      <div class="callout gold"><div class="t">Position in the FTA Framework</div>At ~3.8x trailing sales TLN sits in the "Cautious" band of our <a href="#g-ps">P/S scale</a> (&lt;4x) — but P/S is the wrong lens for a capital-intensive generator; the correct lenses are <a href="#g-ev-ebitda">EV/EBITDA</a> (~11x forward, cheapest in the group) and <a href="#g-fcf-share">FCF/share</a> (guiding toward ~$37 in 2027 and ~$48 in 2028, both approximate, from earnings-call coverage). The setup is a "raised guidance, falling stock" dislocation inside a sector de-rating; the thesis breaks if merchant power/capacity prices roll over or leverage is not de-levered on schedule.</div>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 2 ================= -->
+  <section class="card" id="s2">
+    <div class="card-h" onclick="toggle(this)"><div class="badge">2</div><h2>Microeconomic &amp; Valuation Analysis</h2><div class="chev">▾</div></div>
+    <div class="card-b">
+      <h3>Industry &amp; TAM — the power bottleneck</h3>
+      <p>The structural driver is the collision of exploding AI compute demand with a grid that cannot connect new supply fast enough. McKinsey's Technology Trends Outlook 2026 reframes the AI race around "time to energy," noting roughly <strong>2,500 GW of generation is stuck in grid interconnection queues</strong> and that hyperscalers are signing dedicated supply deals — citing Talen's own Susquehanna–AWS agreement (up to 1,920 MW) as the template. Independent estimates converge: EPRI projects US data centers reach <strong>9–17% of national electricity by 2030</strong> (from ~4%), and Lawrence Berkeley National Lab models data-center consumption of <strong>325–580 TWh/yr by 2030</strong>. LBNL's 2026 queue census counts ~1,312 GW of generation plus ~749 GW of storage seeking interconnection — but ~80% of queued projects historically withdraw, and waits can exceed a decade.</p>
+      <p>The investable conclusion is simple: the binding constraint is <em>already-interconnected, dispatchable</em> capacity — precisely what merchant IPPs own. That is the entire re-rating thesis for the group (and the source of its volatility). Talen is the most concentrated expression of it: a large nuclear anchor, a rapidly expanding gas fleet in the highest-priced capacity market in the country (PJM), and a signed hyperscaler off-take.</p>
+
+      <div class="chart-grid">
+        <div class="chart-box"><div class="ct"><h5>Annual Adj. EBITDA &amp; Adj. FCF ($M)</h5><button class="zoom" onclick="expand('c_ebitda')">Click to expand</button></div><canvas id="c_ebitda"></canvas><div class="note">2026 = guidance midpoint (raised Aug 5, 2026). Source: company 8-K filings.</div></div>
+        <div class="chart-box"><div class="ct"><h5>Market Cap vs IPP Peers ($B)</h5><button class="zoom" onclick="expand('c_mcap')">Click to expand</button></div><canvas id="c_mcap"></canvas><div class="note">As of Sep 17, 2026. Source: stockanalysis.com.</div></div>
+      </div>
+
+      <h3>Valuation multiples</h3>
+      <div class="chips">
+        <div class="chip"><div class="l">P/S (TTM)</div><div class="v">3.8x</div><div class="s">"Cautious" band</div></div>
+        <div class="chip"><div class="l">Fwd P/E</div><div class="v">9.8x</div><div class="s">cheapest of IPP peers</div></div>
+        <div class="chip"><div class="l">EV/EBITDA (fwd)</div><div class="v">~11.0x</div><div class="s">on 2026E $2.13B</div></div>
+        <div class="chip"><div class="l">EV/EBITDA (TTM)</div><div class="v neg">~40x</div><div class="s">trough TTM EBITDA · n/m</div></div>
+        <div class="chip"><div class="l">P / FCF (fwd)</div><div class="v">~11.0x</div><div class="s">on 2026E $1.28B</div></div>
+        <div class="chip"><div class="l">GAAP P/E (TTM)</div><div class="v neg">n/m</div><div class="s">net loss ~−$185M TTM</div></div>
+        <div class="chip"><div class="l">Dividend</div><div class="v">None</div><div class="s">all return via buyback</div></div>
+      </div>
+      <p>Trailing multiples are misleading here. GAAP net income is negative (~−$185M TTM) — distorted by unrealized <a href="#g-merchant">mark-to-market</a> derivative losses, a one-time ~$501M Q4 2025 stock-comp charge (an equity-to-liability reclassification), and heavier interest post-acquisitions — so trailing P/E is n/m and trailing EV/EBITDA (~40x) is mechanically inflated by a trough EBITDA base. The correct lens is <em>forward</em>: on 2026 guidance, TLN trades at ~9.8x earnings and ~11x EV/EBITDA versus VST ~10.3x, NRG ~14x, CEG ~15x and CWEN ~13.5x EV/EBITDA. On a <a href="#g-fcf-share">free-cash-flow yield</a> basis, ~$1.28B of 2026E FCF against a $14.05B market cap is a ~9% FCF yield — extraordinary for an asset base with a 2042-dated nuclear contract embedded.</p>
+
+      <h3>Institutional ownership &amp; insider activity</h3>
+      <p>Institutions own ~83% of shares outstanding; insiders hold ~1.6% (Talen is a post-bankruptcy 2023 relisting, not a founder-led company, so insider economic ownership is naturally low). Shares outstanding are down ~7% year-on-year — a ~7% buyback yield. Recent 13F activity skews to accumulation among utility-focused managers (e.g., Reaves and Alger added in late 2025, per secondary aggregators — treat as approximate pending primary 13Fs). Insider transactions in 2026 are limited to routine option-conversion-and-sell-to-cover activity (President Terry Nutt, July 2026); we found no evidence of open-market insider <em>buying</em>, which we weight modestly against the score.</p>
+
+      <h3>Analyst growth estimates</h3>
+      <p>Consensus (17 analysts) rates TLN "Buy" with a <strong>$459.94</strong> average target (+57%; median $470, range $307–$560). Post-Q2 targets clustered high: Exane BNP $560, Goldman $509, Morgan Stanley $503, Raymond James $449, Mizuho $405. The distribution is 9 Strong Buy / 6 Buy / 2 Hold / 0 Sell. Consensus models 2026 revenue of ~$4.47B (+70% YoY) and 2027 revenue of ~$5.23B (+17%), with adjusted EPS climbing from ~$22 (2026E) to ~$31 (2027E) — a <a href="#g-cagr">CAGR</a> driven by capacity repricing, the AWS ramp, and a full year of the acquired gas fleet.</p>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 3 ================= -->
+  <section class="card" id="s3">
+    <div class="card-h" onclick="toggle(this)"><div class="badge">3</div><h2>Qualitative Analysis — Moat, Management &amp; Culture</h2><div class="chev">▾</div></div>
+    <div class="card-b">
+      <h3>Competitive moat — a systems view</h3>
+      <p>A merchant generator's "moat" is not brand or switching costs — it is the irreproducibility of its physical asset base and its position in the queue. Talen's moat has three pillars:</p>
+      <ul>
+        <li><strong>An interconnected nuclear anchor that cannot be replicated.</strong> Susquehanna is ~2,494 MW of baseload nuclear (Talen owns 90%, ~2.2 GW net) already connected to the grid with decades of operating license runway. New nuclear takes 10+ years and is politically fraught; new interconnection queues stretch past a decade. Owning firm, carbon-free, 24/7 capacity <em>today</em> is the scarce good the entire AI build-out is bidding for.</li>
+        <li><strong>Location in the highest-priced capacity market.</strong> The bulk of Talen's fleet sits in PJM, where <a href="#g-capacity-auction">capacity auctions</a> have cleared at or near the price cap for two consecutive delivery years. Its gas acquisitions were deliberately concentrated in PJM (PA, OH, IN) to capture this.</li>
+        <li><strong>A signed hyperscaler counterparty.</strong> The 2042-dated AWS PPA converts a portion of merchant nuclear into contracted, investment-grade-counterparty cash flow, lowering the cost of capital and de-risking the equity story relative to pure merchant peers.</li>
+      </ul>
+      <p>Competitive set: <strong>Constellation (CEG)</strong> — the largest US nuclear fleet, richer multiple, the "safe" nuclear compounder; <strong>Vistra (VST)</strong> — the largest merchant by market cap, more gas/retail, its own nuclear; <strong>NRG</strong> — retail-heavy, lower P/S; <strong>Clearway (CWEN)</strong> — a renewable yieldco, different animal. Talen's differentiation is being the <em>smallest and most levered</em> of the group with the <em>highest</em> growth rate and the cleanest single-hyperscaler nuclear narrative — which cuts both ways.</p>
+
+      <h3>Founder-led? No — but a focused, aligned operator.</h3>
+      <p>Talen is not founder-led; it emerged from Chapter 11 in May 2023 and relisted, with a management team assembled around CEO Mac McFarland (executive chairman/CEO through the restructuring) and President Terry Nutt. The team's track record since emergence is the relevant evidence: they monetized non-core assets (the ERCOT portfolio and the original Cumulus/AWS data-center campus sale for $650M in 2024), pivoted the entire equity story to "power for AI," executed the AWS PPA, and completed two large accretive gas acquisitions in under a year. That is disciplined, opportunistic capital allocation.</p>
+
+      <h3>Capital allocation</h3>
+      <p>This is the strongest part of the qualitative case. Since 2024 Talen has: (1) returned ~$2.3B via buybacks, shrinking the share count ~7% YoY; (2) acquired ~5.5 GW of PJM gas (Freedom/Guernsey ~2.9 GW for ~$3.5B net; Cornerstone ~2.6 GW for $3.45B) at multiples management argues are accretive against near-cap capacity prices; and (3) locked long-dated nuclear cash flow with AWS. The financing choice — ~$4.0B of new high-yield notes in April 2026 — is the debit side of that ledger and the reason leverage spiked. The stated plan is to de-lever to sub-3.5x net-debt/EBITDA by year-end 2026 as a full year of the enlarged fleet's EBITDA is realized, while still returning ≥$2.8B over 2026–2028.</p>
+
+      <h3>Culture &amp; organizational traits</h3>
+      <ul>
+        <li><strong>Customer/counterparty focus:</strong> the pivot to contracting nuclear with hyperscalers (and exploring SMRs and uprates with Amazon and X-energy) shows an organization reorienting around the single most valuable demand pool in the market.</li>
+        <li><strong>Operational discipline:</strong> nuclear capacity factors and PJM dispatch are the day-job; the AWS front-of-the-meter conversion was executed cleanly during a scheduled refueling outage.</li>
+        <li><strong>Governance watch-items:</strong> a below-investment-grade balance sheet (Moody's ~Ba3 / S&amp;P ~BB−, approximate), merchant commodity exposure, and volatile GAAP results driven by derivative accounting. None are disqualifying; all are monitored.</li>
+        <li><strong>Idea meritocracy / optionality:</strong> exploratory SMR (X-energy Xe-100) and Susquehanna uprate work shows willingness to seed long-dated options without over-committing capital.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 4 ================= -->
+  <section class="card" id="s4">
+    <div class="card-h" onclick="toggle(this)"><div class="badge">4</div><h2>Quantitative Analysis — Financial Deep Dive</h2><div class="chev">▾</div></div>
+    <div class="card-b">
+      <h3>Revenue streams, explained simply</h3>
+      <p>Talen makes money three ways. <strong>Energy revenue</strong> — selling electricity (nuclear and gas) into wholesale markets, increasingly under the long-dated AWS contract. <strong>Capacity revenue</strong> — payments from PJM for the <em>promise</em> to be available, set years ahead in the Base Residual Auction; this is the high-visibility, currently near-cap piece. <strong>Ancillary/other</strong> — grid services and smaller items. A critical accounting nuance: Talen's reported "operating revenue" is distorted by <a href="#g-merchant">unrealized mark-to-market</a> swings on its hedge book — e.g., Q2 2026 operating revenue of $747M includes a −$212M unrealized derivative loss, so underlying energy+capacity revenue (~$959M) was much higher. This is why management and the Street track <a href="#g-adj-ebitda">Adjusted EBITDA</a> and <a href="#g-adj-fcf">Adjusted FCF</a>, not GAAP revenue or net income.</p>
+
+      <div class="chart-grid">
+        <div class="chart-box"><div class="ct"><h5>Quarterly Op. Revenue &amp; Net Income ($M)</h5><button class="zoom" onclick="expand('c_qrev')">Click to expand</button></div><canvas id="c_qrev"></canvas><div class="note">Both distorted by unrealized derivative MTM. Q3'24 → Q2'26.</div></div>
+        <div class="chart-box"><div class="ct"><h5>Quarterly Adj. EBITDA &amp; Adj. FCF ($M)</h5><button class="zoom" onclick="expand('c_qebitda')">Click to expand</button></div><canvas id="c_qebitda"></canvas><div class="note">The metrics management runs on. Clear ramp through 2025–26.</div></div>
+      </div>
+
+      <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Quarter</th><th class="num">Op. Rev</th><th class="num">Adj. EBITDA</th><th class="num">Adj. FCF</th><th class="num">Net Inc. (attrib.)</th><th class="num">EPS (basic)</th></tr></thead>
+        <tbody>
+          <tr><td>Q3 2024</td><td class="num">$650M</td><td class="num">$230M</td><td class="num pos">$97M</td><td class="num pos">$168M</td><td class="num pos">$3.30</td></tr>
+          <tr><td>Q4 2024</td><td class="num">$467M</td><td class="num">$164M</td><td class="num pos">$21M</td><td class="num pos">$82M</td><td class="num pos">~$1.77</td></tr>
+          <tr><td>Q1 2025</td><td class="num">$390M</td><td class="num">$200M</td><td class="num pos">$87M</td><td class="num neg">−$135M</td><td class="num neg">~−$2.96</td></tr>
+          <tr><td>Q2 2025</td><td class="num">$630M</td><td class="num">$90M</td><td class="num neg">−$78M</td><td class="num pos">$72M</td><td class="num pos">$1.58</td></tr>
+          <tr><td>Q3 2025</td><td class="num">$812M</td><td class="num">$363M</td><td class="num pos">$223M</td><td class="num pos">$207M</td><td class="num pos">$4.52</td></tr>
+          <tr><td>Q4 2025</td><td class="num">$749M</td><td class="num">$382M</td><td class="num pos">$292M</td><td class="num neg">−$363M</td><td class="num neg">~−$7.94</td></tr>
+          <tr><td>Q1 2026</td><td class="num">$1,129M</td><td class="num">$473M</td><td class="num pos">$350M</td><td class="num pos">$63M</td><td class="num pos">~$1.37</td></tr>
+          <tr><td>Q2 2026</td><td class="num">$747M</td><td class="num">$374M</td><td class="num pos">$212M</td><td class="num neg">−$92M</td><td class="num neg">−$2.00</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p class="src">Sources: Talen 8-K earnings releases (Q2 2026, FY/Q4 2025, Q3 2025, Q2 2025) on sec.gov and IR. Single-quarter figures backed out of period-to-date totals are marked "~" and are approximate; derived EPS approximate because weighted share counts differ by quarter. Note the disconnect between strong Adjusted FCF and negative GAAP net income in several quarters — this is the mark-to-market and one-time-charge noise described above.</p>
+
+      <h3>Full-year results &amp; guidance</h3>
+      <div class="chips">
+        <div class="chip"><div class="l">2024 Adj EBITDA</div><div class="v">$770M</div><div class="s">FCF $283M</div></div>
+        <div class="chip"><div class="l">2025 Adj EBITDA</div><div class="v">$1,035M</div><div class="s">FCF $524M · 39.9 TWh</div></div>
+        <div class="chip"><div class="l">2026E Adj EBITDA</div><div class="v">~$2,125M</div><div class="s">guide $2,025–2,225M</div></div>
+        <div class="chip"><div class="l">2026E Adj FCF</div><div class="v">~$1,275M</div><div class="s">guide $1,200–1,350M</div></div>
+        <div class="chip"><div class="l">'26–'28 Cum. FCF</div><div class="v">~$4B</div><div class="s">approx · ≥$2.8B returned</div></div>
+        <div class="chip"><div class="l">2027 Rev (cons.)</div><div class="v">~$5.2B</div><div class="s">+17% · EPS ~$31</div></div>
+      </div>
+      <p>The step-change is unmistakable: Adjusted EBITDA guidance for 2026 (~$2.13B midpoint) is more than double 2025's $1,035M, and Adjusted FCF (~$1.28B) is ~2.4x 2025's $524M. Management originally guided 2026 EBITDA to $1,750–2,050M in February and raised it to $2,025–2,225M at Q2 on strong first-half results and the Cornerstone close. The multi-year outlook — roughly $4B cumulative Adjusted FCF over 2026–2028 with ≥$2.8B (~70%) returned to shareholders, and per-share FCF building toward ~$37 (2027) and ~$48 (2028) inclusive of buybacks — comes from earnings-call coverage rather than the primary press release and is marked approximate.</p>
+
+      <div class="chart-grid">
+        <div class="chart-box"><div class="ct"><h5>Adjusted FCF per Share Outlook ($)</h5><button class="zoom" onclick="expand('c_fcfshare')">Click to expand</button></div><canvas id="c_fcfshare"></canvas><div class="note">2027–28 from earnings-call coverage, inclusive of buybacks — approximate.</div></div>
+        <div class="chart-box"><div class="ct"><h5>Share Count Trend (M)</h5><button class="zoom" onclick="expand('c_buyback')">Click to expand</button></div><canvas id="c_buyback"></canvas><div class="note">Buybacks shrank the base; Q2'26 uptick is Cornerstone stock consideration.</div></div>
+      </div>
+
+      <h3>Balance sheet, leverage &amp; liquidity</h3>
+      <div class="chips">
+        <div class="chip"><div class="l">Total Debt (Jun-26)</div><div class="v neg">~$9.57B</div><div class="s">post-$4.0B '26 notes</div></div>
+        <div class="chip"><div class="l">Cash</div><div class="v">~$0.23B</div><div class="s">net debt ~$9.34B</div></div>
+        <div class="chip"><div class="l">Net Debt / EBITDA</div><div class="v neg">~4.4x</div><div class="s">on 2026E · target &lt;3.5x</div></div>
+        <div class="chip"><div class="l">Liquidity</div><div class="v">~$1.9B</div><div class="s">cash + revolver</div></div>
+        <div class="chip"><div class="l">Credit (approx.)</div><div class="v">Ba3/BB−</div><div class="s">high-yield · unverified</div></div>
+        <div class="chip"><div class="l">'26 New Notes</div><div class="v neg">$4.0B</div><div class="s">6.125% '31 · 6.375% '33</div></div>
+      </div>
+      <p>Leverage is the central bear point and it is real: net debt rose from ~$6.1B at year-end 2025 to ~$9.34B at June 30, 2026, after issuing ~$4.0B of senior unsecured notes to fund the $3.45B Cornerstone acquisition (and redeeming $1.2B of 8.625% secured notes). Spot net-debt/EBITDA of ~4.4x on 2026 guidance is elevated for a merchant generator. The offsets: (1) ~$1.9B of liquidity (cash + an upsized $1.35B revolver); (2) a de-levering path — management targets sub-3.5x by year-end 2026 as a full year of the enlarged fleet's EBITDA arrives; and (3) the AWS contract lengthens and de-risks the cash-flow profile backing that debt. The credit is below investment grade (Moody's ~Ba3 / S&amp;P ~BB−, approximate — not confirmed against a primary rating action), which raises refinancing sensitivity to rates.</p>
+
+      <div class="chart-grid">
+        <div class="chart-box"><div class="ct"><h5>Net Debt ($B) &amp; Leverage (x)</h5><button class="zoom" onclick="expand('c_leverage')">Click to expand</button></div><canvas id="c_leverage"></canvas><div class="note">Leverage on trailing/guidance EBITDA. 2026E = spot, pre full-year EBITDA.</div></div>
+        <div class="chart-box"><div class="ct"><h5>Fleet Capacity Growth (GW)</h5><button class="zoom" onclick="expand('c_fleet')">Click to expand</button></div><canvas id="c_fleet"></canvas><div class="note">Milestones per company releases; current ~15.7 GW approximate (post-divestitures).</div></div>
+      </div>
+
+      <h3>Cash generation vs. GAAP</h3>
+      <p>The single most important thing to internalize about Talen's financials: <strong>Adjusted FCF is strongly positive and growing while GAAP net income is erratic and often negative.</strong> 2025 delivered $524M of Adjusted FCF against a −$219M GAAP net loss. The gap is unrealized derivative losses, a one-time ~$501M Q4 2025 equity-to-liability comp reclassification, 2024's ~$884M of asset-sale gains rolling off, and rising interest expense. For an <a href="#g-ipp">IPP</a>, cash — not GAAP EPS — funds buybacks and debt paydown, which is why our valuation work anchors on FCF and EV/EBITDA (Sections 6 and 9).</p>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 5 ================= -->
+  <section class="card" id="s5">
+    <div class="card-h" onclick="toggle(this)"><div class="badge">5</div><h2>Earnings Tracker — Management Credibility</h2><div class="chev">▾</div></div>
+    <div class="card-b">
+      <p>Talen has a short but strong track record since its 2023 emergence: it has met or beaten Adjusted EBITDA/FCF guidance and <em>raised</em> full-year guidance twice in 2026. The table tracks specific promises against outcomes; where exact prior guidance ranges were not in our primary sources we note the disclosure and score conservatively.</p>
+      <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Quarter / Date</th><th>Specific Promise / Guidance</th><th>Actual Result</th><th class="num">Credibility</th></tr></thead>
+        <tbody>
+          <tr><td>Q3 2024<br><span class="src">Nov 2024</span></td><td>Reaffirm 2024 Adj EBITDA ~$770M; pivot fleet to data-center off-take; pursue AWS ISA amendment (300→480 MW)</td><td>Q3 EBITDA $230M; delivered FY24 EBITDA $770M. AWS ISA amendment <em>rejected</em> by FERC Nov 1, 2024 — a setback, not a guidance miss</td><td class="num"><span class="score">7/10</span></td></tr>
+          <tr><td>Q4 2024 / FY24<br><span class="src">Feb 2025</span></td><td>Initial 2025 guide: Adj EBITDA $925–1,175M; Adj FCF $395–595M; reach revised AWS deal</td><td>FY24 EBITDA $770M / FCF $283M delivered. 2025 ultimately landed EBITDA $1,035M, FCF $524M — within/near the upper half of guide</td><td class="num"><span class="score">8/10</span></td></tr>
+          <tr><td>Q1 2025<br><span class="src">May 2025</span></td><td>Reaffirm 2025 guide; advance AWS negotiations post-FERC rejection</td><td>Q1 EBITDA $200M; FCF $87M. Signed the revised 1,920 MW AWS PPA on June 11, 2025 — a major strategic win</td><td class="num"><span class="score">9/10</span></td></tr>
+          <tr><td>Q2 2025<br><span class="src">Aug 2025</span></td><td>Reaffirm 2025; announce first gas acquisition</td><td>Q2 EBITDA $90M (seasonally soft). Announced Freedom + Guernsey (~2.9 GW) for ~$3.5B net on July 17, 2025</td><td class="num"><span class="score">8/10</span></td></tr>
+          <tr><td>Q3 2025<br><span class="src">Nov 2025</span></td><td>Raise/upsize buyback to $2.0B; close Freedom/Guernsey; ~2.6x leverage</td><td>Q3 EBITDA $363M / FCF $223M (record). Buyback upsized to $2.0B; Freedom/Guernsey closed Nov 25, 2025</td><td class="num"><span class="score">10/10</span></td></tr>
+          <tr><td>Q4 2025 / FY25<br><span class="src">Feb 2026</span></td>><td>Initial 2026 guide: Adj EBITDA $1,750–2,050M; Adj FCF $980–1,180M; announce/advance Cornerstone</td><td>FY25 EBITDA $1,035M / FCF $524M. Announced Cornerstone (~2.6 GW, $3.45B) Jan 15, 2026</td><td class="num"><span class="score">9/10</span></td></tr>
+          <tr><td>Q1 2026<br><span class="src">May 2026</span></td><td>Reaffirm 2026 guide; close Cornerstone; AWS front-of-meter live</td><td>Q1 EBITDA $473M / FCF $350M (record). AWS conversion went live during spring refueling outage; Cornerstone on track</td><td class="num"><span class="score">10/10</span></td></tr>
+          <tr><td>Q2 2026<br><span class="src">Aug 5, 2026</span></td><td>Prior 2026 guide $1,750–2,050M EBITDA</td><td><strong>Raised</strong> 2026 guide to $2,025–2,225M EBITDA and $1,200–1,350M FCF; Cornerstone closed June 15; Q2 EBITDA $374M / FCF $212M</td><td class="num"><span class="score">10/10</span></td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="chart-grid">
+        <div class="chart-box"><div class="ct"><h5>2026 Adj. EBITDA Guidance Progression ($M)</h5><button class="zoom" onclick="expand('c_guide')">Click to expand</button></div><canvas id="c_guide"></canvas><div class="note">Low/mid/high of guide at Feb and Aug 2026. Raised on strong H1 + Cornerstone.</div></div>
+        <div class="chart-box"><div class="ct"><h5>PJM Capacity Auction Clearing ($/MW-day)</h5><button class="zoom" onclick="expand('c_pjm')">Click to expand</button></div><canvas id="c_pjm"></canvas><div class="note">RTO price by delivery year. 2026/27 &amp; 2027/28 at the FERC-approved cap.</div></div>
+      </div>
+      <div class="callout green"><div class="t">Credibility verdict</div>Average score ~8.9/10. The team executes complex, high-stakes transactions (the AWS pivot after a FERC rejection; two multi-GW acquisitions in a year) and has raised guidance twice in 2026. The one credibility watch-item is the FERC ISA rejection in late 2024 — a reminder that regulatory outcomes are outside management's control — which they recovered from by restructuring the AWS deal into a form that needed no FERC sign-off.</div>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 6 ================= -->
+  <section class="card" id="s6">
+    <div class="card-h" onclick="toggle(this)"><div class="badge">6</div><h2>Bull / Base / Bear Case Scenarios</h2><div class="chev">▾</div></div>
+    <div class="card-b">
+      <p>Targets value the equity on EV/EBITDA and <a href="#g-fcf-share">FCF/share</a> cross-checked against the peer set in Section 9, netting ~$9.3B of debt (declining as FCF de-levers) against enterprise value on ~48M shares (falling with buybacks in the bull/base cases, static-to-higher in the bear). Merchant power and capacity prices are the dominant swing variable.</p>
+
+      <div class="horizon">1-Year Horizon (to Sep 2027) — Probability-weighted target: <span style="font-family:'JetBrains Mono',monospace">$360</span> (+23%)</div>
+      <div class="scen-grid">
+        <div class="scen bull"><div class="t">Bull Case</div><div class="pt">$460</div><span class="prob">Probability 30%</span><ul><li>2026 EBITDA lands at/above the high end (~$2.2B); 2027 initial guide ≥$2.3B</li><li>Leverage falls below 3.5x on schedule; a second hyperscaler PPA is signed</li><li>Re-rates toward peer EV/EBITDA (~13x) as the "AI power" trade re-heats</li><li>Reaches the Street average target</li></ul></div>
+        <div class="scen base"><div class="t">Base Case</div><div class="pt">$360</div><span class="prob">Probability 50%</span><ul><li>2026 EBITDA ~$2.1B; buybacks continue; leverage drifts toward ~3.5x</li><li>~11–12x forward EV/EBITDA (a modest re-rate from ~11x)</li><li>FCF/share builds toward ~$37 (2027)</li><li>Roughly a partial closure of the gap to Street targets</li></ul></div>
+        <div class="scen bear"><div class="t">Bear Case</div><div class="pt">$220</div><span class="prob">Probability 20%</span><ul><li>Merchant power &amp; capacity prices soften; next PJM auction clears below the cap</li><li>De-levering stalls; credit spreads widen; IPP multiple compresses further</li><li>~8–9x forward EV/EBITDA on flat EBITDA</li><li>Sector-wide "power trade" unwind continues</li></ul></div>
+      </div>
+
+      <div class="horizon">3-Year Horizon (to Sep 2029) — Probability-weighted target: <span style="font-family:'JetBrains Mono',monospace">$470</span> (+60%, ~17% CAGR)</div>
+      <div class="scen-grid">
+        <div class="scen bull"><div class="t">Bull Case</div><div class="pt">$660</div><span class="prob">Probability 30%</span><ul><li>AWS at full 1,920 MW; a second hyperscaler contract signed; uprates/SMRs advance</li><li>EBITDA ~$2.6B+; FCF/share ~$55+; leverage ~3x</li><li>~13x EV/EBITDA as contracted mix earns a re-rate</li></ul></div>
+        <div class="scen base"><div class="t">Base Case</div><div class="pt">$470</div><span class="prob">Probability 45%</span><ul><li>EBITDA ~$2.3–2.5B; FCF/share ~$48 (2028); ~48M shares falling on buybacks</li><li>~11–12x EV/EBITDA</li><li>Steady buyback-driven per-share compounding</li></ul></div>
+        <div class="scen bear"><div class="t">Bear Case</div><div class="pt">$230</div><span class="prob">Probability 25%</span><ul><li>Capacity prices normalize below the cap; gas spark spreads compress</li><li>Debt burden limits returns; refinancing at higher coupons</li><li>~8x EV/EBITDA on ~$2B EBITDA</li></ul></div>
+      </div>
+
+      <div class="horizon">5-Year Horizon (to Sep 2031) — Probability-weighted target: <span style="font-family:'JetBrains Mono',monospace">$610</span> (+108%, ~16% CAGR)</div>
+      <div class="scen-grid">
+        <div class="scen bull"><div class="t">Bull Case</div><div class="pt">$900</div><span class="prob">Probability 30%</span><ul><li>Talen is a multi-hyperscaler nuclear+gas platform; first SMR FID; uprates online</li><li>EBITDA ~$3B+; sustained buybacks; leverage &lt;3x</li><li>Investment-grade trajectory earns a durable ~13–14x multiple</li></ul></div>
+        <div class="scen base"><div class="t">Base Case</div><div class="pt">$600</div><span class="prob">Probability 45%</span><ul><li>EBITDA ~$2.6B; FCF/share compounding low-teens with a shrinking share count</li><li>~11–12x EV/EBITDA</li><li>Contracted mix rises, de-risking the equity</li></ul></div>
+        <div class="scen bear"><div class="t">Bear Case</div><div class="pt">$250</div><span class="prob">Probability 25%</span><ul><li>A full merchant-power down-cycle; capacity reform caps upside; AI demand disappoints</li><li>EBITDA stalls ~$2B; multiple compresses to ~7–8x</li><li>Leverage remains a governor on returns</li></ul></div>
+      </div>
+
+      <div class="chart-grid">
+        <div class="chart-box"><div class="ct"><h5>Scenario Price Targets vs Current ($)</h5><button class="zoom" onclick="expand('c_scen')">Click to expand</button></div><canvas id="c_scen"></canvas><div class="note">Bars = scenario targets; diamonds = probability-weighted; dashed = current.</div></div>
+        <div class="chart-box"><div class="ct"><h5>Base-Case Adj. EBITDA &amp; FCF Path ($M)</h5><button class="zoom" onclick="expand('c_path')">Click to expand</button></div><canvas id="c_path"></canvas><div class="note">2026 = guidance; 2027–2030 = FTA base-case model (approximate).</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 7 ================= -->
+  <section class="card" id="s7">
+    <div class="card-h" onclick="toggle(this)"><div class="badge">7</div><h2>Risks &amp; Anti-Thesis — Steelmanning the Bear</h2><div class="chev">▾</div></div>
+    <div class="card-b">
+      <p>If we were short TLN, these are the five arguments we would lead with, in order of strength.</p>
+
+      <div class="risk"><h4>1. Leverage was tripled to buy commodity gas plants at the top of the cycle</h4>
+        <div class="meta"><span class="tag">Probability <b>40%</b></span><span class="tag">Impact <b>High</b></span><span class="tag">Priced in <b>Partially</b></span></div>
+        <p>Net debt went from ~$6.1B to ~$9.34B in six months, funded with ~$4.0B of high-yield notes, to acquire ~5.5 GW of gas whose economics depend on PJM capacity prices staying at the cap. Spot leverage is ~4.4x on a still-negative-GAAP business. If capacity prices normalize below the cap and gas spark spreads compress, the acquired EBITDA disappoints, de-levering stalls, and a BB− credit refinances at painful coupons. This is the one risk that would break the thesis fastest.</p>
+        <p><em>Our rebuttal:</em> the deals were struck against visible, FERC-approved capacity prices for delivery years 2026/27 and 2027/28, and management targets sub-3.5x by year-end 2026 as a full year of EBITDA lands. But leverage timing is the key variable to watch, and merchant price risk is genuinely uncapped on the downside.</p></div>
+
+      <div class="risk"><h4>2. The whole "AI power" trade is a sentiment bubble that is deflating</h4>
+        <div class="meta"><span class="tag">Probability <b>45%</b></span><span class="tag">Impact <b>High</b></span><span class="tag">Priced in <b>Mostly</b></span></div>
+        <p>TLN, VST, NRG and CEG are all down 20–35% off their 2025 highs. The group re-rated on a narrative (data centers need power) that could compress as fast as it expanded if hyperscaler capex is trimmed, if efficiency gains (smaller models, better utilization) cut the demand forecast, or if new supply arrives faster than feared. A de-rating in the multiple can overwhelm rising EBITDA — which is precisely what has happened to TLN this year.</p>
+        <p><em>Our rebuttal:</em> the de-rating is exactly why the risk/reward is now attractive — you are buying doubled forward EBITDA at a compressed multiple. The physical bottleneck (interconnection queues, retiring baseload) is structural, not a fad. But we size the position for the reality that sentiment, not fundamentals, drives the multiple in the short run.</p></div>
+
+      <div class="risk"><h4>3. Single-hyperscaler concentration and regulatory dependence</h4>
+        <div class="meta"><span class="tag">Probability <b>30%</b></span><span class="tag">Impact <b>Medium</b></span><span class="tag">Priced in <b>Partially</b></span></div>
+        <p>The entire contracted-nuclear narrative rests on one counterparty (Amazon) and one plant (Susquehanna). FERC's Nov 2024 rejection of the original behind-the-meter ISA showed regulators can and will block co-location structures. No second named hyperscaler PPA has been signed. If the co-location/behind-the-meter regulatory framework tightens, or AWS's demand shifts, the premium narrative thins.</p>
+        <p><em>Our rebuttal:</em> Talen specifically restructured to a front-of-the-meter PPA that needs no FERC approval, and FERC's Dec 2025 order actually created clearer co-location rules for PJM. The gas fleet also gives Talen multiple avenues to serve additional hyperscalers. Concentration is real but diminishing.</p></div>
+
+      <div class="risk"><h4>4. GAAP losses and derivative volatility obscure the real economics</h4>
+        <div class="meta"><span class="tag">Probability <b>60%</b></span><span class="tag">Impact <b>Medium</b></span><span class="tag">Priced in <b>Yes</b></span></div>
+        <p>Talen posts negative GAAP net income in many quarters (−$219M for FY25, −$92M in Q2 2026). A skeptic argues "Adjusted FCF" flatters a business that cannot generate consistent GAAP profit, that hedge losses are real economic outcomes, and that the accounting opacity makes the numbers hard to trust. Trailing P/E is n/m and trailing EV/EBITDA is ~40x.</p>
+        <p><em>Our rebuttal:</em> for a hedged merchant generator, unrealized mark-to-market swings genuinely are non-cash timing items that reverse; the cash — $524M FCF in 2025, ~$1.28B guided 2026 — funds real buybacks and debt paydown. Forward multiples, not trailing GAAP, are the right lens. But the optics keep some institutional buyers away.</p></div>
+
+      <div class="risk"><h4>5. Nuclear operational and PTC/policy risk</h4>
+        <div class="meta"><span class="tag">Probability <b>20%</b></span><span class="tag">Impact <b>High</b></span><span class="tag">Priced in <b>No</b></span></div>
+        <p>Susquehanna is 2.2 GW of Talen's most valuable, highest-margin capacity and the heart of the AWS deal. Any extended nuclear outage, safety event, or license/regulatory issue would hit EBITDA and the narrative disproportionately. Separately, the federal nuclear production tax credit and the broader clean-energy policy backdrop are subject to change; a less supportive policy regime would lower nuclear economics.</p>
+        <p><em>Our rebuttal:</em> Susquehanna has a long, stable operating history, and the AWS PPA was explicitly structured to reduce reliance on the nuclear PTC. Still, single-asset operational risk on the crown jewel is a tail we cannot hedge, and we weight it in the conviction score.</p></div>
+
+      <div class="callout gold"><div class="t">Other risks noted</div>Below-investment-grade credit and refinancing sensitivity to rates; merchant gas spark-spread and natural-gas price exposure on the acquired fleet; PJM capacity market design reform that could lower future clearing prices; execution/integration risk on ~5.5 GW of acquired assets; low insider ownership (post-bankruptcy structure) and thus limited insider "skin in the game."</div>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 8 ================= -->
+  <section class="card" id="s8">
+    <div class="card-h" onclick="toggle(this)"><div class="badge">8</div><h2>Catalyst Timeline</h2><div class="chev">▾</div></div>
+    <div class="card-b">
+      <div class="timeline">
+        <div class="tl"><div class="d">2026-09-17 (today)</div><div class="e">Report date · IPP sector de-rating</div><div class="x">TLN ~35% off its Oct 2025 high near $451, near its 52-week low, on a group-wide "power trade" pullback despite twice-raised 2026 guidance. Street average PT $459.94 (+57%).</div></div>
+        <div class="tl"><div class="d">2026-Q4</div><div class="e">PJM 2028/2029 Base Residual Auction</div><div class="x">The single most important near-term fundamental read. A third consecutive clear at/near the cap validates the gas-acquisition thesis; a clear below the cap is the bear's best evidence.</div></div>
+        <div class="tl"><div class="d">2026-11-04</div><div class="e">Q3 2026 earnings</div><div class="x">Key tells: a full quarter of the enlarged fleet's EBITDA, updated leverage (progress toward &lt;3.5x), buyback pace, and any hint of a second hyperscaler PPA.</div></div>
+        <div class="tl"><div class="d">2026 year-end</div><div class="e">Leverage target checkpoint</div><div class="x">Management's stated goal: net-debt/EBITDA below 3.5x by year-end 2026 inclusive of Cornerstone. Hitting it de-risks the credit and clears an overhang.</div></div>
+        <div class="tl"><div class="d">Ongoing 2026–27</div><div class="e">FERC PJM co-location / BTMG compliance</div><div class="x">Following FERC's Dec 2025 order directing new co-location and behind-the-meter rules (partially approved April 2026), the final framework governs future data-center-at-plant projects across Talen's fleet.</div></div>
+        <div class="tl"><div class="d">2027 (H1)</div><div class="e">AWS PPA volume ramp milestones</div><div class="x">The 1,920 MW contract ramps toward full volume by 2032; each step adds contracted nuclear revenue. Watch for accelerated ramp or an expansion.</div></div>
+        <div class="tl"><div class="d">2027 (est.)</div><div class="e">Second hyperscaler / large-load off-take</div><div class="x">Management has signaled commercial discussions to serve additional hyperscalers via the gas fleet. A signed second PPA would be a major re-rating catalyst (bull case).</div></div>
+        <div class="tl"><div class="d">2027–28</div><div class="e">Susquehanna uprate &amp; X-energy SMR studies</div><div class="x">Exploratory work (Amazon uprate exploration; X-energy Xe-100 LOI for 3+ four-unit plants at 80 MWe each). Any FID or committed MW figure is long-dated optionality upside.</div></div>
+        <div class="tl"><div class="d">2028</div><div class="e">$2.0B buyback authorization expiry</div><div class="x">Program runs through Dec 31, 2028 with ~$1.7B remaining; pace and any re-authorization signal management's capital-return commitment.</div></div>
+        <div class="tl"><div class="d">2031 / 2033</div><div class="e">New senior notes mature</div><div class="x">The April 2026 notes (6.125% due 2031, 6.375% due 2033) come due; refinancing terms depend on the credit trajectory and rate environment.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 9 ================= -->
+  <section class="card" id="s9">
+    <div class="card-h" onclick="toggle(this)"><div class="badge">9</div><h2>Comparable Company Analysis</h2><div class="chev">▾</div></div>
+    <div class="card-b">
+      <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Company</th><th class="num">Mkt Cap</th><th class="num">Rev TTM</th><th class="num">Rev Growth</th><th class="num">Fwd P/E</th><th class="num">P/S</th><th class="num">FCF Margin</th><th class="num">Net Margin</th><th class="num">EV/EBITDA</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Talen (TLN)</strong></td><td class="num">$14.05B</td><td class="num">$3.74B</td><td class="num pos">+75.8%</td><td class="num">9.8x</td><td class="num">3.8x</td><td class="num pos">11.9%</td><td class="num neg">−5.0%</td><td class="num">~11x fwd</td></tr>
+          <tr><td>Vistra (VST)</td><td class="num">$48.18B</td><td class="num">$19.21B</td><td class="num pos">+3.8%</td><td class="num">13.9x</td><td class="num">2.5x</td><td class="num pos">11.7%</td><td class="num pos">11.6%</td><td class="num">10.3x</td></tr>
+          <tr><td>Constellation (CEG)</td><td class="num">$93.11B</td><td class="num">$31.27B</td><td class="num pos">+33.0%</td><td class="num">21.3x</td><td class="num">3.0x</td><td class="num">0.9%</td><td class="num pos">11.1%</td><td class="num">14.7x</td></tr>
+          <tr><td>NRG Energy (NRG)</td><td class="num">$22.35B</td><td class="num">$33.13B</td><td class="num pos">+12.8%</td><td class="num">10.3x</td><td class="num">0.7x</td><td class="num">1.1%</td><td class="num pos">2.6%</td><td class="num">14.0x</td></tr>
+          <tr><td>Clearway (CWEN)</td><td class="num">$6.14B</td><td class="num">$1.57B</td><td class="num pos">~+4%*</td><td class="num">41.6x</td><td class="num">3.9x</td><td class="num pos">33.8%</td><td class="num pos">6.4%</td><td class="num">13.5x</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p class="src">Source: stockanalysis.com as of Sep 17, 2026. TLN "EV/EBITDA ~11x fwd" uses 2026 guidance EBITDA (trailing EV/EBITDA of ~40x is n/m on a trough base); peers' EV/EBITDA are the site's trailing figures. *CWEN TTM revenue growth approximate. TLN fwd P/E is the cheapest of the group; its trailing net margin is negative on GAAP noise (see Section 4).</p>
+
+      <div class="chart-grid">
+        <div class="chart-box"><div class="ct"><h5>Forward P/E by Peer (x)</h5><button class="zoom" onclick="expand('c_peer')">Click to expand</button></div><canvas id="c_peer"></canvas><div class="note">TLN &amp; NRG cheapest; CEG &amp; CWEN richest. Source: stockanalysis.com.</div></div>
+        <div class="chart-box"><div class="ct"><h5>Revenue Growth YoY (TTM, %)</h5><button class="zoom" onclick="expand('c_growth')">Click to expand</button></div><canvas id="c_growth"></canvas><div class="note">TLN is the fastest grower (acquisitions + capacity repricing + AWS ramp).</div></div>
+      </div>
+
+      <h3>Relative valuation read</h3>
+      <p>Talen screens as the cheapest name in the group on the most relevant merchant-generator metrics while growing the fastest. It trades at ~9.8x forward earnings and ~11x forward EV/EBITDA against a peer set at 10–15x EV/EBITDA, yet it has the highest forward EBITDA growth (2026 guidance more than doubles 2025), the cleanest hyperscaler-nuclear contract, and the most aggressive buyback (shares −7% YoY). The discount is explained by (1) the highest leverage in the group and (2) below-investment-grade credit — genuine reasons for <em>some</em> discount, but not, in our view, for a multiple this compressed against doubling earnings power. Constellation trades at ~15x EV/EBITDA for its nuclear purity and investment-grade balance sheet; if Talen de-levers on schedule and signs a second hyperscaler contract, a re-rate toward even the peer midpoint (~12–13x) plus EBITDA growth drives the bulk of our base-case upside — before any change in the AI-power narrative.</p>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 10 ================= -->
+  <section class="card" id="s10">
+    <div class="card-h" onclick="toggle(this)"><div class="badge">10</div><h2>First-Principles KPIs</h2><div class="chev">▾</div></div>
+    <div class="card-b">
+      <p>Five leading indicators, in order of importance. If the first two hold, the thesis holds; if PJM capacity prices roll over below the cap for two auctions and leverage stops falling, reconsider.</p>
+      <ol style="margin:8px 0 14px 22px;font-size:14.5px">
+        <li><strong>PJM capacity auction clearing price ($/MW-day).</strong> Bar: at/near the cap. 2026/27 $329.17, 2027/28 $333.44. This sets the high-visibility revenue on the gas fleet and is the purest read on the group's tailwind.</li>
+        <li><strong>Net-debt/EBITDA (leverage).</strong> Bar: falling toward &lt;3.5x by year-end 2026. Spot ~4.4x. The single most-watched balance-sheet metric and the main overhang.</li>
+        <li><strong>Contracted data-center MW (AWS ramp).</strong> Bar: rising toward 1,920 MW by 2032. Each step converts merchant nuclear into contracted cash flow and lowers the cost of capital.</li>
+        <li><strong>Adjusted FCF per share.</strong> Bar: compounding. Guiding toward ~$37 (2027) and ~$48 (2028) inclusive of buybacks (approximate). This is the per-share engine of the return.</li>
+        <li><strong>Share count.</strong> Bar: falling. Down ~7% YoY (ex-Cornerstone stock). Buybacks are the primary shareholder-return mechanism (no dividend).</li>
+      </ol>
+      <div class="chart-grid">
+        <div class="chart-box"><div class="ct"><h5>KPI 3: Contracted AWS Nuclear MW (ramp to 2032)</h5><button class="zoom" onclick="expand('c_datacenter')">Click to expand</button></div><canvas id="c_datacenter"></canvas><div class="note">Illustrative ramp toward the 1,920 MW full contract quantity (approximate path).</div></div>
+        <div class="chart-box"><div class="ct"><h5>KPI 1: Capacity Price vs KPI 2: Leverage</h5><button class="zoom" onclick="expand('c_kpi')">Click to expand</button></div><canvas id="c_kpi"></canvas><div class="note">Capacity price rising (left) while leverage is set to fall (right) — the two swing variables.</div></div>
+      </div>
+      <div class="chart-grid">
+        <div class="chart-box"><div class="ct"><h5>KPI 4: Adj. FCF per Share ($)</h5><button class="zoom" onclick="expand('c_kpifcf')">Click to expand</button></div><canvas id="c_kpifcf"></canvas><div class="note">2027–28 approximate (earnings-call coverage, inclusive of buybacks).</div></div>
+        <div class="chart-box"><div class="ct"><h5>Fleet Capacity Mix by Fuel (approx.)</h5><button class="zoom" onclick="expand('c_capmix')">Click to expand</button></div><canvas id="c_capmix"></canvas><div class="note">Nuclear vs natural gas vs coal/oil/other. Approximate split of ~15.7 GW.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 11 ================= -->
+  <section class="card" id="s11">
+    <div class="card-h" onclick="toggle(this)"><div class="badge">11</div><h2>Glossary &amp; Methodology</h2><div class="chev">▾</div></div>
+    <div class="card-b">
+      <h3>Methodology</h3>
+      <p>Financial figures come from Talen's SEC-filed 8-K earnings releases (Q2 2025 through Q2 2026, plus FY2024/FY2025 comparatives), the IR site, and market data from stockanalysis.com as of the September 17, 2026 close ($293.31). Contract, acquisition, PJM auction, and FERC details come from Talen press releases, PJM, FERC, and reputable trade press (cited below). Several figures are explicitly marked approximate: single-quarter values backed out of period-to-date totals; derived EPS; the ~$4B cumulative-FCF / ≥$2.8B shareholder-return figures and per-share FCF outlooks (from earnings-call coverage, not the primary release); credit ratings; the ~$18B AWS contract-value estimate (an outside estimate, not a company figure); and current fleet capacity (~15.7 GW, net of divestitures). Scenario targets apply EV/EBITDA and FCF-based multiples to FTA's own model; probabilities are judgmental. Nothing here is investment advice.</p>
+
+      <div class="gl" id="g-ipp"><h4>Independent Power Producer (IPP) / Merchant Generator</h4><div class="f">A non-utility company that owns power plants and sells electricity into competitive wholesale markets</div><p>Unlike a regulated utility (guaranteed returns), an IPP's revenue rises and falls with market power prices, capacity payments, and hedging. <em>Why it matters:</em> Talen's earnings are inherently more cyclical and volatile than a regulated utility's — hence the low multiple and the sensitivity to power/capacity prices.</p><a class="back" href="#s1">↑ Back to Section 1</a></div>
+      <div class="gl" id="g-adj-ebitda"><h4>Adjusted EBITDA</h4><div class="f">Earnings before interest, taxes, depreciation &amp; amortization, adjusted for unrealized derivative MTM, one-time items and stock comp</div><p>Talen's headline profitability metric, stripping out the non-cash mark-to-market swings that distort GAAP. <em>Why it matters:</em> it is what management guides to and what the acquisitions are underwritten against — 2026 guidance (~$2.13B) more than doubles 2025's $1,035M.</p><a class="back" href="#s1">↑ Back to Section 1</a></div>
+      <div class="gl" id="g-adj-fcf"><h4>Adjusted Free Cash Flow</h4><div class="f">Cash from operations less maintenance capex, adjusted for non-recurring items — the cash available for buybacks and debt paydown</div><p>For an IPP with volatile GAAP earnings, this is the truest measure of value creation. <em>Why it matters:</em> Talen generated $524M in 2025 and guides ~$1.28B in 2026 despite negative GAAP net income — the cash is what funds the ~$2.3B of buybacks.</p><a class="back" href="#s1">↑ Back to Section 1</a></div>
+      <div class="gl" id="g-ppa"><h4>Power Purchase Agreement (PPA)</h4><div class="f">A long-term contract to sell a fixed quantity of electricity to a specific buyer at agreed terms</div><p>The AWS PPA sells up to 1,920 MW of Susquehanna nuclear through 2042. <em>Why it matters:</em> it converts volatile merchant nuclear revenue into contracted, long-dated cash flow with an investment-grade counterparty, lowering risk and cost of capital.</p><a class="back" href="#s1">↑ Back to Section 1</a></div>
+      <div class="gl" id="g-capacity-auction"><h4>PJM Base Residual Auction (Capacity Market)</h4><div class="f">An annual auction where PJM pays generators, in $/MW-day, to guarantee availability ~3 years ahead of the delivery year</div><p>Separate from energy revenue; it pays for the <em>promise</em> to be there. <em>Why it matters:</em> prices cleared at the FERC-approved cap ($329.17 for 2026/27, $333.44 for 2027/28) vs $28.92 for 2024/25 — a huge, high-visibility revenue tailwind for Talen's fleet.</p><a class="back" href="#s1">↑ Back to Section 1</a></div>
+      <div class="gl" id="g-net-debt"><h4>Net Debt &amp; Net-Debt/EBITDA (Leverage)</h4><div class="f">Net debt = total debt − cash · Leverage = net debt ÷ Adjusted EBITDA</div><p>Measures balance-sheet risk. <em>Why it matters:</em> Talen's ~$9.34B net debt / ~4.4x leverage is the central bear point; management targets sub-3.5x by year-end 2026 as the enlarged fleet's full-year EBITDA arrives.</p><a class="back" href="#s1">↑ Back to Section 1</a></div>
+      <div class="gl" id="g-merchant"><h4>Mark-to-Market (MTM) / Merchant Hedging</h4><div class="f">Recognizing unrealized gains/losses on hedge contracts at each period's market prices, before the power is actually delivered</div><p>Talen hedges future output; the paper value of those hedges swings with power/gas prices and hits GAAP revenue and net income. <em>Why it matters:</em> a −$212M unrealized loss made Q2 2026 GAAP revenue look weak even as underlying energy+capacity revenue was ~$959M — hence the focus on Adjusted metrics.</p><a class="back" href="#s2">↑ Back to Section 2</a></div>
+      <div class="gl" id="g-ps"><h4>Price-to-Sales (P/S) and the FTA Scale</h4><div class="f">P/S = Market cap ÷ TTM revenue · Scale: &gt;30 Euphoric · &gt;18 Excited · &gt;8 Optimistic · 4–8 Aware · &lt;4 Cautious · &lt;2 Pessimistic</div><p>A rough sentiment gauge. <em>Why it matters:</em> TLN at ~3.8x is "Cautious," but P/S is a poor tool for a capital-intensive generator — EV/EBITDA and FCF yield are far more informative here.</p><a class="back" href="#s2">↑ Back to Section 2</a></div>
+      <div class="gl" id="g-ev-ebitda"><h4>EV / EBITDA</h4><div class="f">Enterprise value (market cap + net debt) ÷ EBITDA</div><p>The primary valuation multiple for capital-intensive, levered businesses because it is capital-structure-neutral. <em>Why it matters:</em> TLN at ~11x forward is the cheapest in the IPP group (peers 10–15x); trailing (~40x) is n/m on a trough EBITDA base.</p><a class="back" href="#s2">↑ Back to Section 2</a></div>
+      <div class="gl" id="g-fcf-share"><h4>Free Cash Flow per Share / FCF Yield</h4><div class="f">FCF/share = Adjusted FCF ÷ shares outstanding · FCF yield = Adjusted FCF ÷ market cap</div><p>The per-share cash engine and the cash-based valuation check. <em>Why it matters:</em> ~$1.28B of 2026E FCF on a $14.05B market cap is a ~9% FCF yield; per-share FCF is guided toward ~$37 (2027) and ~$48 (2028) inclusive of buybacks (approximate).</p><a class="back" href="#s1">↑ Back to Section 1</a></div>
+      <div class="gl" id="g-cagr"><h4>CAGR (Compound Annual Growth Rate)</h4><div class="f">CAGR = (End ÷ Start)^(1/years) − 1</div><p>Smoothed annual growth across multi-year periods. <em>Why it matters:</em> Talen's Adjusted EBITDA is on a steep multi-year ramp (2024 $770M → 2025 $1,035M → 2026E ~$2,125M), which the compressed multiple ignores.</p><a class="back" href="#s2">↑ Back to Section 2</a></div>
+
+      <h3>Primary sources</h3>
+      <p class="src">
+        <a href="https://www.sec.gov/Archives/edgar/data/0001622536/000162253626000065/a20260805q22026earningsrel.htm">Q2 2026 8-K earnings release (Aug 5, 2026)</a> ·
+        <a href="https://www.sec.gov/Archives/edgar/data/1622536/000162253626000014/a20260226q42025earningsrel.htm">Q4/FY2025 8-K (Feb 26, 2026)</a> ·
+        <a href="https://www.sec.gov/Archives/edgar/data/1622536/000162253625000031/a20251105q32025earningsrel.htm">Q3 2025 8-K (Nov 5, 2025)</a> ·
+        <a href="https://ir.talenenergy.com/news-releases/news-release-details/talen-energy-expands-nuclear-energy-relationship-amazon">Talen–Amazon expanded PPA (Jun 11, 2025)</a> ·
+        <a href="https://ir.talenenergy.com/news-releases/news-release-details/talen-energy-completes-freedom-and-guernsey-acquisitions">Freedom &amp; Guernsey completion (Nov 25, 2025)</a> ·
+        <a href="https://ir.talenenergy.com/news-releases/news-release-details/talen-energy-continues-portfolio-expansion-acquisition">Cornerstone acquisition (Jan 15, 2026)</a> ·
+        <a href="https://insidelines.pjm.com/pjm-auction-procures-134479-mw-of-generation-resources/">PJM 2027/2028 BRA results</a> ·
+        <a href="https://www.ferc.gov/news-events/news/fact-sheet-ferc-directs-nations-largest-grid-operator-create-new-rules-embrace">FERC PJM co-location order (Dec 2025)</a> ·
+        <a href="https://stockanalysis.com/stocks/tln/">stockanalysis.com TLN overview</a> ·
+        <a href="https://stockanalysis.com/stocks/tln/statistics/">TLN statistics</a> ·
+        <a href="https://stockanalysis.com/stocks/tln/forecast/">TLN analyst forecast</a> ·
+        <a href="https://powering-intelligence.epri.com/load-growth.html">EPRI data-center load growth</a>
+      </p>
+    </div>
+  </section>
+
+  <p class="src" style="margin-top:30px">© 2026 Foundational Trading Academy. Prepared September 17, 2026. This report is for educational purposes only and is not a recommendation to buy or sell any security. The author is not a licensed financial advisor. Figures marked "approximate" could not be fully confirmed against a primary source.</p>
+  </div>
+</main>
+
+<div class="modal" id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal-box"><button class="modal-close" onclick="closeModal()">×</button><h5 id="modal-title"></h5><canvas id="modal-canvas"></canvas></div>
+</div>
+
+<script>
+function toggle(h){h.parentElement.classList.toggle('collapsed')}
+const G='#145A22',DG='#0A3A14',GOLD='#FCC55B',GD='#e0a838',RED='#a8341f',MUTED='#5d6155',LINE='#d8d1c4';
+Chart.defaults.font.family="'Quicksand',sans-serif";Chart.defaults.font.size=11;Chart.defaults.color=MUTED;
+const mono={family:"'JetBrains Mono',monospace",size:10};
+const configs={};const charts={};
+function cloneCfg(o){if(Array.isArray(o))return o.map(cloneCfg);if(o&&typeof o==='object')return Object.fromEntries(Object.entries(o).map(([k,v])=>[k,cloneCfg(v)]));return o;}
+function mk(id,cfg){configs[id]=cfg;const c=document.getElementById(id);if(c)charts[id]=new Chart(c,cloneCfg(cfg));}
+let modalChart=null;
+function expand(id){const cfg=configs[id];if(!cfg)return;document.getElementById('modal-title').textContent=cfg._title||'';const m=document.getElementById('modal');m.classList.add('open');if(modalChart)modalChart.destroy();const c=cloneCfg(cfg);c.options=c.options||{};c.options.maintainAspectRatio=false;c.options.responsive=true;modalChart=new Chart(document.getElementById('modal-canvas'),c);}
+function closeModal(){document.getElementById('modal').classList.remove('open');if(modalChart){modalChart.destroy();modalChart=null;}}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+const base=(extra={})=>Object.assign({responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{boxWidth:10,padding:10}}},scales:{x:{grid:{display:false},ticks:{font:mono}},y:{grid:{color:'#eee8dc'},ticks:{font:mono}}}},extra);
+
+const Q=['Q3 24','Q4 24','Q1 25','Q2 25','Q3 25','Q4 25','Q1 26','Q2 26'];
+
+// 1 Annual EBITDA & FCF
+mk('c_ebitda',{_title:'Annual Adjusted EBITDA & Adjusted FCF ($M)',type:'bar',data:{labels:['2024','2025','2026E'],datasets:[{label:'Adj. EBITDA',data:[770,1035,2125],backgroundColor:[G,G,GD],borderRadius:5},{label:'Adj. FCF',data:[283,524,1275],backgroundColor:[GOLD,GOLD,GOLD],borderRadius:5}]},options:base()});
+// 2 Market cap peers
+mk('c_mcap',{_title:'Market Cap vs IPP Peers ($B)',type:'bar',data:{labels:['CEG','VST','NRG','TLN','CWEN'],datasets:[{label:'Market Cap ($B)',data:[93.11,48.18,22.35,14.05,6.14],backgroundColor:['#7aa885','#7aa885','#7aa885',GD,'#7aa885'],borderRadius:5}]},options:base({indexAxis:'y',plugins:{legend:{display:false}}})});
+// 3 Quarterly op revenue & net income
+mk('c_qrev',{_title:'Quarterly Operating Revenue & Net Income ($M)',type:'bar',data:{labels:Q,datasets:[{type:'bar',label:'Op. Revenue',data:[650,467,390,630,812,749,1129,747],backgroundColor:G,borderRadius:4,yAxisID:'y'},{type:'line',label:'Net Income (attrib.)',data:[168,82,-135,72,207,-363,63,-92],borderColor:GD,backgroundColor:GD,tension:.2,yAxisID:'y1',pointRadius:3}]},options:base({scales:{x:{grid:{display:false},ticks:{font:mono}},y:{grid:{color:'#eee8dc'},ticks:{font:mono}},y1:{position:'right',grid:{display:false},ticks:{font:mono}}}})});
+// 4 Quarterly EBITDA & FCF
+mk('c_qebitda',{_title:'Quarterly Adjusted EBITDA & Adjusted FCF ($M)',type:'bar',data:{labels:Q,datasets:[{label:'Adj. EBITDA',data:[230,164,200,90,363,382,473,374],backgroundColor:G,borderRadius:4},{label:'Adj. FCF',data:[97,21,87,-78,223,292,350,212],backgroundColor:GOLD,borderRadius:4}]},options:base()});
+// 5 FCF per share
+mk('c_fcfshare',{_title:'Adjusted FCF per Share Outlook ($)',type:'bar',data:{labels:['2025A','2026E','2027E','2028E'],datasets:[{label:'Adj. FCF / share',data:[11.4,26.6,37,48],backgroundColor:[G,GD,'#7aa885','#7aa885'],borderRadius:5}]},options:base({plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{font:mono}},y:{grid:{color:'#eee8dc'},ticks:{font:mono,callback:v=>'$'+v}}}})});
+// 6 Share count
+mk('c_buyback',{_title:'Shares Outstanding (M)',type:'bar',data:{labels:['YE2023*','YE2024','YE2025','Q2 2026'],datasets:[{label:'Shares (M)',data:[57,45.96,45.69,47.90],backgroundColor:[MUTED,G,G,GD],borderRadius:5}]},options:base({plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{font:mono}},y:{min:40,grid:{color:'#eee8dc'},ticks:{font:mono}}}})});
+// 7 Leverage
+mk('c_leverage',{_title:'Net Debt ($B) & Leverage (x)',type:'bar',data:{labels:['YE2024','YE2025','Q2 2026'],datasets:[{type:'bar',label:'Net Debt ($B)',data:[5.9,6.1,9.34],backgroundColor:G,borderRadius:4,yAxisID:'y'},{type:'line',label:'Net Debt / EBITDA (x)',data:[7.7,5.9,4.4],borderColor:GD,backgroundColor:GD,tension:.2,yAxisID:'y1',pointRadius:4}]},options:base({scales:{x:{grid:{display:false},ticks:{font:mono}},y:{grid:{color:'#eee8dc'},ticks:{font:mono,callback:v=>'$'+v+'B'}},y1:{position:'right',min:0,grid:{display:false},ticks:{font:mono,callback:v=>v+'x'}}}})});
+// 8 Fleet capacity
+mk('c_fleet',{_title:'Fleet Capacity Growth (GW)',type:'bar',data:{labels:['Mid-2025','Nov 2025','Jun 2026'],datasets:[{label:'Total Fleet (GW)',data:[10.7,13.6,15.7],backgroundColor:[G,GD,GD],borderRadius:5}]},options:base({plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{font:mono}},y:{min:8,grid:{color:'#eee8dc'},ticks:{font:mono,callback:v=>v+' GW'}}}})});
+// 9 Guidance progression
+mk('c_guide',{_title:'2026 Adjusted EBITDA Guidance ($M)',type:'bar',data:{labels:['Feb 2026 guide','Aug 2026 guide (raised)'],datasets:[{label:'Low',data:[1750,2025],backgroundColor:'#b9c9bc',borderRadius:4},{label:'Midpoint',data:[1900,2125],backgroundColor:G,borderRadius:4},{label:'High',data:[2050,2225],backgroundColor:GD,borderRadius:4}]},options:base({scales:{x:{grid:{display:false},ticks:{font:mono}},y:{min:1500,grid:{color:'#eee8dc'},ticks:{font:mono}}}})});
+// 10 PJM capacity price
+mk('c_pjm',{_title:'PJM Base Residual Auction Clearing ($/MW-day, RTO)',type:'bar',data:{labels:['2024/25','2025/26','2026/27','2027/28'],datasets:[{label:'$/MW-day',data:[28.92,269.92,329.17,333.44],backgroundColor:[MUTED,G,GD,GD],borderRadius:5}]},options:base({plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{font:mono}},y:{grid:{color:'#eee8dc'},ticks:{font:mono,callback:v=>'$'+v}}}})});
+// 11 Scenario targets
+mk('c_scen',{_title:'Scenario Price Targets vs Current ($)',type:'bar',data:{labels:['1-Year','3-Year','5-Year'],datasets:[{type:'bar',label:'Bear',data:[220,230,250],backgroundColor:RED,borderRadius:4},{type:'bar',label:'Base',data:[360,470,600],backgroundColor:GD,borderRadius:4},{type:'bar',label:'Bull',data:[460,660,900],backgroundColor:G,borderRadius:4},{type:'line',label:'Prob-weighted',data:[360,470,610],borderColor:DG,backgroundColor:DG,pointRadius:5,pointStyle:'rectRot',tension:0},{type:'line',label:'Current $293.31',data:[293.31,293.31,293.31],borderColor:MUTED,borderDash:[5,4],pointRadius:0}]},options:base({scales:{x:{grid:{display:false},ticks:{font:mono}},y:{grid:{color:'#eee8dc'},ticks:{font:mono,callback:v=>'$'+v}}}})});
+// 12 Base path
+mk('c_path',{_title:'Base-Case Adj. EBITDA & FCF Path ($M)',type:'bar',data:{labels:['2025A','2026E','2027E','2028E','2029E','2030E'],datasets:[{type:'bar',label:'Adj. EBITDA',data:[1035,2125,2300,2450,2550,2650],backgroundColor:G,borderRadius:4},{type:'bar',label:'Adj. FCF',data:[524,1275,1450,1600,1700,1800],backgroundColor:GOLD,borderRadius:4}]},options:base()});
+// 13 Peer forward P/E
+mk('c_peer',{_title:'Forward P/E by Peer (x)',type:'bar',data:{labels:['TLN','NRG','VST','CEG','CWEN'],datasets:[{label:'Fwd P/E',data:[9.82,10.25,13.94,21.28,41.56],backgroundColor:[GD,'#7aa885','#7aa885','#7aa885','#7aa885'],borderRadius:5}]},options:base({plugins:{legend:{display:false}}})});
+// 14 Rev growth
+mk('c_growth',{_title:'Revenue Growth YoY (TTM, %)',type:'bar',data:{labels:['TLN','CEG','NRG','CWEN','VST'],datasets:[{label:'Rev growth %',data:[75.8,33.0,12.8,4.2,3.8],backgroundColor:[GD,'#7aa885','#7aa885','#7aa885','#7aa885'],borderRadius:5}]},options:base({plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{font:mono}},y:{grid:{color:'#eee8dc'},ticks:{font:mono,callback:v=>v+'%'}}}})});
+// 15 Data-center MW ramp
+mk('c_datacenter',{_title:'Contracted AWS Nuclear MW (ramp toward 2032)',type:'line',data:{labels:['2025','2026','2028','2030','2032'],datasets:[{label:'Contracted MW',data:[300,480,960,1440,1920],borderColor:G,backgroundColor:'rgba(20,90,34,.15)',fill:true,tension:.3,pointRadius:4,pointBackgroundColor:GOLD}]},options:base({plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{font:mono}},y:{grid:{color:'#eee8dc'},ticks:{font:mono,callback:v=>v+' MW'}}}})});
+// 16 KPI capacity vs leverage
+mk('c_kpi',{_title:'PJM Capacity Price ($/MW-day) vs Leverage (x)',type:'bar',data:{labels:['2024/25','2025/26','2026/27','2027/28'],datasets:[{type:'bar',label:'Capacity $/MW-day',data:[28.92,269.92,329.17,333.44],backgroundColor:G,borderRadius:4,yAxisID:'y'},{type:'line',label:'Leverage (x, calendar)',data:[7.7,5.9,4.4,3.4],borderColor:GD,backgroundColor:GD,borderDash:[4,3],tension:.2,yAxisID:'y1',pointRadius:4}]},options:base({scales:{x:{grid:{display:false},ticks:{font:mono}},y:{grid:{color:'#eee8dc'},ticks:{font:mono,callback:v=>'$'+v}},y1:{position:'right',min:0,grid:{display:false},ticks:{font:mono,callback:v=>v+'x'}}}})});
+// 17 KPI FCF/share
+mk('c_kpifcf',{_title:'Adjusted FCF per Share ($)',type:'line',data:{labels:['2025A','2026E','2027E','2028E'],datasets:[{label:'Adj. FCF / share',data:[11.4,26.6,37,48],borderColor:G,backgroundColor:'rgba(20,90,34,.15)',fill:true,tension:.3,pointRadius:4,pointBackgroundColor:GOLD}]},options:base({plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{font:mono}},y:{grid:{color:'#eee8dc'},ticks:{font:mono,callback:v=>'$'+v}}}})});
+// 18 Capacity mix doughnut
+mk('c_capmix',{_title:'Fleet Capacity Mix by Fuel (approx., ~15.7 GW)',type:'doughnut',data:{labels:['Nuclear ~2.2 GW','Natural Gas ~10.9 GW','Coal/Oil/Other ~2.6 GW'],datasets:[{data:[2.2,10.9,2.6],backgroundColor:[G,GOLD,GD],borderColor:'#fff',borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{position:'bottom',labels:{boxWidth:10}}}}});
+</script>
+</body>
+</html>
