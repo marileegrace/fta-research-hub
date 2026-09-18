@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PL — Planet Labs PBC | FTA Investment Research | 2026-09-17</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Questrial&family=Quicksand:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  --green:#145A22;--dark-green:#0A3A14;--forest:#243D27;--gold:#FCC55B;--gold-deep:#e0a838;
+  --beige:#EDE8E0;--beige-card:#f6f3ed;--ink:#23241f;--muted:#5d6155;--red:#a8341f;--line:#d8d1c4;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Quicksand',sans-serif;background:var(--beige);color:var(--ink);line-height:1.6;font-weight:400;display:flex;min-height:100vh}
+a{color:var(--green)}
+/* Sidebar */
+.sidebar{width:262px;flex:0 0 262px;position:sticky;top:0;height:100vh;overflow-y:auto;background:linear-gradient(180deg,#071f0b,#0A3A14 40%,#145A22);border-right:2px solid var(--gold);padding:28px 20px;color:#fff}
+.brand{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:26px;font-weight:600;color:var(--gold);letter-spacing:.3px;line-height:1.1}
+.brand small{display:block;font-family:'Questrial',sans-serif;font-style:normal;font-size:10px;letter-spacing:2.2px;text-transform:uppercase;color:rgba(255,255,255,.65);margin-top:6px}
+.ticker-box{margin:22px 0;background:rgba(255,255,255,.07);border:1px solid rgba(252,197,91,.35);border-radius:12px;padding:14px}
+.ticker-box .sym{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;color:var(--gold)}
+.ticker-box .nm{font-family:'Questrial',sans-serif;font-size:11px;letter-spacing:1.4px;text-transform:uppercase;color:rgba(255,255,255,.7)}
+.ticker-box .px{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:600;margin-top:6px}
+.ticker-box .chg{font-family:'JetBrains Mono',monospace;font-size:12px;color:#9fd8a8}
+.nav a{display:flex;align-items:center;gap:10px;color:rgba(255,255,255,.82);text-decoration:none;font-size:13px;padding:7px 8px;border-radius:8px;font-family:'Questrial',sans-serif;letter-spacing:.3px}
+.nav a:hover{background:rgba(252,197,91,.12);color:#fff}
+.nav a span.n{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold);min-width:20px}
+.side-foot{margin-top:24px;font-size:10.5px;color:rgba(255,255,255,.5);line-height:1.5}
+/* Main */
+.main{flex:1;min-width:0}
+.hero{background:linear-gradient(120deg,var(--dark-green),var(--green) 60%);color:#fff;padding:54px 48px 40px;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;right:-120px;top:-120px;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(252,197,91,.35),rgba(252,197,91,0) 65%)}
+.hero .kicker{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:2.4px;font-size:11px;color:var(--gold)}
+.hero h1{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:46px;line-height:1.05;margin:10px 0 6px}
+.hero h1 em{font-style:italic;color:var(--gold)}
+.hero .sub{font-size:15px;color:rgba(255,255,255,.85);max-width:720px}
+.hero .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px;align-items:center}
+.pill{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);border:1px solid rgba(252,197,91,.5);border-radius:999px;padding:6px 14px;font-family:'Questrial',sans-serif;font-size:11.5px;letter-spacing:1.2px;text-transform:uppercase}
+.pill.verdict{background:var(--gold);color:var(--dark-green);border-color:var(--gold);font-weight:700}
+.pill .mono{font-family:'JetBrains Mono',monospace;font-weight:700;letter-spacing:0}
+.kpi-strip{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;padding:16px 48px;background:var(--beige)}
+.kpi{background:var(--beige-card);border:1px solid var(--line);border-radius:12px;padding:14px 14px 12px}
+.kpi .l{font-family:'Questrial',sans-serif;font-size:10px;letter-spacing:1.6px;text-transform:uppercase;color:var(--muted)}
+.kpi .v{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;color:var(--green);margin-top:4px;line-height:1.1}
+.kpi .s{font-size:11px;color:var(--muted);margin-top:4px}
+.content{max-width:1080px;padding:20px 48px 80px}
+/* Cards */
+.card{background:var(--beige-card);border:1px solid var(--line);border-radius:14px;margin:22px 0;overflow:hidden}
+.card-h{display:flex;align-items:center;gap:14px;padding:18px 22px;border-left:5px solid var(--green);cursor:pointer;user-select:none}
+.card-h .badge{width:34px;height:34px;border-radius:9px;background:var(--green);color:#fff;font-family:'JetBrains Mono',monospace;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 34px}
+.card-h h2{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:28px;color:var(--dark-green);line-height:1.1;flex:1}
+.card-h .chev{width:26px;height:26px;border-radius:50%;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--green);transition:transform .25s;font-size:14px}
+.card.collapsed .chev{transform:rotate(-90deg)}
+.card-b{padding:6px 24px 26px}
+.card.collapsed .card-b{display:none}
+.card-b p{margin:12px 0;font-size:15px}
+.card-b h3{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1.8px;font-size:12px;color:var(--green);margin:24px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+.card-b h4{font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:600;color:var(--dark-green);margin:18px 0 4px}
+.card-b ul{margin:8px 0 12px 22px}
+.card-b li{margin:5px 0;font-size:14.5px}
+.thesis{font-family:'Cormorant Garamond',serif;font-size:24px;line-height:1.35;border-left:4px solid var(--gold);padding:16px 22px;margin:16px 0;color:var(--dark-green);background:#fff;border-radius:0 12px 12px 0}
+.thesis strong{font-weight:700}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0}
+.chip{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;min-width:130px}
+.chip .l{font-family:'Questrial',sans-serif;font-size:9.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
+.chip .v{font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:700;color:var(--green);line-height:1.15;margin-top:2px}
+.chip .v.neg{color:var(--red)}
+.chip .s{font-size:10.5px;color:var(--muted)}
+.callout{border-radius:12px;padding:14px 18px;margin:14px 0;font-size:14.5px}
+.callout.gold{background:rgba(252,197,91,.18);border:1px solid var(--gold-deep)}
+.callout.green{background:rgba(20,90,34,.08);border:1px solid rgba(20,90,34,.35)}
+.callout .t{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1.5px;font-size:10.5px;color:var(--green);margin-bottom:4px}
+.callout.gold .t{color:#8a5e0a}
+/* Tables */
+.tbl-wrap{overflow-x:auto;margin:14px 0}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff;border-radius:10px;overflow:hidden}
+th{background:var(--green);color:#fff;font-family:'Questrial',sans-serif;font-size:11px;letter-spacing:1.2px;text-transform:uppercase;padding:10px 12px;text-align:left}
+td{padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:nth-child(even) td{background:#faf8f3}
+tbody tr:hover td{background:rgba(252,197,91,.18)}
+td.num,th.num{font-family:'JetBrains Mono',monospace;text-align:right;white-space:nowrap}
+.pos{color:var(--green);font-weight:600}.neg{color:var(--red);font-weight:600}
+.score{display:inline-block;font-family:'JetBrains Mono',monospace;font-weight:700;padding:2px 8px;border-radius:6px;background:rgba(20,90,34,.12);color:var(--green)}
+/* Charts */
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}
+.chart-box{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px 10px;position:relative}
+.chart-box.solo{max-width:420px}
+.chart-box .ct{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.chart-box .ct h5{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1.5px;font-size:10.5px;color:var(--muted);font-weight:400}
+.chart-box .zoom{font-family:'Questrial',sans-serif;font-size:9.5px;letter-spacing:1px;text-transform:uppercase;color:var(--green);border:1px solid var(--line);border-radius:999px;padding:3px 9px;background:transparent;cursor:pointer}
+.chart-box .zoom:hover{background:rgba(252,197,91,.25)}
+.chart-box canvas{width:100%!important;height:158px!important}
+.chart-box .note{font-size:10.5px;color:var(--muted);margin-top:6px}
+/* Modal */
+.modal{position:fixed;inset:0;background:rgba(7,31,11,.82);display:none;align-items:center;justify-content:center;z-index:99;padding:30px}
+.modal.open{display:flex}
+.modal-box{background:var(--beige-card);border:2px solid var(--gold);border-radius:16px;width:min(1000px,96vw);padding:22px 26px;position:relative}
+.modal-box h5{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1.8px;font-size:12px;color:var(--green);margin-bottom:10px}
+.modal-box canvas{width:100%!important;height:min(520px,65vh)!important}
+.modal-close{position:absolute;top:12px;right:14px;border:none;background:var(--green);color:#fff;border-radius:50%;width:30px;height:30px;cursor:pointer;font-size:15px}
+/* Scenario cards */
+.scen-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:16px 0}
+.scen{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;border-top:5px solid var(--gold)}
+.scen.bull{border-top-color:var(--green)}.scen.bear{border-top-color:var(--red)}
+.scen .t{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1.8px;font-size:11px;color:var(--muted)}
+.scen .pt{font-family:'JetBrains Mono',monospace;font-size:30px;font-weight:700;color:var(--green);line-height:1.1;margin:6px 0 2px}
+.scen.bear .pt{color:var(--red)}.scen.base .pt{color:var(--gold-deep)}
+.scen .prob{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:11.5px;background:var(--beige);border:1px solid var(--line);border-radius:999px;padding:2px 10px;margin-bottom:8px}
+.scen ul{margin:6px 0 0 18px}.scen li{font-size:13px;margin:4px 0}
+.horizon{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--dark-green);margin:18px 0 4px}
+/* Risk cards */
+.risk{background:#fff;border:1px solid var(--line);border-left:4px solid var(--red);border-radius:10px;padding:14px 18px;margin:12px 0}
+.risk h4{color:var(--red);font-family:'Cormorant Garamond',serif;font-size:21px;margin:0 0 6px}
+.risk .meta{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 8px}
+.risk .tag{font-family:'Questrial',sans-serif;font-size:10px;letter-spacing:1.2px;text-transform:uppercase;border-radius:999px;padding:3px 10px;background:var(--beige);border:1px solid var(--line)}
+.risk .tag b{font-family:'JetBrains Mono',monospace;letter-spacing:0}
+.risk p{font-size:14px;margin:6px 0}
+/* Timeline */
+.timeline{position:relative;margin:18px 0 10px 12px;padding-left:28px}
+.timeline::before{content:"";position:absolute;left:6px;top:4px;bottom:4px;width:3px;border-radius:3px;background:linear-gradient(180deg,var(--green),var(--gold))}
+.tl{position:relative;margin:0 0 18px}
+.tl::before{content:"";position:absolute;left:-28px;top:5px;width:14px;height:14px;border-radius:50%;background:var(--gold);border:3px solid var(--green)}
+.tl .d{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--green);font-weight:600}
+.tl .e{font-weight:700;font-size:15px}
+.tl .x{color:var(--muted);font-size:13.5px}
+/* Glossary */
+.gl{background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 16px;margin:10px 0}
+.gl h4{font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--dark-green);margin:0}
+.gl .f{font-family:'JetBrains Mono',monospace;font-size:12px;background:var(--beige);padding:4px 8px;border-radius:6px;display:inline-block;margin:6px 0}
+.gl p{font-size:13.5px;margin:4px 0}
+.gl .back{font-family:'Questrial',sans-serif;font-size:10.5px;letter-spacing:1px;text-transform:uppercase}
+.src{font-size:12px;color:var(--muted)}
+.src a{color:var(--muted)}
+@media (max-width:880px){.chart-grid,.scen-grid{grid-template-columns:1fr}}
+@media (max-width:780px){.sidebar{display:none}.kpi-strip{grid-template-columns:repeat(3,1fr);padding:14px 18px}.hero,.content{padding-left:18px;padding-right:18px}.hero h1{font-size:34px}}
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="brand">Foundational Trading Academy<small>Investment Research</small></div>
+  <div class="ticker-box">
+    <div class="sym">PL</div>
+    <div class="nm">Planet Labs PBC · NYSE</div>
+    <div class="px">$16.99</div>
+    <div class="chg">+6.05% · close 2026-09-17</div>
+  </div>
+  <nav class="nav">
+    <a href="#s1"><span class="n">01</span>Executive Summary</a>
+    <a href="#s2"><span class="n">02</span>Micro &amp; Valuation</a>
+    <a href="#s3"><span class="n">03</span>Moat &amp; Management</a>
+    <a href="#s4"><span class="n">04</span>Financial Deep Dive</a>
+    <a href="#s5"><span class="n">05</span>Earnings Tracker</a>
+    <a href="#s6"><span class="n">06</span>Bull / Base / Bear</a>
+    <a href="#s7"><span class="n">07</span>Risks &amp; Anti-Thesis</a>
+    <a href="#s8"><span class="n">08</span>Catalyst Timeline</a>
+    <a href="#s9"><span class="n">09</span>Comparables</a>
+    <a href="#s10"><span class="n">10</span>First-Principles KPIs</a>
+    <a href="#s11"><span class="n">11</span>Glossary &amp; Method</a>
+  </nav>
+  <div class="side-foot">Report date: Sep 17, 2026<br>Data through Q2 FY27 (Jul 31, 2026)<br>Fiscal year ends Jan 31<br><br>For educational purposes only. Not investment advice.</div>
+</aside>
+
+<main class="main">
+  <header class="hero">
+    <div class="kicker">Deep-Dive Investment Report · Space / Earth Observation &amp; Geospatial AI</div>
+    <h1>Planet Labs <em>(PL)</em></h1>
+    <div class="sub">The market crushed Planet ~67% from its May high to $16.99 in the post-SpaceX-IPO space unwind — at exactly the moment revenue growth re-accelerated to +58%, adjusted EBITDA turned firmly positive, and a wall of defense contracts (JSAT, Germany, NATO, NGA) built an $815M backlog. That gap between price and trajectory is the opportunity.</div>
+    <div class="meta">
+      <span class="pill verdict">Verdict: BULL · Conviction <span class="mono">7 / 10</span></span>
+      <span class="pill">Price <span class="mono">$16.99</span></span>
+      <span class="pill">Mkt Cap <span class="mono">$6.18B</span></span>
+      <span class="pill">Sector · Space / Geospatial Data</span>
+      <span class="pill">FY ends Jan 31</span>
+    </div>
+  </header>
+
+  <section class="kpi-strip">
+    <div class="kpi"><div class="l">Price</div><div class="v">$16.99</div><div class="s">52w $9.68–$51.76</div></div>
+    <div class="kpi"><div class="l">Market Cap</div><div class="v">$6.18B</div><div class="s">363.9M sh · net cash</div></div>
+    <div class="kpi"><div class="l">Revenue (TTM)</div><div class="v">$378M</div><div class="s">+44% YoY · Q2 +58%</div></div>
+    <div class="kpi"><div class="l">Backlog</div><div class="v">$815M</div><div class="s">RPO $753M · ACV 98% recurring</div></div>
+    <div class="kpi"><div class="l">P/S (TTM)</div><div class="v">16.3x</div><div class="s">"Excited" band · ~14x fwd</div></div>
+    <div class="kpi"><div class="l">Street PT</div><div class="v">$33.40</div><div class="s">11 analysts · Buy · +97%</div></div>
+  </section>
+
+  <div class="content">
+
+  <!-- ================= SECTION 1 ================= -->
+  <section class="card" id="s1">
+    <div class="card-h" onclick="toggle(this)"><div class="badge">1</div><h2>Executive Summary &amp; Investment Thesis</h2><div class="chev">▾</div></div>
+    <div class="card-b">
+      <div class="thesis"><strong>Thesis (Contrarian Bull):</strong> Planet is the Western pure-play in <a href="#g-eo">Earth observation</a> at the exact inflection where the data goes from "nice satellite pictures" to embedded, daily, AI-driven infrastructure for defense and government decision-making. Revenue growth has accelerated for four straight quarters — from ~10% to <strong>+58% YoY</strong> in Q2 FY27 — while <a href="#g-ebitda">adjusted EBITDA</a> flipped from marginal to <strong>$13.9M (12% margin)</strong> and the company signed <strong>&gt;$0.5B</strong> of multi-year satellite-services contracts (SKY Perfect JSAT $230M, Germany €240M, plus NATO, NGA and Swedish deals). Yet the stock sits 67% below its May peak, dragged down with the whole space complex after the June SpaceX IPO. At ~16x trailing / ~14x forward sales for a re-accelerating, EBITDA-positive, net-cash franchise, the market is pricing PL like a broken 2021 SPAC rather than the defense-backed data leader it is becoming. 1-year probability-weighted target <strong>$24</strong> (+41%); 3-year <strong>$35</strong> (+106%).</div>
+
+      <p>Planet reported Q2 FY27 (quarter ended July 31, 2026) on September 3. Revenue was a record $116.1M (+58% YoY), beating both the $102–107M guide and the ~$104.5M Street estimate. Adjusted EBITDA was $13.9M versus $6.4M a year ago; non-GAAP EPS was a first-ever positive $0.02. Management raised full-year FY27 revenue guidance to $430–441M and lifted the non-GAAP gross-margin outlook to 55–57%. The company ended the quarter with $865M of cash and short-term investments and essentially no debt.</p>
+
+      <p>This lands squarely inside the structural narrative in <strong>McKinsey's Technology Trends Outlook 2026</strong>, which argues that space has "gone mainstream" (the SpaceX IPO, Amazon's Leo constellation), that <em>defense demand is the backbone of the space economy</em>, and that Earth observation is moving from analysis into <em>operational decision-making</em> — citing Planet's <a href="#g-tanager">Tanager</a> constellation and its next-generation methane super-emitter detection by name. Planet is not a thematic side-bet on that trend; it is one of the two or three names the trend is actually about.</p>
+
+      <h3>What the market is missing</h3>
+      <ul>
+        <li><strong>The growth curve inverted.</strong> Planet spent FY24–early FY26 as a ~10% grower that the market left for dead. Defense and intelligence demand — a European rearmament cycle, sovereign-data mandates, and the JSAT deal in Asia — has pushed YoY revenue growth to 20% → 33% → 41% → 42% → <strong>58%</strong> over five quarters. Consensus still models a deceleration the backlog does not support.</li>
+        <li><strong>Profitability is real, not promised.</strong> FY26 was the first full year of positive adjusted EBITDA ($15.5M vs a $(10.6)M loss in FY25); Q2 FY27 alone did $13.9M. The company cleared the <a href="#g-rule40">Rule of 40</a> for a fourth consecutive quarter (58% growth + 12% EBITDA margin = 70).</li>
+        <li><strong>Backlog is a defense annuity.</strong> 98% of annual contract value is recurring; backlog is $815M and remaining performance obligations $753M, of which the German and JSAT contracts recognize over multiple years starting in FY26. This is contracted future revenue, not a pipeline.</li>
+        <li><strong>Balance sheet is a fortress.</strong> $865M cash and short-term investments (up 219% YoY, partly from a $120M ATM raise executed near $32/share), no meaningful debt. Planet can fund Pelican and Tanager build-out and still weather a multi-year space-sentiment winter.</li>
+      </ul>
+
+      <div class="chips">
+        <div class="chip"><div class="l">Revenue Q2 FY27</div><div class="v">$116.1M</div><div class="s">+58% YoY · record</div></div>
+        <div class="chip"><div class="l">Adj. EBITDA Q2</div><div class="v">$13.9M</div><div class="s">12% margin vs $6.4M</div></div>
+        <div class="chip"><div class="l">Backlog</div><div class="v">$814.9M</div><div class="s">RPO $753M · 98% recurring</div></div>
+        <div class="chip"><div class="l">Non-GAAP EPS</div><div class="v">$0.02</div><div class="s">first-ever positive</div></div>
+        <div class="chip"><div class="l">Cash + ST Inv.</div><div class="v">$865M</div><div class="s">+219% YoY · net cash</div></div>
+        <div class="chip"><div class="l">FY27 Rev Guide</div><div class="v">$430–441M</div><div class="s">raised from $415–440M</div></div>
+        <div class="chip"><div class="l">Conviction</div><div class="v">7/10</div><div class="s">Bull</div></div>
+      </div>
+
+      <div class="callout gold"><div class="t">Position in the FTA Framework</div>At 16.3x trailing sales PL sits in the "Excited" band (8–18x) of our <a href="#g-ps">P/S scale</a> — a premium to legacy peers but earned by 44% TTM growth (Q2 +58%), positive EBITDA, and a defense-annuity backlog. The setup is a sentiment-driven dislocation: a re-accelerating, cash-rich franchise thrown out with the space-SPAC bathwater. The thesis breaks if revenue growth decelerates back below ~25% for two quarters while dilution continues.</div>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 2 ================= -->
+  <section class="card" id="s2">
+    <div class="card-h" onclick="toggle(this)"><div class="badge">2</div><h2>Microeconomic &amp; Valuation Analysis</h2><div class="chev">▾</div></div>
+    <div class="card-b">
+      <h3>Industry &amp; TAM</h3>
+      <p>Planet operates in commercial <strong>Earth observation (EO) and geospatial analytics</strong>. Third-party estimates put the commercial EO-data-and-services market at roughly $8–12B in 2026, growing low-to-mid teens, but the relevant driver is not the average — it is the <em>defense and intelligence</em> slice, which is re-rating sharply. European rearmament, the war in Ukraine, sovereign-data mandates (nations wanting their own guaranteed satellite capacity), and maritime-domain-awareness needs are pulling government budgets into commercial EO faster than the base market grows. Management frames its own <a href="#g-tam">TAM</a> across defense &amp; intelligence, civil government, and commercial verticals (agriculture, energy, mapping, insurance) as a multi-tens-of-billions opportunity; we use the narrower commercial-EO figure for penetration math and the broad one for optionality.</p>
+      <p>The structural point, echoed in McKinsey's 2026 outlook, is that EO is crossing from <em>after-the-fact analysis</em> into <em>operational, daily decision-making</em>: an intelligence analyst, a commodity trader, or a defense ministry increasingly wants a change-detected answer within hours, not an image to interpret next week. Planet's edge is its unique daily, global scan (the ~150-satellite <a href="#g-superdove">SuperDove</a> "line-scanner for the planet"), now paired with high-resolution <a href="#g-pelican">Pelican</a> tasking and a <a href="#g-insights">Planet Insights</a> AI layer built partly on Anthropic's Claude.</p>
+
+      <div class="chart-grid">
+        <div class="chart-box"><div class="ct"><h5>Annual Revenue &amp; Growth (FY22–FY26, TTM)</h5><button class="zoom" onclick="expand('c_annual')">Click to expand</button></div><canvas id="c_annual"></canvas><div class="note">FY ends Jan 31. TTM = 4 quarters through Jul 31, 2026. Source: company filings.</div></div>
+        <div class="chart-box"><div class="ct"><h5>Market Cap vs Space Peers ($B)</h5><button class="zoom" onclick="expand('c_mcap')">Click to expand</button></div><canvas id="c_mcap"></canvas><div class="note">As of Sep 17–18, 2026. RKLB, RDW, BKSY, SATL, SPIR approximate from secondary sources.</div></div>
+      </div>
+
+      <h3>Valuation multiples</h3>
+      <div class="chips">
+        <div class="chip"><div class="l">P/S (TTM)</div><div class="v">16.3x</div><div class="s">"Excited" band</div></div>
+        <div class="chip"><div class="l">P/S (Fwd FY27)</div><div class="v">~14.2x</div><div class="s">$435M rev midpoint</div></div>
+        <div class="chip"><div class="l">EV / Sales (TTM)</div><div class="v">~14x</div><div class="s">EV ≈ $5.3B (net cash)</div></div>
+        <div class="chip"><div class="l">EV / Backlog</div><div class="v">~6.5x</div><div class="s">$815M backlog</div></div>
+        <div class="chip"><div class="l">GAAP P/E</div><div class="v neg">n/m</div><div class="s">GAAP loss, warrant-driven</div></div>
+        <div class="chip"><div class="l">EV / Adj. EBITDA</div><div class="v neg">n/m</div><div class="s">~$21M TTM adj EBITDA</div></div>
+        <div class="chip"><div class="l">P / FCF (TTM)</div><div class="v neg">n/m</div><div class="s">TTM FCF ~$20M (early)</div></div>
+      </div>
+      <p>GAAP P/E and EV/EBITDA are not usable yet: the trailing GAAP net loss (–$360M TTM) is dominated by a non-cash <a href="#g-warrant">warrant-liability revaluation</a> ($161M in FY26 alone) that <em>increases</em> as the stock rises, and adjusted EBITDA is only just scaling. The honest lenses today are <strong>EV/Sales relative to growth</strong> and <strong>EV/Backlog</strong>. On P/S, PL's 16.3x trailing multiple is a clear premium to the legacy data peers (Redwire ~4.6x, Spire ~6.6x) but a deep discount to the launch-plus-systems leader Rocket Lab (~53x). Given PL grows revenue 44% TTM with positive EBITDA and a defense-annuity backlog, we think the correct comparison is "premium data franchise," not "cheap SPAC," and the multiple has already compressed from &gt;40x at the May peak.</p>
+
+      <h3>Institutional ownership &amp; insider activity</h3>
+      <p>Planet has a dual-class structure; co-founders retain Class B super-voting shares, so control is concentrated with the founding team (CEO Will Marshall, President/co-founder Robbie Schingler). Institutions own a majority of the Class A float, with index and thematic-space funds prominent. The insider signal is a genuine negative: there have been persistent open-market sales and effectively no purchases. CEO Marshall sold 200,000 shares on April 6, 2026 at ~$35.07 and another 200,000 on July 10, 2026 at ~$25.92 (both under a 10b5-1 plan adopted July 2025), leaving ~2.70M shares. Directors have also trimmed. This is typical post-de-SPAC founder monetization and the plans predate the drawdown, but it is not a bullish tell, and we weight it in the conviction score.</p>
+      <p>The other dilution channel is the <strong>at-the-market (ATM) equity program</strong>: Planet raised ~$120M in Q2 FY27 at an average net price of $31.95 — opportunistic issuance near the highs that strengthened the balance sheet but grew the share count (296M → 318M → ~364M over the last ~18 months). Shareholders are being diluted; the question is whether growth and eventual FCF outrun it.</p>
+
+      <h3>Analyst growth estimates</h3>
+      <p>Consensus (11 analysts) rates PL "Buy" with a $33.40 average target (+97%). Views have split post-run: Deutsche Bank cut its target to $28 from $36 (kept Buy) in early September as the sector de-rated, while Clear Street trimmed to $51 from $53, and Wedbush has publicly argued for "buying the dip." The dispersion ($28 to $51) is itself informative — analysts agree on the trajectory and disagree only on the multiple, which is exactly where a sentiment washout creates asymmetry. Street models cluster around ~20%+ revenue <a href="#g-cagr">CAGR</a> over the next several years, which we view as conservative against a backlog recognizing over multiple years and a defense pipeline still expanding.</p>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 3 ================= -->
+  <section class="card" id="s3">
+    <div class="card-h" onclick="toggle(this)"><div class="badge">3</div><h2>Qualitative Analysis — Moat, Management &amp; Culture</h2><div class="chev">▾</div></div>
+    <div class="card-b">
+      <h3>Competitive moat — a systems view</h3>
+      <p>Planet's moat is not any single satellite — it is a <em>proprietary, decade-deep, daily global image archive</em> plus the operational muscle to keep it current cheaply. Three reinforcing layers:</p>
+      <ul>
+        <li><strong>The data monopoly of time.</strong> Planet has imaged the entire land surface of Earth almost every day for years, building a temporal archive no competitor can retroactively create. Change-detection and AI models are only as good as their history; Planet owns the longest, densest one in commercial EO. A new entrant with better sensors still cannot buy yesterday's picture of everywhere.</li>
+        <li><strong>Vertical manufacturing &amp; cost curve.</strong> Planet builds its own satellites in-house (the SuperDove line, now the SOMA factory expansion in San Francisco) at a fraction of legacy-aerospace cost, and replenishes the fleet continuously. That lets it sell daily monitoring at price points incumbents (Maxar-class) cannot match, while adding a high-resolution <a href="#g-pelican">Pelican</a> tasking tier and <a href="#g-tanager">Tanager</a> hyperspectral layer on top.</li>
+        <li><strong>Data-plus-software lock-in.</strong> The <a href="#g-insights">Planet Insights Platform</a> — with AI/agent workflows built with Anthropic's Claude — embeds Planet's data into customer decision loops (maritime domain awareness, defense change-detection, methane monitoring). Once a defense ministry or agency builds operations around a daily feed with 98% recurring ACV, switching means rebuilding a workflow, not swapping a vendor.</li>
+      </ul>
+      <p>Competitive set: <strong>BlackSky</strong> (high-revisit tasking, smaller), <strong>Maxar/Vantor</strong> (very-high-resolution, private), <strong>Airbus &amp; European sovereigns</strong>, <strong>Satellogic</strong> (low-cost challenger), <strong>Spire</strong> (RF/weather data), and the emerging shadow of <strong>hyperscaler and government-owned constellations</strong> (Amazon Leo, national programs). Planet's differentiation is the daily-global scan plus the archive; nobody else combines cadence, coverage, and a monetizable multi-year history at Planet's cost base.</p>
+
+      <h3>Founder-led? Yes.</h3>
+      <p>Co-founder <strong>Will Marshall</strong> (CEO, ex-NASA scientist) has run Planet since 2010 with co-founders Robbie Schingler and Chris Boshuizen; Marshall and Schingler remain executives and control the company through Class B shares. Founder control here is double-edged: it has kept the long-horizon "line-scan the planet" mission intact through a brutal de-SPAC drawdown, but it also concentrates capital-allocation and dilution decisions (the ATM, SBC) in a team that has been a persistent seller of stock.</p>
+
+      <h3>Executive bench &amp; capital allocation</h3>
+      <p>Capital allocation has been disciplined-but-dilutive: Planet raised opportunistically via the ATM at high prices (a shareholder-friendly <em>timing</em> if not a friendly <em>act</em>), retired its legacy debt, and self-funds satellite build-out from a large cash pile rather than leverage. It has done tuck-in M&amp;A (analytics/AI capabilities) rather than transformational deals. The strategic pivot of the last two years — deliberately leaning into defense &amp; intelligence and sovereign customers, opening a London office and building out a German entity with a former head of the German Chancellery on the European advisory board — is the single best capital-allocation decision management has made, and it is the reason the growth curve inverted.</p>
+
+      <h3>Culture &amp; organizational traits</h3>
+      <ul>
+        <li><strong>Mission &amp; customer obsession:</strong> a public-benefit corporation (PBC) whose stated mission ("use space to help life on Earth") has, unusually, translated into commercial durability — the same daily archive serves defense, agriculture, and climate.</li>
+        <li><strong>Innovation pace:</strong> continuous fleet replenishment plus three concurrent programs (SuperDove refresh, Pelican high-res, Tanager hyperspectral) — Tanager-2 and 18 SuperDoves shipped to the launch site in Aug 2026.</li>
+        <li><strong>Talent density &amp; ethics watch-items:</strong> a ~1,000-person, engineering-dense org. Governance flags: dual-class control, steady insider selling, ATM dilution, and stock-based comp — none disqualifying, all worth monitoring.</li>
+        <li><strong>Structural traits:</strong> decentralized go-to-market by region/vertical, with the sovereign-defense motion now the growth engine and the commercial/agriculture base providing recurring ballast.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 4 ================= -->
+  <section class="card" id="s4">
+    <div class="card-h" onclick="toggle(this)"><div class="badge">4</div><h2>Quantitative Analysis — Financial Deep Dive</h2><div class="chev">▾</div></div>
+    <div class="card-b">
+      <h3>Revenue streams, explained simply</h3>
+      <p>Planet sells <strong>data subscriptions and satellite services</strong>: recurring access to its imagery/analytics via the Planet Insights Platform, plus increasingly large multi-year "satellite services" contracts where a government (Germany, JSAT/Japan) pays for dedicated capacity, direct downlink, and tasking on Planet's fleet. Roughly <strong>98% of annual contract value is recurring</strong>, which is why <a href="#g-rpo">backlog and RPO</a> matter more here than a typical hardware company. Revenue is split across defense &amp; intelligence (now the growth driver), civil government, and commercial verticals; geographically it is diversifying fast toward EMEA and APAC on the back of the sovereign contracts.</p>
+
+      <div class="chart-grid">
+        <div class="chart-box"><div class="ct"><h5>Quarterly Revenue ($M) &amp; YoY Growth — Last 8 Quarters</h5><button class="zoom" onclick="expand('c_rev')">Click to expand</button></div><canvas id="c_rev"></canvas><div class="note">Q3 FY25 → Q2 FY27. The growth-acceleration story: ~11% → 58%.</div></div>
+        <div class="chart-box"><div class="ct"><h5>Backlog &amp; RPO ($M)</h5><button class="zoom" onclick="expand('c_backlog')">Click to expand</button></div><canvas id="c_backlog"></canvas><div class="note">Step-up on JSAT + German deals; sequential dip in Q2 as mega-contracts burn (see Risk #3).</div></div>
+      </div>
+
+      <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Quarter (FY)</th><th class="num">Revenue</th><th class="num">YoY</th><th class="num">Adj. EBITDA</th><th class="num">GAAP GM</th><th class="num">Non-GAAP GM</th><th class="num">Backlog</th></tr></thead>
+        <tbody>
+          <tr><td>Q3 FY25 (Oct-24)</td><td class="num">~$61.2M</td><td class="num pos">~+11%</td><td class="num neg">~–$3M</td><td class="num">~60%</td><td class="num">~63%</td><td class="num">—</td></tr>
+          <tr><td>Q4 FY25 (Jan-25)</td><td class="num">$61.6M</td><td class="num pos">+11%</td><td class="num pos">$2.4M</td><td class="num">62%</td><td class="num">65%</td><td class="num">$503.7M</td></tr>
+          <tr><td>Q1 FY26 (Apr-25)</td><td class="num">$66.3M</td><td class="num pos">+10%</td><td class="num pos">$1.2M</td><td class="num">~55%</td><td class="num">~57%</td><td class="num">—</td></tr>
+          <tr><td>Q2 FY26 (Jul-25)</td><td class="num">$73.4M</td><td class="num pos">+20%</td><td class="num pos">$6.4M</td><td class="num">58%</td><td class="num">61%</td><td class="num">~$735M</td></tr>
+          <tr><td>Q3 FY26 (Oct-25)</td><td class="num">$81.3M</td><td class="num pos">+33%</td><td class="num pos">~$5.6M</td><td class="num">~56%</td><td class="num">~59%</td><td class="num">—</td></tr>
+          <tr><td>Q4 FY26 (Jan-26)</td><td class="num">$86.8M</td><td class="num pos">+41%</td><td class="num pos">$2.3M</td><td class="num">54%</td><td class="num">57%</td><td class="num">$900.4M</td></tr>
+          <tr><td>Q1 FY27 (Apr-26)</td><td class="num">$94.2M</td><td class="num pos">+42%</td><td class="num neg">–$1.0M</td><td class="num">~55%</td><td class="num">~57%</td><td class="num">$906.1M</td></tr>
+          <tr><td>Q2 FY27 (Jul-26)</td><td class="num">$116.1M</td><td class="num pos">+58%</td><td class="num pos">$13.9M</td><td class="num">57%</td><td class="num">59%</td><td class="num">$814.9M</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p class="src">Sources: Planet 8-K / Business Wire press releases (Q4 FY26, Q1 FY27, Q2 FY27) and prior-year comparatives disclosed therein. "~" denotes values derived from disclosed full-year totals and growth rates rather than stated directly; treat as approximate.</p>
+
+      <h3>Profitability &amp; the Rule of 40</h3>
+      <div class="chart-grid">
+        <div class="chart-box"><div class="ct"><h5>Quarterly Adjusted EBITDA ($M) &amp; Rule of 40</h5><button class="zoom" onclick="expand('c_ebitda')">Click to expand</button></div><canvas id="c_ebitda"></canvas><div class="note">Rule of 40 = YoY rev growth % + adj EBITDA margin %. Cleared for 4 straight quarters.</div></div>
+        <div class="chart-box"><div class="ct"><h5>Gross Margin — GAAP vs Non-GAAP (%)</h5><button class="zoom" onclick="expand('c_gm')">Click to expand</button></div><canvas id="c_gm"></canvas><div class="note">Margin dipped as low-margin satellite-services deals ramp; guided to recover to 55–57%.</div></div>
+      </div>
+      <p>FY26 was the first full year of positive adjusted EBITDA ($15.5M, versus a $(10.6)M loss in FY25), and Q2 FY27 alone delivered $13.9M at a 12% margin — the profitability is scaling with revenue, not being engineered by cost cuts. Gross margin is the nuance to watch: it slid from the mid-60s (non-GAAP) toward the high-50s as the large government satellite-services contracts — which carry lower margins during their build/deploy phase — became a bigger share of revenue. Management guides non-GAAP gross margin back to 55–57% for FY27 and higher over time as those contracts mature into their recurring, higher-margin data phase.</p>
+
+      <h3>Cash flow, balance sheet &amp; dilution</h3>
+      <div class="chart-grid">
+        <div class="chart-box"><div class="ct"><h5>Cash + ST Investments ($M) vs Shares Out (M)</h5><button class="zoom" onclick="expand('c_cash')">Click to expand</button></div><canvas id="c_cash"></canvas><div class="note">Balance sheet fortified (partly via ATM); share count is the offsetting cost.</div></div>
+        <div class="chart-box"><div class="ct"><h5>FY27 Guidance Progression (Revenue midpoint, $M)</h5><button class="zoom" onclick="expand('c_guide')">Click to expand</button></div><canvas id="c_guide"></canvas><div class="note">Full-year revenue and adj-EBITDA guides raised at each of the last two prints.</div></div>
+      </div>
+      <div class="chips">
+        <div class="chip"><div class="l">Cash + ST Inv.</div><div class="v">$865.4M</div><div class="s">Jul 31, 2026 · +219% YoY</div></div>
+        <div class="chip"><div class="l">Debt</div><div class="v">~$0</div><div class="s">net-cash position</div></div>
+        <div class="chip"><div class="l">H1 FY27 OCF</div><div class="v">$68.4M</div><div class="s">vs $85.1M H1 FY26</div></div>
+        <div class="chip"><div class="l">H1 FY27 FCF</div><div class="v">$21.3M</div><div class="s">adj FCF $28.8M</div></div>
+        <div class="chip"><div class="l">Shares Out</div><div class="v neg">363.9M</div><div class="s">up from ~296M (Jan-25)</div></div>
+        <div class="chip"><div class="l">Capex FY27E</div><div class="v neg">$100–115M</div><div class="s">Pelican + Tanager build</div></div>
+      </div>
+      <p>The company generates positive operating cash flow ($68.4M in H1 FY27) and modestly positive free cash flow ($21.3M H1) even while spending $100–115M/yr on satellite capex — an unusually strong position for a company still labelled a "space SPAC." Net cash of ~$865M against negligible debt is roughly $2.40/share of the $16.99 price, and it fully funds the Pelican/Tanager roadmap without needing to issue equity into a depressed stock. The genuine weakness is <a href="#g-dilution">dilution</a>: shares outstanding rose from ~296M (Jan 2025) to ~364M, via SBC, earnout vesting, and the ATM. A 40% enterprise-value gain over two years could be partly eaten by a ~10%+ higher share count if issuance continues.</p>
+
+      <h3>Growth rates vs. industry</h3>
+      <p>Revenue <a href="#g-cagr">CAGR</a> FY22→FY26 was ~24% ($131M → $308M); the TTM figure of $378M (+44%) shows that CAGR accelerating, not fading. Against a commercial-EO market growing low-to-mid teens, Planet is now taking share at roughly 3x the market rate — the mirror image of the FY24 period when it grew in line with (or below) the market and the stock was punished for it.</p>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 5 ================= -->
+  <section class="card" id="s5">
+    <div class="card-h" onclick="toggle(this)"><div class="badge">5</div><h2>Earnings Tracker — Management Credibility</h2><div class="chev">▾</div></div>
+    <div class="card-b">
+      <p>Planet's guidance record has improved markedly through the growth inflection: the last several quarters beat the revenue guide, and the initial FY26 guidance was ultimately exceeded on revenue, EBITDA and cash. The one blemish — the June 2026 (Q1 FY27) print — is instructive: the beat was strong, but the <em>initial FY27 guide</em> issued in March disappointed growth-hungry investors and the stock fell, a pattern of conservative full-year framing that has since proven to be a floor. Where an exact prior-quarter guide range was not in our primary sources, we note "exceeded guide/consensus" and score accordingly.</p>
+      <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Quarter / Date</th><th>Specific Promise / Guidance</th><th>Actual Result</th><th class="num">Credibility</th></tr></thead>
+        <tbody>
+          <tr><td>Q3 FY25<br><span class="src">Dec 2024</span></td><td>Low-double-digit growth; full-year FY25 revenue ~$244M framing</td><td>Revenue ~$61.2M (~+11%); on-track to ~$244M FY25</td><td class="num"><span class="score">8/10</span></td></tr>
+          <tr><td>Q4 FY25<br><span class="src">Mar 2025</span></td><td>Initial FY26 revenue guide framed for accelerating growth off the defense pipeline</td><td>Q4 revenue $61.6M (+11%); FY25 $244.4M; adj EBITDA turning positive</td><td class="num"><span class="score">8/10</span></td></tr>
+          <tr><td>Q1 FY26<br><span class="src">Jun 2025</span></td><td>Guide to sequential acceleration; FY26 growth &gt;20%</td><td>Revenue $66.3M (+10%); adj EBITDA $1.2M; backlog building</td><td class="num"><span class="score">8/10</span></td></tr>
+          <tr><td>Q2 FY26<br><span class="src">Sep 2025</span></td><td>Beat prior guide; FY26 revenue guide raised toward $290M+</td><td>Revenue $73.4M (+20%); adj EBITDA $6.4M — growth inflecting</td><td class="num"><span class="score">9/10</span></td></tr>
+          <tr><td>Q3 FY26<br><span class="src">Dec 2025</span></td><td>Full-year FY26 revenue guide raised on German/defense momentum</td><td>Revenue $81.3M (+33%); RPO/backlog stepping up</td><td class="num"><span class="score">9/10</span></td></tr>
+          <tr><td>Q4 FY26<br><span class="src">Mar 19, 2026</span></td><td>FY26 delivered; initial FY27 guide $415–440M rev, non-GAAP GM 50–52%, adj EBITDA $0–10M; Q1 FY27 rev $87–91M</td><td>Q4 revenue $86.8M (+41%); FY26 $307.7M (+26%); FY26 adj EBITDA $15.5M; RPO +106%, backlog +79% YoY. Initial FY27 guide seen as light → stock fell</td><td class="num"><span class="score">8/10</span></td></tr>
+          <tr><td>Q1 FY27<br><span class="src">Jun 4, 2026</span></td><td>Q2 FY27 rev $102–107M; FY27 raised to $425–441M, GM 52–54%, adj EBITDA $0–10M</td><td>Q1 revenue $94.2M vs $91M high end (+3.5%); RPO +81%, backlog +72% YoY; adj EBITDA $(1.0)M</td><td class="num"><span class="score">9/10</span></td></tr>
+          <tr><td>Q2 FY27<br><span class="src">Sep 3, 2026</span></td><td>Q3 FY27 rev $101–105M; FY27 raised to $430–441M, GM 55–57%, adj EBITDA $3–10M</td><td>Q2 revenue $116.1M vs $107M high end (+8.5%) and ~$104.5M consensus; adj EBITDA $13.9M; first positive non-GAAP EPS $0.02</td><td class="num"><span class="score">10/10</span></td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="chart-grid">
+        <div class="chart-box"><div class="ct"><h5>Revenue Guide (high end) vs Actual ($M)</h5><button class="zoom" onclick="expand('c_beat')">Click to expand</button></div><canvas id="c_beat"></canvas><div class="note">Q1 &amp; Q2 FY27. Q2 beat the high end by ~$9M and consensus by ~$11M.</div></div>
+        <div class="chart-box"><div class="ct"><h5>FY27 Adj. EBITDA Guide Range ($M)</h5><button class="zoom" onclick="expand('c_ebitguide')">Click to expand</button></div><canvas id="c_ebitguide"></canvas><div class="note">Low/high end of full-year adj-EBITDA guide raised across the year.</div></div>
+      </div>
+      <div class="callout green"><div class="t">Credibility verdict</div>Average score ~8.6/10. Management under-guides the full year and beats the quarter — the classic pattern of a company whose demand is now running ahead of its own models. The behavioral risk is the inverse of RBRK's: because the initial FY27 guide looked conservative, some investors doubt the durability of the acceleration. Each beat-and-raise chips at that doubt.</div>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 6 ================= -->
+  <section class="card" id="s6">
+    <div class="card-h" onclick="toggle(this)"><div class="badge">6</div><h2>Bull / Base / Bear Case Scenarios</h2><div class="chev">▾</div></div>
+    <div class="card-b">
+      <p>Targets value the company on EV/Sales cross-checked against the peer set (Section 9), with net cash of ~$865M ($2.40/share) added and share count assumed to grow ~4–6%/yr (faster in the bear case, where the ATM funds a weak stock). Current price $16.99.</p>
+
+      <div class="horizon">1-Year Horizon (to Sep 2027) — Probability-weighted target: <span style="font-family:'JetBrains Mono',monospace">$24</span> (+41%)</div>
+      <div class="scen-grid">
+        <div class="scen bull"><div class="t">Bull Case</div><div class="pt">$34</div><span class="prob">Probability 30%</span><ul><li>FY27 lands ≥$441M (top of guide); initial FY28 guide implies ≥25% growth</li><li>New sovereign/defense wins add to backlog; German + JSAT recognize on schedule</li><li>Multiple re-rates to ~11x FY28E sales as space sentiment stabilizes</li><li>Return toward Street average target</li></ul></div>
+        <div class="scen base"><div class="t">Base Case</div><div class="pt">$24</div><span class="prob">Probability 45%</span><ul><li>FY27 ~$438M; FY28 ~$540M (~23% growth)</li><li>Adj EBITDA margin scales toward mid-teens; FCF stays modestly positive</li><li>~13x TTM sales → ~$7.5B EV + net cash</li><li>Partial recovery of the sentiment discount</li></ul></div>
+        <div class="scen bear"><div class="t">Bear Case</div><div class="pt">$11</div><span class="prob">Probability 25%</span><ul><li>Space-stock washout persists; ATM dilution continues into a weak tape</li><li>Backlog burns faster than new bookings; growth decelerates toward 25%</li><li>Multiple compresses to ~7x sales</li><li>Warrant-driven GAAP losses keep screens ugly</li></ul></div>
+      </div>
+
+      <div class="horizon">3-Year Horizon (to Sep 2029) — Probability-weighted target: <span style="font-family:'JetBrains Mono',monospace">$35</span> (+106%, ~27% CAGR)</div>
+      <div class="scen-grid">
+        <div class="scen bull"><div class="t">Bull Case</div><div class="pt">$55</div><span class="prob">Probability 30%</span><ul><li>Revenue ~$900M FY30 (~25% CAGR); adj EBITDA margin 20%+</li><li>Pelican fleet + Tanager hyperspectral monetize; Insights/AI becomes a real ARR line</li><li>EO cemented as operational infrastructure → ~10x sales premium</li></ul></div>
+        <div class="scen base"><div class="t">Base Case</div><div class="pt">$34</div><span class="prob">Probability 45%</span><ul><li>Revenue ~$720M FY30 (~23% CAGR); EBITDA margin ~15%; solidly FCF-positive</li><li>~8x sales → ~$6B EV + growing net cash</li><li>Dilution moderates as SBC/rev falls</li></ul></div>
+        <div class="scen bear"><div class="t">Bear Case</div><div class="pt">$12</div><span class="prob">Probability 25%</span><ul><li>Sovereign demand proves lumpy; growth stalls ~15% as contracts don't renew at size</li><li>Hyperscaler/government constellations compress commercial pricing</li><li>~4x sales; continued dilution</li></ul></div>
+      </div>
+
+      <div class="horizon">5-Year Horizon (to Sep 2031) — Probability-weighted target: <span style="font-family:'JetBrains Mono',monospace">$48</span> (+183%, ~23% CAGR)</div>
+      <div class="scen-grid">
+        <div class="scen bull"><div class="t">Bull Case</div><div class="pt">$80</div><span class="prob">Probability 30%</span><ul><li>Revenue ~$1.4B FY32; 25% adj-EBITDA margin; the default Western EO+analytics platform</li><li>AI/Insights layer materially lifts ACV per customer</li><li>Strategic-acquirer optionality (defense prime, hyperscaler)</li></ul></div>
+        <div class="scen base"><div class="t">Base Case</div><div class="pt">$46</div><span class="prob">Probability 45%</span><ul><li>Revenue ~$1.0B (~20% CAGR); ~18% EBITDA margin; consistent FCF</li><li>~7–8x sales as growth matures to high-teens</li><li>Buyback capacity begins to offset dilution</li></ul></div>
+        <div class="scen bear"><div class="t">Bear Case</div><div class="pt">$14</div><span class="prob">Probability 25%</span><ul><li>EO data commoditizes; ~$650M revenue, thin margins</li><li>Government insourcing / sovereign constellations erode the moat</li><li>~4x sales; the "space SPAC" label sticks</li></ul></div>
+      </div>
+
+      <div class="chart-grid">
+        <div class="chart-box"><div class="ct"><h5>Scenario Price Targets vs Current ($)</h5><button class="zoom" onclick="expand('c_scen')">Click to expand</button></div><canvas id="c_scen"></canvas><div class="note">Bars = scenario targets; diamond = probability-weighted; dashed = current $16.99.</div></div>
+        <div class="chart-box"><div class="ct"><h5>Base-Case Revenue &amp; Adj. EBITDA Path ($M)</h5><button class="zoom" onclick="expand('c_path')">Click to expand</button></div><canvas id="c_path"></canvas><div class="note">FY27 = guidance midpoint; FY28–FY31 = FTA base-case model.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 7 ================= -->
+  <section class="card" id="s7">
+    <div class="card-h" onclick="toggle(this)"><div class="badge">7</div><h2>Risks &amp; Anti-Thesis — Steelmanning the Bear</h2><div class="chev">▾</div></div>
+    <div class="card-b">
+      <p>If we were short PL, these are the five arguments we would lead with, in order of strength.</p>
+
+      <div class="risk"><h4>1. Customer concentration &amp; lumpy sovereign demand</h4>
+        <div class="meta"><span class="tag">Probability <b>45%</b></span><span class="tag">Impact <b>High</b></span><span class="tag">Priced in <b>Partially</b></span></div>
+        <p>The re-acceleration is powered by a handful of very large government contracts — Germany (€240M), SKY Perfect JSAT ($230M), NATO, NGA, Sweden. That is wonderful when it is signing and terrifying when it is renewing: a single large customer choosing to insource, delay, or not renew at size could swing a full year of growth. Sovereign budgets are political and cyclical; a change in the European rearmament posture or a U.S. administration's space-industrial policy (note the September 2026 White House pressure on firms to skip the Paris space summit) could reprice the whole thesis.</p>
+        <p><em>Our rebuttal:</em> 98% recurring ACV and multi-year RPO mean the annuity is contracted, not hoped-for; and the customer list is diversifying (Rwanda national program, London/Germany build-out, commercial verticals). But concentration is the risk that would break the thesis fastest, and it deserves the top slot.</p></div>
+
+      <div class="risk"><h4>2. Space-sector sentiment &amp; a 2.11 beta</h4>
+        <div class="meta"><span class="tag">Probability <b>60%</b></span><span class="tag">Impact <b>Medium</b></span><span class="tag">Priced in <b>Mostly</b></span></div>
+        <p>PL fell ~67% from its May $51.76 high largely <em>because of the sector</em>: the June SpaceX IPO sucked capital toward the mega-cap and re-rated the smaller space names downward, and PL trades with a 2.11 beta. Fundamentals barely feature in a sentiment unwind. If the space-stock winter continues — or if a high-profile launch failure or funding scare hits a peer — PL can fall to the bear case regardless of its own execution.</p>
+        <p><em>Our rebuttal:</em> this cuts both ways: the same beta that punished PL on the way down amplifies the recovery, and the fundamentals (growth, EBITDA, backlog) improved <em>through</em> the drawdown. Sentiment risk is real but it is the least fundamental of the five.</p></div>
+
+      <div class="risk"><h4>3. Backlog and RPO are declining sequentially</h4>
+        <div class="meta"><span class="tag">Probability <b>40%</b></span><span class="tag">Impact <b>Medium</b></span><span class="tag">Priced in <b>No</b></span></div>
+        <p>Backlog went $900M (Jan) → $906M (Apr) → <em>$815M</em> (Jul), and RPO $852M → $816M → $753M. The company is now recognizing revenue out of the JSAT/German mega-deals faster than it is signing new ones of comparable size. If bookings do not replenish, the +58% growth rate is mechanically borrowing from a shrinking backlog and reverts as those contracts amortize.</p>
+        <p><em>Our rebuttal:</em> backlog is still up ~11% YoY, the September 7-figure European deal and the NGA/Swedish wins post-date the Q2 cut, and lumpy backlog is normal when a few contracts dominate. But this is the single cleanest leading indicator to watch each quarter, and right now it is pointing the wrong way sequentially.</p></div>
+
+      <div class="risk"><h4>4. Dilution: ATM + SBC + warrants</h4>
+        <div class="meta"><span class="tag">Probability <b>70%</b></span><span class="tag">Impact <b>Medium</b></span><span class="tag">Priced in <b>Partially</b></span></div>
+        <p>Shares outstanding rose from ~296M (Jan 2025) to ~364M — via a $120M ATM raise (near the highs, to be fair), stock-based comp, and earnout-share vesting. Meanwhile the GAAP net loss is dominated by a non-cash warrant-liability revaluation that makes every screen look worse as the stock recovers. Insiders, including CEO Marshall, have been consistent sellers. A shareholder must grow enterprise value faster than the ~4–6%/yr share-count creep just to stand still.</p>
+        <p><em>Our rebuttal:</em> the ATM was opportunistic (issuing high, not low) and left a fortress balance sheet that funds the roadmap without forced dilution into weakness. As revenue scales, SBC-as-%-of-revenue should fall. Still, dilution is a genuine, ongoing cost we cap the multiple for.</p></div>
+
+      <div class="risk"><h4>5. Margin structure &amp; the "big-contract" trade-off</h4>
+        <div class="meta"><span class="tag">Probability <b>35%</b></span><span class="tag">Impact <b>Medium</b></span><span class="tag">Priced in <b>Yes</b></span></div>
+        <p>The very deals driving growth (dedicated-capacity satellite services) carry <em>lower</em> gross margins during their build/deploy phase than legacy pure-data subscriptions — non-GAAP gross margin slid from the mid-60s to the high-50s. If the mix keeps shifting toward capacity/services and those contracts don't mature into their higher-margin recurring phase as promised, the EBITDA and FCF ramp underwhelms even if revenue grows.</p>
+        <p><em>Our rebuttal:</em> management guides non-GAAP GM back to 55–57% for FY27 and higher thereafter as contracts season, and the incremental EBITDA in Q2 ($6.4M → $13.9M YoY) suggests operating leverage is intact. The market already saw the margin dip and sold it.</p></div>
+
+      <div class="callout gold"><div class="t">Other risks noted</div>Dual-class founder control and steady insider selling; competition from hyperscaler (Amazon Leo) and government-owned constellations; execution risk on Pelican/Tanager fleet deployment and launch cadence; FX exposure on European contracts; the possibility that AI/Insights monetization stays a story rather than a line item; and macro/defense-budget cyclicality.</div>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 8 ================= -->
+  <section class="card" id="s8">
+    <div class="card-h" onclick="toggle(this)"><div class="badge">8</div><h2>Catalyst Timeline</h2><div class="chev">▾</div></div>
+    <div class="card-b">
+      <div class="timeline">
+        <div class="tl"><div class="d">2026-09-03 (recent)</div><div class="e">Q2 FY27 earnings + 7-figure European defense deal</div><div class="x">Record $116.1M (+58%), first positive non-GAAP EPS, FY27 guide raised. Same day: new seven-figure agreement with a European defense &amp; intelligence customer.</div></div>
+        <div class="tl"><div class="d">2026-09 → 2026-10</div><div class="e">Tanager-2 + 18 SuperDoves launch</div><div class="x">Shipped to launch site Aug 31. Watch for successful deployment and first next-gen Tanager methane/hyperspectral data — the capability McKinsey singled out.</div></div>
+        <div class="tl"><div class="d">2026-10-31</div><div class="e">Fiscal Q3 FY27 quarter-end</div><div class="x">Guide: revenue $101–105M, non-GAAP GM 56–58%, adj EBITDA $(6)–$(1)M. Key tell: does backlog re-accelerate after the sequential Q2 dip?</div></div>
+        <div class="tl"><div class="d">~2026-12</div><div class="e">Q3 FY27 earnings</div><div class="x">Watch net-new bookings vs the $815M backlog, gross-margin trajectory, and whether FY27 guide moves toward the top of $430–441M. High beta sets up an asymmetric reaction.</div></div>
+        <div class="tl"><div class="d">2026 (ongoing)</div><div class="e">European rearmament &amp; sovereign-data mandates</div><div class="x">German (€240M) and NATO revenue ramp; potential follow-on EU/member-state contracts. London office and German entity are the beachheads.</div></div>
+        <div class="tl"><div class="d">2027-01-31</div><div class="e">FY27 fiscal year end</div><div class="x">Revenue vs $430–441M; adj EBITDA vs $3–10M; full-year backlog/RPO print.</div></div>
+        <div class="tl"><div class="d">~2027-03</div><div class="e">Q4 FY27 earnings + initial FY28 guidance</div><div class="x">The most important print of the year. An initial FY28 revenue guide implying ≥25% growth validates the base case; a conservative guide (as in FY27) may again create a buyable dip.</div></div>
+        <div class="tl"><div class="d">2027 (H1)</div><div class="e">Pelican fleet build-out &amp; JSAT constellation progress</div><div class="x">JSAT's 10-satellite Pelican-based constellation (~7-yr build/ops) is the largest contract; milestones de-risk the backlog.</div></div>
+        <div class="tl"><div class="d">2027 (ongoing)</div><div class="e">Planet Insights / AI monetization</div><div class="x">First evidence that the Anthropic-powered analytics layer lifts ACV per customer would re-rate the software optionality that is currently valued at ~zero.</div></div>
+        <div class="tl"><div class="d">Ongoing</div><div class="e">Space-sector sentiment &amp; policy</div><div class="x">Direction of the post-SpaceX-IPO space complex; U.S. space-industrial policy; any large EO-relevant geopolitical event is a demand catalyst for the category.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 9 ================= -->
+  <section class="card" id="s9">
+    <div class="card-h" onclick="toggle(this)"><div class="badge">9</div><h2>Comparable Company Analysis</h2><div class="chev">▾</div></div>
+    <div class="card-b">
+      <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Company</th><th class="num">Mkt Cap</th><th class="num">Rev TTM</th><th class="num">Rev Growth</th><th class="num">P/E</th><th class="num">P/S</th><th class="num">FCF Margin</th><th class="num">Net Margin</th><th class="num">EV/EBITDA</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Planet Labs (PL)</strong></td><td class="num">$6.18B</td><td class="num">$378M</td><td class="num pos">+44%</td><td class="num">n/m</td><td class="num">16.3x</td><td class="num pos">~5%</td><td class="num neg">n/m*</td><td class="num">n/m</td></tr>
+          <tr><td>Rocket Lab (RKLB)*</td><td class="num">~$41B</td><td class="num">~$780M</td><td class="num pos">+62%</td><td class="num">n/m</td><td class="num">~53x</td><td class="num neg">neg</td><td class="num neg">neg</td><td class="num">n/m</td></tr>
+          <tr><td>Redwire (RDW)*</td><td class="num">~$2.88B</td><td class="num">~$400M</td><td class="num pos">+58%</td><td class="num">n/m</td><td class="num">~4.6x</td><td class="num neg">neg</td><td class="num neg">neg</td><td class="num">n/m</td></tr>
+          <tr><td>BlackSky (BKSY)*</td><td class="num">~$1.3B</td><td class="num">~$130M</td><td class="num pos">~+40%</td><td class="num">n/m</td><td class="num">~9x</td><td class="num neg">neg</td><td class="num neg">neg</td><td class="num">n/m</td></tr>
+          <tr><td>Satellogic (SATL)*</td><td class="num">~$0.88B</td><td class="num">~$40M</td><td class="num pos">+259%</td><td class="num">n/m</td><td class="num">~22x</td><td class="num neg">neg</td><td class="num neg">neg</td><td class="num">n/m</td></tr>
+          <tr><td>Spire Global (SPIR)*</td><td class="num">~$0.49B</td><td class="num">~$110M</td><td class="num">~flat</td><td class="num">n/m</td><td class="num">~6.6x</td><td class="num neg">neg</td><td class="num neg">neg</td><td class="num">n/m</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p class="src">PL from StockAnalysis / S&amp;P Global as of Sep 17–18, 2026. *RKLB, RDW, BKSY, SATL, SPIR approximated from secondary sources dated Aug–Sep 2026; treat as directional. n/m = not meaningful (GAAP loss or near-zero/negative EBITDA). *PL net margin is n/m due to a non-cash warrant-liability revaluation, not operating losses.</p>
+
+      <div class="chart-grid">
+        <div class="chart-box"><div class="ct"><h5>P/S Multiple vs Revenue Growth</h5><button class="zoom" onclick="expand('c_peer')">Click to expand</button></div><canvas id="c_peer"></canvas><div class="note">Bubble ≈ scale. PL is the only name pairing 40%+ growth with positive EBITDA at a mid-teens multiple.</div></div>
+        <div class="chart-box"><div class="ct"><h5>Growth-Adjusted Multiple (P/S ÷ Growth %)</h5><button class="zoom" onclick="expand('c_psg')">Click to expand</button></div><canvas id="c_psg"></canvas><div class="note">Lower = cheaper per unit of growth. PL 0.37 vs RKLB 0.85.</div></div>
+      </div>
+
+      <h3>Relative valuation read</h3>
+      <p>The space peer set is a barbell: Rocket Lab is a ~$41B launch-plus-systems compounder trading at ~53x sales (0.85 P/S-to-growth), and the legacy data/services names (Redwire, Spire) trade at 4–7x sales but are unprofitable and slower. Planet sits in the middle with the most attractive <em>combination</em>: 44% TTM growth (Q2 +58%), the only positive adjusted EBITDA in the pure-data cohort, a defense-annuity backlog, and a net-cash balance sheet — at 16.3x sales and a 0.37 P/S-to-growth. It is more expensive than Redwire/Spire on headline P/S, but those companies lack Planet's archive moat, recurring mix, and profitability; and it is a fraction of Rocket Lab's multiple despite a comparable growth rate and better cash-flow profile. We do not argue PL should trade at Rocket Lab's multiple, but a re-rating from ~14x forward sales back toward the high-teens on continued 40%+ growth and margin expansion is a reasonable base case — and that alone, before estimate revisions, supports meaningful upside from $16.99.</p>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 10 ================= -->
+  <section class="card" id="s10">
+    <div class="card-h" onclick="toggle(this)"><div class="badge">10</div><h2>First-Principles KPIs</h2><div class="chev">▾</div></div>
+    <div class="card-b">
+      <p>Five leading indicators, in order of importance. If the first two hold, the thesis holds; if backlog growth turns negative YoY for two quarters, exit.</p>
+      <ol style="margin:8px 0 14px 22px;font-size:14.5px">
+        <li><strong>YoY revenue growth.</strong> Bar: &gt;30%. Q2 FY27: +58%. The purest read on whether the defense-driven acceleration is durable.</li>
+        <li><strong>Backlog &amp; RPO, YoY growth.</strong> Bar: positive YoY. Q2: backlog $815M (+~11% YoY) but <em>down sequentially</em>. The cleanest tell on whether bookings replenish the mega-contracts (Risk #3).</li>
+        <li><strong>Adjusted EBITDA &amp; Rule of 40.</strong> Bar: Rule of 40 cleared. Q2: $13.9M / 70. Proves the growth is profitable, not bought.</li>
+        <li><strong>Recurring ACV %.</strong> Bar: &gt;90%. Q2: 98%. Confirms the revenue base is a subscription/annuity, not one-off project work.</li>
+        <li><strong>Share count &amp; FCF.</strong> Bar: FCF positive, share growth decelerating. H1 FY27 FCF $21.3M; shares ~364M and still rising. The pair tells you whether value creation outruns dilution.</li>
+      </ol>
+      <div class="chart-grid">
+        <div class="chart-box"><div class="ct"><h5>KPI 1: Quarterly Revenue Growth (YoY %)</h5><button class="zoom" onclick="expand('c_kgrowth')">Click to expand</button></div><canvas id="c_kgrowth"></canvas><div class="note">Five straight quarters of acceleration: 11% → 58%.</div></div>
+        <div class="chart-box"><div class="ct"><h5>KPI 4/5: Contract Wins &amp; Backlog Building ($M)</h5><button class="zoom" onclick="expand('c_wins')">Click to expand</button></div><canvas id="c_wins"></canvas><div class="note">Signature multi-year satellite-services contracts driving the backlog.</div></div>
+      </div>
+      <div class="chart-grid">
+        <div class="chart-box"><div class="ct"><h5>KPI 3: Adj. EBITDA Margin Trend (%)</h5><button class="zoom" onclick="expand('c_kmargin')">Click to expand</button></div><canvas id="c_kmargin"></canvas><div class="note">Q3 FY25 → Q2 FY27. Inflected firmly positive at scale.</div></div>
+        <div class="chart-box"><div class="ct"><h5>Revenue Mix — Illustrative by End-Market</h5><button class="zoom" onclick="expand('c_mix')">Click to expand</button></div><canvas id="c_mix"></canvas><div class="note">Approximate; defense &amp; intelligence is the growth engine, commercial is the ballast.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 11 ================= -->
+  <section class="card" id="s11">
+    <div class="card-h" onclick="toggle(this)"><div class="badge">11</div><h2>Glossary &amp; Methodology</h2><div class="chev">▾</div></div>
+    <div class="card-b">
+      <h3>Methodology</h3>
+      <p>All financial figures come from Planet's SEC-filed 8-K / Business Wire earnings releases (Q4 &amp; full-year FY26, Q1 FY27, Q2 FY27, plus prior-year comparatives), the Q2 FY27 earnings materials, and market data from StockAnalysis / S&amp;P Global as of the September 17–18, 2026 close. Several quarterly line items (Q3 FY25, Q1 FY26, Q3 FY26 gross margins and adjusted EBITDA) are derived from disclosed full-year totals and growth rates and are marked approximate. Peer data for RKLB, RDW, BKSY, SATL and SPIR came from secondary sources and is marked approximate. The thematic framing draws on McKinsey's Technology Trends Outlook 2026. Scenario targets apply EV/Sales multiples to FTA's own revenue and margin model; probabilities are judgmental. Nothing here is investment advice.</p>
+
+      <div class="gl" id="g-eo"><h4>Earth Observation (EO)</h4><div class="f">Commercial imaging and sensing of the Earth from satellites, sold as data/analytics</div><p>Planet's core market: daily, global imagery plus analytics delivered via an online platform. <em>Why it matters:</em> the category is shifting from after-the-fact analysis to daily operational decision-making, which is the structural thesis.</p><a class="back" href="#s1">↑ Back to Section 1</a></div>
+      <div class="gl" id="g-rpo"><h4>Backlog &amp; Remaining Performance Obligations (RPO)</h4><div class="f">Backlog = total contracted value not yet recognized; RPO = the ASC 606 subset of contracted revenue</div><p>Planet reports both; ~46% of RPO is expected within 12 months. <em>Why it matters:</em> with 98% recurring ACV, backlog/RPO are the clearest read on contracted future revenue — and a sequential decline (Q2 FY27) is an early warning to watch.</p><a class="back" href="#s4">↑ Back to Section 4</a></div>
+      <div class="gl" id="g-ebitda"><h4>Adjusted EBITDA</h4><div class="f">Net loss before interest, tax, D&amp;A, and further adjusted for SBC, warrant-fair-value changes, restructuring, litigation and earnout payroll taxes</div><p>Planet's headline profitability metric while GAAP earnings are distorted by non-cash items. <em>Why it matters:</em> FY26 was the first positive year ($15.5M); Q2 FY27 did $13.9M — evidence the growth is profitable.</p><a class="back" href="#s1">↑ Back to Section 1</a></div>
+      <div class="gl" id="g-rule40"><h4>Rule of 40</h4><div class="f">YoY revenue growth % + adjusted EBITDA margin % ≥ 40</div><p>A balance-of-growth-and-profit heuristic. <em>Why it matters:</em> Planet cleared it for a fourth straight quarter (58% + 12% = 70 in Q2 FY27), rare for a company still priced like a broken SPAC.</p><a class="back" href="#s1">↑ Back to Section 1</a></div>
+      <div class="gl" id="g-ps"><h4>Price-to-Sales (P/S) and the FTA Scale</h4><div class="f">P/S = Market cap ÷ TTM revenue · Scale: &gt;30 Euphoric · &gt;18 Excited · &gt;8 Optimistic · 4–8 Aware · &lt;4 Cautious · &lt;2 Pessimistic</div><p>Useful for growth companies where P/E fails. <em>Why it matters:</em> PL at 16.3x sits in the "Excited" band — a premium that must be earned by sustained 40%+ growth and margin expansion.</p><a class="back" href="#s2">↑ Back to Section 2</a></div>
+      <div class="gl" id="g-warrant"><h4>Warrant-Liability Revaluation</h4><div class="f">Non-cash gain/loss from marking outstanding warrants to fair value each period</div><p>Planet's de-SPAC warrants are carried as a liability; when the stock rises, the liability rises and the company books a non-cash <em>loss</em> (–$161M in FY26). <em>Why it matters:</em> it makes GAAP net income and P/E meaningless here, and is the main reason to use adjusted EBITDA and FCF.</p><a class="back" href="#s2">↑ Back to Section 2</a></div>
+      <div class="gl" id="g-dilution"><h4>Share Dilution &amp; the ATM</h4><div class="f">Growth in shares outstanding from SBC, earnouts, and at-the-market (ATM) equity issuance</div><p>An ATM lets a company sell new shares into the open market over time; Planet raised ~$120M near $32/share. <em>Why it matters:</em> share count rose ~296M → ~364M; enterprise value must grow faster than the ~4–6%/yr creep for shareholders to gain.</p><a class="back" href="#s4">↑ Back to Section 4</a></div>
+      <div class="gl" id="g-superdove"><h4>SuperDove / PlanetScope</h4><div class="f">Planet's fleet of ~150+ small satellites imaging Earth's landmass daily at ~3–4m resolution</div><p>The "line-scanner for the planet" that produces the daily-global archive. <em>Why it matters:</em> the cadence and coverage — plus a decade-deep history — are the core moat competitors cannot retroactively replicate.</p><a class="back" href="#s2">↑ Back to Section 2</a></div>
+      <div class="gl" id="g-pelican"><h4>Pelican</h4><div class="f">Planet's next-generation high-resolution tasking satellites, successor to SkySat</div><p>Higher image quality, more spectral bands, and lower latency than SkySat; underpins the JSAT constellation. Pelican-11 (tech demo) launched July 2026. <em>Why it matters:</em> adds a premium, taskable tier on top of the daily scan and anchors the largest contract.</p><a class="back" href="#s2">↑ Back to Section 2</a></div>
+      <div class="gl" id="g-tanager"><h4>Tanager</h4><div class="f">Planet's hyperspectral satellites (with Carbon Mapper / NASA JPL) for greenhouse-gas detection</div><p>Tanager-1 (launched 2024) has detected thousands of methane super-emitter plumes; Tanager-2 shipped to launch in Aug 2026, and new-generation units are planned. <em>Why it matters:</em> the exact capability McKinsey's 2026 outlook cites as EO moving into operational climate/emissions decision-making.</p><a class="back" href="#s2">↑ Back to Section 2</a></div>
+      <div class="gl" id="g-insights"><h4>Planet Insights Platform (AI)</h4><div class="f">Planet's software layer turning raw imagery into analytics-ready insights, with AI workflows built partly on Anthropic's Claude</div><p>Announced March 2025; embeds Planet's data into customer decision loops (defense change-detection, maritime awareness, methane). <em>Why it matters:</em> the software/AI layer is the path to higher ACV per customer and is currently valued at ~zero in the stock.</p><a class="back" href="#s3">↑ Back to Section 3</a></div>
+      <div class="gl" id="g-cagr"><h4>CAGR (Compound Annual Growth Rate)</h4><div class="f">CAGR = (End ÷ Start)^(1/years) − 1</div><p>Smoothed annual growth across multi-year periods. <em>Why it matters:</em> FY22–FY26 revenue CAGR of ~24% is accelerating (TTM +44%), vs low-to-mid-teens for the commercial-EO market.</p><a class="back" href="#s2">↑ Back to Section 2</a></div>
+      <div class="gl" id="g-tam"><h4>TAM (Total Addressable Market)</h4><div class="f">Annual revenue opportunity if a company captured 100% of its target market</div><p>Vendor-stated TAMs are typically far larger than third-party segment estimates (commercial EO ~$8–12B in 2026). <em>Why it matters:</em> use the narrow figure for penetration math and the broad defense-plus-commercial one for optionality.</p><a class="back" href="#s2">↑ Back to Section 2</a></div>
+
+      <h3>Primary sources</h3>
+      <p class="src">
+        <a href="https://www.businesswire.com/news/home/20260903433245/en/Planet-Reports-Financial-Results-for-Second-Quarter-of-Fiscal-Year-2027">Q2 FY27 earnings release (Sep 3, 2026)</a> ·
+        <a href="https://www.businesswire.com/news/home/20260604225506/en/Planet-Reports-Financial-Results-for-First-Quarter-of-Fiscal-Year-2027">Q1 FY27 earnings release (Jun 4, 2026)</a> ·
+        <a href="https://www.businesswire.com/news/home/20260319782110/en/Planet-Reports-Financial-Results-for-Fourth-Quarter-and-Full-Fiscal-Year-2026">Q4 &amp; FY26 earnings release (Mar 19, 2026)</a> ·
+        <a href="https://www.businesswire.com/news/home/20250701149801/en/Planet-Awarded-%E2%82%AC240-Million-Satellite-Services-Deal">Germany €240M satellite-services deal</a> ·
+        <a href="https://spacenews.com/sky-perfect-jsat-is-the-customer-behind-planets-230-million-leo-order/">SKY Perfect JSAT $230M Pelican order (SpaceNews)</a> ·
+        <a href="https://www.businesswire.com/news/home/20260430512259/en/Planet-and-Carbon-Mapper-Sign-Agreement-for-New-Tanager-Spacecraft">Planet &amp; Carbon Mapper new Tanager spacecraft</a> ·
+        <a href="https://www.businesswire.com/news/home/20250306606139/en/Planet-and-Anthropic-Partner-to-Use-Claudes-Advanced-AI-Capabilities-to-Turn-Geospatial-Satellite-Imagery-into-Actionable-Insights">Planet &amp; Anthropic AI partnership</a> ·
+        <a href="https://stockanalysis.com/stocks/pl/">StockAnalysis PL overview</a> ·
+        <a href="https://www.fool.com/coverage/filings/2026/07/14/planet-labs-ceo-sells-company-shares-worth-usd5-2-million-here-s-what-that-means-for-investors/">CEO Marshall Form 4 (Jul 2026)</a>
+      </p>
+    </div>
+  </section>
+
+  <p class="src" style="margin-top:30px">© 2026 Foundational Trading Academy. Prepared September 17, 2026. This report is for educational purposes only and is not a recommendation to buy or sell any security. The author is not a licensed financial advisor.</p>
+  </div>
+</main>
+
+<div class="modal" id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal-box"><button class="modal-close" onclick="closeModal()">×</button><h5 id="modal-title"></h5><canvas id="modal-canvas"></canvas></div>
+</div>
+
+<script>
+function toggle(h){h.parentElement.classList.toggle('collapsed')}
+const G='#145A22',DG='#0A3A14',GOLD='#FCC55B',GD='#e0a838',RED='#a8341f',MUTED='#5d6155',LINE='#d8d1c4';
+Chart.defaults.font.family="'Quicksand',sans-serif";Chart.defaults.font.size=11;Chart.defaults.color=MUTED;
+const mono={family:"'JetBrains Mono',monospace",size:10};
+const configs={};const charts={};
+function cloneCfg(o){if(Array.isArray(o))return o.map(cloneCfg);if(o&&typeof o==='object')return Object.fromEntries(Object.entries(o).map(([k,v])=>[k,cloneCfg(v)]));return o;}
+function mk(id,cfg){configs[id]=cfg;const c=document.getElementById(id);if(c)charts[id]=new Chart(c,cloneCfg(cfg));}
+let modalChart=null;
+function expand(id){const cfg=configs[id];if(!cfg)return;document.getElementById('modal-title').textContent=cfg._title||'';const m=document.getElementById('modal');m.classList.add('open');if(modalChart)modalChart.destroy();const c=cloneCfg(cfg);c.options=c.options||{};c.options.maintainAspectRatio=false;c.options.responsive=true;modalChart=new Chart(document.getElementById('modal-canvas'),c);}
+function closeModal(){document.getElementById('modal').classList.remove('open');if(modalChart){modalChart.destroy();modalChart=null;}}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+const base=(extra={})=>Object.assign({responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{boxWidth:10,padding:10}}},scales:{x:{grid:{display:false},ticks:{font:mono}},y:{grid:{color:'#eee8dc'},ticks:{font:mono}}}},extra);
+
+const Q=['Q3 FY25','Q4 FY25','Q1 FY26','Q2 FY26','Q3 FY26','Q4 FY26','Q1 FY27','Q2 FY27'];
+
+// 1 Annual revenue
+mk('c_annual',{_title:'Annual Revenue & Growth (FY22–FY26, TTM)',type:'bar',data:{labels:['FY22','FY23','FY24','FY25','FY26','TTM Jul-26'],datasets:[{type:'bar',label:'Revenue ($M)',data:[131,191,221,244,308,378],backgroundColor:[G,G,G,G,G,GD],borderRadius:5,yAxisID:'y'},{type:'line',label:'YoY Growth %',data:[null,46,15.5,10.7,26,44],borderColor:GD,backgroundColor:GD,tension:.3,yAxisID:'y1',pointRadius:3}]},options:base({scales:{x:{grid:{display:false},ticks:{font:mono}},y:{grid:{color:'#eee8dc'},ticks:{font:mono}},y1:{position:'right',grid:{display:false},ticks:{font:mono,callback:v=>v+'%'}}}})});
+// 2 Market cap peers
+mk('c_mcap',{_title:'Market Cap vs Space Peers ($B)',type:'bar',data:{labels:['RKLB*','PL','RDW*','BKSY*','SATL*','SPIR*'],datasets:[{label:'Market Cap ($B)',data:[41,6.18,2.88,1.3,0.88,0.49],backgroundColor:['#7aa885',GD,'#7aa885','#7aa885','#7aa885','#7aa885'],borderRadius:5}]},options:base({indexAxis:'y',plugins:{legend:{display:false}}})});
+// 3 Quarterly revenue + growth
+mk('c_rev',{_title:'Quarterly Revenue ($M) & YoY Growth',type:'bar',data:{labels:Q,datasets:[{type:'bar',label:'Revenue ($M)',data:[61.2,61.6,66.3,73.4,81.3,86.8,94.2,116.1],backgroundColor:[G,G,G,G,G,G,G,GD],borderRadius:4,yAxisID:'y'},{type:'line',label:'YoY %',data:[11,11,10,20,33,41,42,58],borderColor:GD,backgroundColor:GD,tension:.3,yAxisID:'y1',pointRadius:3}]},options:base({scales:{x:{grid:{display:false},ticks:{font:mono}},y:{grid:{color:'#eee8dc'},ticks:{font:mono}},y1:{position:'right',min:0,max:65,grid:{display:false},ticks:{font:mono,callback:v=>v+'%'}}}})});
+// 4 Backlog & RPO
+mk('c_backlog',{_title:'Backlog & RPO ($M)',type:'bar',data:{labels:['Q4 FY25','Q4 FY26','Q1 FY27','Q2 FY27'],datasets:[{label:'Backlog',data:[503.7,900.4,906.1,814.9],backgroundColor:G,borderRadius:4},{label:'RPO',data:[412.8,852.4,816.0,753.1],backgroundColor:GOLD,borderRadius:4}]},options:base()});
+// 5 Adj EBITDA + Rule of 40
+mk('c_ebitda',{_title:'Quarterly Adjusted EBITDA ($M) & Rule of 40',type:'bar',data:{labels:Q,datasets:[{type:'bar',label:'Adj. EBITDA ($M)',data:[-3,2.4,1.2,6.4,5.6,2.3,-1.0,13.9],backgroundColor:[RED,G,G,G,G,G,RED,GD],borderRadius:4,yAxisID:'y'},{type:'line',label:'Rule of 40',data:[6,13,11,29,38,44,41,70],borderColor:GD,backgroundColor:GD,tension:.3,yAxisID:'y1',pointRadius:3}]},options:base({scales:{x:{grid:{display:false},ticks:{font:mono}},y:{grid:{color:'#eee8dc'},ticks:{font:mono}},y1:{position:'right',min:0,max:80,grid:{display:false},ticks:{font:mono}}}})});
+// 6 Gross margin GAAP vs non-GAAP
+mk('c_gm',{_title:'Gross Margin — GAAP vs Non-GAAP (%)',type:'line',data:{labels:Q,datasets:[{label:'GAAP GM %',data:[60,62,55,58,56,54,55,57],borderColor:G,backgroundColor:G,tension:.3,pointRadius:3},{label:'Non-GAAP GM %',data:[63,65,57,61,59,57,57,59],borderColor:GD,backgroundColor:GD,tension:.3,pointRadius:3,borderDash:[4,3]}]},options:base({scales:{x:{grid:{display:false},ticks:{font:mono}},y:{min:45,max:70,grid:{color:'#eee8dc'},ticks:{font:mono,callback:v=>v+'%'}}}})});
+// 7 Cash vs shares
+mk('c_cash',{_title:'Cash + ST Investments ($M) vs Shares Out (M)',type:'bar',data:{labels:['FY25 (Jan-25)','FY26 (Jan-26)','Q2 FY27 (Jul-26)'],datasets:[{type:'bar',label:'Cash + ST Inv. ($M)',data:[222,640,865],backgroundColor:G,borderRadius:5,yAxisID:'y'},{type:'line',label:'Shares Out (M)',data:[296,318,364],borderColor:RED,backgroundColor:RED,tension:.2,pointRadius:4,yAxisID:'y1'}]},options:base({scales:{x:{grid:{display:false},ticks:{font:mono}},y:{grid:{color:'#eee8dc'},ticks:{font:mono}},y1:{position:'right',min:250,max:400,grid:{display:false},ticks:{font:mono}}}})});
+// 8 Guidance progression
+mk('c_guide',{_title:'FY27 Guidance Progression (midpoints, $M)',type:'line',data:{labels:['Mar 19, 2026','Jun 4, 2026','Sep 3, 2026'],datasets:[{label:'Revenue midpoint',data:[427.5,433,435.5],borderColor:G,backgroundColor:G,tension:.2,pointRadius:4},{label:'Adj. EBITDA midpoint (×20 scale)',data:[100,100,130],borderColor:GD,backgroundColor:GD,borderDash:[4,3],tension:.2,pointRadius:4}]},options:base({scales:{x:{grid:{display:false},ticks:{font:mono}},y:{min:0,grid:{color:'#eee8dc'},ticks:{font:mono}}}})});
+// 9 Rev guide vs actual
+mk('c_beat',{_title:'Revenue Guide (high end) vs Actual ($M)',type:'bar',data:{labels:['Q1 FY27','Q2 FY27'],datasets:[{label:'Guide high end',data:[91,107],backgroundColor:'#b9c9bc',borderRadius:4},{label:'Actual',data:[94.2,116.1],backgroundColor:G,borderRadius:4}]},options:base({scales:{x:{grid:{display:false},ticks:{font:mono}},y:{min:60,grid:{color:'#eee8dc'},ticks:{font:mono,callback:v=>'$'+v}}}})});
+// 10 FY27 adj EBITDA guide range
+mk('c_ebitguide',{_title:'FY27 Adj. EBITDA Guide Range ($M)',type:'bar',data:{labels:['Mar 2026','Jun 2026','Sep 2026'],datasets:[{label:'Low end',data:[0,0,3],backgroundColor:'#b9c9bc',borderRadius:4},{label:'High end',data:[10,10,10],backgroundColor:G,borderRadius:4}]},options:base({scales:{x:{grid:{display:false},ticks:{font:mono}},y:{grid:{color:'#eee8dc'},ticks:{font:mono,callback:v=>'$'+v}}}})});
+// 11 Scenario targets
+mk('c_scen',{_title:'Scenario Price Targets vs Current ($)',type:'bar',data:{labels:['1-Year','3-Year','5-Year'],datasets:[{type:'bar',label:'Bear',data:[11,12,14],backgroundColor:RED,borderRadius:4},{type:'bar',label:'Base',data:[24,34,46],backgroundColor:GD,borderRadius:4},{type:'bar',label:'Bull',data:[34,55,80],backgroundColor:G,borderRadius:4},{type:'line',label:'Prob-weighted',data:[24,35,48],borderColor:DG,backgroundColor:DG,pointRadius:5,pointStyle:'rectRot',tension:0},{type:'line',label:'Current $16.99',data:[16.99,16.99,16.99],borderColor:MUTED,borderDash:[5,4],pointRadius:0}]},options:base({scales:{x:{grid:{display:false},ticks:{font:mono}},y:{grid:{color:'#eee8dc'},ticks:{font:mono,callback:v=>'$'+v}}}})});
+// 12 Base path
+mk('c_path',{_title:'Base-Case Revenue & Adj. EBITDA Path ($M)',type:'bar',data:{labels:['FY26A','FY27G','FY28E','FY29E','FY30E','FY31E'],datasets:[{type:'bar',label:'Revenue',data:[308,435,540,660,800,1000],backgroundColor:G,borderRadius:4},{type:'bar',label:'Adj. EBITDA',data:[15,7,50,100,160,230],backgroundColor:GOLD,borderRadius:4}]},options:base()});
+// 13 Peer scatter (bubble)
+mk('c_peer',{_title:'P/S Multiple vs Revenue Growth (bubble ≈ scale)',type:'bubble',data:{datasets:[{label:'PL',data:[{x:44,y:16.3,r:16}],backgroundColor:GD},{label:'RKLB*',data:[{x:62,y:53,r:20}],backgroundColor:'#7aa885'},{label:'RDW*',data:[{x:58,y:4.6,r:12}],backgroundColor:'#7aa885'},{label:'BKSY*',data:[{x:40,y:9,r:9}],backgroundColor:'#7aa885'},{label:'SPIR*',data:[{x:5,y:6.6,r:8}],backgroundColor:'#7aa885'}]},options:base({scales:{x:{title:{display:true,text:'Revenue growth % (TTM)'},grid:{color:'#eee8dc'},ticks:{font:mono}},y:{title:{display:true,text:'P/S (x)'},grid:{color:'#eee8dc'},ticks:{font:mono}}}})});
+// 14 P/S ÷ growth
+mk('c_psg',{_title:'Growth-Adjusted Multiple (P/S ÷ Revenue Growth %)',type:'bar',data:{labels:['PL','RDW*','SPIR*','BKSY*','RKLB*'],datasets:[{label:'P/S ÷ growth',data:[0.37,0.08,1.32,0.23,0.85],backgroundColor:[GD,'#7aa885','#7aa885','#7aa885',G],borderRadius:5}]},options:base({plugins:{legend:{display:false}}})});
+// 15 KPI growth
+mk('c_kgrowth',{_title:'Quarterly Revenue Growth (YoY %)',type:'line',data:{labels:Q,datasets:[{label:'YoY revenue growth %',data:[11,11,10,20,33,41,42,58],borderColor:G,backgroundColor:'rgba(20,90,34,.15)',fill:true,tension:.3,pointRadius:4,pointBackgroundColor:GOLD}]},options:base({plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{font:mono}},y:{min:0,grid:{color:'#eee8dc'},ticks:{font:mono,callback:v=>v+'%'}}}})});
+// 16 Contract wins
+mk('c_wins',{_title:'Signature Multi-Year Contract Values ($M)',type:'bar',data:{labels:['Germany (€240M)','JSAT Pelican','NATO','NGA','Euro 7-fig'],datasets:[{label:'Approx. contract value ($M)',data:[280,230,5,10,5],backgroundColor:[G,G,GD,GD,GD],borderRadius:5}]},options:base({plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{font:mono}},y:{grid:{color:'#eee8dc'},ticks:{font:mono,callback:v=>'$'+v}}}})});
+// 17 Adj EBITDA margin
+mk('c_kmargin',{_title:'Adjusted EBITDA Margin (%)',type:'line',data:{labels:Q,datasets:[{label:'Adj. EBITDA margin %',data:[-5,3.9,1.8,8.7,6.9,2.6,-1.1,12.0],borderColor:G,backgroundColor:'rgba(20,90,34,.15)',fill:true,tension:.3,pointRadius:4,pointBackgroundColor:GOLD}]},options:base({plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{font:mono}},y:{grid:{color:'#eee8dc'},ticks:{font:mono,callback:v=>v+'%'}}}})});
+// 18 Revenue mix doughnut (illustrative)
+mk('c_mix',{_title:'Revenue Mix — Illustrative by End-Market',type:'doughnut',data:{labels:['Defense & Intelligence (~55%)','Civil Government (~25%)','Commercial (~20%)'],datasets:[{data:[55,25,20],backgroundColor:[G,GOLD,GD],borderColor:'#fff',borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{position:'bottom',labels:{boxWidth:10}}}}});
+</script>
+</body>
+</html>
