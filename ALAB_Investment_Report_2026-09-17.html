@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ALAB — Astera Labs, Inc. | FTA Investment Research | 2026-09-17</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Questrial&family=Quicksand:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  --green:#145A22;--dark-green:#0A3A14;--forest:#243D27;--gold:#FCC55B;--gold-deep:#e0a838;
+  --beige:#EDE8E0;--beige-card:#f6f3ed;--ink:#23241f;--muted:#5d6155;--red:#a8341f;--line:#d8d1c4;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Quicksand',sans-serif;background:var(--beige);color:var(--ink);line-height:1.6;font-weight:400;display:flex;min-height:100vh}
+a{color:var(--green)}
+/* Sidebar */
+.sidebar{width:262px;flex:0 0 262px;position:sticky;top:0;height:100vh;overflow-y:auto;background:linear-gradient(180deg,#071f0b,#0A3A14 40%,#145A22);border-right:2px solid var(--gold);padding:28px 20px;color:#fff}
+.brand{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:26px;font-weight:600;color:var(--gold);letter-spacing:.3px;line-height:1.1}
+.brand small{display:block;font-family:'Questrial',sans-serif;font-style:normal;font-size:10px;letter-spacing:2.2px;text-transform:uppercase;color:rgba(255,255,255,.65);margin-top:6px}
+.ticker-box{margin:22px 0;background:rgba(255,255,255,.07);border:1px solid rgba(252,197,91,.35);border-radius:12px;padding:14px}
+.ticker-box .sym{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;color:var(--gold)}
+.ticker-box .nm{font-family:'Questrial',sans-serif;font-size:11px;letter-spacing:1.4px;text-transform:uppercase;color:rgba(255,255,255,.7)}
+.ticker-box .px{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:600;margin-top:6px}
+.ticker-box .chg{font-family:'JetBrains Mono',monospace;font-size:12px;color:#9fd8a8}
+.nav a{display:flex;align-items:center;gap:10px;color:rgba(255,255,255,.82);text-decoration:none;font-size:13px;padding:7px 8px;border-radius:8px;font-family:'Questrial',sans-serif;letter-spacing:.3px}
+.nav a:hover{background:rgba(252,197,91,.12);color:#fff}
+.nav a span.n{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold);min-width:20px}
+.side-foot{margin-top:24px;font-size:10.5px;color:rgba(255,255,255,.5);line-height:1.5}
+/* Main */
+.main{flex:1;min-width:0}
+.hero{background:linear-gradient(120deg,var(--dark-green),var(--green) 60%);color:#fff;padding:54px 48px 40px;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;right:-120px;top:-120px;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(252,197,91,.35),rgba(252,197,91,0) 65%)}
+.hero .kicker{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:2.4px;font-size:11px;color:var(--gold)}
+.hero h1{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:46px;line-height:1.05;margin:10px 0 6px}
+.hero h1 em{font-style:italic;color:var(--gold)}
+.hero .sub{font-size:15px;color:rgba(255,255,255,.85);max-width:720px}
+.hero .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px;align-items:center}
+.pill{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);border:1px solid rgba(252,197,91,.5);border-radius:999px;padding:6px 14px;font-family:'Questrial',sans-serif;font-size:11.5px;letter-spacing:1.2px;text-transform:uppercase}
+.pill.verdict{background:var(--gold);color:var(--dark-green);border-color:var(--gold);font-weight:700}
+.pill .mono{font-family:'JetBrains Mono',monospace;font-weight:700;letter-spacing:0}
+.kpi-strip{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;padding:16px 48px;background:var(--beige)}
+.kpi{background:var(--beige-card);border:1px solid var(--line);border-radius:12px;padding:14px 14px 12px}
+.kpi .l{font-family:'Questrial',sans-serif;font-size:10px;letter-spacing:1.6px;text-transform:uppercase;color:var(--muted)}
+.kpi .v{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;color:var(--green);margin-top:4px;line-height:1.1}
+.kpi .s{font-size:11px;color:var(--muted);margin-top:4px}
+.content{max-width:1080px;padding:20px 48px 80px}
+/* Cards */
+.card{background:var(--beige-card);border:1px solid var(--line);border-radius:14px;margin:22px 0;overflow:hidden}
+.card-h{display:flex;align-items:center;gap:14px;padding:18px 22px;border-left:5px solid var(--green);cursor:pointer;user-select:none}
+.card-h .badge{width:34px;height:34px;border-radius:9px;background:var(--green);color:#fff;font-family:'JetBrains Mono',monospace;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 34px}
+.card-h h2{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:28px;color:var(--dark-green);line-height:1.1;flex:1}
+.card-h .chev{width:26px;height:26px;border-radius:50%;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--green);transition:transform .25s;font-size:14px}
+.card.collapsed .chev{transform:rotate(-90deg)}
+.card-b{padding:6px 24px 26px}
+.card.collapsed .card-b{display:none}
+.card-b p{margin:12px 0;font-size:15px}
+.card-b h3{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1.8px;font-size:12px;color:var(--green);margin:24px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+.card-b h4{font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:600;color:var(--dark-green);margin:18px 0 4px}
+.card-b ul{margin:8px 0 12px 22px}
+.card-b li{margin:5px 0;font-size:14.5px}
+.thesis{font-family:'Cormorant Garamond',serif;font-size:24px;line-height:1.35;border-left:4px solid var(--gold);padding:16px 22px;margin:16px 0;color:var(--dark-green);background:#fff;border-radius:0 12px 12px 0}
+.thesis strong{font-weight:700}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0}
+.chip{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;min-width:130px}
+.chip .l{font-family:'Questrial',sans-serif;font-size:9.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
+.chip .v{font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:700;color:var(--green);line-height:1.15;margin-top:2px}
+.chip .v.neg{color:var(--red)}
+.chip .s{font-size:10.5px;color:var(--muted)}
+.callout{border-radius:12px;padding:14px 18px;margin:14px 0;font-size:14.5px}
+.callout.gold{background:rgba(252,197,91,.18);border:1px solid var(--gold-deep)}
+.callout.green{background:rgba(20,90,34,.08);border:1px solid rgba(20,90,34,.35)}
+.callout .t{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1.5px;font-size:10.5px;color:var(--green);margin-bottom:4px}
+.callout.gold .t{color:#8a5e0a}
+/* Tables */
+.tbl-wrap{overflow-x:auto;margin:14px 0}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff;border-radius:10px;overflow:hidden}
+th{background:var(--green);color:#fff;font-family:'Questrial',sans-serif;font-size:11px;letter-spacing:1.2px;text-transform:uppercase;padding:10px 12px;text-align:left}
+td{padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:nth-child(even) td{background:#faf8f3}
+tbody tr:hover td{background:rgba(252,197,91,.18)}
+td.num,th.num{font-family:'JetBrains Mono',monospace;text-align:right;white-space:nowrap}
+.pos{color:var(--green);font-weight:600}.neg{color:var(--red);font-weight:600}
+.score{display:inline-block;font-family:'JetBrains Mono',monospace;font-weight:700;padding:2px 8px;border-radius:6px;background:rgba(20,90,34,.12);color:var(--green)}
+/* Charts */
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}
+.chart-box{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px 10px;position:relative}
+.chart-box.solo{max-width:420px}
+.chart-box .ct{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.chart-box .ct h5{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1.5px;font-size:10.5px;color:var(--muted);font-weight:400}
+.chart-box .zoom{font-family:'Questrial',sans-serif;font-size:9.5px;letter-spacing:1px;text-transform:uppercase;color:var(--green);border:1px solid var(--line);border-radius:999px;padding:3px 9px;background:transparent;cursor:pointer}
+.chart-box .zoom:hover{background:rgba(252,197,91,.25)}
+.chart-box canvas{width:100%!important;height:158px!important}
+.chart-box .note{font-size:10.5px;color:var(--muted);margin-top:6px}
+/* Modal */
+.modal{position:fixed;inset:0;background:rgba(7,31,11,.82);display:none;align-items:center;justify-content:center;z-index:99;padding:30px}
+.modal.open{display:flex}
+.modal-box{background:var(--beige-card);border:2px solid var(--gold);border-radius:16px;width:min(1000px,96vw);padding:22px 26px;position:relative}
+.modal-box h5{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1.8px;font-size:12px;color:var(--green);margin-bottom:10px}
+.modal-box canvas{width:100%!important;height:min(520px,65vh)!important}
+.modal-close{position:absolute;top:12px;right:14px;border:none;background:var(--green);color:#fff;border-radius:50%;width:30px;height:30px;cursor:pointer;font-size:15px}
+/* Scenario cards */
+.scen-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:16px 0}
+.scen{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;border-top:5px solid var(--gold)}
+.scen.bull{border-top-color:var(--green)}.scen.bear{border-top-color:var(--red)}
+.scen .t{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1.8px;font-size:11px;color:var(--muted)}
+.scen .pt{font-family:'JetBrains Mono',monospace;font-size:30px;font-weight:700;color:var(--green);line-height:1.1;margin:6px 0 2px}
+.scen.bear .pt{color:var(--red)}.scen.base .pt{color:var(--gold-deep)}
+.scen .prob{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:11.5px;background:var(--beige);border:1px solid var(--line);border-radius:999px;padding:2px 10px;margin-bottom:8px}
+.scen ul{margin:6px 0 0 18px}.scen li{font-size:13px;margin:4px 0}
+.horizon{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--dark-green);margin:18px 0 4px}
+/* Risk cards */
+.risk{background:#fff;border:1px solid var(--line);border-left:4px solid var(--red);border-radius:10px;padding:14px 18px;margin:12px 0}
+.risk h4{color:var(--red);font-family:'Cormorant Garamond',serif;font-size:21px;margin:0 0 6px}
+.risk .meta{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 8px}
+.risk .tag{font-family:'Questrial',sans-serif;font-size:10px;letter-spacing:1.2px;text-transform:uppercase;border-radius:999px;padding:3px 10px;background:var(--beige);border:1px solid var(--line)}
+.risk .tag b{font-family:'JetBrains Mono',monospace;letter-spacing:0}
+.risk p{font-size:14px;margin:6px 0}
+/* Timeline */
+.timeline{position:relative;margin:18px 0 10px 12px;padding-left:28px}
+.timeline::before{content:"";position:absolute;left:6px;top:4px;bottom:4px;width:3px;border-radius:3px;background:linear-gradient(180deg,var(--green),var(--gold))}
+.tl{position:relative;margin:0 0 18px}
+.tl::before{content:"";position:absolute;left:-28px;top:5px;width:14px;height:14px;border-radius:50%;background:var(--gold);border:3px solid var(--green)}
+.tl .d{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--green);font-weight:600}
+.tl .e{font-weight:700;font-size:15px}
+.tl .x{color:var(--muted);font-size:13.5px}
+/* Glossary */
+.gl{background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 16px;margin:10px 0}
+.gl h4{font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--dark-green);margin:0}
+.gl .f{font-family:'JetBrains Mono',monospace;font-size:12px;background:var(--beige);padding:4px 8px;border-radius:6px;display:inline-block;margin:6px 0}
+.gl p{font-size:13.5px;margin:4px 0}
+.gl .back{font-family:'Questrial',sans-serif;font-size:10.5px;letter-spacing:1px;text-transform:uppercase}
+.src{font-size:12px;color:var(--muted)}
+.src a{color:var(--muted)}
+@media (max-width:880px){.chart-grid,.scen-grid{grid-template-columns:1fr}}
+@media (max-width:780px){.sidebar{display:none}.kpi-strip{grid-template-columns:repeat(3,1fr);padding:14px 18px}.hero,.content{padding-left:18px;padding-right:18px}.hero h1{font-size:34px}}
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="brand">Foundational Trading Academy<small>Investment Research</small></div>
+  <div class="ticker-box">
+    <div class="sym">ALAB</div>
+    <div class="nm">Astera Labs, Inc. · Nasdaq</div>
+    <div class="px">$293.56</div>
+    <div class="chg">+9.06% · close 2026-09-17</div>
+  </div>
+  <nav class="nav">
+    <a href="#s1"><span class="n">01</span>Executive Summary</a>
+    <a href="#s2"><span class="n">02</span>Micro &amp; Valuation</a>
+    <a href="#s3"><span class="n">03</span>Moat &amp; Management</a>
+    <a href="#s4"><span class="n">04</span>Financial Deep Dive</a>
+    <a href="#s5"><span class="n">05</span>Earnings Tracker</a>
+    <a href="#s6"><span class="n">06</span>Bull / Base / Bear</a>
+    <a href="#s7"><span class="n">07</span>Risks &amp; Anti-Thesis</a>
+    <a href="#s8"><span class="n">08</span>Catalyst Timeline</a>
+    <a href="#s9"><span class="n">09</span>Comparables</a>
+    <a href="#s10"><span class="n">10</span>First-Principles KPIs</a>
+    <a href="#s11"><span class="n">11</span>Glossary &amp; Method</a>
+  </nav>
+  <div class="side-foot">Report date: Sep 17, 2026<br>Data through Q2 FY26 (Jun 30, 2026)<br>Fiscal year ends Dec 31<br><br>For educational purposes only. Not investment advice.</div>
+</aside>
+
+<main class="main">
+  <header class="hero">
+    <div class="kicker">Deep-Dive Investment Report · AI Interconnect / Semiconductors</div>
+    <h1>Astera Labs <em>(ALAB)</em></h1>
+    <div class="sub">McKinsey's 2026 Technology Trends Outlook says AI is pivoting from training to inference, and that system performance is now decided by the ability to <em>move and package data</em> — naming Astera Labs and its 320-lane Scorpio X-Series smart fabric switch. Astera is the merchant pure-play on that shift. The debate is not the business — revenue grew 104% — it is the price: 42x trailing sales and one customer at 70%+.</div>
+    <div class="meta">
+      <span class="pill verdict">Verdict: BULL · Conviction <span class="mono">6 / 10</span></span>
+      <span class="pill">Price <span class="mono">$293.56</span></span>
+      <span class="pill">Mkt Cap <span class="mono">$50.9B</span></span>
+      <span class="pill">Sector · Semiconductors</span>
+      <span class="pill">FY ends Dec 31</span>
+    </div>
+  </header>
+
+  <section class="kpi-strip">
+    <div class="kpi"><div class="l">Price</div><div class="v">$293.56</div><div class="s">52w $97.89–$499.48</div></div>
+    <div class="kpi"><div class="l">Market Cap</div><div class="v">$50.9B</div><div class="s">173.5M sh · net cash $1.25B</div></div>
+    <div class="kpi"><div class="l">Revenue (TTM)</div><div class="v">$1.20B</div><div class="s">+98.5% YoY</div></div>
+    <div class="kpi"><div class="l">P / S (TTM)</div><div class="v">~42x</div><div class="s">"Euphoric" band</div></div>
+    <div class="kpi"><div class="l">Non-GAAP Op Mgn</div><div class="v">39.1%</div><div class="s">Q2 FY26 · GM 73.7%</div></div>
+    <div class="kpi"><div class="l">Street PT</div><div class="v">$389.95</div><div class="s">26 analysts · Buy · +33%</div></div>
+  </section>
+
+  <div class="content">
+
+  <!-- ================= SECTION 1 ================= -->
+  <section class="card" id="s1">
+    <div class="card-h" onclick="toggle(this)"><div class="badge">1</div><h2>Executive Summary &amp; Investment Thesis</h2><div class="chev">▾</div></div>
+    <div class="card-b">
+      <div class="thesis"><strong>Thesis (Bull, sized for volatility):</strong> Astera Labs is the merchant-silicon toll-road for the wiring inside AI racks — <a href="#g-retimer">retimers</a>, <a href="#g-aec">smart cable modules</a>, <a href="#g-fabric-switch">fabric switches</a>, and <a href="#g-cxl">CXL</a> memory controllers — at exactly the moment McKinsey argues that AI system performance has shifted from raw compute to the ability to <em>move and package data</em>. Q2 FY26 revenue grew <strong>104% YoY to a record $392.4M</strong>, PCIe 6 products crossed 50% of revenue, and management pulled forward the milestone where the Scorpio switch family becomes its <em>largest</em> product line to Q3 — a quarter early. The 320-lane Scorpio X-Series alone addresses a &gt;$10B market; total <a href="#g-tam">SAM</a> is guided above $12B by 2028 before UALink switching adds another leg. We are constructive, but we assign a <strong>6/10 conviction</strong>, not higher, because the stock trades at ~42x trailing sales in the "Euphoric" band of our <a href="#g-ps">P/S scale</a>, a single customer is 70%+ of revenue, and <a href="#g-beta">beta</a> is 3.78. Our 1-year probability-weighted target is <strong>$330</strong> (+12%); 3-year <strong>$450</strong> (+53%).</div>
+
+      <p>Astera reported Q2 FY26 (quarter ended June 30, 2026) on August 4. It was the ninth consecutive beat-and-raise as a public company (IPO March 2024). Revenue of $392.4M grew 27% sequentially and 104% year-over-year; non-GAAP gross margin was 73.7% and non-GAAP operating margin 39.1%; non-GAAP diluted EPS was $0.80. Management guided Q3 revenue to <strong>$540–560M</strong> — an implied ~40% sequential step-up — driven by the production ramp of the Scorpio X-Series 320-lane <a href="#g-scaleup">scale-up</a> smart fabric switch. The company also carries $1.25B of cash and marketable securities and zero debt.</p>
+
+      <p>The stock's own chart tells the tension in one line: a 52-week range of <strong>$97.89 to $499.48</strong>. ALAB roughly quintupled off its low, peaked near $500 in the summer, and has since given back ~41% to $293.56. On September 17 it jumped 9% in a single session. This is a high-beta momentum vehicle strapped to a genuinely exceptional fundamental story — and both facts have to sit in the thesis at once.</p>
+
+      <h3>What the bulls are right about</h3>
+      <ul>
+        <li><strong>The interconnect layer is where the money is migrating.</strong> As accelerators scale from boards to racks and models pass 10 trillion parameters, the bottleneck is data movement, not FLOPs. Astera sells the silicon that fixes it, and its dollar content per <a href="#g-xpu">XPU</a> is guided to exceed $1,000 for Scorpio X alone.</li>
+        <li><strong>Product breadth is compounding into a platform.</strong> Aries (record quarter), Taurus (new 3.2T Ethernet/UALink retimers), Scorpio (P- and X-Series), Leo (CXL, expanded Sept 15), all unified by the <a href="#g-cosmos">COSMOS</a> software suite. Optical and custom silicon are additive legs for 2027+.</li>
+        <li><strong>Margins and cash are already here.</strong> Unusual for a hyper-growth chip company, Astera runs a ~74% gross margin, a ~39% non-GAAP operating margin, and positive free cash flow — it is funding the ramp internally, not with dilution-heavy raises.</li>
+      </ul>
+
+      <h3>Why conviction is 6, not 8</h3>
+      <ul>
+        <li><strong>Valuation prices in near-perfection.</strong> 42x trailing sales, ~52x forward non-GAAP earnings, ~145x trailing GAAP P/E. Even on FY27 revenue that could plausibly double again, the multiple leaves little room for a demand air-pocket.</li>
+        <li><strong>Customer concentration is extreme.</strong> In FY2025 one end customer was &gt;70% of revenue and the top three were ~86%. A single hyperscaler's ASIC roadmap slip would reprice the stock violently.</li>
+        <li><strong>The GAAP profit is flattered.</strong> Q2's $153M GAAP net income includes a $50M income-tax <em>benefit</em>; the durable earnings power is the ~$146M non-GAAP figure.</li>
+      </ul>
+
+      <div class="chips">
+        <div class="chip"><div class="l">Revenue Q2 FY26</div><div class="v">$392.4M</div><div class="s">+104% YoY · +27% QoQ</div></div>
+        <div class="chip"><div class="l">Q3 FY26 Guide</div><div class="v">$550M</div><div class="s">midpoint · ~+40% QoQ</div></div>
+        <div class="chip"><div class="l">Non-GAAP GM</div><div class="v">73.7%</div><div class="s">above 73% guide</div></div>
+        <div class="chip"><div class="l">Non-GAAP EPS</div><div class="v">$0.80</div><div class="s">+31% QoQ</div></div>
+        <div class="chip"><div class="l">Cash / Debt</div><div class="v">$1.25B</div><div class="s">no debt</div></div>
+        <div class="chip"><div class="l">Top Customer</div><div class="v neg">&gt;70%</div><div class="s">FY25 · top 3 ~86%</div></div>
+        <div class="chip"><div class="l">Conviction</div><div class="v">6/10</div><div class="s">Bull</div></div>
+      </div>
+
+      <div class="callout gold"><div class="t">Position in the FTA Framework</div>At ~42x trailing sales ALAB sits in the "Euphoric" band (&gt;30x) of our <a href="#g-ps">P/S scale</a> — a valuation that only resolves well if hyper-growth persists for years. The setup is the opposite of the classic "great quarter, bad reaction" dislocation: here the business is nearly flawless and the <em>price</em> is the risk. We own the theme, respect the drawdown that has already de-risked the multiple from ~90x sales at the peak, and size the position for a stock that can move 10% in a day. The thesis breaks if hyperscaler capex plateaus or the top customer in-sources.</div>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 2 ================= -->
+  <section class="card" id="s2">
+    <div class="card-h" onclick="toggle(this)"><div class="badge">2</div><h2>Microeconomic &amp; Valuation Analysis</h2><div class="chev">▾</div></div>
+    <div class="card-b">
+      <h3>Industry &amp; TAM</h3>
+      <p>Astera plays in the connectivity layer of AI infrastructure — the silicon that moves data between accelerators, CPUs, memory and the network inside a rack. McKinsey's 2026 Technology Trends Outlook frames the shift bluntly: as inference workloads overtake training, performance depends on the ability to move and package data, and it names Astera Labs (alongside Lumentum and Lightmatter) among the companies building the high-bandwidth electrical and optical interconnect that makes it possible, citing Astera's 320-lane Scorpio X-Series smart fabric switch by name.</p>
+      <p>Management sizes its serviceable market above <strong>$12B by 2028</strong>. The single largest piece is <a href="#g-scaleup">scale-up</a> fabric switching, where the Scorpio X-Series addresses a &gt;$10B opportunity (some estimates put the merchant scale-up switching market near $20B), and UALink-based switching tied to AMD and other accelerators layers on a further ~$17B TAM as it ships in 2027–28. On top of that sit signal-conditioning (Aries/Taurus), CXL memory (Leo), and an emerging optical/custom-silicon business. This is a market growing far faster than the broad semiconductor cycle because it is levered directly to hyperscaler AI capex.</p>
+
+      <div class="chart-grid">
+        <div class="chart-box"><div class="ct"><h5>Annual Revenue &amp; Growth (FY23–FY26E)</h5><button class="zoom" onclick="expand('c_annual')">Click to expand</button></div><canvas id="c_annual"></canvas><div class="note">FY ends Dec 31. FY26E = H1 actual $700.8M + Q3 guide + FTA Q4 estimate. Source: company filings.</div></div>
+        <div class="chart-box"><div class="ct"><h5>Market Cap vs Peers ($B, log)</h5><button class="zoom" onclick="expand('c_mcap')">Click to expand</button></div><canvas id="c_mcap"></canvas><div class="note">As of Sep 16–17, 2026. NVDA/AVGO/MRVL/LITE approximate from secondary sources.</div></div>
+      </div>
+
+      <h3>Valuation multiples</h3>
+      <div class="chips">
+        <div class="chip"><div class="l">P/S (TTM)</div><div class="v">~42x</div><div class="s">"Euphoric" band</div></div>
+        <div class="chip"><div class="l">P/S (Fwd FY26E)</div><div class="v">~27x</div><div class="s">~$1.87B rev est</div></div>
+        <div class="chip"><div class="l">P/S (Fwd FY27E)</div><div class="v">~18x</div><div class="s">~$2.8B rev est</div></div>
+        <div class="chip"><div class="l">GAAP P/E (TTM)</div><div class="v">~145x</div><div class="s">flattered by tax benefit</div></div>
+        <div class="chip"><div class="l">Fwd P/E (non-GAAP)</div><div class="v">~52x</div><div class="s">per StockAnalysis</div></div>
+        <div class="chip"><div class="l">Beta</div><div class="v neg">3.78</div><div class="s">high volatility</div></div>
+      </div>
+      <p>On a trailing basis Astera is one of the most expensive scaled semiconductor names in the market — ~42x sales and ~145x GAAP earnings. But the trailing lens is unfair to a company doubling revenue: on our FY27 revenue estimate (~$2.8B, which assumes growth <em>halves</em> from today's 100%) the multiple compresses to ~18x sales, in line with Marvell and Credo and below the AI-optical names. The <a href="#g-peg">growth-adjusted</a> picture in Section 9 is the honest way to read it. GAAP P/E is not the right tool here — Q2's earnings were boosted by a one-off income-tax benefit and the durable measure is non-GAAP EPS, on which the stock is ~52x forward.</p>
+
+      <h3>Institutional ownership &amp; insider activity</h3>
+      <p>Institutions own the large majority of the float; the company is young (IPO March 20, 2024) so index and momentum flows matter — ALAB has been cited repeatedly as an S&amp;P 500 and Nasdaq-100 addition candidate through 2026, a mechanical demand tailwind. Insider activity is the softer spot: founders and executives have been steady sellers. Most disclosed sales are automatic "sell-to-cover" transactions to fund taxes on vesting <a href="#g-rsu">RSUs</a> (e.g., COO Sanjay Gajendra's August 2026 Form 4s), but there have also been larger discretionary sales, including one insider selling around the $458 level near the highs. That is typical for a post-IPO founder cohort monetizing a decade of illiquidity, and management still holds substantial equity, but it is not a bullish tell and we weight it in the score.</p>
+
+      <h3>Analyst growth estimates</h3>
+      <p>Consensus across 26 analysts is "Buy" with an average 12-month target of <strong>$389.95</strong> (+33% from the $293.56 close). The Street models revenue growth decelerating from ~100% in FY26 toward ~40–50% in FY27 as the base scales — still one of the fastest growth profiles among $50B+ semis. The key modeling debate is gross margin: Astera has guided margins <em>down</em> toward ~72% as lower-margin hardware (fabric switch systems, cable modules) mixes up, a deliberate trade of margin for a much larger dollar TAM.</p>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 3 ================= -->
+  <section class="card" id="s3">
+    <div class="card-h" onclick="toggle(this)"><div class="badge">3</div><h2>Qualitative Analysis — Moat, Management &amp; Culture</h2><div class="chev">▾</div></div>
+    <div class="card-b">
+      <h3>Competitive moat — a systems view</h3>
+      <p>Astera's moat is not a single patent; it is the combination of being <em>early, standards-native, and software-wrapped</em> at the exact interfaces hyperscalers are standardizing on. Three reinforcing layers:</p>
+      <ul>
+        <li><strong>Design-win lock-in.</strong> Connectivity silicon is qualified into a customer's board and rack years before volume. Once Aries retimers or Scorpio switches are designed into a hyperscaler's AI platform, they ship for the life of that platform, and the next platform tends to reuse the incumbent to de-risk bring-up. Astera's win rate against alternatives at multiple hyperscalers is high.</li>
+        <li><strong>COSMOS software.</strong> Every product runs the same <a href="#g-cosmos">COSMOS</a> suite for telemetry, diagnostics, fleet management and link optimization. That turns a bag of chips into a manageable rack-scale system and raises switching costs — a customer that standardizes on COSMOS observability is reluctant to re-instrument around a competitor.</li>
+        <li><strong>Standards seat at the table.</strong> Astera is a builder in PCIe, CXL, Ethernet, UALink and NVLink Fusion ecosystems simultaneously. It ships Scorpio P-Series for PCIe head-node/scale-out, is developing UALink switches for open scale-up fabrics (with AMD), and has integrated NVLink Fusion — i.e., it can win whether the customer's scale-up fabric is proprietary (NVIDIA) or open (UALink). That protocol-agnosticism is the real hedge.</li>
+      </ul>
+      <p>Competitive set: <strong>Broadcom</strong> and <strong>Marvell</strong> (huge, own custom-ASIC and switch silicon, the most credible threats in fabric switching), <strong>Credo</strong> (the closest pure-play peer in AECs/retimers/optical DSPs), <strong>NVIDIA</strong> (owns the reference NVLink scale-up fabric and can in-source), and the hyperscalers' own in-house teams. Astera's answer is to be the <em>merchant</em> option that lets a hyperscaler avoid single-sourcing from NVIDIA or building everything itself.</p>
+
+      <h3>Founder-led? Yes.</h3>
+      <p>CEO Jitendra Mohan and President/COO Sanjay Gajendra co-founded Astera in 2017 and are still running it; Chief Product Officer Casey Morrison is the third founder. Founder-led semiconductor companies with the technical founders still in the building tend to sustain roadmap cadence — and Astera's cadence (Aries → Taurus → Leo → Scorpio P → Scorpio X → optical/CPO) has been relentless and, so far, on schedule.</p>
+
+      <h3>Executive bench &amp; capital allocation</h3>
+      <p>The team has executed a clean beat-and-raise every quarter since the IPO and has kept the balance sheet pristine — $1.25B cash, no debt, funding R&amp;D and inventory internally. Capital allocation is disciplined and tuck-in oriented: the acquisition of <strong>aiXscale Photonics</strong> (fiber-chip coupling, closed for ~$69M net cash in H1 FY26) buys optical scale-up capability rather than betting the company on a transformational deal. There is no dividend and no buyback yet — appropriate for a company still investing behind a doubling top line — but that also means <a href="#g-sbc">stock-based comp</a>-driven dilution is currently unmitigated.</p>
+
+      <h3>Culture &amp; organizational traits</h3>
+      <ul>
+        <li><strong>Customer obsession:</strong> deep co-design with hyperscalers and accelerator vendors (AMD, Arm, Intel, NVIDIA reference designs); a Cloud-Scale Interop Lab in Taiwan built specifically to shorten customer qualification.</li>
+        <li><strong>Innovation pace:</strong> R&amp;D is the dominant expense line (~$136M in Q2, ~35% of revenue), consistent with a company racing to stay ahead of Broadcom/Marvell on the next protocol node.</li>
+        <li><strong>Talent density:</strong> only ~756 employees generating a ~$1.2B revenue run-rate — extraordinary revenue-per-head and a sign the model scales on IP, not headcount.</li>
+        <li><strong>Structural traits:</strong> standards-body participation (idea meritocracy across an open ecosystem), a design-services posture (Arm Total Design partner) that decentralizes how customers engage, and a willingness to trade gross margin for TAM — evidence of long-horizon thinking.</li>
+        <li><strong>Watch-items:</strong> heavy insider selling, SBC dilution, and a customer base concentrated in a handful of hyperscalers.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 4 ================= -->
+  <section class="card" id="s4">
+    <div class="card-h" onclick="toggle(this)"><div class="badge">4</div><h2>Quantitative Analysis — Financial Deep Dive</h2><div class="chev">▾</div></div>
+    <div class="card-b">
+      <h3>Revenue streams, explained simply</h3>
+      <p>Astera sells five product families, all standards-based connectivity silicon plus the COSMOS software that manages them:</p>
+      <ul>
+        <li><strong>Aries</strong> — PCIe/CXL <a href="#g-retimer">retimers</a> and smart cable modules that clean up and extend high-speed signals between GPUs, CPUs and switches. The original franchise; a <em>record</em> revenue quarter in Q2 FY26.</li>
+        <li><strong>Taurus</strong> — <a href="#g-aec">smart cable modules</a> and signal conditioners for Ethernet <a href="#g-scaleout">scale-out</a>; new 3.2T Smart Retimers/Redrivers for 224G Ethernet and UALink.</li>
+        <li><strong>Scorpio</strong> — fabric switches: the <strong>P-Series</strong> for PCIe head-node/scale-out and the <strong>X-Series</strong> 320-lane smart fabric switch for scale-up. Set to become the largest product family in Q3 FY26.</li>
+        <li><strong>Leo</strong> — CXL memory controllers for memory expansion/pooling; the X-Series line was expanded on Sept 15, 2026 for agentic-AI and general cloud workloads.</li>
+        <li><strong>COSMOS</strong> — the software suite that ties telemetry, diagnostics and fleet management across every product.</li>
+      </ul>
+      <p>PCIe 6 products represented &gt;50% of total revenue in Q2 FY26 (up from ~one-third in Q1), and the mix is shifting from signal-conditioning toward higher-dollar fabric switching. Astera does not disclose exact revenue per product line, but management's framing is clear: Scorpio becomes the largest family in Q3, marking the "evolution into a complete AI fabric infrastructure provider."</p>
+
+      <div class="chart-grid">
+        <div class="chart-box"><div class="ct"><h5>Quarterly Revenue ($M) &amp; YoY Growth — Last 8 Quarters</h5><button class="zoom" onclick="expand('c_rev')">Click to expand</button></div><canvas id="c_rev"></canvas><div class="note">Q3 FY24 → Q2 FY26. YoY for FY24 quarters approximate. Source: company 8-K filings.</div></div>
+        <div class="chart-box"><div class="ct"><h5>Gross Margin — GAAP vs Non-GAAP (%)</h5><button class="zoom" onclick="expand('c_gm')">Click to expand</button></div><canvas id="c_gm"></canvas><div class="note">Deliberate glide toward ~72% as hardware/switch mix rises. Q4 FY24 &amp; Q1 FY25 approximate.</div></div>
+      </div>
+
+      <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Quarter (FY)</th><th class="num">Revenue</th><th class="num">YoY</th><th class="num">GAAP GM</th><th class="num">Non-GAAP GM</th><th class="num">Non-GAAP Op Mgn</th><th class="num">Non-GAAP EPS</th><th class="num">SBC</th></tr></thead>
+        <tbody>
+          <tr><td>Q3 FY24 (Sep-24)</td><td class="num">$113.1M</td><td class="num pos">~+206%</td><td class="num">77.7%</td><td class="num">77.8%</td><td class="num">32.4%</td><td class="num pos">$0.23</td><td class="num">$45.5M</td></tr>
+          <tr><td>Q4 FY24 (Dec-24)</td><td class="num">~$141.1M</td><td class="num pos">~+179%</td><td class="num">~76%</td><td class="num">~76%</td><td class="num">~34%</td><td class="num pos">~$0.37</td><td class="num">~$44M</td></tr>
+          <tr><td>Q1 FY25 (Mar-25)</td><td class="num">$159.4M</td><td class="num pos">~+144%</td><td class="num">~76%</td><td class="num">~76%</td><td class="num">~34%</td><td class="num pos">~$0.33</td><td class="num">~$42M</td></tr>
+          <tr><td>Q2 FY25 (Jun-25)</td><td class="num">$191.9M</td><td class="num pos">+150%</td><td class="num">75.8%</td><td class="num">76.0%</td><td class="num">39.2%</td><td class="num pos">$0.44</td><td class="num">$35.5M</td></tr>
+          <tr><td>Q3 FY25 (Sep-25)</td><td class="num">$230.6M</td><td class="num pos">+104%</td><td class="num">76.2%</td><td class="num">76.4%</td><td class="num">41.7%</td><td class="num pos">$0.49</td><td class="num">$40.7M</td></tr>
+          <tr><td>Q4 FY25 (Dec-25)</td><td class="num">$270.6M</td><td class="num pos">+92%</td><td class="num">~75.7%</td><td class="num">75.7%</td><td class="num">~38%</td><td class="num pos">$0.58</td><td class="num">~$44M</td></tr>
+          <tr><td>Q1 FY26 (Mar-26)</td><td class="num">$308.4M</td><td class="num pos">+93%</td><td class="num">76.3%</td><td class="num">76.4%</td><td class="num">36.2%</td><td class="num pos">$0.61</td><td class="num">$48.9M</td></tr>
+          <tr><td>Q2 FY26 (Jun-26)</td><td class="num">$392.4M</td><td class="num pos">+104%</td><td class="num">73.3%</td><td class="num">73.7%</td><td class="num">39.1%</td><td class="num pos">$0.80</td><td class="num">$64.0M</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p class="src">Sources: Astera Labs 8-K press releases (Q3 FY25, Q2 FY26) and prior-year comparatives disclosed therein; Q4 FY25 press release (Feb 10, 2026). "~" denotes values estimated from disclosed full-year/nine-month figures or growth rates rather than stated directly, and should be treated as approximate.</p>
+
+      <h3>Margins, operating leverage, and the deliberate margin glide</h3>
+      <div class="chart-grid">
+        <div class="chart-box"><div class="ct"><h5>Non-GAAP Operating Margin &amp; EPS</h5><button class="zoom" onclick="expand('c_opm')">Click to expand</button></div><canvas id="c_opm"></canvas><div class="note">Op margin ~high-30s%/low-40s% even as gross margin steps down.</div></div>
+        <div class="chart-box"><div class="ct"><h5>Cash &amp; Marketable Securities ($M)</h5><button class="zoom" onclick="expand('c_cash')">Click to expand</button></div><canvas id="c_cash"></canvas><div class="note">Self-funded ramp; no debt. Dec-24 → Jun-26.</div></div>
+      </div>
+      <p>Astera is the rare hyper-growth semiconductor company that is already highly profitable on an operating basis: a ~74% gross margin and a ~37–41% non-GAAP operating margin. The gross-margin <em>decline</em> from ~78% (FY24) toward the guided ~72% is not deterioration — it is mix. As Scorpio fabric switches (which include more hardware/system content) and cable modules grow faster than pure signal-conditioning chips, blended margin falls but <em>gross-profit dollars and dollar content per rack rise sharply</em>. Management is explicitly trading points of margin for a multiple-larger TAM, which for a share-gaining franchise is the right call.</p>
+      <p>Operating leverage is visible: non-GAAP operating income roughly doubled from Q2 FY25 ($75.2M) to Q2 FY26 ($153.5M) on 104% revenue growth, with R&amp;D — not S&amp;M or G&amp;A — the dominant investment. Revenue per employee is extraordinary at roughly $1.6M annualized on ~756 people.</p>
+
+      <h3>Free cash flow, working capital, dilution</h3>
+      <div class="chips">
+        <div class="chip"><div class="l">Cash + ST Inv.</div><div class="v">$1.25B</div><div class="s">Jun 30, 2026</div></div>
+        <div class="chip"><div class="l">Total Debt</div><div class="v">$0</div><div class="s">no borrowings</div></div>
+        <div class="chip"><div class="l">OCF (H1 FY26)</div><div class="v">$162.3M</div><div class="s">capex $28.1M</div></div>
+        <div class="chip"><div class="l">FCF (H1 FY26)</div><div class="v">~$134M</div><div class="s">~19% margin</div></div>
+        <div class="chip"><div class="l">Current Ratio</div><div class="v">~10x</div><div class="s">$1.65B CA / $164M CL</div></div>
+        <div class="chip"><div class="l">Diluted Shares</div><div class="v neg">183.3M</div><div class="s">vs ~156.8M Q3 FY24</div></div>
+      </div>
+      <p>Working capital is pristine — a <a href="#g-current-ratio">current ratio</a> near 10x, driven by the cash pile and no debt. The one build to watch is inventory and receivables, both of which jumped in H1 FY26 (AR to $192M, inventory to $114M) as the company stages for the Scorpio ramp; that is a healthy build ahead of a guided ~40% sequential revenue step, but it does temper reported FCF. <a href="#g-dilution">Dilution</a> is the genuine cost: diluted share count has risen from ~156.8M (Q3 FY24) to ~183.3M, roughly +17% in two years, almost entirely SBC-driven ($64M SBC in Q2, ~16% of revenue). There is no buyback yet to offset it.</p>
+
+      <div class="chart-grid">
+        <div class="chart-box"><div class="ct"><h5>SBC as % of Revenue &amp; Diluted Shares (M)</h5><button class="zoom" onclick="expand('c_sbc')">Click to expand</button></div><canvas id="c_sbc"></canvas><div class="note">SBC intensity falling as revenue scales; share count still climbing.</div></div>
+        <div class="chart-box"><div class="ct"><h5>FY28 Serviceable Market ($B, illustrative mix)</h5><button class="zoom" onclick="expand('c_tam')">Click to expand</button></div><canvas id="c_tam"></canvas><div class="note">Company-guided &gt;$12B SAM by 2028; component split is FTA illustration.</div></div>
+      </div>
+      <p>The encouraging trend inside the dilution story: SBC as a percentage of revenue has fallen from ~40% (Q3 FY24, IPO-inflated) to ~16% in Q2 FY26 as the top line scaled past the equity grants. If revenue keeps compounding, the ratio keeps falling, and a buyback becomes plausible once the Scorpio ramp is in the base.</p>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 5 ================= -->
+  <section class="card" id="s5">
+    <div class="card-h" onclick="toggle(this)"><div class="badge">5</div><h2>Earnings Tracker — Management Credibility</h2><div class="chev">▾</div></div>
+    <div class="card-b">
+      <p>Nine consecutive beat-and-raise quarters since the March 2024 IPO. The table tracks specific guidance against outcomes; where the exact prior-quarter guidance range was not in our primary sources we mark it approximate and score conservatively.</p>
+      <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Quarter / Date</th><th>Specific Promise / Guidance</th><th>Actual Result</th><th class="num">Credibility</th></tr></thead>
+        <tbody>
+          <tr><td>Q3 FY24<br><span class="src">Nov 4, 2024</span></td><td>Q4 FY24 revenue guide ~$98–102M (initial post-IPO cadence)</td><td>Revenue $113.1M; back-half beat; margins ~78%</td><td class="num"><span class="score">9/10</span></td></tr>
+          <tr><td>Q4 FY24<br><span class="src">Feb 2025</span></td><td>Initial FY25 framing; Q1 FY25 revenue guide ~$151–155M*</td><td>FY24 revenue $396.3M; Q1 FY25 landed $159.4M — above guide</td><td class="num"><span class="score">9/10</span></td></tr>
+          <tr><td>Q1 FY25<br><span class="src">May 2025</span></td><td>Q2 FY25 revenue guide ~$170–180M*; continued PCIe 6 ramp</td><td>Q2 FY25 revenue $191.9M (+150% YoY); NG op margin 39.2%</td><td class="num"><span class="score">10/10</span></td></tr>
+          <tr><td>Q2 FY25<br><span class="src">Aug 2025</span></td><td>Q3 FY25 revenue guide ~$203–210M*; Scorpio design-win expansion</td><td>Revenue $230.6M (+104% YoY); NG EPS $0.49; NG op margin 41.7%</td><td class="num"><span class="score">10/10</span></td></tr>
+          <tr><td>Q3 FY25<br><span class="src">Nov 4, 2025</span></td><td>Q4 FY25 revenue $245–253M; NG GM ~75%; NG EPS ~$0.51</td><td>Revenue $270.6M (beat high end by ~$18M); NG GM 75.7%; NG EPS $0.58</td><td class="num"><span class="score">10/10</span></td></tr>
+          <tr><td>Q4 FY25<br><span class="src">Feb 10, 2026</span></td><td>Q1 FY26 revenue $286–297M; NG GM ~74%; NG EPS $0.53–0.54</td><td>Revenue $308.4M (beat); NG GM 76.4% (beat); NG EPS $0.61 (beat)</td><td class="num"><span class="score">10/10</span></td></tr>
+          <tr><td>Q1 FY26<br><span class="src">May 2026</span></td><td>Q2 FY26 revenue ~$360–380M*; NG GM ~73%</td><td>Revenue $392.4M (beat); NG GM 73.7% (above 73%); NG EPS $0.80</td><td class="num"><span class="score">10/10</span></td></tr>
+          <tr><td>Q2 FY26<br><span class="src">Aug 4, 2026</span></td><td>Q3 FY26 revenue $540–560M; NG GM ~72%; NG EPS $1.16–1.21; ~185M sh</td><td>Pending (reports ~Nov 3, 2026). Implies ~+40% QoQ on Scorpio X ramp.</td><td class="num"><span class="score">—</span></td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="chart-grid">
+        <div class="chart-box"><div class="ct"><h5>Revenue: Guide (high end) vs Actual ($M)</h5><button class="zoom" onclick="expand('c_guide')">Click to expand</button></div><canvas id="c_guide"></canvas><div class="note">Last three reported prints. Q1 FY26 guide-high approximate.</div></div>
+        <div class="chart-box"><div class="ct"><h5>Non-GAAP EPS: Guide (high end) vs Actual</h5><button class="zoom" onclick="expand('c_eps')">Click to expand</button></div><canvas id="c_eps"></canvas><div class="note">Q2 FY26 EPS guide-high approximate. Q3 FY26 shown as guide only.</div></div>
+      </div>
+      <div class="callout green"><div class="t">Credibility verdict</div>Average score ~9.7/10. Management has beaten and raised every quarter as a public company, and the guides have been floors, not forecasts. The one caveat is the same as RBRK's: the market now <em>expects</em> a beat-and-raise, so the share-price reaction depends on the <em>magnitude</em> versus a very high whisper number — which is why an execution-perfect stock can still fall 40% off its highs on a "merely good" print or a broad AI de-rating. Values marked * are estimated guidance ranges and should be treated as approximate.</div>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 6 ================= -->
+  <section class="card" id="s6">
+    <div class="card-h" onclick="toggle(this)"><div class="badge">6</div><h2>Bull / Base / Bear Case Scenarios</h2><div class="chev">▾</div></div>
+    <div class="card-b">
+      <p>Targets use ~185M diluted shares near-term rising toward ~205M by FY29 (continued SBC dilution), net cash added at ~$1.25B growing with FCF, and value the company on forward EV/Sales cross-checked against the peer set in Section 9. Given a 3.78 beta and a $97–$499 realized 52-week range, the distribution of outcomes is genuinely wide — the scenario spreads reflect that.</p>
+
+      <div class="horizon">1-Year Horizon (to Sep 2027) — Probability-weighted target: <span style="font-family:'JetBrains Mono',monospace">$330</span> (+12%)</div>
+      <div class="scen-grid">
+        <div class="scen bull"><div class="t">Bull Case</div><div class="pt">$470</div><span class="prob">Probability 30%</span><ul><li>Scorpio X ramps ahead of plan; FY26 revenue &gt;$1.95B, FY27 guide implies ~50%+ growth</li><li>UALink/optical design wins named; multiple holds ~22–24x fwd sales</li><li>S&amp;P 500 inclusion adds index demand</li></ul></div>
+        <div class="scen base"><div class="t">Base Case</div><div class="pt">$330</div><span class="prob">Probability 45%</span><ul><li>FY26 revenue ~$1.87B; FY27 ~$2.8B (~50% growth)</li><li>NG op margin ~38%; multiple settles ~18x fwd sales</li><li>Roughly the current Street target zone (~$390) discounted for beta</li></ul></div>
+        <div class="scen bear"><div class="t">Bear Case</div><div class="pt">$165</div><span class="prob">Probability 25%</span><ul><li>Hyperscaler capex digestion or top-customer ASIC slip; growth halves faster than expected</li><li>Multiple compresses to ~9–10x sales (peer floor)</li><li>Broad AI-infrastructure de-rating; beta works against you</li></ul></div>
+      </div>
+
+      <div class="horizon">3-Year Horizon (to Sep 2029) — Probability-weighted target: <span style="font-family:'JetBrains Mono',monospace">$450</span> (+53%, ~15% CAGR)</div>
+      <div class="scen-grid">
+        <div class="scen bull"><div class="t">Bull Case</div><div class="pt">$820</div><span class="prob">Probability 30%</span><ul><li>Revenue ~$5.5B FY29 as Scorpio X + UALink + optical all scale; content/XPU &gt;$1,000</li><li>NG op margin high-30s%; ~14x sales on a much larger base</li><li>Astera becomes the default merchant fabric vendor</li></ul></div>
+        <div class="scen base"><div class="t">Base Case</div><div class="pt">$450</div><span class="prob">Probability 45%</span><ul><li>Revenue ~$4.3B FY29 (~40% CAGR off FY26)</li><li>Margin glide to ~72% GM, ~37% NG op margin</li><li>~10–11x sales as growth normalizes</li></ul></div>
+        <div class="scen bear"><div class="t">Bear Case</div><div class="pt">$160</div><span class="prob">Probability 25%</span><ul><li>Broadcom/Marvell/NVIDIA compress merchant fabric pricing; top customer in-sources retimers</li><li>Revenue ~$2.6B; margins pressured; ~6x sales</li><li>Momentum unwinds; multiple mean-reverts hard</li></ul></div>
+      </div>
+
+      <div class="horizon">5-Year Horizon (to Sep 2031) — Probability-weighted target: <span style="font-family:'JetBrains Mono',monospace">$600</span> (+104%, ~15% CAGR)</div>
+      <div class="scen-grid">
+        <div class="scen bull"><div class="t">Bull Case</div><div class="pt">$1,150</div><span class="prob">Probability 30%</span><ul><li>Revenue ~$9B FY31; Astera is the interconnect standard across scale-up and scale-out</li><li>Optical/CPO is a material third leg; buybacks offset dilution</li><li>~10x sales on durable 25%+ growth</li></ul></div>
+        <div class="scen base"><div class="t">Base Case</div><div class="pt">$620</div><span class="prob">Probability 45%</span><ul><li>Revenue ~$6.5B (~30% CAGR); margins stable</li><li>~8x sales as a mature, cash-generative franchise</li><li>Customer base diversified below 50% single-customer</li></ul></div>
+        <div class="scen bear"><div class="t">Bear Case</div><div class="pt">$190</div><span class="prob">Probability 25%</span><ul><li>Connectivity commoditizes; AI capex cycle turns; share losses to integrated peers</li><li>Revenue ~$3.5B; ~5x sales</li><li>The classic hyper-growth-to-value de-rating</li></ul></div>
+      </div>
+
+      <div class="chart-grid">
+        <div class="chart-box"><div class="ct"><h5>Scenario Price Targets vs Current ($)</h5><button class="zoom" onclick="expand('c_scen')">Click to expand</button></div><canvas id="c_scen"></canvas><div class="note">Bars = scenario targets; line = probability-weighted; dashed = current $293.56.</div></div>
+        <div class="chart-box"><div class="ct"><h5>Base-Case Revenue Path ($M)</h5><button class="zoom" onclick="expand('c_path')">Click to expand</button></div><canvas id="c_path"></canvas><div class="note">FY26 = H1 actual + guide; FY27–FY31 = FTA base-case model.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 7 ================= -->
+  <section class="card" id="s7">
+    <div class="card-h" onclick="toggle(this)"><div class="badge">7</div><h2>Risks &amp; Anti-Thesis — Steelmanning the Bear</h2><div class="chev">▾</div></div>
+    <div class="card-b">
+      <p>If we were short ALAB, these are the five arguments we would lead with, in order of strength.</p>
+
+      <div class="risk"><h4>1. Customer concentration is extreme and largely one name</h4>
+        <div class="meta"><span class="tag">Probability <b>35%</b></span><span class="tag">Impact <b>Severe</b></span><span class="tag">Priced in <b>No</b></span></div>
+        <p>In FY2025 a single end customer was <strong>&gt;70%</strong> of revenue and the top three were ~86% (per the FY2025 10-K). That customer is widely understood to be a hyperscaler building its own AI accelerators (Astera also has a warrant agreement with Amazon). If that customer's next-generation ASIC roadmap slips, dual-sources to Broadcom/Marvell, or in-sources retimer/switch functions, a mid-single-digit-billion revenue base could be cut sharply — and at 42x sales the stock would not fall gently. This is the risk that most distinguishes ALAB from a diversified peer, and it is the least "priced in."</p>
+        <p><em>Our rebuttal:</em> concentration is falling as new hyperscalers and AMD-based platforms ramp, Scorpio design wins now span "multiple hyperscaler customers," and switching costs on qualified silicon are high. But this remains the fastest way the thesis breaks.</p></div>
+
+      <div class="risk"><h4>2. The valuation prices in near-perfection</h4>
+        <div class="meta"><span class="tag">Probability <b>60%</b></span><span class="tag">Impact <b>High</b></span><span class="tag">Priced in <b>Partially</b></span></div>
+        <p>~42x trailing sales, ~52x forward non-GAAP EPS, ~145x GAAP P/E, 3.78 beta. The stock has already demonstrated it can round-trip from ~$100 to ~$500 and back to ~$294 inside a year. Any deceleration below the ~40–50% FY27 growth the multiple implies — or simply a rotation out of AI-infrastructure names — can compress the multiple by half without any change in the fundamentals. High multiple + high beta is a combustible combination in a drawdown.</p>
+        <p><em>Our rebuttal:</em> the ~41% fall from the peak has already taken the multiple from ~90x sales to ~42x, and on FY27 estimates it is ~18x — reasonable for the growth. But you must underwrite the position knowing the multiple, not just the business, is the swing factor.</p></div>
+
+      <div class="risk"><h4>3. Broadcom, Marvell and NVIDIA can compete down the middle</h4>
+        <div class="meta"><span class="tag">Probability <b>45%</b></span><span class="tag">Impact <b>High</b></span><span class="tag">Priced in <b>Partially</b></span></div>
+        <p>Fabric switching — Scorpio's biggest growth engine — is exactly where Broadcom (Tomahawk/Jericho, custom ASICs) and Marvell (custom silicon, switch IP) are strongest, and NVIDIA owns the reference NVLink scale-up fabric and can bundle. Astera is the merchant challenger in a market where the incumbents have vastly larger R&amp;D budgets and existing hyperscaler relationships. If UALink adoption is slower than hoped or NVLink stays proprietary and dominant, Scorpio X's &gt;$10B TAM could convert far more slowly.</p>
+        <p><em>Our rebuttal:</em> hyperscalers <em>want</em> a merchant alternative to avoid single-sourcing, Astera is protocol-agnostic (PCIe, UALink, NVLink Fusion), and being early to qualification is a durable edge. But this is a fight against the two best analog/connectivity franchises in the industry.</p></div>
+
+      <div class="risk"><h4>4. Gross margin is on a deliberate downtrend</h4>
+        <div class="meta"><span class="tag">Probability <b>70%</b></span><span class="tag">Impact <b>Medium</b></span><span class="tag">Priced in <b>Mostly</b></span></div>
+        <p>Non-GAAP gross margin has slid from ~78% (FY24) to 73.7% (Q2 FY26), and management guides toward ~72% as switch/hardware and cable mix rises. If the mix shift overshoots — or if pricing pressure from incumbents accelerates it — margins could settle below 70%, compressing the earnings power that partially justifies the multiple. A high-multiple stock with falling margins is a narrative risk even when gross-profit dollars are still growing.</p>
+        <p><em>Our rebuttal:</em> this is mix, not competition, and the trade of margin for a far larger dollar TAM is deliberate and value-accretive; ~72% is still an elite hardware margin. Already the most "priced in" of the risks.</p></div>
+
+      <div class="risk"><h4>5. The whole thesis is levered to one capex cycle</h4>
+        <div class="meta"><span class="tag">Probability <b>30%</b></span><span class="tag">Impact <b>Severe</b></span><span class="tag">Priced in <b>No</b></span></div>
+        <p>Astera's revenue is a near-pure derivative of hyperscaler AI infrastructure spending. If AI capex growth plateaus — a digestion year, a shift in ROI expectations on frontier models, or a macro shock — Astera's 100% growth could go to single digits fast, because its base is narrow, order-driven and concentrated. Unlike a software company with recurring revenue, there is no subscription cushion; it is silicon shipped against purchase orders with no long-term commitments (a stated 10-K risk).</p>
+        <p><em>Our rebuttal:</em> McKinsey and the broader capex data argue the interconnect build-out is early and multi-year, and inference (which favors data-movement content) is only now overtaking training. But a cyclical, concentrated, order-driven revenue base at 42x sales is the definition of asymmetric downside if the cycle turns.</p></div>
+
+      <div class="callout gold"><div class="t">Other risks noted</div>Geopolitical/Taiwan supply-chain exposure (fabless, TSMC-dependent, expanding Taiwan operations); tariff risk; steady insider selling and SBC dilution with no buyback offset; execution risk on the Scorpio X ramp and the aiXscale optical integration; and the reflexivity of a high-beta momentum stock where fund flows can dominate fundamentals over 6–12 month windows.</div>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 8 ================= -->
+  <section class="card" id="s8">
+    <div class="card-h" onclick="toggle(this)"><div class="badge">8</div><h2>Catalyst Timeline</h2><div class="chev">▾</div></div>
+    <div class="card-b">
+      <div class="timeline">
+        <div class="tl"><div class="d">2026-09-15</div><div class="e">Leo X-Series CXL memory family expansion</div><div class="x">New Leo X-Series parts for agentic-AI and general-purpose cloud memory tiering/pooling — broadens the CXL leg amid tight memory supply.</div></div>
+        <div class="tl"><div class="d">2026-09 → Q4</div><div class="e">Scorpio X-Series 320-lane production ramp</div><div class="x">The single most important near-term driver: Scorpio becomes the largest product family in Q3, one quarter ahead of plan. Watch shipment linearity and any supply constraints.</div></div>
+        <div class="tl"><div class="d">2026-10</div><div class="e">OCP Global Summit 2026</div><div class="x">Astera typically unveils rack-scale portfolio updates and UALink/Ethernet/CXL demos here; a venue for new design-win signaling.</div></div>
+        <div class="tl"><div class="d">~2026-11-03</div><div class="e">Q3 FY26 earnings</div><div class="x">Guide: revenue $540–560M, NG GM ~72%, NG EPS $1.16–1.21. The Scorpio ramp quarter — the key test of the ~40% sequential step-up. High-volatility event given a 3.78 beta.</div></div>
+        <div class="tl"><div class="d">2026-Q4</div><div class="e">S&amp;P 500 / index inclusion watch</div><div class="x">ALAB has repeatedly been cited as an S&amp;P 500 add candidate; inclusion would force mechanical index buying. Nasdaq-100 membership already a flow tailwind.</div></div>
+        <div class="tl"><div class="d">2027 (early)</div><div class="e">Q4/FY26 print + initial FY27 guide</div><div class="x">First FY27 revenue framing. A guide implying ~50%+ growth on a ~$1.9B base validates the base case; a conservative guide could trigger a multiple reset.</div></div>
+        <div class="tl"><div class="d">2027 (H1)</div><div class="e">First optical / custom-silicon revenue</div><div class="x">aiXscale-enabled photonic scale-up and custom solutions expected to begin contributing — the diversification the bull case needs.</div></div>
+        <div class="tl"><div class="d">2027–2028</div><div class="e">UALink switch shipments</div><div class="x">UALink 2.0 scale-up fabric switches tied to AMD and other accelerators; opens a further ~$17B TAM and reduces NVLink dependence.</div></div>
+        <div class="tl"><div class="d">2028+</div><div class="e">Scorpio X-Series with co-packaged optics (CPO)</div><div class="x">Fully integrated CPO fabric switches — the long-dated optionality McKinsey's electrical-to-optical interconnect thesis points to.</div></div>
+        <div class="tl"><div class="d">Ongoing</div><div class="e">Hyperscaler AI capex &amp; macro</div><div class="x">The master variable. Cloud capex guides, frontier-model ROI narratives, and any AI-infrastructure de-rating drive ALAB more than any single product.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 9 ================= -->
+  <section class="card" id="s9">
+    <div class="card-h" onclick="toggle(this)"><div class="badge">9</div><h2>Comparable Company Analysis</h2><div class="chev">▾</div></div>
+    <div class="card-b">
+      <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Company</th><th class="num">Mkt Cap</th><th class="num">Rev TTM</th><th class="num">Rev Growth</th><th class="num">P/E</th><th class="num">P/S</th><th class="num">Gross Mgn</th><th class="num">Op/Net Mgn</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Astera Labs (ALAB)</strong></td><td class="num">$50.9B</td><td class="num">$1.20B</td><td class="num pos">+98%</td><td class="num">~145x</td><td class="num">~42x</td><td class="num">~74%</td><td class="num pos">~39% NG op</td></tr>
+          <tr><td>Credo (CRDO)</td><td class="num">$31.6B</td><td class="num">$1.59B</td><td class="num pos">~+100%</td><td class="num">~90x</td><td class="num">~20x</td><td class="num">~67%</td><td class="num pos">~15% net</td></tr>
+          <tr><td>Marvell (MRVL)*</td><td class="num">~$192B</td><td class="num">~$9.0B</td><td class="num pos">~+40%</td><td class="num">~65x</td><td class="num">~21x</td><td class="num">~50–60%</td><td class="num pos">~30% NG op</td></tr>
+          <tr><td>Broadcom (AVGO)*</td><td class="num">~$1.7T</td><td class="num">~$66B</td><td class="num pos">~+25%</td><td class="num">~43x</td><td class="num">~26x</td><td class="num">~68%</td><td class="num pos">~25% net</td></tr>
+          <tr><td>NVIDIA (NVDA)*</td><td class="num">~$5.27T</td><td class="num">~$303B</td><td class="num pos">~+55%</td><td class="num">~28x</td><td class="num">~17x</td><td class="num">~72%</td><td class="num pos">~52% net</td></tr>
+          <tr><td>Lumentum (LITE)*</td><td class="num">~$76B</td><td class="num">$3.01B</td><td class="num pos">~+50%</td><td class="num">~139x</td><td class="num">~25x</td><td class="num">~35%</td><td class="num pos">~7% net</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p class="src">ALAB and CRDO from StockAnalysis as of Sep 17–18, 2026. *MRVL, AVGO, NVDA, LITE approximated from secondary sources dated Sep 2026; treat as directional. P/E is GAAP trailing unless noted; ALAB's is flattered by a one-off tax benefit. Growth is TTM revenue YoY.</p>
+
+      <div class="chart-grid">
+        <div class="chart-box"><div class="ct"><h5>P/S Multiple vs Revenue Growth</h5><button class="zoom" onclick="expand('c_peer')">Click to expand</button></div><canvas id="c_peer"></canvas><div class="note">Bubble size ≈ gross margin. ALAB pairs the highest growth with the highest trailing multiple.</div></div>
+        <div class="chart-box"><div class="ct"><h5>Growth-Adjusted Multiple (P/S ÷ Growth %)</h5><button class="zoom" onclick="expand('c_psg')">Click to expand</button></div><canvas id="c_psg"></canvas><div class="note">Lower = cheaper per unit of growth.</div></div>
+      </div>
+
+      <h3>Relative valuation read</h3>
+      <p>On a pure trailing P/S basis, ALAB is the most expensive name in the group at ~42x — roughly 2x Credo and Marvell and well above Broadcom and NVIDIA. But it also has the fastest growth (~98% TTM) and the highest operating margin among the pure-plays. On a <a href="#g-peg">growth-adjusted</a> basis (P/S ÷ revenue growth), ALAB screens at ~0.43 — richer than NVIDIA (~0.31) and comparable to Lumentum (~0.50), but not the outlier the headline 42x implies, because the denominator is enormous. Against its closest comp, <strong>Credo</strong>, ALAB trades at ~2x the sales multiple for similar growth but a higher gross and operating margin and a more complete rack-scale platform (switching + software), which we think justifies a premium — though not necessarily a 2x premium. Against <strong>Marvell/Broadcom</strong>, ALAB is the higher-growth, higher-multiple, higher-risk merchant challenger; against <strong>NVIDIA</strong>, it is a smaller, more concentrated derivative of the same capex wave at a richer multiple. The honest conclusion: ALAB is priced as the best-positioned interconnect pure-play, and it largely is — but the multiple leaves the stock hostage to both growth <em>and</em> sentiment, which is why our conviction is 6, not 8.</p>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 10 ================= -->
+  <section class="card" id="s10">
+    <div class="card-h" onclick="toggle(this)"><div class="badge">10</div><h2>First-Principles KPIs</h2><div class="chev">▾</div></div>
+    <div class="card-b">
+      <p>Five leading indicators, in order of importance. If the first two hold, the thesis holds; if customer concentration worsens while growth decelerates, exit.</p>
+      <ol style="margin:8px 0 14px 22px;font-size:14.5px">
+        <li><strong>Sequential revenue growth &amp; the Scorpio ramp.</strong> Bar: Q3 FY26 revenue ≥$550M (guide midpoint). This is the purest read on the fabric-switch inflection and whether the ~40% QoQ step is real.</li>
+        <li><strong>Customer diversification.</strong> Bar: top customer falling below 70%, top-3 below 86%. The single most important structural KPI — diversification de-risks the entire multiple.</li>
+        <li><strong>Gross margin vs the ~72% floor.</strong> Bar: NG GM stabilizing at/above 72%. Mix-driven decline is fine; a break below 70% would signal pricing pressure (Risk #3/#4).</li>
+        <li><strong>Content per XPU / dollar content per rack.</strong> Bar: rising toward &gt;$1,000 for Scorpio X. Proves Astera is capturing more of each accelerator's connectivity budget, not just riding unit volume.</li>
+        <li><strong>SBC / revenue and diluted share count.</strong> Bar: SBC ratio falling (now ~16%), share count growth slowing. Tells you whether per-share value is compounding with the business.</li>
+      </ol>
+      <div class="chart-grid">
+        <div class="chart-box"><div class="ct"><h5>KPI 1: Quarterly Revenue &amp; QoQ Growth</h5><button class="zoom" onclick="expand('c_qoq')">Click to expand</button></div><canvas id="c_qoq"></canvas><div class="note">Q3 FY26 shown as guide midpoint ($550M).</div></div>
+        <div class="chart-box"><div class="ct"><h5>KPI 2: FY2025 Revenue Concentration</h5><button class="zoom" onclick="expand('c_cust')">Click to expand</button></div><canvas id="c_cust"></canvas><div class="note">Per FY2025 10-K: one customer &gt;70%; top 3 ~86%.</div></div>
+      </div>
+      <div class="chart-grid">
+        <div class="chart-box"><div class="ct"><h5>KPI 3: Non-GAAP Gross Margin Trend (%)</h5><button class="zoom" onclick="expand('c_gm2')">Click to expand</button></div><canvas id="c_gm2"></canvas><div class="note">Deliberate glide from ~78% toward ~72% on hardware mix.</div></div>
+        <div class="chart-box"><div class="ct"><h5>KPI 5: SBC / Revenue vs Diluted Shares</h5><button class="zoom" onclick="expand('c_kpi5')">Click to expand</button></div><canvas id="c_kpi5"></canvas><div class="note">SBC intensity down; share count still rising — dilution to watch.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 11 ================= -->
+  <section class="card" id="s11">
+    <div class="card-h" onclick="toggle(this)"><div class="badge">11</div><h2>Glossary &amp; Methodology</h2><div class="chev">▾</div></div>
+    <div class="card-b">
+      <h3>Methodology</h3>
+      <p>All financial figures come from Astera Labs' SEC-filed 8-K earnings releases (Q3 FY25 / Nov 2025, Q4 &amp; FY2025 / Feb 2026, and Q2 FY26 / Aug 2026, plus prior-year comparatives disclosed therein), the FY2025 10-K for customer concentration, insider Form 4 filings, and market data (price, market cap, multiples, analyst targets) from StockAnalysis.com as of the September 17, 2026 close. Peer data for MRVL, AVGO, NVDA and LITE came from secondary sources and is marked approximate. Several FY24/early-FY25 quarterly detail figures were derived from disclosed full-year and nine-month totals and are marked with "~" as approximate. Scenario targets apply forward EV/Sales multiples to FTA's own revenue model; probabilities are judgmental. Nothing here is investment advice.</p>
+
+      <div class="gl" id="g-retimer"><h4>Retimer</h4><div class="f">A chip that receives a degraded high-speed signal, fully recovers the clock/data, and re-transmits a clean copy</div><p>Unlike a redriver (which only boosts), a retimer regenerates the signal, enabling longer reach and higher speeds (PCIe 5/6, CXL). Astera's Aries line is the archetype. <em>Why it matters:</em> as data rates double each generation, more retimers are needed per rack — Astera's original growth engine.</p><a class="back" href="#s1">↑ Back to Section 1</a></div>
+      <div class="gl" id="g-aec"><h4>Smart Cable Module / AEC</h4><div class="f">An active electrical cable with signal-conditioning silicon (retimer/redriver) built into the connector</div><p>Extends copper's reach for scale-out Ethernet and scale-up links at lower cost/power than optics over short distances. Astera's Taurus family. <em>Why it matters:</em> the "good-enough copper" layer that sits between chips and optical interconnect.</p><a class="back" href="#s4">↑ Back to Section 4</a></div>
+      <div class="gl" id="g-fabric-switch"><h4>Fabric Switch</h4><div class="f">A switch chip that routes traffic among many accelerators/CPUs inside a rack (the "fabric")</div><p>Astera's Scorpio P-Series serves PCIe head-node/scale-out; the X-Series is a 320-lane scale-up smart fabric switch. <em>Why it matters:</em> the largest, highest-dollar-content opportunity — and the one where Broadcom/Marvell/NVIDIA also compete.</p><a class="back" href="#s1">↑ Back to Section 1</a></div>
+      <div class="gl" id="g-scaleup"><h4>Scale-Up vs Scale-Out</h4><div class="f">Scale-up = tightly-coupled accelerators inside one rack/domain; scale-out = many racks networked together</div><p>Scale-up fabrics (NVLink, UALink, PCIe) need ultra-low latency and huge bandwidth; scale-out uses Ethernet/InfiniBand. <em>Why it matters:</em> Scorpio X targets the scale-up layer, where content per accelerator is highest.</p><a class="back" href="#s2">↑ Back to Section 2</a></div>
+      <div class="gl" id="g-scaleout"><h4>Scale-Out Connectivity</h4><div class="f">Networking that links racks/pods across a data center, typically over Ethernet</div><p>Astera's Taurus Ethernet smart cable modules and 224G retimers address this layer. <em>Why it matters:</em> a second, Ethernet-native TAM alongside the PCIe/scale-up franchise.</p><a class="back" href="#s4">↑ Back to Section 4</a></div>
+      <div class="gl" id="g-cxl"><h4>CXL (Compute Express Link)</h4><div class="f">An open interconnect standard for coherent memory sharing/expansion between CPUs, accelerators and memory</div><p>Astera's Leo controllers let systems expand and pool memory over CXL. <em>Why it matters:</em> as models grow, memory capacity and bandwidth become the constraint; Leo is Astera's answer and an emerging leg.</p><a class="back" href="#s3">↑ Back to Section 3</a></div>
+      <div class="gl" id="g-cosmos"><h4>COSMOS</h4><div class="f">Astera's software suite for telemetry, diagnostics, fleet management and link optimization across its silicon</div><p>Runs across every product family. <em>Why it matters:</em> it converts discrete chips into a manageable rack-scale system and raises switching costs — the software layer of the moat.</p><a class="back" href="#s3">↑ Back to Section 3</a></div>
+      <div class="gl" id="g-xpu"><h4>XPU / Accelerator</h4><div class="f">Generic term for an AI accelerator — GPU, TPU, or custom ASIC</div><p>Astera measures "dollar content per XPU" — the connectivity revenue it captures per accelerator, guided to exceed $1,000 for Scorpio X alone. <em>Why it matters:</em> content-per-XPU × units shipped is the core revenue algorithm.</p><a class="back" href="#s1">↑ Back to Section 1</a></div>
+      <div class="gl" id="g-tam"><h4>TAM / SAM</h4><div class="f">Total / Serviceable Addressable Market — the revenue opportunity a company could theoretically capture</div><p>Astera guides SAM above $12B by 2028 (Scorpio X &gt;$10B; UALink switching ~$17B by 2027–28). <em>Why it matters:</em> vendor TAMs are optimistic, but the direction — a rapidly expanding connectivity budget — is the bull case.</p><a class="back" href="#s2">↑ Back to Section 2</a></div>
+      <div class="gl" id="g-ps"><h4>Price-to-Sales (P/S) and the FTA Scale</h4><div class="f">P/S = Market cap ÷ TTM revenue · Scale: &gt;30 Euphoric · &gt;18 Excited · &gt;8 Optimistic · 4–8 Aware · &lt;4 Cautious · &lt;2 Pessimistic</div><p>Useful for hyper-growth companies where P/E is distorted. <em>Why it matters:</em> ALAB at ~42x trailing is "Euphoric" — a multiple that only resolves well if hyper-growth persists for years.</p><a class="back" href="#s1">↑ Back to Section 1</a></div>
+      <div class="gl" id="g-peg"><h4>Growth-Adjusted Multiple (P/S ÷ Growth)</h4><div class="f">P/S ÷ revenue-growth % — a rough "PEG for sales"</div><p>Normalizes a high multiple for a high growth rate. <em>Why it matters:</em> ALAB's ~0.43 is far less extreme than its headline 42x P/S because it is growing ~98%.</p><a class="back" href="#s2">↑ Back to Section 2</a></div>
+      <div class="gl" id="g-sbc"><h4>Stock-Based Compensation (SBC)</h4><div class="f">Non-cash expense for employee equity; added back in non-GAAP earnings but dilutes shareholders</div><p>ALAB's SBC was $64M in Q2 (~16% of revenue), down from ~40% at IPO. <em>Why it matters:</em> the real cost is dilution — diluted shares up ~17% in two years with no buyback offset.</p><a class="back" href="#s3">↑ Back to Section 3</a></div>
+      <div class="gl" id="g-dilution"><h4>Share Dilution</h4><div class="f">Growth in shares outstanding from SBC, ESPP and option exercises</div><p>ALAB's diluted count rose from ~156.8M (Q3 FY24) to ~183.3M (Q2 FY26). <em>Why it matters:</em> per-share value must outrun ~8%/yr share growth; a buyback is not yet in place.</p><a class="back" href="#s4">↑ Back to Section 4</a></div>
+      <div class="gl" id="g-current-ratio"><h4>Current Ratio</h4><div class="f">Current assets ÷ current liabilities</div><p>ALAB is ~10x ($1.65B current assets vs $164M current liabilities), with $1.25B cash and no debt. <em>Why it matters:</em> the balance sheet can self-fund the Scorpio ramp without raising capital.</p><a class="back" href="#s4">↑ Back to Section 4</a></div>
+      <div class="gl" id="g-rsu"><h4>RSU / Sell-to-Cover</h4><div class="f">Restricted Stock Unit; "sell-to-cover" = automatic share sale to pay taxes when RSUs vest</div><p>Most ALAB insider sales are automatic sell-to-cover, not discretionary bets against the stock. <em>Why it matters:</em> context for the heavy insider-selling headlines — though some discretionary sales also occurred near the highs.</p><a class="back" href="#s2">↑ Back to Section 2</a></div>
+      <div class="gl" id="g-beta"><h4>Beta</h4><div class="f">Sensitivity of a stock's returns to the overall market (1.0 = market)</div><p>ALAB's beta is ~3.78 — it moves ~3.8x the market. <em>Why it matters:</em> combined with a 42x multiple, it makes position sizing and drawdown tolerance central to owning the name.</p><a class="back" href="#s2">↑ Back to Section 2</a></div>
+
+      <h3>Primary sources</h3>
+      <p class="src">
+        <a href="https://ir.asteralabs.com/">Astera Labs Investor Relations</a> ·
+        <a href="https://www.globenewswire.com/news-release/2026/02/10/3235765/0/en/Astera-Labs-Reports-Fourth-Quarter-and-Full-Year-2025-Financial-Results.html">Q4 &amp; FY2025 press release (Feb 10, 2026)</a> ·
+        <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001736297&type=8-K">Astera Labs SEC 8-K filings</a> ·
+        <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001736297&type=10-K">FY2025 Form 10-K (customer concentration)</a> ·
+        <a href="https://stockanalysis.com/stocks/alab/">StockAnalysis ALAB overview</a> ·
+        <a href="https://stockanalysis.com/stocks/crdo/">StockAnalysis CRDO</a> ·
+        <a href="https://stockanalysis.com/stocks/lite/">StockAnalysis LITE</a>
+      </p>
+      <p class="src">Thesis context: McKinsey &amp; Company, <em>Technology Trends Outlook 2026</em> — cited for the inference-over-training shift and the naming of Astera Labs (with Lumentum and Lightmatter) in high-bandwidth electrical/optical interconnect, including the 320-lane Scorpio X-Series smart fabric switch.</p>
+    </div>
+  </section>
+
+  <p class="src" style="margin-top:30px">© 2026 Foundational Trading Academy. Prepared September 17, 2026. This report is for educational purposes only and is not a recommendation to buy or sell any security. The author is not a licensed financial advisor.</p>
+  </div>
+</main>
+
+<div class="modal" id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal-box"><button class="modal-close" onclick="closeModal()">×</button><h5 id="modal-title"></h5><canvas id="modal-canvas"></canvas></div>
+</div>
+
+<script>
+function toggle(h){h.parentElement.classList.toggle('collapsed')}
+const G='#145A22',DG='#0A3A14',GOLD='#FCC55B',GD='#e0a838',RED='#a8341f',MUTED='#5d6155',LINE='#d8d1c4';
+Chart.defaults.font.family="'Quicksand',sans-serif";Chart.defaults.font.size=11;Chart.defaults.color=MUTED;
+const mono={family:"'JetBrains Mono',monospace",size:10};
+const configs={};const charts={};
+function cloneCfg(o){if(Array.isArray(o))return o.map(cloneCfg);if(o&&typeof o==='object')return Object.fromEntries(Object.entries(o).map(([k,v])=>[k,cloneCfg(v)]));return o;}
+function mk(id,cfg){configs[id]=cfg;const c=document.getElementById(id);if(c)charts[id]=new Chart(c,cloneCfg(cfg));}
+let modalChart=null;
+function expand(id){const cfg=configs[id];if(!cfg)return;document.getElementById('modal-title').textContent=cfg._title||'';const m=document.getElementById('modal');m.classList.add('open');if(modalChart)modalChart.destroy();const c=cloneCfg(cfg);c.options=c.options||{};c.options.maintainAspectRatio=false;c.options.responsive=true;modalChart=new Chart(document.getElementById('modal-canvas'),c);}
+function closeModal(){document.getElementById('modal').classList.remove('open');if(modalChart){modalChart.destroy();modalChart=null;}}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+const base=(extra={})=>Object.assign({responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{boxWidth:10,padding:10}}},scales:{x:{grid:{display:false},ticks:{font:mono}},y:{grid:{color:'#eee8dc'},ticks:{font:mono}}}},extra);
+
+const Q=['Q3 24','Q4 24','Q1 25','Q2 25','Q3 25','Q4 25','Q1 26','Q2 26'];
+
+mk('c_annual',{_title:'Annual Revenue & Growth (FY23–FY26E)',type:'bar',data:{labels:['FY23','FY24','FY25','FY26E'],datasets:[{type:'bar',label:'Revenue ($M)',data:[116,396,853,1870],backgroundColor:[G,G,G,GD],borderRadius:5,yAxisID:'y'},{type:'line',label:'YoY Growth %',data:[null,242,115,119],borderColor:GD,backgroundColor:GD,tension:.3,yAxisID:'y1',pointRadius:3}]},options:base({scales:{x:{grid:{display:false},ticks:{font:mono}},y:{grid:{color:'#eee8dc'},ticks:{font:mono}},y1:{position:'right',grid:{display:false},ticks:{font:mono,callback:v=>v+'%'}}}})});
+mk('c_mcap',{_title:'Market Cap vs Peers ($B, log scale)',type:'bar',data:{labels:['NVDA','AVGO','MRVL','LITE','ALAB','CRDO'],datasets:[{label:'Market Cap ($B)',data:[5270,1700,192,76,50.9,31.6],backgroundColor:['#7aa885','#7aa885','#7aa885','#7aa885',GD,'#7aa885'],borderRadius:5}]},options:base({indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{type:'logarithmic',grid:{color:'#eee8dc'},ticks:{font:mono}},y:{grid:{display:false},ticks:{font:mono}}}})});
+mk('c_rev',{_title:'Quarterly Revenue ($M) & YoY Growth',type:'bar',data:{labels:Q,datasets:[{type:'bar',label:'Revenue ($M)',data:[113.1,141.1,159.4,191.9,230.6,270.6,308.4,392.4],backgroundColor:G,borderRadius:4,yAxisID:'y'},{type:'line',label:'YoY %',data:[206,179,144,150,104,92,93,104],borderColor:GD,backgroundColor:GD,tension:.3,yAxisID:'y1',pointRadius:3}]},options:base({scales:{x:{grid:{display:false},ticks:{font:mono}},y:{grid:{color:'#eee8dc'},ticks:{font:mono}},y1:{position:'right',min:0,max:250,grid:{display:false},ticks:{font:mono,callback:v=>v+'%'}}}})});
+mk('c_gm',{_title:'Gross Margin — GAAP vs Non-GAAP (%)',type:'line',data:{labels:Q,datasets:[{label:'GAAP GM %',data:[77.7,76.0,75.9,75.8,76.2,75.7,76.3,73.3],borderColor:GD,backgroundColor:GD,tension:.3,pointRadius:3,borderDash:[4,3]},{label:'Non-GAAP GM %',data:[77.8,76.1,76.0,76.0,76.4,75.7,76.4,73.7],borderColor:G,backgroundColor:'rgba(20,90,34,.12)',fill:true,tension:.3,pointRadius:3}]},options:base({scales:{x:{grid:{display:false},ticks:{font:mono}},y:{min:70,max:80,grid:{color:'#eee8dc'},ticks:{font:mono,callback:v=>v+'%'}}}})});
+mk('c_opm',{_title:'Non-GAAP Operating Margin & Diluted EPS',type:'bar',data:{labels:Q,datasets:[{type:'bar',label:'NG Op Margin %',data:[32.4,34,33.7,39.2,41.7,38,36.2,39.1],backgroundColor:G,borderRadius:4,yAxisID:'y'},{type:'line',label:'NG EPS ($)',data:[0.23,0.37,0.33,0.44,0.49,0.58,0.61,0.80],borderColor:GD,backgroundColor:GD,tension:.3,yAxisID:'y1',pointRadius:3}]},options:base({scales:{x:{grid:{display:false},ticks:{font:mono}},y:{min:0,max:50,grid:{color:'#eee8dc'},ticks:{font:mono,callback:v=>v+'%'}},y1:{position:'right',min:0,max:1,grid:{display:false},ticks:{font:mono,callback:v=>'$'+v.toFixed(2)}}}})});
+mk('c_cash',{_title:'Cash & Marketable Securities ($M)',type:'bar',data:{labels:['Dec 24','Sep 25','Dec 25','Jun 26'],datasets:[{label:'Cash + ST investments ($M)',data:[914,1134,1189,1253],backgroundColor:[G,G,G,GD],borderRadius:5}]},options:base({plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{font:mono}},y:{min:800,grid:{color:'#eee8dc'},ticks:{font:mono}}}})});
+mk('c_sbc',{_title:'SBC as % of Revenue & Diluted Shares (M)',type:'bar',data:{labels:Q,datasets:[{type:'bar',label:'SBC / Revenue %',data:[40.3,31,20,18.5,17.7,16,15.9,16.3],backgroundColor:'#b9c9bc',borderRadius:4,yAxisID:'y'},{type:'line',label:'Diluted shares (M)',data:[156.8,172,175,178.1,180.6,181.2,181.2,183.3],borderColor:RED,backgroundColor:RED,tension:.3,yAxisID:'y1',pointRadius:3}]},options:base({scales:{x:{grid:{display:false},ticks:{font:mono}},y:{min:0,max:45,grid:{color:'#eee8dc'},ticks:{font:mono,callback:v=>v+'%'}},y1:{position:'right',min:150,max:190,grid:{display:false},ticks:{font:mono}}}})});
+mk('c_tam',{_title:'FY28 Serviceable Market (~$12B+, illustrative mix)',type:'doughnut',data:{labels:['Scorpio scale-up switching (~$10B)','Signal conditioning: Aries/Taurus','Leo CXL memory','Optical / custom'],datasets:[{data:[10,4,2,2],backgroundColor:[G,GOLD,GD,'#7aa885'],borderColor:'#fff',borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,cutout:'58%',plugins:{legend:{position:'bottom',labels:{boxWidth:10}}}}});
+mk('c_guide',{_title:'Revenue: Guide (high end) vs Actual ($M)',type:'bar',data:{labels:['Q4 25','Q1 26','Q2 26'],datasets:[{label:'Guide (high end)',data:[253,297,380],backgroundColor:'#b9c9bc',borderRadius:4},{label:'Actual',data:[270.6,308.4,392.4],backgroundColor:G,borderRadius:4}]},options:base({scales:{x:{grid:{display:false},ticks:{font:mono}},y:{grid:{color:'#eee8dc'},ticks:{font:mono,callback:v=>'$'+v}}}})});
+mk('c_eps',{_title:'Non-GAAP EPS: Guide (high end) vs Actual',type:'bar',data:{labels:['Q4 25','Q1 26','Q2 26','Q3 26G'],datasets:[{label:'Guide (high end)',data:[0.51,0.54,0.68,1.21],backgroundColor:'#b9c9bc',borderRadius:4},{label:'Actual',data:[0.58,0.61,0.80,null],backgroundColor:G,borderRadius:4}]},options:base({scales:{x:{grid:{display:false},ticks:{font:mono}},y:{grid:{color:'#eee8dc'},ticks:{font:mono,callback:v=>'$'+v.toFixed(2)}}}})});
+mk('c_scen',{_title:'Scenario Price Targets vs Current ($)',type:'bar',data:{labels:['1-Year','3-Year','5-Year'],datasets:[{type:'bar',label:'Bear',data:[165,160,190],backgroundColor:RED,borderRadius:4},{type:'bar',label:'Base',data:[330,450,620],backgroundColor:GD,borderRadius:4},{type:'bar',label:'Bull',data:[470,820,1150],backgroundColor:G,borderRadius:4},{type:'line',label:'Prob-weighted',data:[330,450,600],borderColor:DG,backgroundColor:DG,pointRadius:5,pointStyle:'rectRot',tension:0},{type:'line',label:'Current $293.56',data:[293.56,293.56,293.56],borderColor:MUTED,borderDash:[5,4],pointRadius:0}]},options:base({scales:{x:{grid:{display:false},ticks:{font:mono}},y:{grid:{color:'#eee8dc'},ticks:{font:mono,callback:v=>'$'+v}}}})});
+mk('c_path',{_title:'Base-Case Revenue Path ($M)',type:'bar',data:{labels:['FY25A','FY26E','FY27E','FY28E','FY29E','FY30E','FY31E'],datasets:[{type:'bar',label:'Revenue',data:[853,1870,2800,3600,4300,5300,6500],backgroundColor:[G,GD,G,G,G,G,G],borderRadius:4}]},options:base({plugins:{legend:{display:false}}})});
+mk('c_peer',{_title:'P/S Multiple vs Revenue Growth (bubble = gross margin)',type:'bubble',data:{datasets:[{label:'ALAB',data:[{x:98,y:42,r:15}],backgroundColor:GD},{label:'CRDO',data:[{x:100,y:20,r:13}],backgroundColor:'#7aa885'},{label:'MRVL',data:[{x:40,y:21,r:11}],backgroundColor:'#7aa885'},{label:'AVGO',data:[{x:25,y:26,r:13}],backgroundColor:'#7aa885'},{label:'NVDA',data:[{x:55,y:17,r:14}],backgroundColor:G},{label:'LITE',data:[{x:50,y:25,r:8}],backgroundColor:'#7aa885'}]},options:base({scales:{x:{title:{display:true,text:'Revenue growth % (TTM)'},grid:{color:'#eee8dc'},ticks:{font:mono}},y:{title:{display:true,text:'P/S (x)'},grid:{color:'#eee8dc'},ticks:{font:mono}}}})});
+mk('c_psg',{_title:'Growth-Adjusted Multiple (P/S ÷ Revenue Growth %)',type:'bar',data:{labels:['NVDA','ALAB','LITE','AVGO','MRVL','CRDO'],datasets:[{label:'P/S ÷ growth',data:[0.31,0.43,0.50,1.04,0.53,0.20],backgroundColor:['#7aa885',GD,'#7aa885','#7aa885','#7aa885',G],borderRadius:5}]},options:base({plugins:{legend:{display:false}}})});
+mk('c_qoq',{_title:'Quarterly Revenue & QoQ Growth',type:'bar',data:{labels:['Q2 25','Q3 25','Q4 25','Q1 26','Q2 26','Q3 26G'],datasets:[{type:'bar',label:'Revenue ($M)',data:[191.9,230.6,270.6,308.4,392.4,550],backgroundColor:[G,G,G,G,G,GD],borderRadius:4,yAxisID:'y'},{type:'line',label:'QoQ %',data:[20,20,17,14,27,40],borderColor:GD,backgroundColor:GD,tension:.3,yAxisID:'y1',pointRadius:3}]},options:base({scales:{x:{grid:{display:false},ticks:{font:mono}},y:{grid:{color:'#eee8dc'},ticks:{font:mono}},y1:{position:'right',min:0,max:60,grid:{display:false},ticks:{font:mono,callback:v=>v+'%'}}}})});
+mk('c_cust',{_title:'FY2025 Revenue Concentration',type:'doughnut',data:{labels:['Top customer (>70%)','#2 customer (~10%)','#3 customer (~6%)','All others (~14%)'],datasets:[{data:[70,10,6,14],backgroundColor:[RED,GD,GOLD,'#7aa885'],borderColor:'#fff',borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,cutout:'60%',plugins:{legend:{position:'bottom',labels:{boxWidth:10}}}}});
+mk('c_gm2',{_title:'Non-GAAP Gross Margin Trend (%)',type:'line',data:{labels:Q,datasets:[{label:'Non-GAAP GM %',data:[77.8,76.1,76.0,76.0,76.4,75.7,76.4,73.7],borderColor:G,backgroundColor:'rgba(20,90,34,.15)',fill:true,tension:.3,pointRadius:4,pointBackgroundColor:GOLD}]},options:base({plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{font:mono}},y:{min:70,max:80,grid:{color:'#eee8dc'},ticks:{font:mono,callback:v=>v+'%'}}}})});
+mk('c_kpi5',{_title:'SBC / Revenue vs Diluted Shares',type:'line',data:{labels:Q,datasets:[{label:'SBC / revenue %',data:[40.3,31,20,18.5,17.7,16,15.9,16.3],borderColor:RED,backgroundColor:RED,tension:.3,pointRadius:3,borderDash:[4,3],yAxisID:'y'},{label:'Diluted shares (M)',data:[156.8,172,175,178.1,180.6,181.2,181.2,183.3],borderColor:G,backgroundColor:G,tension:.3,pointRadius:3,yAxisID:'y1'}]},options:base({scales:{x:{grid:{display:false},ticks:{font:mono}},y:{min:0,max:45,grid:{color:'#eee8dc'},ticks:{font:mono,callback:v=>v+'%'}},y1:{position:'right',min:150,max:190,grid:{display:false},ticks:{font:mono}}}})});
+</script>
+</body>
+</html>
