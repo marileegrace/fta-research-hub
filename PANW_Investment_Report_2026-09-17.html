@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PANW — Palo Alto Networks, Inc. | FTA Investment Research | 2026-09-17</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Questrial&family=Quicksand:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  --green:#145A22;--dark-green:#0A3A14;--forest:#243D27;--gold:#FCC55B;--gold-deep:#e0a838;
+  --beige:#EDE8E0;--beige-card:#f6f3ed;--ink:#23241f;--muted:#5d6155;--red:#a8341f;--line:#d8d1c4;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Quicksand',sans-serif;background:var(--beige);color:var(--ink);line-height:1.6;font-weight:400;display:flex;min-height:100vh}
+a{color:var(--green)}
+/* Sidebar */
+.sidebar{width:262px;flex:0 0 262px;position:sticky;top:0;height:100vh;overflow-y:auto;background:linear-gradient(180deg,#071f0b,#0A3A14 40%,#145A22);border-right:2px solid var(--gold);padding:28px 20px;color:#fff}
+.brand{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:26px;font-weight:600;color:var(--gold);letter-spacing:.3px;line-height:1.1}
+.brand small{display:block;font-family:'Questrial',sans-serif;font-style:normal;font-size:10px;letter-spacing:2.2px;text-transform:uppercase;color:rgba(255,255,255,.65);margin-top:6px}
+.ticker-box{margin:22px 0;background:rgba(255,255,255,.07);border:1px solid rgba(252,197,91,.35);border-radius:12px;padding:14px}
+.ticker-box .sym{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;color:var(--gold)}
+.ticker-box .nm{font-family:'Questrial',sans-serif;font-size:11px;letter-spacing:1.4px;text-transform:uppercase;color:rgba(255,255,255,.7)}
+.ticker-box .px{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:600;margin-top:6px}
+.ticker-box .chg{font-family:'JetBrains Mono',monospace;font-size:12px;color:#9fd8a8}
+.nav a{display:flex;align-items:center;gap:10px;color:rgba(255,255,255,.82);text-decoration:none;font-size:13px;padding:7px 8px;border-radius:8px;font-family:'Questrial',sans-serif;letter-spacing:.3px}
+.nav a:hover{background:rgba(252,197,91,.12);color:#fff}
+.nav a span.n{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold);min-width:20px}
+.side-foot{margin-top:24px;font-size:10.5px;color:rgba(255,255,255,.5);line-height:1.5}
+/* Main */
+.main{flex:1;min-width:0}
+.hero{background:linear-gradient(120deg,var(--dark-green),var(--green) 60%);color:#fff;padding:54px 48px 40px;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;right:-120px;top:-120px;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(252,197,91,.35),rgba(252,197,91,0) 65%)}
+.hero .kicker{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:2.4px;font-size:11px;color:var(--gold)}
+.hero h1{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:46px;line-height:1.05;margin:10px 0 6px}
+.hero h1 em{font-style:italic;color:var(--gold)}
+.hero .sub{font-size:15px;color:rgba(255,255,255,.85);max-width:720px}
+.hero .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px;align-items:center}
+.pill{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);border:1px solid rgba(252,197,91,.5);border-radius:999px;padding:6px 14px;font-family:'Questrial',sans-serif;font-size:11.5px;letter-spacing:1.2px;text-transform:uppercase}
+.pill.verdict{background:var(--gold);color:var(--dark-green);border-color:var(--gold);font-weight:700}
+.pill .mono{font-family:'JetBrains Mono',monospace;font-weight:700;letter-spacing:0}
+.kpi-strip{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;padding:16px 48px;background:var(--beige)}
+.kpi{background:var(--beige-card);border:1px solid var(--line);border-radius:12px;padding:14px 14px 12px}
+.kpi .l{font-family:'Questrial',sans-serif;font-size:10px;letter-spacing:1.6px;text-transform:uppercase;color:var(--muted)}
+.kpi .v{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;color:var(--green);margin-top:4px;line-height:1.1}
+.kpi .s{font-size:11px;color:var(--muted);margin-top:4px}
+.content{max-width:1080px;padding:20px 48px 80px}
+/* Cards */
+.card{background:var(--beige-card);border:1px solid var(--line);border-radius:14px;margin:22px 0;overflow:hidden}
+.card-h{display:flex;align-items:center;gap:14px;padding:18px 22px;border-left:5px solid var(--green);cursor:pointer;user-select:none}
+.card-h .badge{width:34px;height:34px;border-radius:9px;background:var(--green);color:#fff;font-family:'JetBrains Mono',monospace;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 34px}
+.card-h h2{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:28px;color:var(--dark-green);line-height:1.1;flex:1}
+.card-h .chev{width:26px;height:26px;border-radius:50%;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--green);transition:transform .25s;font-size:14px}
+.card.collapsed .chev{transform:rotate(-90deg)}
+.card-b{padding:6px 24px 26px}
+.card.collapsed .card-b{display:none}
+.card-b p{margin:12px 0;font-size:15px}
+.card-b h3{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1.8px;font-size:12px;color:var(--green);margin:24px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+.card-b h4{font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:600;color:var(--dark-green);margin:18px 0 4px}
+.card-b ul{margin:8px 0 12px 22px}
+.card-b li{margin:5px 0;font-size:14.5px}
+.thesis{font-family:'Cormorant Garamond',serif;font-size:24px;line-height:1.35;border-left:4px solid var(--gold);padding:16px 22px;margin:16px 0;color:var(--dark-green);background:#fff;border-radius:0 12px 12px 0}
+.thesis strong{font-weight:700}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0}
+.chip{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;min-width:130px}
+.chip .l{font-family:'Questrial',sans-serif;font-size:9.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
+.chip .v{font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:700;color:var(--green);line-height:1.15;margin-top:2px}
+.chip .v.neg{color:var(--red)}
+.chip .s{font-size:10.5px;color:var(--muted)}
+.callout{border-radius:12px;padding:14px 18px;margin:14px 0;font-size:14.5px}
+.callout.gold{background:rgba(252,197,91,.18);border:1px solid var(--gold-deep)}
+.callout.green{background:rgba(20,90,34,.08);border:1px solid rgba(20,90,34,.35)}
+.callout .t{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1.5px;font-size:10.5px;color:var(--green);margin-bottom:4px}
+.callout.gold .t{color:#8a5e0a}
+/* Tables */
+.tbl-wrap{overflow-x:auto;margin:14px 0}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff;border-radius:10px;overflow:hidden}
+th{background:var(--green);color:#fff;font-family:'Questrial',sans-serif;font-size:11px;letter-spacing:1.2px;text-transform:uppercase;padding:10px 12px;text-align:left}
+td{padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:nth-child(even) td{background:#faf8f3}
+tbody tr:hover td{background:rgba(252,197,91,.18)}
+td.num,th.num{font-family:'JetBrains Mono',monospace;text-align:right;white-space:nowrap}
+.pos{color:var(--green);font-weight:600}.neg{color:var(--red);font-weight:600}
+.score{display:inline-block;font-family:'JetBrains Mono',monospace;font-weight:700;padding:2px 8px;border-radius:6px;background:rgba(20,90,34,.12);color:var(--green)}
+/* Charts */
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}
+.chart-box{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px 10px;position:relative}
+.chart-box.solo{max-width:420px}
+.chart-box .ct{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.chart-box .ct h5{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1.5px;font-size:10.5px;color:var(--muted);font-weight:400}
+.chart-box .zoom{font-family:'Questrial',sans-serif;font-size:9.5px;letter-spacing:1px;text-transform:uppercase;color:var(--green);border:1px solid var(--line);border-radius:999px;padding:3px 9px;background:transparent;cursor:pointer}
+.chart-box .zoom:hover{background:rgba(252,197,91,.25)}
+.chart-box canvas{width:100%!important;height:158px!important}
+.chart-box .note{font-size:10.5px;color:var(--muted);margin-top:6px}
+/* Modal */
+.modal{position:fixed;inset:0;background:rgba(7,31,11,.82);display:none;align-items:center;justify-content:center;z-index:99;padding:30px}
+.modal.open{display:flex}
+.modal-box{background:var(--beige-card);border:2px solid var(--gold);border-radius:16px;width:min(1000px,96vw);padding:22px 26px;position:relative}
+.modal-box h5{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1.8px;font-size:12px;color:var(--green);margin-bottom:10px}
+.modal-box canvas{width:100%!important;height:min(520px,65vh)!important}
+.modal-close{position:absolute;top:12px;right:14px;border:none;background:var(--green);color:#fff;border-radius:50%;width:30px;height:30px;cursor:pointer;font-size:15px}
+/* Scenario cards */
+.scen-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:16px 0}
+.scen{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;border-top:5px solid var(--gold)}
+.scen.bull{border-top-color:var(--green)}.scen.bear{border-top-color:var(--red)}
+.scen .t{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1.8px;font-size:11px;color:var(--muted)}
+.scen .pt{font-family:'JetBrains Mono',monospace;font-size:30px;font-weight:700;color:var(--green);line-height:1.1;margin:6px 0 2px}
+.scen.bear .pt{color:var(--red)}.scen.base .pt{color:var(--gold-deep)}
+.scen .prob{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:11.5px;background:var(--beige);border:1px solid var(--line);border-radius:999px;padding:2px 10px;margin-bottom:8px}
+.scen ul{margin:6px 0 0 18px}.scen li{font-size:13px;margin:4px 0}
+.horizon{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--dark-green);margin:18px 0 4px}
+/* Risk cards */
+.risk{background:#fff;border:1px solid var(--line);border-left:4px solid var(--red);border-radius:10px;padding:14px 18px;margin:12px 0}
+.risk h4{color:var(--red);font-family:'Cormorant Garamond',serif;font-size:21px;margin:0 0 6px}
+.risk .meta{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 8px}
+.risk .tag{font-family:'Questrial',sans-serif;font-size:10px;letter-spacing:1.2px;text-transform:uppercase;border-radius:999px;padding:3px 10px;background:var(--beige);border:1px solid var(--line)}
+.risk .tag b{font-family:'JetBrains Mono',monospace;letter-spacing:0}
+.risk p{font-size:14px;margin:6px 0}
+/* Timeline */
+.timeline{position:relative;margin:18px 0 10px 12px;padding-left:28px}
+.timeline::before{content:"";position:absolute;left:6px;top:4px;bottom:4px;width:3px;border-radius:3px;background:linear-gradient(180deg,var(--green),var(--gold))}
+.tl{position:relative;margin:0 0 18px}
+.tl::before{content:"";position:absolute;left:-28px;top:5px;width:14px;height:14px;border-radius:50%;background:var(--gold);border:3px solid var(--green)}
+.tl .d{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--green);font-weight:600}
+.tl .e{font-weight:700;font-size:15px}
+.tl .x{color:var(--muted);font-size:13.5px}
+/* Glossary */
+.gl{background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 16px;margin:10px 0}
+.gl h4{font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--dark-green);margin:0}
+.gl .f{font-family:'JetBrains Mono',monospace;font-size:12px;background:var(--beige);padding:4px 8px;border-radius:6px;display:inline-block;margin:6px 0}
+.gl p{font-size:13.5px;margin:4px 0}
+.gl .back{font-family:'Questrial',sans-serif;font-size:10.5px;letter-spacing:1px;text-transform:uppercase}
+.src{font-size:12px;color:var(--muted)}
+.src a{color:var(--muted)}
+@media (max-width:880px){.chart-grid,.scen-grid{grid-template-columns:1fr}}
+@media (max-width:780px){.sidebar{display:none}.kpi-strip{grid-template-columns:repeat(3,1fr);padding:14px 18px}.hero,.content{padding-left:18px;padding-right:18px}.hero h1{font-size:34px}}
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="brand">Foundational Trading Academy<small>Investment Research</small></div>
+  <div class="ticker-box">
+    <div class="sym">PANW</div>
+    <div class="nm">Palo Alto Networks · NASDAQ</div>
+    <div class="px">$375.06</div>
+    <div class="chg">−0.16% · close 2026-09-17</div>
+  </div>
+  <nav class="nav">
+    <a href="#s1"><span class="n">01</span>Executive Summary</a>
+    <a href="#s2"><span class="n">02</span>Micro &amp; Valuation</a>
+    <a href="#s3"><span class="n">03</span>Moat &amp; Management</a>
+    <a href="#s4"><span class="n">04</span>Financial Deep Dive</a>
+    <a href="#s5"><span class="n">05</span>Earnings Tracker</a>
+    <a href="#s6"><span class="n">06</span>Bull / Base / Bear</a>
+    <a href="#s7"><span class="n">07</span>Risks &amp; Anti-Thesis</a>
+    <a href="#s8"><span class="n">08</span>Catalyst Timeline</a>
+    <a href="#s9"><span class="n">09</span>Comparables</a>
+    <a href="#s10"><span class="n">10</span>First-Principles KPIs</a>
+    <a href="#s11"><span class="n">11</span>Glossary &amp; Method</a>
+  </nav>
+  <div class="side-foot">Report date: Sep 17, 2026<br>Data through Q4 FY26 (Jul 31, 2026)<br>Fiscal year ends Jul 31<br><br>For educational purposes only. Not investment advice.</div>
+</aside>
+
+<main class="main">
+  <header class="hero">
+    <div class="kicker">Deep-Dive Investment Report · Cybersecurity / AI Security Platforms · McKinsey Tech Trends 2026 series</div>
+    <h1>Palo Alto Networks <em>(PANW)</em></h1>
+    <div class="sub">McKinsey says the cyber defense window has collapsed and prescribes platform consolidation and runtime security — and Palo Alto is the most complete answer to that prescription. The stock already knows: up 86% in twelve months to 27x sales and ~70x free cash flow. We are bulls on the franchise and bears on the entry price.</div>
+    <div class="meta">
+      <span class="pill verdict">Verdict: BEAR (valuation) · Conviction <span class="mono">6 / 10</span></span>
+      <span class="pill">Price <span class="mono">$375.06</span></span>
+      <span class="pill">Mkt Cap <span class="mono">$306.8B</span></span>
+      <span class="pill">Sector · Software Infrastructure</span>
+      <span class="pill">FY ends Jul 31</span>
+    </div>
+  </header>
+
+  <section class="kpi-strip">
+    <div class="kpi"><div class="l">Price</div><div class="v">$375.06</div><div class="s">52w $139.57–$398.88</div></div>
+    <div class="kpi"><div class="l">Market Cap</div><div class="v">$306.8B</div><div class="s">EV ≈ $306.3B · 818M sh</div></div>
+    <div class="kpi"><div class="l">NGS ARR Growth</div><div class="v">+63%</div><div class="s">$9.10B · FY27 guide +22–23%</div></div>
+    <div class="kpi"><div class="l">Adj. FCF (FY26)</div><div class="v">$4.41B</div><div class="s">38.4% margin · FY27 guide 38%</div></div>
+    <div class="kpi"><div class="l">P/S (TTM)</div><div class="v">26.7x</div><div class="s">21.6x fwd · "Excited" band</div></div>
+    <div class="kpi"><div class="l">Street PT</div><div class="v">$393</div><div class="s">55 analysts · Buy · +5%</div></div>
+  </section>
+
+  <div class="content">
+
+  <!-- ================= SECTION 1 ================= -->
+  <section class="card" id="s1">
+    <div class="card-h" onclick="toggle(this)"><div class="badge">1</div><h2>Executive Summary &amp; Investment Thesis</h2><div class="chev">▾</div></div>
+    <div class="card-b">
+      <div class="thesis"><strong>Thesis (Bear on price, Bull on franchise):</strong> Palo Alto Networks is the single best-positioned public company for the world McKinsey's Technology Trends Outlook 2026 describes — one where more than three-quarters of exploited vulnerabilities are zero-day, exploitation of public-facing applications is up 44% in a year, and the only defense that works is a unified platform operating at machine speed. Fiscal 2026 proved it: nearly $1 billion of net new <a href="#g-ngs-arr">NGS ARR</a> in a single quarter, a record ~220 net new <a href="#g-platformization">platformizations</a>, <a href="#g-rpo">RPO</a> above $21 billion, and Prisma AIRS reaching $100 million ARR faster than any product in company history. But the market has already paid for that future. At $375 the stock trades at 26.7x trailing sales, ~90x forward non-GAAP earnings and ~57x forward <a href="#g-fcf">adjusted free cash flow</a>, while the FY27 guide implies NGS ARR growth decelerating from 63% (acquisition-inflated) to 22–23%, with organic net new ARR roughly flat year over year. Our probability-weighted 1-year target is <strong>$360</strong> (−4%); our 3-year target is <strong>$434</strong> (+16%, ~5% CAGR). We would become buyers below <strong>~$300</strong>, where the 3-year base case compounds at a double-digit rate.</div>
+
+      <p>Palo Alto reported Q4 FY26 (quarter ended July 31, 2026) on September 1. Revenue grew 34% to $3.41B against a $3.345–3.355B guide; NGS ARR reached $9.10B (guide $8.90–8.95B); non-GAAP EPS was $1.02 versus $0.96–0.98; adjusted FCF was $1.29B (+35%). Full-year revenue was $11.48B (+24%), adjusted FCF $4.41B (38.4% margin), non-GAAP operating margin 29.2% (+40 bps despite absorbing two lower-margin acquisitions). Management guided FY27 revenue to $14.10–14.20B (+23–24%), NGS ARR to $11.075–11.175B (+22–23%), 29.5% non-GAAP operating margin, $4.16–4.19 EPS and a 38% adjusted FCF margin. The stock, which had run from a March low near $140 to an all-time high of $398.88 in August, fell after the print and has since consolidated around $375.</p>
+
+      <p>Why is the stock up 86% in a year? Three things happened at once. First, the "Mythos moment": cyber-capable frontier models (Anthropic's Mythos, Project Glasswing) demonstrated that AI can find and exploit enterprise technical debt in minutes, moving real-time defense from roadmap to requirement and driving two consecutive quarters of accelerating bookings. Second, Palo Alto closed the two largest deals in its history — CyberArk (~$25B, now "Idira", closed Feb 11, 2026) and Chronosphere ($3.35B, closed Jan 29, 2026) — and both are scaling faster inside Palo Alto than they did standalone. Third, the market re-rated the whole "platform consolidator" cohort (Fortinet +116%, CrowdStrike +121% over 52 weeks) as McKinsey and others made concentration toward a few dominant platforms the consensus view.</p>
+
+      <h3>What the market is missing</h3>
+      <ul>
+        <li><strong>The 63% NGS ARR growth is two-thirds inorganic.</strong> Of the $3.52B of net new NGS ARR added in FY26, roughly $1.6B arrived with CyberArk and Chronosphere. Organic NGS ARR growth was in the high-20s, and the FY27 guide implies ~$2.0B of net new ARR — essentially flat against FY26's organic addition, with 60–61% of it back-half weighted and a nine-figure one-time LLM-customer migration to Chronosphere still washing through Q1.</li>
+        <li><strong>The FY27 revenue guide is mostly a full-year of acquired revenue.</strong> Idira contributed $644M of reported revenue in FY26 (five and a half months); FY27 guidance assumes ~$1.5B. Network &amp; AI Security — 73% of revenue — is guided to "low double digits." Strip out M&amp;A and Palo Alto is a mid-teens organic grower priced at 21.6x forward sales.</li>
+        <li><strong>GAAP earnings have gone to zero, and the gap is structural.</strong> FY26 GAAP net income was $307M on $11.5B of revenue (2.7% margin) because SBC ($1.71B), acquired-intangible amortization ($638M, now running ~$1.1B annualized) and a $562M non-cash convertible fair-value charge sit between non-GAAP and GAAP. Share count grew 7.8% YoY (mostly CyberArk stock consideration) and the $1.0B remaining buyback authorization — expiring December 31, 2026 — was not used.</li>
+        <li><strong>The CEO bought at $147, not $375.</strong> Nikesh Arora's discretionary $10M open-market purchase on March 27, 2026 was a strong signal at that price. He has sold an estimated $1.1B of stock since 2021. The signal at today's price is silence.</li>
+      </ul>
+
+      <div class="chips">
+        <div class="chip"><div class="l">Revenue Q4 FY26</div><div class="v">$3.41B</div><div class="s">+34% YoY · FY26 $11.48B +24%</div></div>
+        <div class="chip"><div class="l">NGS ARR</div><div class="v">$9.10B</div><div class="s">+63% · ~$1.6B acquired</div></div>
+        <div class="chip"><div class="l">Net New NGS ARR Q4</div><div class="v">~$1.0B</div><div class="s">incl. 9-figure one-time migration</div></div>
+        <div class="chip"><div class="l">RPO</div><div class="v">$21.2B</div><div class="s">+34% · cRPO $9.3B</div></div>
+        <div class="chip"><div class="l">Non-GAAP EPS Q4</div><div class="v">$1.02</div><div class="s">vs guide $0.96–0.98</div></div>
+        <div class="chip"><div class="l">Adj. FCF Q4</div><div class="v">$1.29B</div><div class="s">37.8% margin</div></div>
+        <div class="chip"><div class="l">Conviction</div><div class="v neg">6/10</div><div class="s">Bear on price</div></div>
+      </div>
+
+      <div class="callout gold"><div class="t">Position in the FTA Framework</div>At 26.7x trailing sales PANW sits in the "Excited" band of our <a href="#g-ps">P/S scale</a> (18–30x), one notch below Euphoric, for a business whose organic revenue growth is mid-teens and whose guided total growth is 23–24%. The McKinsey thesis is right about the industry — the defense window has collapsed and value will concentrate in a handful of platforms — but "right about the industry" and "right about the price" are different claims. Our verdict is a tactical bear for the next twelve months, with an explicit re-entry zone below ~$300. The thesis flips to bull if organic net new NGS ARR re-accelerates above $600M per quarter or if the stock corrects 20% without a change in fundamentals.</div>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 2 ================= -->
+  <section class="card" id="s2">
+    <div class="card-h" onclick="toggle(this)"><div class="badge">2</div><h2>Microeconomic &amp; Valuation Analysis</h2><div class="chev">▾</div></div>
+    <div class="card-b">
+      <h3>Industry &amp; TAM</h3>
+      <p>Palo Alto now sells three platforms: <strong>Network &amp; AI Security</strong> (hardware and software firewalls, Prisma SASE, cloud-delivered security services, Prisma AIRS for AI runtime security — $8.35B FY26 revenue, +17%), <strong>Cortex</strong> (XSIAM security operations, cloud security, Chronosphere observability — $1.92B, +25%) and <strong>Idira</strong> (the former CyberArk identity and privileged-access business — $1.26B pro forma, +21%). Management sizes the combined <a href="#g-tam">TAM</a> at $340B by 2030; third-party estimates for the segments Palo Alto actually competes in (network security, SASE, SIEM/SOC, cloud security, identity, AI security) sum to roughly $120–150B growing low-to-mid teens. The company's $11.5B of revenue is therefore high-single-digit penetration of the narrow market and low-single-digit penetration of the broad one.</p>
+      <p>The structural driver is what McKinsey calls the collapse of the defense window. When more than 75% of exploited vulnerabilities are zero-day and cyber-capable models can chain flaws in minutes, the economics of a "best-of-breed" stack of 30 tools with human-speed correlation stop working. The buyer wants one data lake, one policy engine and machine-speed remediation — which is why McKinsey's prescription (continuous <a href="#g-runtime-security">runtime security</a>, automated containment, agentic security operations, identity, post-quantum migration) reads like a Palo Alto product catalog. Management's own framing is that there is roughly $1 trillion of global "cybersecurity debt" that must be modernized on unified platforms. The important nuance for investors is that this thesis is now consensus, and the report itself flags the corollary: value accrues to a few platforms, and those platforms are already priced as winners.</p>
+
+      <div class="chart-grid">
+        <div class="chart-box"><div class="ct"><h5>Annual Revenue &amp; Growth (FY22–FY27G)</h5><button class="zoom" onclick="expand('c_annual')">Click to expand</button></div><canvas id="c_annual"></canvas><div class="note">FY ends Jul 31. FY27G = guidance midpoint $14.15B. FY26 includes ~$0.9B from CyberArk and Chronosphere.</div></div>
+        <div class="chart-box"><div class="ct"><h5>Market Cap vs Peers ($B)</h5><button class="zoom" onclick="expand('c_mcap')">Click to expand</button></div><canvas id="c_mcap"></canvas><div class="note">As of Sep 17, 2026 close. Source: StockAnalysis / S&amp;P Global.</div></div>
+      </div>
+
+      <h3>Valuation multiples</h3>
+      <div class="chips">
+        <div class="chip"><div class="l">P/S (TTM)</div><div class="v">26.7x</div><div class="s">"Excited" band</div></div>
+        <div class="chip"><div class="l">P/S (Fwd FY27)</div><div class="v">21.6x</div><div class="s">$14.15B rev guide</div></div>
+        <div class="chip"><div class="l">EV / Sales</div><div class="v">26.6x</div><div class="s">EV ≈ $306.3B</div></div>
+        <div class="chip"><div class="l">P / Adj. FCF (FY26)</div><div class="v">~70x</div><div class="s">$4.41B adjusted</div></div>
+        <div class="chip"><div class="l">P / Adj. FCF (FY27E)</div><div class="v">~57x</div><div class="s">38% × $14.15B ≈ $5.4B</div></div>
+        <div class="chip"><div class="l">GAAP P/E</div><div class="v neg">~1,000x</div><div class="s">$0.40 TTM GAAP EPS</div></div>
+        <div class="chip"><div class="l">Fwd P/E (non-GAAP)</div><div class="v">~90x</div><div class="s">$4.175 FY27 midpoint</div></div>
+        <div class="chip"><div class="l">EV / EBITDA (GAAP)</div><div class="v neg">196x</div><div class="s">$1.56B TTM EBITDA</div></div>
+      </div>
+      <p>GAAP earnings multiples are not useful here — not because Palo Alto is unprofitable in cash terms (it converts 38% of revenue to adjusted FCF), but because $1.7B of <a href="#g-sbc">stock-based compensation</a> and a now-large acquired-intangible amortization charge sit between the two. The right lenses are <a href="#g-p-fcf">price-to-free-cash-flow</a> and EV/Sales relative to growth. On those, PANW is expensive by any historical standard for itself: it spent most of 2023–2025 between 12x and 17x sales and 35–50x FCF. Today's 26.7x / ~70x is a re-rating, not an earnings story — roughly 60% of the 52-week return came from multiple expansion. A <a href="#g-rule-of-40">Rule-of-40</a> score of ~62 (24% revenue growth + 38% FCF margin) is genuinely elite and justifies a premium; the question is whether it justifies a premium to CrowdStrike on a growth-adjusted basis, which it now carries (see Section 9).</p>
+
+      <h3>Institutional ownership &amp; insider activity</h3>
+      <p>Institutions own about 83.6% of shares outstanding; insiders own 0.72%. <a href="#g-short-interest">Short interest</a> is 21.4M shares (2.6% of float, 3.8 days to cover) and fell month-over-month from 22.4M — there is no crowded short to squeeze. Share count rose 7.8% YoY to 818M, the bulk of it the ~110M shares issued as CyberArk consideration (2.2005 PANW shares plus $45 cash per CyberArk share).</p>
+      <p>Insider activity cuts both ways. CEO Nikesh Arora has been a persistent seller since 2021 (secondary sources estimate ~4.9M shares and ~$1.1B of proceeds, much of it under 10b5-1 plans), yet on March 27, 2026 he made a discretionary open-market purchase of 68,085 shares at ~$146.88 (~$10M) — rare for a mega-cap CEO and, in hindsight, near the exact bottom of the software selloff. In June 2026 he reallocated 865,090 phantom shares within a deferred-compensation plan (no open-market effect). We read the March purchase as management believing $147 was cheap; we have no evidence management believes $375 is.</p>
+
+      <h3>Analyst growth estimates</h3>
+      <p>Consensus (55 analysts) rates PANW "Buy" with an average price target of $393 — 5% above the current price, the smallest implied upside in the peer group after CrowdStrike (−5%) and Fortinet (−5%). Roughly 89% of ratings are Buy or Strong Buy. The three-year consensus revenue growth forecast is ~17% <a href="#g-cagr">CAGR</a> and EPS growth ~14%, which yields a PEG near 4.8x. Management's FY30 framework — $20B of NGS ARR and 4,000+ platformizations — implies NGS ARR compounding ~22% from FY26, in line with the FY27 guide; we model total revenue of ~$22B in FY30 in the base case.</p>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 3 ================= -->
+  <section class="card" id="s3">
+    <div class="card-h" onclick="toggle(this)"><div class="badge">3</div><h2>Qualitative Analysis — Moat, Management &amp; Culture</h2><div class="chev">▾</div></div>
+    <div class="card-b">
+      <h3>Competitive moat — a systems view</h3>
+      <p>Palo Alto's moat is not any single product; several of its products face a better point-solution competitor (CrowdStrike in endpoint, Zscaler in zero-trust access, Okta in workforce identity, Datadog in observability). The moat is the <em>system</em>: the largest installed base of enforcement points in enterprise security (70,000+ customers, firewalls that inspect and block 30 billion attacks a day), a single telemetry lake (XSIAM) that every module feeds, and a commercial model — platformization — that gives customers financial incentives (staggered payments, early deployment, "free" migration periods) to standardize. Four reinforcing consequences:</p>
+      <ul>
+        <li><strong>Data gravity at machine speed.</strong> Real-time defense requires that the firewall, the SASE fabric, the endpoint agent, the identity vault and the SOC all share one policy plane. Once a customer's telemetry lives in XSIAM (now 1,000+ customers, $700M+ ARR, +70%), adding cloud security or exposure management is "querying existing data in new ways," not an integration project. Mean time to respond falls from days to under 10 minutes.</li>
+        <li><strong>Cross-sell arithmetic.</strong> Platformized customers show <a href="#g-nrr">net revenue retention</a> above 120%; $5M+ deals in Idira grew 50% YoY two quarters after close; XSIAM contributed 50% of net new cross-sell logos for observability. The Q4 $72M deal — eight-figure commitments across all three platforms from one IT services firm — is the model working.</li>
+        <li><strong>Incumbent displacement.</strong> SASE bookings grew 40% in FY26 with legacy displacements in ~100 accounts worth $400M+ TCV, nearly double the prior year, moving Palo Alto to the #2 SASE position. Because the customer already runs Strata Cloud Manager and the GlobalProtect agent, swapping the SASE layer is a small change rather than a rip-and-replace.</li>
+        <li><strong>M&amp;A as a product strategy.</strong> Arora is explicit that acquisitions are "a consequence of product strategy": the company tracks 40–50 funded startups and buys the one that "has the strategy right" when a market moves faster than internal R&amp;D can. The FY26 tuck-ins — Koi ($231M, agentic endpoint), Portkey ($117M, AI gateway now GA inside Prisma AIRS), Embrace (real-user monitoring), Console (agentic IT/security ops) — are precisely the runtime-security pieces McKinsey highlights.</li>
+      </ul>
+      <p>Competitive set: <strong>CrowdStrike</strong> (endpoint-led platform, Falcon Flex, the only other consolidator with comparable scale), <strong>Fortinet</strong> (price-competitive firewall incumbent with the best margins in the group), <strong>Zscaler</strong> (SASE/zero-trust leader now being displaced by Palo Alto in large accounts), <strong>Microsoft</strong> (bundled Defender/Sentinel/Entra — the most dangerous long-run competitor because it is "free"), <strong>Cloudflare</strong> (network-edge and post-quantum angle), plus hyperscaler-native security and a long tail of AI-security startups.</p>
+
+      <h3>Founder-led? No — but operator-led in the best sense.</h3>
+      <p>Founder Nir Zuk (CTO) departed in 2025; Nikesh Arora (ex-SoftBank president, ex-Google chief business officer) has been chairman and CEO since June 2018. Under Arora the company went from a single-product firewall vendor with roughly $2.3B of revenue to an $11.5B three-platform company, NGS ARR went from under $1B to $9.1B, non-GAAP operating margin expanded more than 500 bps in the last three years alone, and the split-adjusted share price has compounded at roughly 35% per year. He has executed 20-plus acquisitions with a consistent playbook — buy the category leader early, fold it into the platform, expand margins — and the CyberArk integration (synergy targets 3–6 months ahead of plan, 1,000+ bps of margin improvement in two quarters) is the largest test of that playbook yet. CFO Dipak Golechha (since 2021) has delivered an adjusted FCF margin of 38%+ in each of the last four years while the business shifted from multi-year to annual billing (6% of bookings in FY20 → ~30% today), a transition that would have cratered cash flow at a less disciplined company.</p>
+
+      <h3>Capital allocation</h3>
+      <p>The record is strong on M&amp;A returns and weak on per-share discipline. The company deploys cash almost exclusively into acquisitions (CyberArk, Chronosphere, IBM QRadar SaaS, Talon, Dig, Protect AI, Koi, Portkey) and has let the $1.0B remaining repurchase authorization sit unused into its December 2026 expiry while share count grew 7.8%. Goodwill is now $22.0B of $48.5B total assets. Given ~$7.9B of cash and investments, ~$4.4B of annual adjusted FCF and only $1.77B of (assumed CyberArk) convertible debt, the balance sheet could support meaningful buybacks; the choice not to is a statement that management sees better returns in deals — and, implicitly, that it does not see its own stock as cheap.</p>
+
+      <h3>Culture &amp; organizational traits</h3>
+      <ul>
+        <li><strong>Customer obsession:</strong> Platformization is structured around the customer's consolidation economics rather than Palo Alto's quarter; management openly finances migrations. NRR above 120% in the platformized cohort is the evidence.</li>
+        <li><strong>Innovation pace:</strong> FY26 GAAP R&amp;D was $2.55B (22% of revenue). Prisma AIRS went from GA to $100M ARR in four quarters with 800+ customers; the company is the first certified commercial partner for Mythos-class models through its Frontier AI Defense service; Unit 42 can build and deploy signatures for new OT/open-source vulnerabilities in under four hours.</li>
+        <li><strong>Failure tolerance / idea meritocracy:</strong> The 2024 decision to give away product to accelerate platformization — which cut near-term billings guidance and cost the stock 28% in a day — was a bet on long-term architecture over short-term optics. Two years later it is the growth engine. That is a management team willing to be wrong in public.</li>
+        <li><strong>Talent density:</strong> 21,921 employees generating ~$524K revenue per head (up from ~$470K pre-CyberArk despite absorbing 3,000+ lower-productivity acquired staff); the company cut 500+ CyberArk roles post-close to hit synergy targets.</li>
+        <li><strong>Ethics / governance watch-items:</strong> Persistent CEO selling, an unused buyback, aggressive non-GAAP adjustments (acquisition costs, convertible fair-value swings, a large negative "tax adjustment"), and a 42.7% GAAP effective tax rate distorted by the CyberArk structure. None disqualifying; all worth watching.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 4 ================= -->
+  <section class="card" id="s4">
+    <div class="card-h" onclick="toggle(this)"><div class="badge">4</div><h2>Quantitative Analysis — Financial Deep Dive</h2><div class="chev">▾</div></div>
+    <div class="card-b">
+      <h3>Revenue streams, explained simply</h3>
+      <p>Palo Alto reports two lines. <strong>Product revenue</strong> (20% of FY26, $2.28B, +27%) is mostly hardware firewalls recognized when shipped — the Gen 5 appliance cycle and AI data-center build-outs drove an unusually strong year, but management says hardware is ~10% of total revenue and faces rising memory/storage costs. <strong>Subscription and support revenue</strong> (80%, $9.20B, +24%) is recognized ratably and includes cloud-delivered security services attached to firewalls, SASE, Cortex, Idira and legacy support contracts. Beginning this quarter the company also discloses revenue by platform: Network &amp; AI Security $8.35B (+17%), Cortex $1.92B (+25%), Idira $644M reported / $1.26B <a href="#g-pro-forma">pro forma</a> (+21%), plus professional services and other. NGS ARR — the metric that matters — strips out hardware and legacy attached subscriptions/support and is now 79% of the revenue run-rate.</p>
+
+      <div class="chart-grid">
+        <div class="chart-box"><div class="ct"><h5>Quarterly Revenue ($M) — Last 8 Quarters</h5><button class="zoom" onclick="expand('c_rev')">Click to expand</button></div><canvas id="c_rev"></canvas><div class="note">Product vs Subscription &amp; Support. Q1 FY25 → Q4 FY26. Q3–Q4 FY26 include CyberArk (from Feb 11) and Chronosphere (from Jan 29).</div></div>
+        <div class="chart-box"><div class="ct"><h5>NGS ARR ($B) &amp; YoY Growth</h5><button class="zoom" onclick="expand('c_arr')">Click to expand</button></div><canvas id="c_arr"></canvas><div class="note">Growth jumps from 33% to 60%+ on ~$1.6B of acquired ARR in Q3 FY26. Organic growth high-20s.</div></div>
+      </div>
+
+      <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Quarter (FY)</th><th class="num">Revenue</th><th class="num">YoY</th><th class="num">NGS ARR</th><th class="num">RPO</th><th class="num">Non-GAAP Op Margin</th><th class="num">Adj. FCF</th><th class="num">Adj. FCF Margin</th><th class="num">Non-GAAP EPS</th><th class="num">GAAP NI</th></tr></thead>
+        <tbody>
+          <tr><td>Q1 FY25 (Oct-24)</td><td class="num">$2,139M</td><td class="num pos">+14%</td><td class="num">$4.52B</td><td class="num">$12.6B</td><td class="num">28.8%</td><td class="num">~$1,462M</td><td class="num">~68%</td><td class="num pos">$0.78</td><td class="num pos">$351M</td></tr>
+          <tr><td>Q2 FY25 (Jan-25)</td><td class="num">$2,257M</td><td class="num pos">+14%</td><td class="num">$4.78B</td><td class="num">$13.0B</td><td class="num">28.4%</td><td class="num">~$513M</td><td class="num">~23%</td><td class="num pos">$0.81</td><td class="num pos">$267M</td></tr>
+          <tr><td>Q3 FY25 (Apr-25)</td><td class="num">$2,289M</td><td class="num pos">+15%</td><td class="num">$5.09B</td><td class="num">$13.5B</td><td class="num">27.4%</td><td class="num">$578M</td><td class="num">25%</td><td class="num pos">$0.80</td><td class="num pos">$262M</td></tr>
+          <tr><td>Q4 FY25 (Jul-25)</td><td class="num">$2,536M</td><td class="num pos">+16%</td><td class="num">$5.58B</td><td class="num">$15.8B</td><td class="num">30.3%</td><td class="num">$954M</td><td class="num">38%</td><td class="num pos">$0.95</td><td class="num pos">$254M</td></tr>
+          <tr><td>Q1 FY26 (Oct-25)</td><td class="num">$2,474M</td><td class="num pos">+16%</td><td class="num">~$5.85B</td><td class="num">$15.5B</td><td class="num">30.2%</td><td class="num">$1,710M</td><td class="num">69%</td><td class="num pos">$0.93</td><td class="num pos">$334M</td></tr>
+          <tr><td>Q2 FY26 (Jan-26)</td><td class="num">$2,594M</td><td class="num pos">+15%</td><td class="num">$6.33B</td><td class="num">$16.0B</td><td class="num">30.3%</td><td class="num">~$505M</td><td class="num">~19%</td><td class="num pos">$1.03</td><td class="num pos">$432M</td></tr>
+          <tr><td>Q3 FY26 (Apr-26)</td><td class="num">$3,002M</td><td class="num pos">+31%</td><td class="num">$8.10B</td><td class="num">$18.4B</td><td class="num">27.1%</td><td class="num">$910M</td><td class="num">30%</td><td class="num pos">$0.85</td><td class="num neg">–$177M</td></tr>
+          <tr><td>Q4 FY26 (Jul-26)</td><td class="num">$3,410M</td><td class="num pos">+34%</td><td class="num">$9.10B</td><td class="num">$21.2B</td><td class="num">29.6%</td><td class="num">$1,289M</td><td class="num">38%</td><td class="num pos">$1.02</td><td class="num neg">–$282M</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p class="src">Sources: Palo Alto Networks 8-K earnings releases Q1 FY25 through Q4 FY26 (sec.gov / investors.paloaltonetworks.com) and Q4 FY26 earnings call. EPS split-adjusted for the Dec 2024 2:1 split. "~" denotes values derived from disclosed annual totals and growth rates rather than stated directly (Q1/Q2 FY25 and Q2 FY26 adjusted FCF; Q1 FY26 NGS ARR). Q1 is seasonally the largest cash-collection quarter.</p>
+
+      <h3>Free cash flow — levels, margins, growth</h3>
+      <div class="chart-grid">
+        <div class="chart-box"><div class="ct"><h5>Quarterly Adjusted FCF ($M) &amp; Margin</h5><button class="zoom" onclick="expand('c_fcf')">Click to expand</button></div><canvas id="c_fcf"></canvas><div class="note">Strong Q1 seasonality (fiscal-year-end collections). FY26 adj. FCF $4.41B vs $3.51B FY25 (+26%).</div></div>
+        <div class="chart-box"><div class="ct"><h5>Net New NGS ARR per Quarter ($M)</h5><button class="zoom" onclick="expand('c_nnarr')">Click to expand</button></div><canvas id="c_nnarr"></canvas><div class="note">Q3 FY26 includes ~$1.6B acquired; Q4 FY26 includes a 9-figure one-time LLM-customer migration. Gold = inorganic-assisted.</div></div>
+      </div>
+      <p>FY26 operating cash flow was $4.55B (+23%), capex $440M (including a $91M land purchase), free cash flow $4.11B and company-defined adjusted FCF $4.41B (38.4% margin) after adding back $164M of acquisition-related payments. FCF per share (GAAP definition) is ~$5.03 on 818M shares, up from ~$5.20 on 669M shares a year earlier — <em>per-share</em> free cash flow fell ~3% despite 19% aggregate growth, because the CyberArk shares arrived before CyberArk's cash flow did. That inverts in FY27 as Idira contributes a full year at improving margins: at the guided 38% margin on $14.15B, FY27 adjusted FCF is ~$5.4B, or ~$6.35 per share on the guided 845M diluted count (+26%).</p>
+      <p>Two cash-flow nuances matter. First, the shift to annual billing (now ~30% of bookings, up from 6% in FY20) has depressed reported FCF relative to bookings for five years; management says the transition has "largely stabilized," which — if true — removes a headwind and makes the 40% FY28 target credible. Second, deferred revenue of $14.76B (current $7.75B, long-term $7.01B) and RPO of $21.2B give unusually long revenue visibility: current RPO alone covers ~66% of FY27 guided revenue.</p>
+
+      <h3>Margins, cost scaling, operating leverage</h3>
+      <div class="chips">
+        <div class="chip"><div class="l">Non-GAAP GM Q4</div><div class="v">74.8%</div><div class="s">–100 bps YoY; FY26 75.8%</div></div>
+        <div class="chip"><div class="l">GAAP GM FY26</div><div class="v">70.4%</div><div class="s">Q4 67.6% (amortization in COGS)</div></div>
+        <div class="chip"><div class="l">Non-GAAP Op Margin FY26</div><div class="v">29.2%</div><div class="s">+40 bps · FY27 guide 29.5%</div></div>
+        <div class="chip"><div class="l">GAAP Op Margin FY26</div><div class="v neg">6.1%</div><div class="s">Q4 5.0%; Q3 –6.1%</div></div>
+        <div class="chip"><div class="l">GAAP Net Margin FY26</div><div class="v neg">2.7%</div><div class="s">$307M; Q4 –$282M</div></div>
+        <div class="chip"><div class="l">SBC / Revenue FY26</div><div class="v neg">14.9%</div><div class="s">$1,712M; Q4 $487M</div></div>
+        <div class="chip"><div class="l">Rev / Employee</div><div class="v">$524K</div><div class="s">21,921 employees</div></div>
+      </div>
+      <p>Non-GAAP operating leverage is real: FY26 non-GAAP operating income grew 27% on 24% revenue growth even while consolidating two businesses that ran at much lower standalone margins, and management targets a further 30 bps in FY27 with synergies "more than offsetting" higher cloud-hosting and hardware-component costs. But the GAAP picture deteriorated sharply. Between FY25 and FY26, GAAP operating income fell from $1,243M to $695M as SBC rose $326M, amortization of acquired intangibles rose $474M (and will roughly double again in FY27 on a full year of CyberArk's $7.0B intangible base), and acquisition costs swung from a $110M credit to a $295M charge. Gross margin is also under mild, structural pressure: the fastest-growing offerings are SaaS products that have not reached margin maturity, and management expects cloud-hosting costs to grow faster than revenue in FY27.</p>
+
+      <div class="chart-grid">
+        <div class="chart-box"><div class="ct"><h5>Non-GAAP vs GAAP Operating Margin (%)</h5><button class="zoom" onclick="expand('c_opm')">Click to expand</button></div><canvas id="c_opm"></canvas><div class="note">The gap widens from ~15 pts to ~25–33 pts post-acquisition: SBC + intangible amortization + deal costs.</div></div>
+        <div class="chart-box"><div class="ct"><h5>Gross Margin Trend (GAAP total, %)</h5><button class="zoom" onclick="expand('c_gm')">Click to expand</button></div><canvas id="c_gm"></canvas><div class="note">Step-down in Q3 FY26 reflects acquired-intangible amortization in COGS plus SaaS mix. Non-GAAP GM 74.8% in Q4.</div></div>
+      </div>
+
+      <h3>The flywheel</h3>
+      <p>Firewall installed base → attach cloud-delivered subscriptions → migrate to SASE on the same management plane → route telemetry into XSIAM → cross-sell cloud security, exposure management, observability → add identity (Idira) and AI runtime (Prisma AIRS) as the agentic surface expands → NRR &gt;120% on platformized customers → larger, longer contracts (RPO +34%) → 38%+ FCF funds the next category acquisition → repeat. The FY26 data shows every stage turning; the FY27 guide shows the flywheel's <em>organic</em> torque is steady rather than accelerating.</p>
+
+      <h3>Balance sheet, working capital, dilution</h3>
+      <div class="chips">
+        <div class="chip"><div class="l">Cash + ST Investments</div><div class="v">$3.07B</div><div class="s">+ $4.84B LT investments</div></div>
+        <div class="chip"><div class="l">Convertible Notes</div><div class="v neg">$1.77B</div><div class="s">CyberArk 0% due 2030, at fair value</div></div>
+        <div class="chip"><div class="l">Goodwill + Intangibles</div><div class="v neg">$29.0B</div><div class="s">60% of total assets</div></div>
+        <div class="chip"><div class="l">Current Ratio</div><div class="v neg">0.87x</div><div class="s">$7.75B of CL is deferred revenue</div></div>
+        <div class="chip"><div class="l">Deferred Revenue</div><div class="v">$14.76B</div><div class="s">current $7.75B + LT $7.01B</div></div>
+        <div class="chip"><div class="l">Shares Out YoY</div><div class="v neg">+7.8%</div><div class="s">818M; buyback unused</div></div>
+      </div>
+      <p>The <a href="#g-current-ratio">current ratio</a> of 0.87x looks weak but is a feature of the model: $7.75B of the $9.92B in current liabilities is deferred revenue — cash already collected for service not yet delivered. Liquidity is ample at ~$7.9B of cash and investments against $1.77B of zero-coupon <a href="#g-convertible">convertible notes</a> assumed from CyberArk (fair-value swings on those notes and their capped calls produced a $524M non-cash charge in Q4 alone). The real balance-sheet story is <a href="#g-goodwill">goodwill</a>: $22.0B of it, up from $4.6B a year ago, plus $7.0B of intangibles. That is the price of buying CyberArk at ~20x revenue, and it will be tested by impairment review every year. <a href="#g-dilution">Dilution</a> is the other watch-item: 7.8% share growth in one year, SBC running ~$1.7–1.9B annually, and a buyback authorization that expires unused on December 31, 2026 unless renewed.</p>
+
+      <h3>Growth rates vs. industry</h3>
+      <p>Revenue <a href="#g-cagr">CAGR</a> FY22→FY26 was ~20% (from $5.50B to $11.48B), against a security software market growing 12–14%; NGS ARR compounded ~48% over the same window with acquisitions. Organic revenue growth was 14–16% for eight consecutive quarters before the deals closed. The FY27 guide (+23–24% total, low-double-digit for the largest platform) implies organic growth in the mid-teens — roughly 1.2x the market rate — which is good, durable, and not what a 21.6x forward sales multiple usually buys.</p>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 5 ================= -->
+  <section class="card" id="s5">
+    <div class="card-h" onclick="toggle(this)"><div class="badge">5</div><h2>Earnings Tracker — Management Credibility</h2><div class="chev">▾</div></div>
+    <div class="card-b">
+      <p>Palo Alto has beaten the high end of its own quarterly revenue, NGS ARR and EPS guidance in each of the last eight quarters, and has raised full-year guidance at every print in both FY25 and FY26. The table pairs each quarter's specific prior guidance with the outcome. Note that the very large FY26 raises (NGS ARR from $7.0–7.1B to $8.9–8.95B) were driven by the CyberArk and Chronosphere closings rather than organic upside; we score those quarters on the organic beat.</p>
+      <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Quarter / Date</th><th>Specific Promise / Guidance</th><th>Actual Result</th><th class="num">Credibility</th></tr></thead>
+        <tbody>
+          <tr><td>Q1 FY25<br><span class="src">Nov 20, 2024</span></td><td>Q1 guide (Aug 2024): revenue $2.10–2.13B; NGS ARR $4.33–4.38B; EPS ~$0.73–0.75 split-adj. (approx.)</td><td>Revenue $2.139M (+14%); NGS ARR $4.52B (+40%); EPS $0.78; RPO $12.6B. FY25 NGS ARR, revenue and EPS guides raised; 2:1 split announced</td><td class="num"><span class="score">9/10</span></td></tr>
+          <tr><td>Q2 FY25<br><span class="src">Feb 13, 2025</span></td><td>Q2 guide: revenue $2.22–2.25B; NGS ARR $4.70–4.75B; EPS $0.77–0.78 (split-adj.)</td><td>Revenue $2.257B (+14%); NGS ARR $4.78B (+37%); EPS $0.81; FY25 op-margin and EPS raised on "AI-related efficiency"</td><td class="num"><span class="score">9/10</span></td></tr>
+          <tr><td>Q3 FY25<br><span class="src">May 20, 2025</span></td><td>Q3 guide: revenue $2.26–2.29B; NGS ARR $5.03–5.08B; EPS $0.76–0.77</td><td>Revenue $2.289B (+15%); NGS ARR $5.09B (+34%); EPS $0.80; RPO $13.5B (+19%, low end of guide)</td><td class="num"><span class="score">9/10</span></td></tr>
+          <tr><td>Q4 FY25<br><span class="src">Aug 18, 2025</span></td><td>Q4 guide: revenue $2.49–2.51B; NGS ARR $5.52–5.57B; EPS $0.87–0.89; FY25 adj. FCF margin 37.5–38.0%</td><td>Revenue $2.536B (+16%); NGS ARR $5.58B (+32%); EPS $0.95; RPO $15.8B (+24%, accelerating); FY25 adj. FCF 38.0%. Initial FY26 guide: revenue $10.475–10.525B, NGS ARR $7.0–7.1B, EPS $3.75–3.85</td><td class="num"><span class="score">10/10</span></td></tr>
+          <tr><td>Q1 FY26<br><span class="src">Nov 19, 2025</span></td><td>Q1 guide: revenue $2.45–2.47B; NGS ARR $5.82–5.84B; EPS $0.88–0.90</td><td>Revenue $2.474B (+16%); NGS ARR ~$5.85B (+29%); EPS $0.93; adj. FCF $1.71B; FY26 revenue and EPS raised; Chronosphere deal announced; FY30 NGS ARR target lifted to $20B</td><td class="num"><span class="score">9/10</span></td></tr>
+          <tr><td>Q2 FY26<br><span class="src">Feb 17, 2026</span></td><td>Q2 guide: revenue $2.57–2.59B; NGS ARR $6.11–6.14B; EPS $0.93–0.95; FY26 adj. FCF margin 38–39%</td><td>Revenue $2.594B (+15%); NGS ARR $6.33B (+33%, beat by $190M); EPS $1.03; third straight 30%+ op margin. FY26 adj. FCF guide <em>cut</em> to 37% to absorb deal costs; stock fell ~5%</td><td class="num"><span class="score">8/10</span></td></tr>
+          <tr><td>Q3 FY26<br><span class="src">Jun 2, 2026</span></td><td>Q3 guide: revenue $2.941–2.945B; NGS ARR $7.94–7.96B; RPO $17.85–17.95B; EPS $0.78–0.80</td><td>Revenue $3.002B (+31%; $388M acquired); NGS ARR $8.10B (+60%; $1.6B acquired); RPO $18.4B; EPS $0.85; "accelerating organic bookings"; FY26 adj. FCF guide restored to 37.5%</td><td class="num"><span class="score">9/10</span></td></tr>
+          <tr><td>Q4 FY26<br><span class="src">Sep 1, 2026</span></td><td>Q4 guide: revenue $3.345–3.355B; NGS ARR $8.90–8.95B; RPO $20.9–21.0B; EPS $0.96–0.98; FY26 adj. FCF 37.5%</td><td>Revenue $3.410B (+34%); NGS ARR $9.10B (+63%, ~$1B net new); RPO $21.2B; EPS $1.02; FY26 adj. FCF 38.4%. Initial FY27 guide: revenue $14.10–14.20B, NGS ARR $11.075–11.175B, EPS $4.16–4.19, 38% FCF. Stock fell on decelerating ARR guide</td><td class="num"><span class="score">9/10</span></td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="chart-grid">
+        <div class="chart-box"><div class="ct"><h5>FY26 Guidance Progression (midpoints)</h5><button class="zoom" onclick="expand('c_guide')">Click to expand</button></div><canvas id="c_guide"></canvas><div class="note">Revenue ($M, left) and NGS ARR ($M, left) raised at every print; the Feb and Jun steps are the acquisitions. EPS (×2,500 for scale).</div></div>
+        <div class="chart-box"><div class="ct"><h5>Non-GAAP EPS: Guide (high end) vs Actual</h5><button class="zoom" onclick="expand('c_eps')">Click to expand</button></div><canvas id="c_eps"></canvas><div class="note">Eight quarters. Average beat vs high end: $0.05/share (~6%). Q1 FY25 guide approximate.</div></div>
+      </div>
+      <div class="callout green"><div class="t">Credibility verdict</div>Average score 9.0/10. Management guides conservatively, beats consistently, and — importantly — has hit or exceeded every multi-year framework it has published (the FY22 $1B NGS ARR target, the "Rule of 50," the 38%+ FCF margin). The two dents: the Feb 2026 FCF-margin cut to fund deal costs (later restored), and a pattern of headline growth rates that flatter the organic business once large acquisitions land. Investors should track the <em>organic</em> net new NGS ARR line, which management discloses only qualitatively.</div>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 6 ================= -->
+  <section class="card" id="s6">
+    <div class="card-h" onclick="toggle(this)"><div class="badge">6</div><h2>Bull / Base / Bear Case Scenarios</h2><div class="chev">▾</div></div>
+    <div class="card-b">
+      <p>Targets use ~845M diluted shares in FY27 (guidance) rising to ~890M by FY29 and ~930M by FY31 (SBC plus modest stock-funded M&amp;A), and value the company on EV/adjusted-FCF and EV/Sales cross-checked against the peer set in Section 9. Net cash is small (~$0.5B) and ignored. The base case assumes management hits its FY30 framework ($20B NGS ARR, 40% FCF margin) and that the multiple normalizes toward Fortinet-plus-a-growth-premium (40–45x FCF) rather than staying at today's ~70x.</p>
+
+      <div class="horizon">1-Year Horizon (to Sep 2027) — Probability-weighted target: <span style="font-family:'JetBrains Mono',monospace">$360</span> (−4%)</div>
+      <div class="scen-grid">
+        <div class="scen bull"><div class="t">Bull Case</div><div class="pt">$470</div><span class="prob">Probability 25%</span><ul><li>FY27 revenue ≥$14.5B and organic net new NGS ARR re-accelerates on Mythos-driven demand; FY28 guide implies 20%+ growth</li><li>Prisma AIRS + Idira agentic identity become a $1B+ combined ARR line</li><li>Multiple holds at ~24x FY28E sales (~$16.6B) → ~$400B; buyback renewed and used</li></ul></div>
+        <div class="scen base"><div class="t">Base Case</div><div class="pt">$355</div><span class="prob">Probability 45%</span><ul><li>FY27 lands at the high end of guide (~$14.2B, 38% FCF ≈ $5.4B); FY28 guide ~+17%</li><li>NGS ARR ~$11.2B; platformizations ~150–200/qtr</li><li>Multiple compresses to ~18x FY28E sales / ~46x FY28E FCF (~$6.5B) → ~$300B</li></ul></div>
+        <div class="scen bear"><div class="t">Bear Case</div><div class="pt">$275</div><span class="prob">Probability 30%</span><ul><li>Organic growth decelerates to low-teens as the Mythos urgency fades and Microsoft bundling bites; FY28 guide &lt;15%</li><li>Gross margin slips below 74% on hosting and component costs; GAAP losses persist</li><li>Multiple reverts to ~14x forward sales (its 2024–25 range) → ~$232B</li></ul></div>
+      </div>
+
+      <div class="horizon">3-Year Horizon (to Sep 2029) — Probability-weighted target: <span style="font-family:'JetBrains Mono',monospace">$434</span> (+16%, ~5% CAGR)</div>
+      <div class="scen-grid">
+        <div class="scen bull"><div class="t">Bull Case</div><div class="pt">$587</div><span class="prob">Probability 30%</span><ul><li>Revenue ~$24B FY30 (NGS ARR beats $20B target); FCF margin 40% → ~$9.6B</li><li>Palo Alto is the default "AI runtime + identity + SOC" platform; SASE leadership achieved early</li><li>~55x FCF on 900M shares → ~$528B</li></ul></div>
+        <div class="scen base"><div class="t">Base Case</div><div class="pt">$445</div><span class="prob">Probability 45%</span><ul><li>Revenue ~$22B FY30 (~17% CAGR incl. tuck-ins); FCF margin 40% → ~$8.8B</li><li>NGS ARR ~$20B — framework hit, not beaten</li><li>~45x FCF on 890M shares → ~$396B</li></ul></div>
+        <div class="scen bear"><div class="t">Bear Case</div><div class="pt">$233</div><span class="prob">Probability 25%</span><ul><li>Revenue ~$19B (organic ~11%); Idira growth stalls in the teens; goodwill impairment on CyberArk</li><li>FCF margin 39% → ~$7.5B; SBC and dilution stay ~4–5%/yr</li><li>28x FCF (mature-security multiple) on 900M shares → ~$210B</li></ul></div>
+      </div>
+
+      <div class="horizon">5-Year Horizon (to Sep 2031) — Probability-weighted target: <span style="font-family:'JetBrains Mono',monospace">$534</span> (+42%, ~7% CAGR)</div>
+      <div class="scen-grid">
+        <div class="scen bull"><div class="t">Bull Case</div><div class="pt">$774</div><span class="prob">Probability 30%</span><ul><li>Revenue ~$36B FY32; four $3B+ ARR platforms (network, SOC/observability, identity, AI security)</li><li>FCF margin 42% → ~$15B; 48x FCF on 930M shares → ~$720B</li><li>McKinsey's "concentration" outcome fully realized: two-vendor industry (PANW, CRWD)</li></ul></div>
+        <div class="scen base"><div class="t">Base Case</div><div class="pt">$529</div><span class="prob">Probability 45%</span><ul><li>Revenue ~$30B (13–14% CAGR from FY30); FCF margin 41% → ~$12.3B</li><li>~40x FCF as growth matures to low-teens → ~$492B</li><li>Buybacks finally offset dilution from FY29</li></ul></div>
+        <div class="scen bear"><div class="t">Bear Case</div><div class="pt">$255</div><span class="prob">Probability 25%</span><ul><li>Revenue ~$24B; hyperscaler-native and Microsoft security commoditize the network layer</li><li>FCF margin 40% → ~$9.6B; 25x FCF on 940M shares → ~$240B</li><li>CyberArk convert refinanced in 2030 at a real coupon</li></ul></div>
+      </div>
+
+      <div class="chart-grid">
+        <div class="chart-box"><div class="ct"><h5>Scenario Price Targets vs Current ($)</h5><button class="zoom" onclick="expand('c_scen')">Click to expand</button></div><canvas id="c_scen"></canvas><div class="note">Bars = scenario targets; diamonds = probability-weighted; dashed = current $375.06.</div></div>
+        <div class="chart-box"><div class="ct"><h5>Base-Case Revenue &amp; Adj. FCF Path ($B)</h5><button class="zoom" onclick="expand('c_path')">Click to expand</button></div><canvas id="c_path"></canvas><div class="note">FY27 = guidance midpoint; FY28–FY32 = FTA base-case model (FCF margin 39% → 41%).</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 7 ================= -->
+  <section class="card" id="s7">
+    <div class="card-h" onclick="toggle(this)"><div class="badge">7</div><h2>Risks &amp; Anti-Thesis — Steelmanning the Other Side</h2><div class="chev">▾</div></div>
+    <div class="card-b">
+      <p>Because our verdict is a valuation bear, the "anti-thesis" here runs in both directions: the first three risks are what could make the stock fall harder than our base case; the last two are the strongest arguments <em>against our bear call</em> — the ways we could be wrong by being too cautious.</p>
+
+      <div class="risk"><h4>1. The FY27 guide implies organic deceleration, and the Street is modeling acceleration</h4>
+        <div class="meta"><span class="tag">Probability <b>45%</b></span><span class="tag">Impact <b>High</b></span><span class="tag">Priced in <b>No</b></span></div>
+        <p>FY26 net new NGS ARR was $3.52B, of which ~$1.6B was acquired and a nine-figure slice was a one-time Chronosphere migration; organic net new ARR was therefore roughly $1.8–1.9B. The FY27 guide midpoint ($11.125B) implies ~$2.0B of net new ARR — flat to slightly up — with Network &amp; AI Security (73% of revenue) guided to "low double digits." If the AI-panic bookings surge of Q3–Q4 FY26 was a pull-forward rather than a new run-rate, FY28 growth lands in the mid-teens and the stock's 21.6x forward sales multiple has no growth to support it. A de-rating to 14–15x forward sales (its own 2024–25 range) is a ~$250–275 stock.</p>
+        <p><em>Our rebuttal:</em> Palo Alto has guided conservatively for eight straight quarters, RPO is growing faster than revenue (34% vs 24%), and 60% of net new ARR is back-half weighted — a typical Arora "floor" setup. But the burden of proof is on the bulls: this is the risk that defines the next two prints.</p></div>
+
+      <div class="risk"><h4>2. GAAP earnings are near zero and the non-GAAP bridge is getting wider, not narrower</h4>
+        <div class="meta"><span class="tag">Probability <b>70%</b></span><span class="tag">Impact <b>Medium</b></span><span class="tag">Priced in <b>Partially</b></span></div>
+        <p>FY26 GAAP net income was $307M — 2.7% of revenue — versus $2.93B non-GAAP. The bridge is $1.71B of SBC, $638M of intangible amortization (annualizing at ~$1.1B post-CyberArk), $295M of acquisition costs and a $562M non-cash convertible fair-value charge. Share count grew 7.8%. On an "owner earnings" basis (adjusted FCF minus SBC minus cash acquisition costs) the company generated ~$2.5B, putting the stock at ~120x. If rates stay high and the market rotates back toward GAAP profitability — as it did in early 2026, when PANW fell to $140 — the same fundamentals could carry a much lower multiple.</p>
+        <p><em>Our rebuttal:</em> SBC as a percentage of revenue has been stable at ~15% for three years and amortization is genuinely non-cash. But a $1.0B buyback authorization left unused into expiry, at a time when the company issued 110M shares for a deal, is a capital-allocation signal we weight in the conviction score.</p></div>
+
+      <div class="risk"><h4>3. CyberArk goodwill, integration fatigue and the "acquisition treadmill"</h4>
+        <div class="meta"><span class="tag">Probability <b>30%</b></span><span class="tag">Impact <b>High</b></span><span class="tag">Priced in <b>No</b></span></div>
+        <p>Goodwill and intangibles are $29B — 60% of assets — and CyberArk was bought at roughly 20x revenue. Identity is a market where Okta, Microsoft Entra and SailPoint compete hard, and where the "agentic identity" TAM is a thesis rather than a revenue line. Idira is guided to high-teens to 20% pro forma growth; if it slips into the low teens (as many acquired security assets do once the founding team departs — 500+ CyberArk roles were cut post-close), the company faces an impairment charge, a credibility hit to the M&amp;A playbook, and the temptation to buy the next thing to restore headline growth. Arora explicitly monitors "40–50 funded startups"; the treadmill is the strategy.</p>
+        <p><em>Our rebuttal:</em> Two quarters of data show Idira <em>accelerating</em> inside Palo Alto (bookings growing faster than revenue, $5M+ deals +50%, synergies 3–6 months ahead of plan). The track record with Demisto, Twistlock, Expanse, Talon and Dig is strong. But this is the largest deal by 5x, and the base rate for $25B software acquisitions is not kind.</p></div>
+
+      <div class="risk"><h4>4. Anti-bear #1: The Mythos moment is a regime change, not a cycle — and platform concentration means PANW takes a disproportionate share</h4>
+        <div class="meta"><span class="tag">Probability <b>40%</b></span><span class="tag">Impact <b>High</b></span><span class="tag">Priced in <b>Partially</b></span></div>
+        <p>McKinsey's central claim is that the defense window has collapsed permanently: attackers with cyber-capable models exploit technical debt in minutes, and the only viable response is a unified, machine-speed platform. If that is right, the $1 trillion of "cybersecurity debt" Arora describes gets modernized on two or three platforms over five years, and the current 22–23% guide is the floor of a multi-year re-acceleration. Bookings accelerated for two consecutive quarters; agentic traffic on Prisma SASE rose 9x in nine months; Prisma AIRS added $100M of ARR in four quarters with 800+ customers; observability doubled to $500M+ in two quarters. In that world PANW compounds revenue at 20%+ through FY30 and a 25x sales multiple is defensible — which is our bull case ($470 in a year, $587 in three).</p>
+        <p><em>Why we still lean bear:</em> we assign this 25–30% probability, not 50%, because the FY27 guide — written by a management team that sees the pipeline — does not yet show it in the numbers. We would rather pay 18x for proof than 22x for a promise.</p></div>
+
+      <div class="risk"><h4>5. Anti-bear #2: Free-cash-flow compounding plus a real buyback could make today's multiple look cheap</h4>
+        <div class="meta"><span class="tag">Probability <b>35%</b></span><span class="tag">Impact <b>Medium</b></span><span class="tag">Priced in <b>Partially</b></span></div>
+        <p>At a 40% FCF margin on $22B of FY30 revenue, Palo Alto generates ~$8.8B of free cash a year with ~$8B already on the balance sheet. If the annual-billing transition really has stabilized and the company redirects even half its FCF to repurchases from FY28, share count could shrink 2–3% a year instead of growing 4–5%, adding ~5 points to per-share FCF growth. Fortinet — a slower grower — trades at 40x FCF with a 3.4% buyback yield; a Palo Alto that buys back stock while growing 17% would deserve 50x, and 50x on FY30 FCF is a ~$500 stock in 2029.</p>
+        <p><em>Why we still lean bear:</em> the company has shown no inclination to buy back stock at any price in the last two years, and the ~5% probability-weighted 3-year CAGR in our model already assumes a 45x exit multiple. The buyback is upside optionality, not the base case.</p></div>
+
+      <div class="callout gold"><div class="t">Other risks noted</div>Microsoft bundling Defender/Sentinel/Entra into E5 at effectively zero marginal cost; hyperscaler-native security for single-cloud shops; rising memory and storage costs in the ~10%-of-revenue hardware line; cloud-hosting COGS growing faster than revenue in FY27; concentration of Chronosphere in a handful of AI labs (one customer was a nine-figure ARR event); Israel-based operations and export-control exposure; a product vulnerability in Palo Alto's own firewalls (PAN-OS CVEs have been actively exploited before) is the reputational tail risk for a "platform of trust"; and the December 31, 2026 buyback expiry.</div>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 8 ================= -->
+  <section class="card" id="s8">
+    <div class="card-h" onclick="toggle(this)"><div class="badge">8</div><h2>Catalyst Timeline</h2><div class="chev">▾</div></div>
+    <div class="card-b">
+      <div class="timeline">
+        <div class="tl"><div class="d">2026-09 (now)</div><div class="e">Post-earnings consolidation; Console and Embrace integrations begin</div><div class="x">Stock has retraced ~6% from the $398.88 August high. Watch September sell-side conferences for any commentary on Q1 linearity and the Chronosphere migration tail.</div></div>
+        <div class="tl"><div class="d">2026-10 → 2026-11</div><div class="e">Prisma AIRS AI Gateway (Portkey) GA ramp; Ignite user conference season</div><div class="x">First quarter with the AI gateway generally available. Multi-module Prisma AIRS deals and any Idira "agentic identity" customer counts are the tells for the runtime-security thesis McKinsey highlights.</div></div>
+        <div class="tl"><div class="d">~2026-11-18</div><div class="e">Q1 FY27 earnings (quarter ending Oct 31, 2026)</div><div class="x">Guide: revenue $3.30–3.31B, NGS ARR $9.54–9.56B, EPS $0.96–0.98. Key tells: net new NGS ARR of ~$450M implied by the guide (bar for a bull: &gt;$500M ex-migration), RPO growth staying above revenue growth, gross margin ≥74%. Seasonally the largest FCF quarter (~$1.9–2.0B expected).</div></div>
+        <div class="tl"><div class="d">2026-12-31</div><div class="e">$1.0B share-repurchase authorization expires</div><div class="x">Renewal with actual execution would be the single most positive capital-allocation signal available; a quiet lapse confirms the "M&amp;A only" stance.</div></div>
+        <div class="tl"><div class="d">~2027-02-17</div><div class="e">Q2 FY27 earnings (quarter ending Jan 31, 2027)</div><div class="x">First clean year-over-year comparison for Chronosphere; last quarter before CyberArk anniversaries in the growth rate. Any FY27 raise here is organic by construction.</div></div>
+        <div class="tl"><div class="d">2027-04 (late)</div><div class="e">RSA Conference 2027</div><div class="x">Agentic-security category positioning vs CrowdStrike, Microsoft and the startup cohort; watch for Prisma AIRS + Idira + XSIAM bundled "agent security" SKU.</div></div>
+        <div class="tl"><div class="d">~2027-06-01</div><div class="e">Q3 FY27 earnings — CyberArk fully anniversaried</div><div class="x">Reported NGS ARR growth converges to organic (~20% or below). This is where the "acquisition-inflated growth" debate resolves in the numbers and the multiple either holds or does not.</div></div>
+        <div class="tl"><div class="d">~2027-08-31</div><div class="e">Q4 FY27 earnings + initial FY28 guidance</div><div class="x">FY28 is the year of the 40% adjusted FCF margin commitment. An FY28 revenue guide ≥$16.8B (+18%) validates the base case; ≥$17.5B triggers the bull case; &lt;$16.3B triggers the bear case.</div></div>
+        <div class="tl"><div class="d">2026–2027 (ongoing)</div><div class="e">Regulatory / macro</div><div class="x">EU AI Act high-risk obligations phase in from August 2026; NIS2 enforcement; U.S. CMMC 2.0 for defense suppliers; SEC cyber-incident disclosure rules — all push budgets toward platform vendors with compliance tooling. Each new frontier-model release (Mythos successors) is a demand catalyst for the category.</div></div>
+        <div class="tl"><div class="d">2030</div><div class="e">CyberArk 0% convertible notes mature; FY30 framework year ($20B NGS ARR, 4,000+ platformizations)</div><div class="x">Non-event on the notes if the stock is above conversion; the framework is the scorecard for everything above.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 9 ================= -->
+  <section class="card" id="s9">
+    <div class="card-h" onclick="toggle(this)"><div class="badge">9</div><h2>Comparable Company Analysis</h2><div class="chev">▾</div></div>
+    <div class="card-b">
+      <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Company</th><th class="num">Mkt Cap</th><th class="num">Rev TTM</th><th class="num">Rev Growth</th><th class="num">P/E</th><th class="num">P/S</th><th class="num">FCF Margin</th><th class="num">Net Margin</th><th class="num">EV/EBITDA</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Palo Alto (PANW)</strong></td><td class="num">$306.8B</td><td class="num">$11.48B</td><td class="num pos">+24%</td><td class="num">~1,000x (90x fwd)</td><td class="num">26.7x</td><td class="num pos">35.8% (38.4% adj.)</td><td class="num">2.7%</td><td class="num">196x</td></tr>
+          <tr><td>CrowdStrike (CRWD)</td><td class="num">$252.1B</td><td class="num">$5.40B</td><td class="num pos">+23%</td><td class="num">n/m (171x fwd)</td><td class="num">46.9x</td><td class="num pos">29.8%</td><td class="num">0.8%</td><td class="num">n/m</td></tr>
+          <tr><td>Fortinet (FTNT)</td><td class="num">$126.6B</td><td class="num">$7.53B</td><td class="num pos">+14%</td><td class="num">61x (49x fwd)</td><td class="num">16.8x</td><td class="num pos">41.4%</td><td class="num pos">28.2%</td><td class="num">47x</td></tr>
+          <tr><td>Cloudflare (NET)</td><td class="num">$119.0B</td><td class="num">$2.51B</td><td class="num pos">+30%</td><td class="num">n/m (226x fwd)</td><td class="num">47.1x</td><td class="num">13.6%</td><td class="num neg">–8.2%</td><td class="num">n/m</td></tr>
+          <tr><td>Zscaler (ZS)</td><td class="num">$32.2B</td><td class="num">$3.35B</td><td class="num pos">+25%</td><td class="num">n/m (39x fwd)</td><td class="num">9.5x</td><td class="num pos">25.4%</td><td class="num neg">–1.9%</td><td class="num">n/m</td></tr>
+          <tr><td>SentinelOne (S)</td><td class="num">$8.1B</td><td class="num">$1.10B</td><td class="num pos">+22%</td><td class="num">n/m (59x fwd)</td><td class="num">7.5x</td><td class="num">5.2%</td><td class="num neg">–31.0%</td><td class="num">n/m</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p class="src">All figures from StockAnalysis / S&amp;P Global Market Intelligence as of the Sep 17, 2026 close. Revenue growth = TTM YoY per S&amp;P (PANW FY26 +24% reported; CRWD, NET, S per latest reported trailing periods; ZS FY26 +25%). n/m = not meaningful (GAAP loss or near-zero EBITDA). PANW FCF margin shown on both GAAP and company-adjusted bases.</p>
+
+      <div class="chart-grid">
+        <div class="chart-box"><div class="ct"><h5>P/S Multiple vs Revenue Growth</h5><button class="zoom" onclick="expand('c_peer')">Click to expand</button></div><canvas id="c_peer"></canvas><div class="note">Bubble size ≈ FCF margin. PANW sits above the growth-multiple line; ZS and FTNT sit below it.</div></div>
+        <div class="chart-box"><div class="ct"><h5>Growth-Adjusted Multiple (P/S ÷ Growth %)</h5><button class="zoom" onclick="expand('c_psg')">Click to expand</button></div><canvas id="c_psg"></canvas><div class="note">Lower = cheaper per unit of growth. PANW 1.11 vs ZS 0.38, FTNT 1.20, CRWD 2.04.</div></div>
+      </div>
+
+      <h3>Relative valuation read</h3>
+      <p>The peer set splits into two regimes. The "platform consolidators" (PANW, CRWD, and to a lesser extent NET) trade at 27–47x sales; the "single-category leaders" (FTNT, ZS, S) trade at 7–17x. On a growth-adjusted basis PANW's 1.11 P/S-to-growth is cheaper than CrowdStrike (2.04) and Cloudflare (1.57) but roughly in line with Fortinet (1.20) — a company growing at 60% of PANW's rate with a 41% FCF margin, a net-cash balance sheet, positive GAAP earnings and a shrinking share count. Against Zscaler (0.38) — the SASE leader PANW is displacing — the premium is nearly 3x per unit of growth. The best "what could PANW become" comp is Fortinet at maturity: 40x FCF, 3% buyback yield, 28% GAAP net margin. If PANW converges to that profile by FY30 with 17% growth, the fair multiple is ~45x FCF — our base case — and the entire return between now and then comes from FCF growth net of multiple compression. That is why our 3-year probability-weighted CAGR is only ~5% despite a franchise we admire. The asymmetric trade in this peer set today is not PANW; it is the gap between PANW's multiple and its own 2024–25 range, which we expect to be at least partially closed from the top.</p>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 10 ================= -->
+  <section class="card" id="s10">
+    <div class="card-h" onclick="toggle(this)"><div class="badge">10</div><h2>First-Principles KPIs</h2><div class="chev">▾</div></div>
+    <div class="card-b">
+      <p>Five leading indicators, in order of importance. If the first turns decisively positive, our bear call is wrong and we would flip; if the fourth turns negative, the bull case is dead.</p>
+      <ol style="margin:8px 0 14px 22px;font-size:14.5px">
+        <li><strong>Organic <a href="#g-net-new-arr">net new NGS ARR</a> per quarter.</strong> Bar to flip bullish: &gt;$600M organic in any quarter (Q4 FY26 was ~$1B including a nine-figure one-time migration; the FY27 guide implies ~$500M/qtr average). This is the purest read on whether the "Mythos moment" is a regime change.</li>
+        <li><strong>RPO growth minus revenue growth.</strong> Bar: positive. Q4: +34% vs +24% = +10 pts. Bookings lead revenue by 12–18 months; when this spread turns negative, the guide is at risk.</li>
+        <li><strong>Net new platformizations and platformized-cohort NRR.</strong> Bar: ≥150 per quarter and NRR &gt;120%. Q4: ~220 (record) and &gt;120%. Tracks whether consolidation is actually happening at the customer level.</li>
+        <li><strong>Adjusted FCF margin vs SBC / revenue.</strong> Bar: FCF ≥38% and SBC ≤15%. FY26: 38.4% and 14.9%. The pair tells you whether the cash is real after paying employees in stock.</li>
+        <li><strong>Non-GAAP gross margin.</strong> Bar: ≥74%. Q4: 74.8% (−100 bps YoY). Cloud-hosting costs and hardware component inflation are the two drags; below 73% the 40% FY28 FCF target is in doubt.</li>
+      </ol>
+      <div class="chart-grid">
+        <div class="chart-box"><div class="ct"><h5>KPI 2: RPO Growth vs Revenue Growth (% YoY)</h5><button class="zoom" onclick="expand('c_rpo')">Click to expand</button></div><canvas id="c_rpo"></canvas><div class="note">Q1 FY25 → Q4 FY26. Spread widened to +10 pts in Q4; acquisitions contribute to both lines from Q3 FY26.</div></div>
+        <div class="chart-box"><div class="ct"><h5>KPI 4: Adj. FCF Margin vs SBC / Revenue (%)</h5><button class="zoom" onclick="expand('c_sbc')">Click to expand</button></div><canvas id="c_sbc"></canvas><div class="note">Annual FY22–FY26. FCF margin up and to the right; SBC intensity flat at ~15%.</div></div>
+      </div>
+      <div class="chart-grid">
+        <div class="chart-box"><div class="ct"><h5>FY26 Revenue by Platform ($M)</h5><button class="zoom" onclick="expand('c_platform')">Click to expand</button></div><canvas id="c_platform"></canvas><div class="note">Idira shown as reported ($644M, partial year); pro forma $1.26B. "Other" = professional services and NGTS.</div></div>
+        <div class="chart-box"><div class="ct"><h5>Growth Engines — ARR Lines ($M, Q4 FY26)</h5><button class="zoom" onclick="expand('c_engines')">Click to expand</button></div><canvas id="c_engines"></canvas><div class="note">Disclosed ARR milestones: XSIAM &gt;$700M (+70%), Observability &gt;$500M, Prisma AIRS &gt;$100M; Idira shown as pro forma revenue run-rate.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 11 ================= -->
+  <section class="card" id="s11">
+    <div class="card-h" onclick="toggle(this)"><div class="badge">11</div><h2>Glossary &amp; Methodology</h2><div class="chev">▾</div></div>
+    <div class="card-b">
+      <h3>Methodology</h3>
+      <p>All company financial figures come from Palo Alto Networks' SEC-filed 8-K earnings releases (Q1 FY25 through Q4 FY26), the Q4 FY26 earnings call transcript and the FY26 10-K, with market data from StockAnalysis / S&amp;P Global Market Intelligence as of the September 17, 2026 close. Peer data is from the same source and date. Where a quarterly figure was not stated directly (Q1/Q2 FY25 and Q2 FY26 adjusted FCF; Q1 FY26 NGS ARR; Q1 FY25 EPS guidance), it is derived from disclosed annual totals or growth rates and marked "~". Insider-transaction estimates are from secondary aggregators of Form 4 filings. The McKinsey framing is from the Technology Trends Outlook 2026 as summarized in the FTA investor brief. Scenario targets apply EV/adjusted-FCF and EV/Sales multiples to FTA's own revenue and margin model; probabilities are judgmental. Nothing here is investment advice.</p>
+
+      <div class="gl" id="g-ngs-arr"><h4>Next-Generation Security ARR (NGS ARR)</h4><div class="f">Annualized allocated revenue of all active contracts, excluding hardware, legacy attached subscriptions, support and professional services</div><p>Palo Alto's headline growth metric, covering SASE, software firewalls, cloud-delivered security services, Cortex, Idira, observability and AI security. <em>Why it matters:</em> it isolates the recurring, platform-driven business from the hardware and legacy support lines — but it includes acquired ARR from the day a deal closes, so headline growth must be read alongside the organic figure.</p><a class="back" href="#s1">↑ Back to Section 1</a></div>
+      <div class="gl" id="g-net-new-arr"><h4>Net New NGS ARR</h4><div class="f">NGS ARR this quarter − NGS ARR last quarter</div><p>Captures new logos and expansion net of churn (and, when relevant, acquired ARR). <em>Why it matters:</em> the level and trend of <em>organic</em> net new ARR is the cleanest real-time read on demand; Q4 FY26's ~$1B included a nine-figure one-time migration.</p><a class="back" href="#s10">↑ Back to Section 10</a></div>
+      <div class="gl" id="g-rpo"><h4>Remaining Performance Obligation (RPO)</h4><div class="f">Total contracted revenue not yet recognized; current RPO (cRPO) = the portion due within 12 months</div><p>A bookings-backlog measure that includes both billed (deferred revenue) and unbilled contracts. <em>Why it matters:</em> RPO growth (34%) running ahead of revenue growth (24%) signals future revenue acceleration or, at minimum, visibility; $21.2B is ~1.5 years of guided revenue.</p><a class="back" href="#s1">↑ Back to Section 1</a></div>
+      <div class="gl" id="g-platformization"><h4>Platformization</h4><div class="f">A customer standardizing on one or more Palo Alto platforms (Network &amp; AI Security, Cortex, Idira), typically after consolidating point products from other vendors</div><p>Palo Alto counts "net new platformizations" among its ~5,000 largest customers and targets 4,000+ by FY30. <em>Why it matters:</em> platformized customers carry NRR above 120% and larger, longer contracts; the count is the leading indicator for the consolidation thesis.</p><a class="back" href="#s1">↑ Back to Section 1</a></div>
+      <div class="gl" id="g-nrr"><h4>Net Revenue Retention (NRR)</h4><div class="f">NRR = ARR today from customers who existed 12 months ago ÷ their ARR 12 months ago</div><p>Above 100% means the existing base grows through upsell net of churn. Palo Alto discloses it only for the platformized cohort (&gt;120%). <em>Why it matters:</em> at 120%, the platformized base grows ~20% with zero new customers.</p><a class="back" href="#s3">↑ Back to Section 3</a></div>
+      <div class="gl" id="g-fcf"><h4>Adjusted Free Cash Flow (FCF)</h4><div class="f">Adj. FCF = Operating cash flow − capex + HQ/corporate-asset capex + acquisition-related payments + litigation payments</div><p>Palo Alto's company-defined cash metric; unadjusted FCF (OCF − capex) was $4.11B in FY26 vs $4.41B adjusted. FCF margin = FCF ÷ revenue. <em>Why it matters:</em> for a company with near-zero GAAP earnings, FCF is the only cash profitability measure — but it flatters companies with high stock-based compensation (see SBC) and, in Palo Alto's case, adds back real cash spent on deals.</p><a class="back" href="#s1">↑ Back to Section 1</a></div>
+      <div class="gl" id="g-sbc"><h4>Stock-Based Compensation (SBC)</h4><div class="f">Non-cash expense for equity granted to employees; added back in FCF and non-GAAP earnings</div><p>A real cost borne by shareholders through dilution rather than cash. <em>Why it matters:</em> Palo Alto's $1.71B of FY26 SBC (14.9% of revenue) is the largest single item between its 29% non-GAAP operating margin and its 6% GAAP operating margin.</p><a class="back" href="#s2">↑ Back to Section 2</a></div>
+      <div class="gl" id="g-pro-forma"><h4>Pro Forma Growth</h4><div class="f">Growth calculated as if an acquired business had been owned for the full prior-year comparison period</div><p>Used by Palo Alto for Idira ($1.26B pro forma FY26 revenue, +21%) and for "organic bookings acceleration." <em>Why it matters:</em> reported growth (+34% in Q4) overstates the underlying business when large deals close mid-year; pro forma growth is closer to the truth investors are paying for.</p><a class="back" href="#s4">↑ Back to Section 4</a></div>
+      <div class="gl" id="g-ps"><h4>Price-to-Sales (P/S) and the FTA Scale</h4><div class="f">P/S = Market cap ÷ TTM revenue · Scale: &gt;30 Euphoric · &gt;18 Excited · &gt;8 Optimistic · 4–8 Aware · &lt;4 Cautious · &lt;2 Pessimistic</div><p>Useful for companies where GAAP P/E fails. <em>Why it matters:</em> PANW at 26.7x is "Excited" — a multiple that requires sustained 20%+ growth and margin expansion to earn; its own 2024–25 range was 12–17x ("Optimistic").</p><a class="back" href="#s2">↑ Back to Section 2</a></div>
+      <div class="gl" id="g-p-fcf"><h4>Price-to-Free-Cash-Flow (P/FCF)</h4><div class="f">P/FCF = Market cap ÷ TTM free cash flow (EV/FCF uses enterprise value)</div><p>The cash-flow analogue of P/E. <em>Why it matters:</em> PANW at ~70x adjusted FCF (57x forward) is priced for many years of 20%+ cash-flow growth; Fortinet, the mature comp, trades at 40x.</p><a class="back" href="#s2">↑ Back to Section 2</a></div>
+      <div class="gl" id="g-ev-ebitda"><h4>EV / EBITDA</h4><div class="f">Enterprise value ÷ earnings before interest, taxes, depreciation &amp; amortization</div><p>Capital-structure-neutral profitability multiple. <em>Why it matters:</em> at 196x on GAAP EBITDA it is not meaningful for PANW today because SBC is not added back under GAAP; on a non-GAAP basis (~$3.9B EBITDA) it is ~78x.</p><a class="back" href="#s9">↑ Back to Section 9</a></div>
+      <div class="gl" id="g-rule-of-40"><h4>Rule of 40</h4><div class="f">Revenue growth % + FCF margin % ≥ 40</div><p>A SaaS heuristic for balancing growth and profitability. <em>Why it matters:</em> PANW scores ~62 on reported growth (24 + 38) and ~53 on organic growth, both elite; management calls itself a "Rule of 50" company.</p><a class="back" href="#s2">↑ Back to Section 2</a></div>
+      <div class="gl" id="g-operating-leverage"><h4>Operating Leverage</h4><div class="f">% change in operating income ÷ % change in revenue</div><p>When costs grow slower than revenue, margins expand. <em>Why it matters:</em> PANW's non-GAAP operating income grew 27% on 24% revenue growth in FY26 while absorbing lower-margin acquisitions — positive leverage; GAAP operating income fell 44% — negative leverage, driven by deal accounting.</p><a class="back" href="#s4">↑ Back to Section 4</a></div>
+      <div class="gl" id="g-cagr"><h4>CAGR (Compound Annual Growth Rate)</h4><div class="f">CAGR = (End ÷ Start)^(1/years) − 1</div><p>Smoothed annual growth across multi-year periods. <em>Why it matters:</em> FY22–FY26 revenue CAGR of ~20% vs ~13% for the security-software market; our 3-year base case implies only ~5% share-price CAGR because of multiple compression.</p><a class="back" href="#s2">↑ Back to Section 2</a></div>
+      <div class="gl" id="g-dilution"><h4>Share Dilution</h4><div class="f">YoY % change in shares outstanding</div><p>New shares from SBC, option exercises, convertibles or stock-funded acquisitions reduce each existing share's claim. <em>Why it matters:</em> at +7.8% in FY26 (mostly the ~110M CyberArk shares), PANW's per-share FCF fell even as total FCF grew 26%.</p><a class="back" href="#s4">↑ Back to Section 4</a></div>
+      <div class="gl" id="g-current-ratio"><h4>Current Ratio / Working Capital</h4><div class="f">Current ratio = current assets ÷ current liabilities · Working capital = the difference</div><p>Short-term liquidity. <em>Why it matters:</em> PANW's 0.87x looks weak but $7.75B of current liabilities is deferred revenue (cash already collected), not debt; adjusted for that, liquidity is very strong.</p><a class="back" href="#s4">↑ Back to Section 4</a></div>
+      <div class="gl" id="g-goodwill"><h4>Goodwill &amp; Acquired Intangibles</h4><div class="f">Goodwill = purchase price − fair value of identifiable net assets; intangibles = acquired technology, customer relationships, trade names (amortized)</div><p>PANW carries $22.0B of goodwill and $7.0B of intangibles after CyberArk and Chronosphere. <em>Why it matters:</em> intangible amortization (~$1.1B/yr) depresses GAAP earnings and gross margin; goodwill is tested annually and an impairment would signal the deal underperformed.</p><a class="back" href="#s4">↑ Back to Section 4</a></div>
+      <div class="gl" id="g-convertible"><h4>Convertible Senior Notes</h4><div class="f">Debt that can convert into equity at a preset price; here CyberArk's 0% notes due 2030, carried at fair value after the acquisition</div><p>Assumed in the CyberArk deal and marked to market each quarter with offsetting capped calls. <em>Why it matters:</em> the fair-value swing ($524M in Q4) is non-cash and excluded from non-GAAP EPS, but it is why GAAP net income turned negative; the notes are a 2030 refinancing question.</p><a class="back" href="#s4">↑ Back to Section 4</a></div>
+      <div class="gl" id="g-short-interest"><h4>Short Interest</h4><div class="f">Shares sold short ÷ float (or shares outstanding); days to cover = short shares ÷ average daily volume</div><p>Measures bearish positioning. <em>Why it matters:</em> at 2.6% of float and falling, there is no crowded short in PANW — a valuation bear call here cannot rely on a squeeze-driven bounce to be wrong quickly, nor on forced covering to be right.</p><a class="back" href="#s2">↑ Back to Section 2</a></div>
+      <div class="gl" id="g-tam"><h4>TAM (Total Addressable Market)</h4><div class="f">Annual revenue opportunity if a company captured 100% of its target market</div><p>Vendor-stated TAMs (PANW: $340B by 2030) are typically far larger than third-party segment estimates (~$120–150B for the categories PANW competes in). <em>Why it matters:</em> use the narrow figure for penetration math (~8%) and the broad one for optionality.</p><a class="back" href="#s2">↑ Back to Section 2</a></div>
+      <div class="gl" id="g-runtime-security"><h4>Runtime Security / AI Gateway</h4><div class="f">Security enforced on live traffic and actions (prompts, model calls, agent tool use) at execution time, rather than on static code or configuration</div><p>McKinsey's prescription for the collapsed defense window; Palo Alto delivers it through Prisma AIRS, with the acquired Portkey AI gateway routing every model interaction through a policy-enforcement point. <em>Why it matters:</em> it is the fastest-growing product line in company history ($100M ARR in four quarters) and the strategic reason the McKinsey report names Palo Alto.</p><a class="back" href="#s2">↑ Back to Section 2</a></div>
+
+      <h3>Primary sources</h3>
+      <p class="src">
+        <a href="https://www.sec.gov/Archives/edgar/data/1327567/000132756726000019/ex991q426earningsrelease.htm">Q4 FY26 8-K press release (Sep 1, 2026)</a> ·
+        <a href="https://www.paloaltonetworks.com/company/press/2026/palo-alto-networks-reports-fiscal-third-quarter-2026-financial-results">Q3 FY26 press release (Jun 2, 2026)</a> ·
+        <a href="https://investors.paloaltonetworks.com/news-releases/news-release-details/palo-alto-networks-reports-fiscal-second-quarter-2026-financial">Q2 FY26 press release (Feb 17, 2026)</a> ·
+        <a href="https://www.sec.gov/Archives/edgar/data/1327567/000132756725000032/ex991q126earningsrelease.htm">Q1 FY26 8-K (Nov 19, 2025)</a> ·
+        <a href="https://www.sec.gov/Archives/edgar/data/1327567/000132756725000024/ex991q425earningsrelease.htm">Q4 FY25 8-K (Aug 18, 2025)</a> ·
+        <a href="https://investors.paloaltonetworks.com/news-releases/news-release-details/palo-alto-networks-reports-fiscal-third-quarter-2025-financial">Q3 FY25 press release (May 20, 2025)</a> ·
+        <a href="https://www.sec.gov/Archives/edgar/data/1327567/000132756725000006/ex991q225earningsrelease.htm">Q2 FY25 8-K (Feb 13, 2025)</a> ·
+        <a href="https://www.sec.gov/Archives/edgar/data/1327567/000132756724000036/ex991q125earningsrelease.htm">Q1 FY25 8-K (Nov 20, 2024)</a> ·
+        <a href="https://www.sec.gov/Archives/edgar/data/0001327567/000132756726000023/panw-20260731.htm">FY26 Form 10-K</a> ·
+        <a href="https://www.fool.com/earnings/call-transcripts/2026/09/08/palo-alto-networks-panw-q4-2026-earnings-call-transcript/">Q4 FY26 earnings call transcript</a> ·
+        <a href="https://www.paloaltonetworks.com/company/press/2026/palo-alto-networks-completes-acquisition-of-portkey-to-secure-ai-agents">Portkey acquisition close (May 29, 2026)</a> ·
+        <a href="https://www.paloaltonetworks.com/company/press/2026/palo-alto-networks-completes-chronosphere-acquisition--unifying-observability-and-security-for-the-ai-era">Chronosphere close (Jan 29, 2026)</a> ·
+        <a href="https://stockanalysis.com/stocks/panw/statistics/">StockAnalysis PANW statistics</a> ·
+        <a href="https://stockanalysis.com/stocks/crwd/statistics/">CRWD</a> ·
+        <a href="https://stockanalysis.com/stocks/ftnt/statistics/">FTNT</a> ·
+        <a href="https://stockanalysis.com/stocks/zs/statistics/">ZS</a> ·
+        <a href="https://stockanalysis.com/stocks/net/statistics/">NET</a> ·
+        <a href="https://stockanalysis.com/stocks/s/statistics/">S</a> ·
+        <a href="https://www.secform4.com/insider-trading/1468233.htm">Nikesh Arora Form 4 history (secondary)</a>
+      </p>
+    </div>
+  </section>
+
+  <p class="src" style="margin-top:30px">© 2026 Foundational Trading Academy. Prepared September 17, 2026. This report is for educational purposes only and is not a recommendation to buy or sell any security. The author is not a licensed financial advisor.</p>
+  </div>
+</main>
+
+<div class="modal" id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal-box"><button class="modal-close" onclick="closeModal()">×</button><h5 id="modal-title"></h5><canvas id="modal-canvas"></canvas></div>
+</div>
+
+<script>
+function toggle(h){h.parentElement.classList.toggle('collapsed')}
+const G='#145A22',DG='#0A3A14',GOLD='#FCC55B',GD='#e0a838',RED='#a8341f',MUTED='#5d6155',LINE='#d8d1c4';
+Chart.defaults.font.family="'Quicksand',sans-serif";Chart.defaults.font.size=11;Chart.defaults.color=MUTED;
+const mono={family:"'JetBrains Mono',monospace",size:10};
+const configs={};const charts={};
+function cloneCfg(o){if(Array.isArray(o))return o.map(cloneCfg);if(o&&typeof o==='object')return Object.fromEntries(Object.entries(o).map(([k,v])=>[k,cloneCfg(v)]));return o;}
+function mk(id,cfg){configs[id]=cfg;const c=document.getElementById(id);if(c)charts[id]=new Chart(c,cloneCfg(cfg));}
+let modalChart=null;
+function expand(id){const cfg=configs[id];if(!cfg)return;document.getElementById('modal-title').textContent=cfg._title||'';const m=document.getElementById('modal');m.classList.add('open');if(modalChart)modalChart.destroy();const c=cloneCfg(cfg);c.options=c.options||{};c.options.maintainAspectRatio=false;c.options.responsive=true;modalChart=new Chart(document.getElementById('modal-canvas'),c);}
+function closeModal(){document.getElementById('modal').classList.remove('open');if(modalChart){modalChart.destroy();modalChart=null;}}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+const base=(extra={})=>Object.assign({responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{boxWidth:10,padding:10}}},scales:{x:{grid:{display:false},ticks:{font:mono}},y:{grid:{color:'#eee8dc'},ticks:{font:mono}}}},extra);
+
+const Q=['Q1 FY25','Q2 FY25','Q3 FY25','Q4 FY25','Q1 FY26','Q2 FY26','Q3 FY26','Q4 FY26'];
+
+mk('c_annual',{_title:'Annual Revenue & Growth (FY22–FY27G)',type:'bar',data:{labels:['FY22','FY23','FY24','FY25','FY26','FY27G'],datasets:[{type:'bar',label:'Revenue ($M)',data:[5502,6893,8028,9222,11480,14150],backgroundColor:[G,G,G,G,G,GD],borderRadius:5,yAxisID:'y'},{type:'line',label:'YoY Growth %',data:[29.3,25.3,16.5,14.9,24.5,23.3],borderColor:GD,backgroundColor:GD,tension:.3,yAxisID:'y1',pointRadius:3}]},options:base({scales:{x:{grid:{display:false},ticks:{font:mono}},y:{grid:{color:'#eee8dc'},ticks:{font:mono}},y1:{position:'right',min:0,max:40,grid:{display:false},ticks:{font:mono,callback:v=>v+'%'}}}})});
+mk('c_mcap',{_title:'Market Cap vs Peers ($B)',type:'bar',data:{labels:['PANW','CRWD','FTNT','NET','ZS','S'],datasets:[{label:'Market Cap ($B)',data:[306.8,252.1,126.6,119.0,32.2,8.1],backgroundColor:[GD,'#7aa885','#7aa885','#7aa885','#7aa885','#7aa885'],borderRadius:5}]},options:base({indexAxis:'y',plugins:{legend:{display:false}}})});
+mk('c_rev',{_title:'Quarterly Revenue ($M) — Product vs Subscription & Support',type:'bar',data:{labels:Q,datasets:[{label:'Subscription & Support',data:[1785,1836,1836,1962,2040,2080,2408,2672],backgroundColor:G,borderRadius:4,stack:'a'},{label:'Product',data:[354,421,453,574,434,514,594,738],backgroundColor:GOLD,borderRadius:4,stack:'a'}]},options:base({scales:{x:{stacked:true,grid:{display:false},ticks:{font:mono}},y:{stacked:true,grid:{color:'#eee8dc'},ticks:{font:mono}}}})});
+mk('c_arr',{_title:'NGS ARR ($B) & YoY Growth',type:'bar',data:{labels:Q,datasets:[{type:'bar',label:'NGS ARR ($B)',data:[4.52,4.78,5.09,5.58,5.85,6.33,8.10,9.10],backgroundColor:[G,G,G,G,G,G,GD,GD],borderRadius:4,yAxisID:'y'},{type:'line',label:'YoY %',data:[40,37,34,32,29,33,60,63],borderColor:GD,backgroundColor:GD,tension:.3,yAxisID:'y1',pointRadius:3}]},options:base({scales:{x:{grid:{display:false},ticks:{font:mono}},y:{grid:{color:'#eee8dc'},ticks:{font:mono}},y1:{position:'right',min:0,max:80,grid:{display:false},ticks:{font:mono,callback:v=>v+'%'}}}})});
+mk('c_fcf',{_title:'Quarterly Adjusted Free Cash Flow ($M) & Margin',type:'bar',data:{labels:Q,datasets:[{type:'bar',label:'Adj. FCF ($M)',data:[1462,513,578,954,1710,505,910,1289],backgroundColor:G,borderRadius:4,yAxisID:'y'},{type:'line',label:'Adj. FCF Margin %',data:[68,23,25,38,69,19,30,38],borderColor:GD,backgroundColor:GD,tension:.3,yAxisID:'y1',pointRadius:3}]},options:base({scales:{x:{grid:{display:false},ticks:{font:mono}},y:{grid:{color:'#eee8dc'},ticks:{font:mono}},y1:{position:'right',min:0,max:80,grid:{display:false},ticks:{font:mono,callback:v=>v+'%'}}}})});
+mk('c_nnarr',{_title:'Net New NGS ARR per Quarter ($M)',type:'bar',data:{labels:Q,datasets:[{label:'Net New NGS ARR ($M)',data:[300,260,310,490,270,480,1770,1000],backgroundColor:[G,G,G,G,G,G,GD,GD],borderRadius:5}]},options:base({plugins:{legend:{display:false}}})});
+mk('c_opm',{_title:'Non-GAAP vs GAAP Operating Margin (%)',type:'line',data:{labels:Q,datasets:[{label:'Non-GAAP op margin %',data:[28.8,28.4,27.4,30.3,30.2,30.3,27.1,29.6],borderColor:G,backgroundColor:G,tension:.3,pointRadius:4},{label:'GAAP op margin %',data:[13.4,10.6,9.6,19.6,12.5,15.3,-6.1,5.0],borderColor:RED,backgroundColor:RED,tension:.3,pointRadius:4,borderDash:[4,3]}]},options:base({scales:{x:{grid:{display:false},ticks:{font:mono}},y:{grid:{color:'#eee8dc'},ticks:{font:mono,callback:v=>v+'%'}}}})});
+mk('c_gm',{_title:'Gross Margin Trend (GAAP total, %)',type:'line',data:{labels:Q,datasets:[{label:'GAAP gross margin %',data:[74.1,73.5,72.9,73.2,74.2,73.6,67.6,67.6],borderColor:G,backgroundColor:'rgba(20,90,34,.15)',fill:true,tension:.3,pointRadius:4,pointBackgroundColor:GOLD}]},options:base({plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{font:mono}},y:{min:60,max:80,grid:{color:'#eee8dc'},ticks:{font:mono,callback:v=>v+'%'}}}})});
+mk('c_guide',{_title:'FY26 Guidance Progression (midpoints)',type:'line',data:{labels:['Aug 18, 2025','Nov 19, 2025','Feb 17, 2026','Jun 2, 2026','Sep 1, 2026 (actual)'],datasets:[{label:'Revenue ($M)',data:[10500,10520,11295,11420,11480],borderColor:G,backgroundColor:G,tension:.2,pointRadius:4},{label:'NGS ARR ($M)',data:[7050,7050,8570,8925,9100],borderColor:GD,backgroundColor:GD,tension:.2,pointRadius:4},{label:'Non-GAAP EPS (×2,500)',data:[9500,9625,9188,9450,9600],borderColor:RED,backgroundColor:RED,borderDash:[4,3],tension:.2,pointRadius:4}]},options:base({scales:{x:{grid:{display:false},ticks:{font:mono}},y:{min:6000,grid:{color:'#eee8dc'},ticks:{font:mono}}}})});
+mk('c_eps',{_title:'Non-GAAP EPS: Guide (high end) vs Actual',type:'bar',data:{labels:Q,datasets:[{label:'Guide (high end)',data:[0.75,0.78,0.77,0.89,0.90,0.95,0.80,0.98],backgroundColor:'#b9c9bc',borderRadius:4},{label:'Actual',data:[0.78,0.81,0.80,0.95,0.93,1.03,0.85,1.02],backgroundColor:G,borderRadius:4}]},options:base({scales:{x:{grid:{display:false},ticks:{font:mono}},y:{min:0.5,grid:{color:'#eee8dc'},ticks:{font:mono,callback:v=>'$'+v.toFixed(2)}}}})});
+mk('c_scen',{_title:'Scenario Price Targets vs Current ($)',type:'bar',data:{labels:['1-Year','3-Year','5-Year'],datasets:[{type:'bar',label:'Bear',data:[275,233,255],backgroundColor:RED,borderRadius:4},{type:'bar',label:'Base',data:[355,445,529],backgroundColor:GD,borderRadius:4},{type:'bar',label:'Bull',data:[470,587,774],backgroundColor:G,borderRadius:4},{type:'line',label:'Prob-weighted',data:[360,434,534],borderColor:DG,backgroundColor:DG,pointRadius:5,pointStyle:'rectRot',tension:0},{type:'line',label:'Current $375.06',data:[375.06,375.06,375.06],borderColor:MUTED,borderDash:[5,4],pointRadius:0}]},options:base({scales:{x:{grid:{display:false},ticks:{font:mono}},y:{grid:{color:'#eee8dc'},ticks:{font:mono,callback:v=>'$'+v}}}})});
+mk('c_path',{_title:'Base-Case Revenue & Adjusted FCF Path ($B)',type:'bar',data:{labels:['FY25A','FY26A','FY27G','FY28E','FY29E','FY30E','FY31E','FY32E'],datasets:[{type:'bar',label:'Revenue',data:[9.2,11.5,14.15,16.6,19.2,22.0,25.5,30.0],backgroundColor:G,borderRadius:4},{type:'bar',label:'Adj. FCF',data:[3.5,4.4,5.4,6.5,7.6,8.8,10.4,12.3],backgroundColor:GOLD,borderRadius:4}]},options:base()});
+mk('c_peer',{_title:'P/S Multiple vs Revenue Growth (bubble = FCF margin)',type:'bubble',data:{datasets:[{label:'PANW',data:[{x:24,y:26.7,r:16}],backgroundColor:GD},{label:'CRWD',data:[{x:23,y:46.9,r:14}],backgroundColor:G},{label:'NET',data:[{x:30,y:47.1,r:9}],backgroundColor:'#7aa885'},{label:'FTNT',data:[{x:14,y:16.8,r:17}],backgroundColor:'#7aa885'},{label:'ZS',data:[{x:25,y:9.5,r:13}],backgroundColor:'#7aa885'},{label:'S',data:[{x:22,y:7.5,r:6}],backgroundColor:'#7aa885'}]},options:base({scales:{x:{title:{display:true,text:'Revenue growth % (TTM)'},min:10,max:35,grid:{color:'#eee8dc'},ticks:{font:mono}},y:{title:{display:true,text:'P/S (x)'},min:0,grid:{color:'#eee8dc'},ticks:{font:mono}}}})});
+mk('c_psg',{_title:'Growth-Adjusted Multiple (P/S ÷ Revenue Growth %)',type:'bar',data:{labels:['S','ZS','PANW','FTNT','NET','CRWD'],datasets:[{label:'P/S ÷ growth',data:[0.34,0.38,1.11,1.20,1.57,2.04],backgroundColor:['#7aa885','#7aa885',GD,'#7aa885','#7aa885',G],borderRadius:5}]},options:base({plugins:{legend:{display:false}}})});
+mk('c_rpo',{_title:'RPO Growth vs Revenue Growth (% YoY)',type:'line',data:{labels:Q,datasets:[{label:'RPO growth %',data:[20,21,19,24,24,23,36,34],borderColor:G,backgroundColor:G,tension:.3,pointRadius:4},{label:'Revenue growth %',data:[14,14,15,16,16,15,31,34],borderColor:GD,backgroundColor:GD,tension:.3,pointRadius:4,borderDash:[4,3]}]},options:base({scales:{x:{grid:{display:false},ticks:{font:mono}},y:{min:0,max:45,grid:{color:'#eee8dc'},ticks:{font:mono,callback:v=>v+'%'}}}})});
+mk('c_sbc',{_title:'Adjusted FCF Margin vs SBC / Revenue (%, annual)',type:'line',data:{labels:['FY22','FY23','FY24','FY25','FY26'],datasets:[{label:'Adj. FCF margin %',data:[33,39,39,38,38.4],borderColor:G,backgroundColor:G,tension:.3,pointRadius:4},{label:'SBC / revenue %',data:[18.5,16.3,14.5,15.0,14.9],borderColor:RED,backgroundColor:RED,tension:.3,pointRadius:4,borderDash:[4,3]}]},options:base({scales:{x:{grid:{display:false},ticks:{font:mono}},y:{min:0,max:50,grid:{color:'#eee8dc'},ticks:{font:mono,callback:v=>v+'%'}}}})});
+mk('c_platform',{_title:'FY26 Revenue by Platform ($M)',type:'doughnut',data:{labels:['Network & AI Security $8,350M (+17%)','Cortex $1,920M (+25%)','Idira $644M (partial yr)','Other ~$566M'],datasets:[{data:[8350,1920,644,566],backgroundColor:[G,GD,GOLD,'#b9c9bc'],borderColor:'#fff',borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{position:'bottom',labels:{boxWidth:10}}}}});
+mk('c_engines',{_title:'Growth Engines — Disclosed ARR / Run-Rate Lines ($M, Q4 FY26)',type:'bar',data:{labels:['Idira (pro forma rev)','XSIAM ARR','Observability ARR','Prisma AIRS ARR'],datasets:[{label:'$M',data:[1260,700,500,100],backgroundColor:[GOLD,G,G,GD],borderRadius:5}]},options:base({indexAxis:'y',plugins:{legend:{display:false}}})});
+</script>
+</body>
+</html>
