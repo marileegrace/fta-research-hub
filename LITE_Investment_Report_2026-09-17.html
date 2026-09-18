@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LITE — Lumentum Holdings | FTA Investment Research | 2026-09-17</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Questrial&family=Quicksand:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  --green:#145A22;--dark-green:#0A3A14;--forest:#243D27;--gold:#FCC55B;--gold-deep:#e0a838;
+  --beige:#EDE8E0;--beige-card:#f6f3ed;--ink:#23241f;--muted:#5d6155;--red:#a8341f;--line:#d8d1c4;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Quicksand',sans-serif;background:var(--beige);color:var(--ink);line-height:1.6;font-weight:400;display:flex;min-height:100vh}
+a{color:var(--green)}
+/* Sidebar */
+.sidebar{width:262px;flex:0 0 262px;position:sticky;top:0;height:100vh;overflow-y:auto;background:linear-gradient(180deg,#071f0b,#0A3A14 40%,#145A22);border-right:2px solid var(--gold);padding:28px 20px;color:#fff}
+.brand{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:26px;font-weight:600;color:var(--gold);letter-spacing:.3px;line-height:1.1}
+.brand small{display:block;font-family:'Questrial',sans-serif;font-style:normal;font-size:10px;letter-spacing:2.2px;text-transform:uppercase;color:rgba(255,255,255,.65);margin-top:6px}
+.ticker-box{margin:22px 0;background:rgba(255,255,255,.07);border:1px solid rgba(252,197,91,.35);border-radius:12px;padding:14px}
+.ticker-box .sym{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;color:var(--gold)}
+.ticker-box .nm{font-family:'Questrial',sans-serif;font-size:11px;letter-spacing:1.4px;text-transform:uppercase;color:rgba(255,255,255,.7)}
+.ticker-box .px{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:600;margin-top:6px}
+.ticker-box .chg{font-family:'JetBrains Mono',monospace;font-size:12px;color:#f0a0a0}
+.nav a{display:flex;align-items:center;gap:10px;color:rgba(255,255,255,.82);text-decoration:none;font-size:13px;padding:7px 8px;border-radius:8px;font-family:'Questrial',sans-serif;letter-spacing:.3px}
+.nav a:hover{background:rgba(252,197,91,.12);color:#fff}
+.nav a span.n{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold);min-width:20px}
+.side-foot{margin-top:24px;font-size:10.5px;color:rgba(255,255,255,.5);line-height:1.5}
+/* Main */
+.main{flex:1;min-width:0}
+.hero{background:linear-gradient(120deg,var(--dark-green),var(--green) 60%);color:#fff;padding:54px 48px 40px;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;right:-120px;top:-120px;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(252,197,91,.35),rgba(252,197,91,0) 65%)}
+.hero .kicker{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:2.4px;font-size:11px;color:var(--gold)}
+.hero h1{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:46px;line-height:1.05;margin:10px 0 6px}
+.hero h1 em{font-style:italic;color:var(--gold)}
+.hero .sub{font-size:15px;color:rgba(255,255,255,.85);max-width:720px}
+.hero .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px;align-items:center}
+.pill{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);border:1px solid rgba(252,197,91,.5);border-radius:999px;padding:6px 14px;font-family:'Questrial',sans-serif;font-size:11.5px;letter-spacing:1.2px;text-transform:uppercase}
+.pill.verdict{background:var(--gold);color:var(--dark-green);border-color:var(--gold);font-weight:700}
+.pill .mono{font-family:'JetBrains Mono',monospace;font-weight:700;letter-spacing:0}
+.kpi-strip{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;padding:16px 48px;background:var(--beige)}
+.kpi{background:var(--beige-card);border:1px solid var(--line);border-radius:12px;padding:14px 14px 12px}
+.kpi .l{font-family:'Questrial',sans-serif;font-size:10px;letter-spacing:1.6px;text-transform:uppercase;color:var(--muted)}
+.kpi .v{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;color:var(--green);margin-top:4px;line-height:1.1}
+.kpi .s{font-size:11px;color:var(--muted);margin-top:4px}
+.content{max-width:1080px;padding:20px 48px 80px}
+/* Cards */
+.card{background:var(--beige-card);border:1px solid var(--line);border-radius:14px;margin:22px 0;overflow:hidden}
+.card-h{display:flex;align-items:center;gap:14px;padding:18px 22px;border-left:5px solid var(--green);cursor:pointer;user-select:none}
+.card-h .badge{width:34px;height:34px;border-radius:9px;background:var(--green);color:#fff;font-family:'JetBrains Mono',monospace;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 34px}
+.card-h h2{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:28px;color:var(--dark-green);line-height:1.1;flex:1}
+.card-h .chev{width:26px;height:26px;border-radius:50%;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--green);transition:transform .25s;font-size:14px}
+.card.collapsed .chev{transform:rotate(-90deg)}
+.card-b{padding:6px 24px 26px}
+.card.collapsed .card-b{display:none}
+.card-b p{margin:12px 0;font-size:15px}
+.card-b h3{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1.8px;font-size:12px;color:var(--green);margin:24px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+.card-b h4{font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:600;color:var(--dark-green);margin:18px 0 4px}
+.card-b ul{margin:8px 0 12px 22px}
+.card-b li{margin:5px 0;font-size:14.5px}
+.thesis{font-family:'Cormorant Garamond',serif;font-size:24px;line-height:1.35;border-left:4px solid var(--gold);padding:16px 22px;margin:16px 0;color:var(--dark-green);background:#fff;border-radius:0 12px 12px 0}
+.thesis strong{font-weight:700}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0}
+.chip{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;min-width:130px}
+.chip .l{font-family:'Questrial',sans-serif;font-size:9.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
+.chip .v{font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:700;color:var(--green);line-height:1.15;margin-top:2px}
+.chip .v.neg{color:var(--red)}
+.chip .s{font-size:10.5px;color:var(--muted)}
+.callout{border-radius:12px;padding:14px 18px;margin:14px 0;font-size:14.5px}
+.callout.gold{background:rgba(252,197,91,.18);border:1px solid var(--gold-deep)}
+.callout.green{background:rgba(20,90,34,.08);border:1px solid rgba(20,90,34,.35)}
+.callout .t{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1.5px;font-size:10.5px;color:var(--green);margin-bottom:4px}
+.callout.gold .t{color:#8a5e0a}
+/* Tables */
+.tbl-wrap{overflow-x:auto;margin:14px 0}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff;border-radius:10px;overflow:hidden}
+th{background:var(--green);color:#fff;font-family:'Questrial',sans-serif;font-size:11px;letter-spacing:1.2px;text-transform:uppercase;padding:10px 12px;text-align:left}
+td{padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:nth-child(even) td{background:#faf8f3}
+tbody tr:hover td{background:rgba(252,197,91,.18)}
+td.num,th.num{font-family:'JetBrains Mono',monospace;text-align:right;white-space:nowrap}
+.pos{color:var(--green);font-weight:600}.neg{color:var(--red);font-weight:600}
+.score{display:inline-block;font-family:'JetBrains Mono',monospace;font-weight:700;padding:2px 8px;border-radius:6px;background:rgba(20,90,34,.12);color:var(--green)}
+/* Charts */
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}
+.chart-box{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px 10px;position:relative}
+.chart-box.solo{max-width:420px}
+.chart-box .ct{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.chart-box .ct h5{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1.5px;font-size:10.5px;color:var(--muted);font-weight:400}
+.chart-box .zoom{font-family:'Questrial',sans-serif;font-size:9.5px;letter-spacing:1px;text-transform:uppercase;color:var(--green);border:1px solid var(--line);border-radius:999px;padding:3px 9px;background:transparent;cursor:pointer}
+.chart-box .zoom:hover{background:rgba(252,197,91,.25)}
+.chart-box canvas{width:100%!important;height:158px!important}
+.chart-box .note{font-size:10.5px;color:var(--muted);margin-top:6px}
+/* Modal */
+.modal{position:fixed;inset:0;background:rgba(7,31,11,.82);display:none;align-items:center;justify-content:center;z-index:99;padding:30px}
+.modal.open{display:flex}
+.modal-box{background:var(--beige-card);border:2px solid var(--gold);border-radius:16px;width:min(1000px,96vw);padding:22px 26px;position:relative}
+.modal-box h5{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1.8px;font-size:12px;color:var(--green);margin-bottom:10px}
+.modal-box canvas{width:100%!important;height:min(520px,65vh)!important}
+.modal-close{position:absolute;top:12px;right:14px;border:none;background:var(--green);color:#fff;border-radius:50%;width:30px;height:30px;cursor:pointer;font-size:15px}
+/* Scenario cards */
+.scen-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:16px 0}
+.scen{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;border-top:5px solid var(--gold)}
+.scen.bull{border-top-color:var(--green)}.scen.bear{border-top-color:var(--red)}
+.scen .t{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1.8px;font-size:11px;color:var(--muted)}
+.scen .pt{font-family:'JetBrains Mono',monospace;font-size:30px;font-weight:700;color:var(--green);line-height:1.1;margin:6px 0 2px}
+.scen.bear .pt{color:var(--red)}.scen.base .pt{color:var(--gold-deep)}
+.scen .prob{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:11.5px;background:var(--beige);border:1px solid var(--line);border-radius:999px;padding:2px 10px;margin-bottom:8px}
+.scen ul{margin:6px 0 0 18px}.scen li{font-size:13px;margin:4px 0}
+.horizon{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--dark-green);margin:18px 0 4px}
+/* Risk cards */
+.risk{background:#fff;border:1px solid var(--line);border-left:4px solid var(--red);border-radius:10px;padding:14px 18px;margin:12px 0}
+.risk h4{color:var(--red);font-family:'Cormorant Garamond',serif;font-size:21px;margin:0 0 6px}
+.risk .meta{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 8px}
+.risk .tag{font-family:'Questrial',sans-serif;font-size:10px;letter-spacing:1.2px;text-transform:uppercase;border-radius:999px;padding:3px 10px;background:var(--beige);border:1px solid var(--line)}
+.risk .tag b{font-family:'JetBrains Mono',monospace;letter-spacing:0}
+.risk p{font-size:14px;margin:6px 0}
+/* Timeline */
+.timeline{position:relative;margin:18px 0 10px 12px;padding-left:28px}
+.timeline::before{content:"";position:absolute;left:6px;top:4px;bottom:4px;width:3px;border-radius:3px;background:linear-gradient(180deg,var(--green),var(--gold))}
+.tl{position:relative;margin:0 0 18px}
+.tl::before{content:"";position:absolute;left:-28px;top:5px;width:14px;height:14px;border-radius:50%;background:var(--gold);border:3px solid var(--green)}
+.tl .d{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--green);font-weight:600}
+.tl .e{font-weight:700;font-size:15px}
+.tl .x{color:var(--muted);font-size:13.5px}
+/* Glossary */
+.gl{background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 16px;margin:10px 0}
+.gl h4{font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--dark-green);margin:0}
+.gl .f{font-family:'JetBrains Mono',monospace;font-size:12px;background:var(--beige);padding:4px 8px;border-radius:6px;display:inline-block;margin:6px 0}
+.gl p{font-size:13.5px;margin:4px 0}
+.gl .back{font-family:'Questrial',sans-serif;font-size:10.5px;letter-spacing:1px;text-transform:uppercase}
+.src{font-size:12px;color:var(--muted)}
+.src a{color:var(--muted)}
+@media (max-width:880px){.chart-grid,.scen-grid{grid-template-columns:1fr}}
+@media (max-width:780px){.sidebar{display:none}.kpi-strip{grid-template-columns:repeat(3,1fr);padding:14px 18px}.hero,.content{padding-left:18px;padding-right:18px}.hero h1{font-size:34px}}
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="brand">Foundational Trading Academy<small>Investment Research</small></div>
+  <div class="ticker-box">
+    <div class="sym">LITE</div>
+    <div class="nm">Lumentum Holdings · NASDAQ</div>
+    <div class="px">$893.61</div>
+    <div class="chg">-2.81% · close 2026-09-17</div>
+  </div>
+  <nav class="nav">
+    <a href="#s1"><span class="n">01</span>Executive Summary</a>
+    <a href="#s2"><span class="n">02</span>Micro &amp; Valuation</a>
+    <a href="#s3"><span class="n">03</span>Moat &amp; Management</a>
+    <a href="#s4"><span class="n">04</span>Financial Deep Dive</a>
+    <a href="#s5"><span class="n">05</span>Earnings Tracker</a>
+    <a href="#s6"><span class="n">06</span>Bull / Base / Bear</a>
+    <a href="#s7"><span class="n">07</span>Risks &amp; Anti-Thesis</a>
+    <a href="#s8"><span class="n">08</span>Catalyst Timeline</a>
+    <a href="#s9"><span class="n">09</span>Comparables</a>
+    <a href="#s10"><span class="n">10</span>First-Principles KPIs</a>
+    <a href="#s11"><span class="n">11</span>Glossary &amp; Method</a>
+  </nav>
+  <div class="side-foot">Report date: Sep 17, 2026<br>Data through Q4 FY26 (Jun 27, 2026)<br>Fiscal year ends late June/early July<br><br>For educational purposes only. Not investment advice.</div>
+</aside>
+
+<main class="main">
+  <header class="hero">
+    <div class="kicker">Deep-Dive Investment Report · AI Optical Interconnect / Photonics</div>
+    <h1>Lumentum Holdings <em>(LITE)</em></h1>
+    <div class="sub">The market has repriced a formerly cyclical telecom-optics supplier into an $80B AI-infrastructure franchise — up ~520% in a year — as its lasers become the copper-replacement layer inside the AI datacenter. The fundamentals justify a lot of it; the valuation demands the order book actually converts.</div>
+    <div class="meta">
+      <span class="pill verdict">Verdict: BULL · Conviction <span class="mono">6 / 10</span></span>
+      <span class="pill">Price <span class="mono">$893.61</span></span>
+      <span class="pill">Mkt Cap <span class="mono">$80.2B</span></span>
+      <span class="pill">Sector · Communication Equipment</span>
+      <span class="pill">FY ends late June</span>
+    </div>
+  </header>
+
+  <section class="kpi-strip">
+    <div class="kpi"><div class="l">Price</div><div class="v">$893.61</div><div class="s">52w $144.52–$1,085.68</div></div>
+    <div class="kpi"><div class="l">Market Cap</div><div class="v">$80.2B</div><div class="s">EV ≈ $79.1B · 89.7M sh</div></div>
+    <div class="kpi"><div class="l">FY26 Revenue</div><div class="v">$3.01B</div><div class="s">+83% YoY · Q4 +109%</div></div>
+    <div class="kpi"><div class="l">Non-GAAP Op Mgn</div><div class="v">36.6%</div><div class="s">Q4 FY26 · was 15% a year ago</div></div>
+    <div class="kpi"><div class="l">P/S (TTM)</div><div class="v">26.6x</div><div class="s">"Excited" band · ~14x fwd</div></div>
+    <div class="kpi"><div class="l">Street PT</div><div class="v">$1,149</div><div class="s">26 analysts · Buy · +28.6%</div></div>
+  </section>
+
+  <div class="content">
+
+  <!-- ================= SECTION 1 ================= -->
+  <section class="card" id="s1">
+    <div class="card-h" onclick="toggle(this)"><div class="badge">1</div><h2>Executive Summary &amp; Investment Thesis</h2><div class="chev">▾</div></div>
+    <div class="card-b">
+      <div class="thesis"><strong>Thesis (Bull, tempered):</strong> Lumentum sells the lasers and optical engines that are replacing copper as the interconnect fabric of AI datacenters. As GPU clusters scale "out, up and across," the number of optical links per accelerator is exploding, and Lumentum's <a href="#g-eml">EML</a> and <a href="#g-cw">CW/DFB</a> laser chips are the non-negotiable light source inside 800G and 1.6T transceivers, <a href="#g-cpo">co-packaged optics</a>, and its own <a href="#g-ocs">optical circuit switches</a>. Revenue compounded from a $1.6B telecom-cyclical base to a $3.01B run-rate that guidance says is still accelerating (Q1 FY27 midpoint $1.25B), non-GAAP operating margin quadrupled from ~9% to ~30% in one fiscal year, and management says the order book is effectively <strong>sold out through 2028</strong> with "$40 of earnings power" that year. We are constructive, but temper conviction to <strong>6/10</strong> because the stock already trades at 26.6x trailing sales and ~41x forward earnings — the setup is "great fundamentals, demanding price." Probability-weighted 1-year target <strong>$1,061</strong> (+19%); 3-year <strong>$1,470</strong> (+64%).</div>
+
+      <p>Lumentum reported fiscal Q4 2026 (quarter ended June 27, 2026) on August 11, 2026. Revenue of $1,006.3M rose 109% year-over-year and 25% sequentially; non-GAAP gross margin crossed 50% (50.4%) and non-GAAP EPS was $3.23, above the $2.85–3.05 guide. Full-year FY26 revenue was $3,014.0M (+83.2%) with non-GAAP EPS of $8.67 versus $2.06 the prior year. The company guided Q1 FY27 to $1.225–1.275B revenue and $4.05–4.35 non-GAAP EPS, noting it reached its target operating model "more than a quarter ahead of schedule." The stock, already up more than five-fold in twelve months, trades around $894 after a mid-September pullback from its $1,085 high.</p>
+
+      <p>The GAAP headline is a $7.2B net loss for the quarter — but it is entirely non-cash and non-recurring: Lumentum's stock ran so far above the conversion price of its 2026/2028/2029 <a href="#g-convertible">convertible notes</a> that holders converted, producing a $7.8B "loss on debt extinguishment" (conversion value in excess of principal). In substance this <em>deleveraged</em> the balance sheet by exchanging cheap debt for equity at a rich price. It is a quality-of-earnings footnote, not an operating problem, and we treat it as such throughout.</p>
+
+      <h3>What the market is (and isn't) missing</h3>
+      <ul>
+        <li><strong>This is a components ("picks and shovels") story, not a systems bet.</strong> The Components segment — laser chips, EML/CW lasers, pump lasers, narrow-linewidth assemblies — was $2.01B of FY26 revenue (+80%) and is the highest-visibility, hardest-to-second-source part of the AI optical supply chain. Whether the industry standardizes on pluggable transceivers, CPO, or NPO, Lumentum's light source ships either way. <a href="#g-tam">McKinsey's Technology Trends Outlook 2026</a> named Lumentum (alongside Astera Labs and Lightmatter) as a key enabler of high-bandwidth optical interconnect and cited its OFC 2026 VCSEL scale-up demonstration.</li>
+        <li><strong>Margin is the underappreciated line.</strong> Non-GAAP gross margin went 37.8% → 50.4% and operating margin 15.0% → 36.6% in five quarters. That is operating leverage on a scarce-capacity product, and the OCS and CPO ramps (both higher-value) have barely started to layer in.</li>
+        <li><strong>New revenue vectors are additive to guidance.</strong> OCS backlog exceeds $400M; an incremental multi-hundred-million CPO order is deliverable in 1H CY2027; the company took an initial order for ELS (external laser source) modules and is engaged on NPO (near-package optics). Each expands the served optical TAM inside the rack.</li>
+        <li><strong>The bear's strongest card is the tape, not the business.</strong> At 26.6x trailing sales for a company that spent a decade as a $40–100 cyclical, the multiple prices in flawless execution and durable AI capex. History says optical demand is cyclical; the question is whether AI has structurally lengthened the cycle.</li>
+      </ul>
+
+      <div class="chips">
+        <div class="chip"><div class="l">Revenue Q4 FY26</div><div class="v">$1,006M</div><div class="s">+109% YoY · +25% QoQ</div></div>
+        <div class="chip"><div class="l">Non-GAAP GM</div><div class="v">50.4%</div><div class="s">+1,260 bps YoY</div></div>
+        <div class="chip"><div class="l">Non-GAAP EPS Q4</div><div class="v">$3.23</div><div class="s">vs guide $2.85–3.05</div></div>
+        <div class="chip"><div class="l">FY26 Non-GAAP EPS</div><div class="v">$8.67</div><div class="s">vs $2.06 FY25 (+321%)</div></div>
+        <div class="chip"><div class="l">Q1 FY27 Guide (mid)</div><div class="v">$1.25B</div><div class="s">op mgn 39.5–40.5%</div></div>
+        <div class="chip"><div class="l">Adj. EBITDA FY26</div><div class="v">$1.03B</div><div class="s">vs $264M FY25</div></div>
+        <div class="chip"><div class="l">Conviction</div><div class="v">6/10</div><div class="s">Bull (tempered)</div></div>
+      </div>
+
+      <div class="callout gold"><div class="t">Position in the FTA Framework</div>At 26.6x trailing sales LITE sits at the top of our <a href="#g-ps">P/S scale's</a> "Excited" band (18–30x), approaching "Euphoric." That is a valuation you can only defend with the forward numbers: on our FY27 revenue estimate the multiple falls to ~14x and forward P/E is ~41x against a company the sell-side thinks earns ~$40 in CY2028. The thesis breaks if AI datacenter capex stalls or if a component ASP reset compresses the newly-won gross margin back toward the low-40s.</div>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 2 ================= -->
+  <section class="card" id="s2">
+    <div class="card-h" onclick="toggle(this)"><div class="badge">2</div><h2>Microeconomic &amp; Valuation Analysis</h2><div class="chev">▾</div></div>
+    <div class="card-b">
+      <h3>Industry &amp; TAM</h3>
+      <p>Lumentum sits at the intersection of three markets. The largest and fastest is <strong>AI/cloud datacenter optical connectivity</strong> — the lasers, modules and switches that move data between and inside GPU racks. The second is <strong>telecom &amp; networking</strong> (ROADMs, pump lasers, transport), a slower but recovering base. The third is <strong>industrial &amp; consumer photonics</strong> (3D-sensing VCSELs, industrial lasers) — the legacy business whose ultra-high-volume VCSEL manufacturing base (10B+ emitters shipped) Lumentum is now repurposing for datacenter scale-up optics.</p>
+      <p>The structural driver is physics: copper interconnect runs out of reach and energy budget as accelerator bandwidth climbs, so optics migrate from rack-to-rack ("scale-out") toward tray-level and in-package links ("scale-up" and "scale-across"). McKinsey's Technology Trends Outlook 2026 frames interconnect and advanced packaging as a bottleneck "on par with chips," and named Lumentum for high-bandwidth optical interconnect. Every incremental optical link is a laser Lumentum can sell. Management argues these new in-rack use cases "significantly up our optical TAM"; third-party datacenter-optics TAM estimates are moving targets in the multi-tens-of-billions range and we treat any single figure as approximate.</p>
+
+      <div class="chart-grid">
+        <div class="chart-box"><div class="ct"><h5>Annual Revenue &amp; Growth (FY22–FY26)</h5><button class="zoom" onclick="expand('c_annual')">Click to expand</button></div><canvas id="c_annual"></canvas><div class="note">FY ends late June. FY22–FY24 approximate from prior filings; FY25–FY26 from 8-K. The AI inflection is FY26.</div></div>
+        <div class="chart-box"><div class="ct"><h5>Market Cap vs Peers ($B)</h5><button class="zoom" onclick="expand('c_mcap')">Click to expand</button></div><canvas id="c_mcap"></canvas><div class="note">As of Sep 17, 2026. CIEN, ALAB, AAOI approximate from secondary sources.</div></div>
+      </div>
+
+      <h3>Valuation multiples</h3>
+      <div class="chips">
+        <div class="chip"><div class="l">P/S (TTM)</div><div class="v">26.6x</div><div class="s">"Excited" band</div></div>
+        <div class="chip"><div class="l">P/S (Fwd FY27E)</div><div class="v">~14x</div><div class="s">~$5.6B rev est (approx)</div></div>
+        <div class="chip"><div class="l">EV / Sales (TTM)</div><div class="v">26.2x</div><div class="s">EV ≈ $79.1B</div></div>
+        <div class="chip"><div class="l">Fwd P/E (non-GAAP)</div><div class="v">~41x</div><div class="s">per StockAnalysis</div></div>
+        <div class="chip"><div class="l">EV / Adj. EBITDA</div><div class="v">~77x</div><div class="s">FY26 Adj. EBITDA $1.03B</div></div>
+        <div class="chip"><div class="l">GAAP P/E</div><div class="v neg">n/m</div><div class="s">GAAP loss (debt equitization)</div></div>
+        <div class="chip"><div class="l">Rule of 40</div><div class="v">~113</div><div class="s">83% growth + 30% op mgn</div></div>
+      </div>
+      <p>GAAP P/E is meaningless this year because of the one-time $7.8B non-cash loss on <a href="#g-convertible">convertible</a> extinguishment; the right lenses are forward P/E, EV/Sales-versus-growth, and EV/EBITDA on a normalized basis. On our <a href="#g-ps">P/S scale</a>, 26.6x trailing sales lands at the top of the "Excited" band (18–30x) and just below "Euphoric." That is expensive in absolute terms, but the denominator is moving fast: if FY27 revenue lands near $5.5–6.0B (Q1 already guided to a $1.25B midpoint and the book is described as sold out through 2028), the multiple compresses to roughly 14x forward sales — reasonable for ~80% growth with expanding margins. A <a href="#g-rule-of-40">Rule-of-40</a> score above 100 is exceptional and, on paper, supports a premium. The debate is entirely about the durability and cyclicality of the numerator.</p>
+
+      <h3>Institutional ownership &amp; insider activity</h3>
+      <p>Lumentum is a widely-held large cap; institutional ownership is high (approximately 90%+ of shares, per secondary aggregators — treat as approximate) and insider ownership is small (&lt;1%), typical of a spun-out company (Lumentum was carved out of JDS Uniphase in 2015). We found no evidence of discretionary open-market insider <em>buying</em> or heavy discretionary <em>selling</em>: the visible CEO transactions are routine tax-withholding on RSU vesting (e.g., Michael Hurlston returned ~6,185 shares in August 2026 to cover taxes), not signal-bearing sales. Options positioning has at times skewed bearish (heavy put volume around the $920–930 strikes noted pre-earnings) — a sentiment tell more than a fundamental one. <a href="#g-short-interest">Short interest</a> is not large enough to be the story here and we mark any specific figure as approximate/unsourced.</p>
+
+      <h3>Analyst growth estimates</h3>
+      <p>Consensus (26 analysts) rates LITE "Buy" with a $1,149.38 average target (+28.6% from the $893.61 close). Post-Q4 targets clustered high: JPMorgan $1,280 (Overweight), Citi $1,200 (Buy), Deutsche Bank $1,200 (initiation, Buy, "wins under every architecture"), Mizuho $1,140 (Outperform), Evercore ISI $1,100 (initiation, Outperform), with Morgan Stanley $1,000 (Equal Weight) and BofA $1,000 (Neutral) more cautious on valuation. The bull-case anchor circulating on the Street is the CEO's Deutsche Bank conference comment that Lumentum has "$40 of earnings power" in calendar 2028 — at even 25–30x that frames a four-figure stock, which is why the tape is where it is. We view forward revenue growth of ~50%+ into FY27 as achievable given order coverage, but flag that consensus is now extrapolating a historically cyclical business.</p>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 3 ================= -->
+  <section class="card" id="s3">
+    <div class="card-h" onclick="toggle(this)"><div class="badge">3</div><h2>Qualitative Analysis — Moat, Management &amp; Culture</h2><div class="chev">▾</div></div>
+    <div class="card-b">
+      <h3>Competitive moat — a systems view</h3>
+      <p>Lumentum's moat is not a single patent; it is the combination of hard-to-replicate laser fabrication (indium-phosphide EML and DFB chips, high-power CW lasers, VCSEL arrays), decades of yield learning, and a manufacturing base at a scale few can match. In AI optics the scarce input is not the transceiver housing — many firms assemble those — it is the <em>light source</em> inside it. EML and CW laser chips for 800G/1.6T modules require process control that takes years to build and qualify, which is why hyperscalers and module makers design Lumentum in as a primary or co-primary source. Three consequences:</p>
+      <ul>
+        <li><strong>Architecture-agnostic exposure.</strong> Whether the datacenter uses pluggable transceivers, <a href="#g-cpo">co-packaged optics</a>, near-package optics, or optical circuit switching, the link still needs a laser. Lumentum supplies EML/CW for pluggables and CPO, VCSELs for multimode scale-up, and builds its own <a href="#g-ocs">OCS</a> systems — it "wins under every architecture" (Deutsche Bank). That optionality is the durable edge.</li>
+        <li><strong>Capacity as a moat.</strong> In a sold-out market, the ability to add qualified wafer and module capacity <em>is</em> competitive advantage. Lumentum grew PP&amp;E from $726M to $1,159M in a year to expand output; capacity that is booked through 2028 is a wall competitors cannot climb quickly.</li>
+        <li><strong>Vertical breadth.</strong> Components + Systems lets Lumentum capture value from chip to switch, and cross-pollinate (its 1060nm scale-up VCSEL platform is built on the 3D-sensing manufacturing base). Peers are narrower.</li>
+      </ul>
+      <p>Competitive set: <strong>Coherent (COHR)</strong> — the largest direct rival, also vertically integrated in datacom lasers; <strong>InnoLight / Eoptolink</strong> (private, dominant transceiver assemblers and large laser buyers, some now vertically integrating); <strong>Applied Optoelectronics (AAOI)</strong> and <strong>Fabrinet (FN)</strong> in modules/manufacturing; <strong>Ciena (CIEN)</strong> in systems; and emerging silicon-photonics/CPO entrants (Astera Labs, Lightmatter, hyperscaler-internal efforts). The key contested ground is whether module makers vertically integrate the laser (a long-term risk) and whether CPO shifts value toward silicon-photonics IP owners.</p>
+
+      <h3>Founder-led? No — professional management.</h3>
+      <p>Lumentum is not founder-led; it is a 2015 spin-out from JDS Uniphase run by professional management. President &amp; CEO <strong>Michael Hurlston</strong> (former CEO of Synaptics, before that a senior Broadcom executive) took the helm and has driven a decisive strategic pivot toward AI/cloud photonics, aggressive capacity investment, and margin discipline. The playbook — reshape mix toward high-value components, expand capacity into a sold-out market, and communicate a clear target operating model — has been executed credibly. The absence of founder control is neutral-to-positive here: capital allocation has been rational (deleveraging via convert equitization, tuck-in M&amp;A such as Cloud Light, disciplined restructuring) rather than empire-building.</p>
+
+      <h3>Executive bench &amp; capital allocation</h3>
+      <p>Capital allocation in FY26 was defined by the balance-sheet transformation: a $1,265M 0.375% convertible due 2032 (issued Sept 2025 with capped calls, ~$187.77 conversion) refinanced older converts, and the run-up in the stock let holders of the 2026/2028/2029 notes convert to equity — swapping ~$1.6B+ of debt for shares at prices far above issuance. A March 2026 Series A convertible preferred raise added ~$2.0B of cash (total cash reached $3.17B mid-year before capex drawdown to $2.74B at year-end). The net effect: Lumentum enters the AI capex super-cycle with ~$2.7B cash, modest debt, and ample liquidity to fund capacity — at the cost of meaningful share-count dilution (69.8M → 88.6M common, plus 2.9M preferred as-converted). No dividend; no buyback (appropriately — the cash is going into capacity).</p>
+
+      <h3>Culture &amp; organizational traits</h3>
+      <ul>
+        <li><strong>Customer obsession / concentration:</strong> the flip side of AI optics is hyperscaler and large module-maker concentration; a handful of cloud customers drive the order book. Deep design-in relationships are a strength but a concentration risk (Section 7).</li>
+        <li><strong>Innovation pace:</strong> ~$356M FY26 GAAP R&amp;D; OFC 2026 saw Lumentum demonstrate a 1060nm VCSEL scale-up engine (co-packaged with a host ASIC in a fan-out wafer-level package for UCIe/PCIe), a 1.6T DR4 OSFP module using four 400G EML lasers, and a &gt;1W 1310nm SHP laser for CPO — a full-stack "scale-out / scale-up / scale-across" roadmap.</li>
+        <li><strong>Operational rigor:</strong> management explicitly attributes margin gains to "operational rigor, pricing discipline, and product mix" — evidence of a cost-and-yield culture, not just a demand windfall.</li>
+        <li><strong>Talent density:</strong> ~13,757 employees across global R&amp;D and manufacturing; the scarce skill is III-V semiconductor process engineering, where Lumentum's tenure is an asset.</li>
+        <li><strong>Governance watch-items:</strong> heavy dilution from the convert/preferred restructuring; a new Series A preferred class; and stock-based compensation (~$191M FY26). None disqualifying; all worth monitoring.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 4 ================= -->
+  <section class="card" id="s4">
+    <div class="card-h" onclick="toggle(this)"><div class="badge">4</div><h2>Quantitative Analysis — Financial Deep Dive</h2><div class="chev">▾</div></div>
+    <div class="card-b">
+      <h3>Revenue streams, explained simply</h3>
+      <p>Lumentum reports two product groups. <strong>Components</strong> ($2,005.6M in FY26, 67% of revenue, +80% YoY) are the building blocks: semiconductor laser chips (EML, CW/DFB), pump lasers, narrow-linewidth laser assemblies, and line/wavelength subsystems — sold to transceiver makers, hyperscalers and telecom OEMs. <strong>Systems</strong> ($1,008.4M, 33%, +91% YoY) are finished products: optical transceiver modules, optical circuit switches (OCS), and industrial lasers. In the AI cycle both are growing fast, but Components carries the highest-visibility backlog because the laser chip is the hardest part to second-source. (Note: Lumentum retired its former "Cloud &amp; Networking" and "Industrial Tech" reportable segments during FY26 and now reports by product type, Components vs Systems, with prior periods recast.)</p>
+
+      <div class="chart-grid">
+        <div class="chart-box"><div class="ct"><h5>Quarterly Revenue ($M) — Last 8 Quarters</h5><button class="zoom" onclick="expand('c_rev')">Click to expand</button></div><canvas id="c_rev"></canvas><div class="note">Q1 FY25 → Q4 FY26. YoY line shown from Q1 FY26 when the AI ramp inflected.</div></div>
+        <div class="chart-box"><div class="ct"><h5>Components vs Systems ($M) — FY25 vs FY26</h5><button class="zoom" onclick="expand('c_seg')">Click to expand</button></div><canvas id="c_seg"></canvas><div class="note">Both roughly doubled. Components +80%, Systems +91% YoY.</div></div>
+      </div>
+
+      <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Quarter (FY)</th><th class="num">Revenue</th><th class="num">YoY</th><th class="num">Non-GAAP GM</th><th class="num">Non-GAAP Op Mgn</th><th class="num">Non-GAAP Op Inc</th><th class="num">Non-GAAP EPS</th></tr></thead>
+        <tbody>
+          <tr><td>Q1 FY25 (Sep-24)</td><td class="num">$336.9M</td><td class="num">n/a</td><td class="num">~</td><td class="num">~</td><td class="num">~</td><td class="num">$0.18</td></tr>
+          <tr><td>Q2 FY25 (Dec-24)</td><td class="num">$402.2M</td><td class="num">n/a</td><td class="num">~</td><td class="num">~</td><td class="num">~</td><td class="num">$0.42</td></tr>
+          <tr><td>Q3 FY25 (Mar-25)</td><td class="num">$425.2M</td><td class="num">n/a</td><td class="num">35.2%</td><td class="num">10.8%</td><td class="num">$46.1M</td><td class="num">$0.57</td></tr>
+          <tr><td>Q4 FY25 (Jun-25)</td><td class="num">$480.7M</td><td class="num">n/a</td><td class="num">37.8%</td><td class="num">15.0%</td><td class="num">$72.3M</td><td class="num">$0.88</td></tr>
+          <tr><td>Q1 FY26 (Sep-25)</td><td class="num">$533.8M</td><td class="num pos">+58%</td><td class="num">39.4%</td><td class="num">18.7%</td><td class="num">~$99.8M</td><td class="num">$1.10</td></tr>
+          <tr><td>Q2 FY26 (Dec-25)</td><td class="num">$665.5M</td><td class="num pos">+65%</td><td class="num">42.5%</td><td class="num">25.2%</td><td class="num">$167.7M</td><td class="num">$1.67</td></tr>
+          <tr><td>Q3 FY26 (Mar-26)</td><td class="num">$808.4M</td><td class="num pos">+90%</td><td class="num">47.9%</td><td class="num">32.2%</td><td class="num">$260.7M</td><td class="num">$2.37</td></tr>
+          <tr><td>Q4 FY26 (Jun-26)</td><td class="num">$1,006.3M</td><td class="num pos">+109%</td><td class="num">50.4%</td><td class="num">36.6%</td><td class="num">$368.8M</td><td class="num">$3.23</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p class="src">Sources: Lumentum 8-K press releases (Q3 FY25, Q4/FY25, Q1 FY26, Q2 FY26, Q3 FY26, Q4/FY26). "~" denotes values not separately disclosed in our primary sources or derived from margin × revenue; Q1 FY26 op income is derived. FY25 quarterly YoY not shown (pre-AI-ramp comparatives not primary-sourced).</p>
+
+      <h3>Margins &amp; operating leverage — the real story</h3>
+      <div class="chart-grid">
+        <div class="chart-box"><div class="ct"><h5>Non-GAAP Gross &amp; Operating Margin (%)</h5><button class="zoom" onclick="expand('c_margins')">Click to expand</button></div><canvas id="c_margins"></canvas><div class="note">Q3 FY25 → Q4 FY26. Gross +1,520 bps, operating +2,580 bps in six quarters.</div></div>
+        <div class="chart-box"><div class="ct"><h5>Non-GAAP EPS ($) — Last 8 Quarters</h5><button class="zoom" onclick="expand('c_eps')">Click to expand</button></div><canvas id="c_eps"></canvas><div class="note">$0.18 → $3.23 in eight quarters. FY26 total $8.67 vs $2.06 FY25.</div></div>
+      </div>
+      <p>The margin ramp is the most important quantitative fact in this report. Non-GAAP gross margin expanded from 35.2% (Q3 FY25) to 50.4% (Q4 FY26) and operating margin from 10.8% to 36.6% — a quadrupling of profitability on a roughly 2.4x revenue base. Management credits operational rigor, pricing discipline in a supply-short market, and mix (strength in high-margin laser chips and "scale-across" components such as pump lasers and narrow-linewidth assemblies). Crucially, the two largest future growth drivers — OCS and CPO — are higher-value and have "barely begun to layer in," so management guides operating margin up again to 39.5–40.5% in Q1 FY27, hitting its target model early. This is textbook <a href="#g-operating-leverage">operating leverage</a>: revenue up 109% YoY in Q4 while GAAP opex grew ~18%.</p>
+
+      <h3>Cash flow, capex &amp; the balance sheet</h3>
+      <div class="chips">
+        <div class="chip"><div class="l">Cash + ST Inv.</div><div class="v">$2.74B</div><div class="s">Jun 27, 2026</div></div>
+        <div class="chip"><div class="l">Total Debt</div><div class="v neg">~$1.64B</div><div class="s">$1.60B current + $40M LT</div></div>
+        <div class="chip"><div class="l">Net Cash</div><div class="v">~$1.1B</div><div class="s">post-restructuring</div></div>
+        <div class="chip"><div class="l">Adj. EBITDA FY26</div><div class="v">$1.03B</div><div class="s">Q4 $406M · 40% margin</div></div>
+        <div class="chip"><div class="l">Inventory</div><div class="v">$692M</div><div class="s">+47% YoY (capacity build)</div></div>
+        <div class="chip"><div class="l">Current Ratio</div><div class="v">1.68x</div><div class="s">WC ≈ $1.68B</div></div>
+      </div>
+      <p>Lumentum ended FY26 with $2.74B cash and short-term investments against ~$1.64B of debt (the current-portion figure is large because the remaining converts became convertible when the stock cleared the conversion price — an equity-like liability, not a cash call). Adjusted EBITDA of $1,025.8M for FY26 (from $264.2M) shows the cash-earnings power scaling with revenue. The one honest caveat on <a href="#g-fcf">free cash flow</a>: Lumentum is investing heavily in capacity (PP&amp;E +$433M YoY; inventory +47%), so reported FCF is being consumed by growth capex and working capital. We do not have a cleanly disclosed FCF figure in the earnings releases and mark any specific number as approximate — but with ~40% Adj. EBITDA margins and a sold-out book, the FCF inflection should follow the margin inflection with a capex lag. Cash actually rose $1.9B YoY, though ~$2.0B of that was the preferred raise.</p>
+
+      <h3>Dilution — the price of the deleveraging</h3>
+      <p>The flip side of a five-fold stock and a converted debt stack is <a href="#g-dilution">dilution</a>. GAAP diluted shares moved from ~69.6M (FY25) toward ~90M non-GAAP diluted (FY26), and share count will settle higher as converts and preferred sit in the base. Investors got a stronger balance sheet and a lower interest burden in exchange for owning a smaller slice — a reasonable trade at these prices, but it means per-share value must grow through margin and revenue, not financial engineering, from here. Capped calls on the 2032 notes limit further dilution until the stock clears the cap.</p>
+
+      <h3>Growth vs. industry</h3>
+      <p>FY26 revenue grew 83% versus a datacenter-optics market growing perhaps 30–50% and a broader photonics industry in the low-double-digits — Lumentum is taking share and riding mix simultaneously. Revenue <a href="#g-cagr">CAGR</a> from the FY24 trough (~$1.36B) to FY26 ($3.01B) is ~49% annualized, and the Q1 FY27 guide implies the acceleration continues into the new fiscal year.</p>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 5 ================= -->
+  <section class="card" id="s5">
+    <div class="card-h" onclick="toggle(this)"><div class="badge">5</div><h2>Earnings Tracker — Management Credibility</h2><div class="chev">▾</div></div>
+    <div class="card-b">
+      <p>The recent record is strong — a string of beat-and-raises through the AI ramp — but not spotless: the March 2025 quarter (Q3 FY25) actually <em>missed</em> its revenue and EPS guide as the cycle was still turning, a useful reminder that this is a cyclical supply chain. Scores below weight both the magnitude of beats and the honesty of the guide.</p>
+      <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Quarter / Date</th><th>Specific Promise / Guidance</th><th>Actual Result</th><th class="num">Credibility</th></tr></thead>
+        <tbody>
+          <tr><td>Q2 FY25<br><span class="src">Feb 2025</span></td><td>Guided for cloud-driven growth; revenue/EPS ranges (approx)</td><td>Revenue $402.2M; non-GAAP EPS $0.42 — exceeded high end of revenue and EPS guidance</td><td class="num"><span class="score">8/10</span></td></tr>
+          <tr><td>Q3 FY25<br><span class="src">May 6, 2025</span></td><td>Revenue $440–470M; non-GAAP EPS $0.70–0.80</td><td>Revenue $425.2M (below range); non-GAAP EPS $0.57 (below range) — a genuine miss as the cycle turned</td><td class="num"><span class="score" style="background:rgba(168,52,31,.14);color:var(--red)">4/10</span></td></tr>
+          <tr><td>Q4 FY25<br><span class="src">Aug 2025</span></td><td>Revenue guide raised intra-quarter on datacenter strength</td><td>Revenue $480.7M; non-GAAP EPS $0.88 — beat, re-accelerating</td><td class="num"><span class="score">8/10</span></td></tr>
+          <tr><td>Q1 FY26<br><span class="src">Nov 4, 2025</span></td><td>Guide implied ~$500M+ and &gt;20% sequential growth</td><td>Revenue $533.8M (+58% YoY); non-GAAP EPS $1.10; revenue, margin &amp; EPS at high end of guidance</td><td class="num"><span class="score">9/10</span></td></tr>
+          <tr><td>Q2 FY26<br><span class="src">Feb 3, 2026</span></td><td>Revenue $630–670M; op margin 20–22%; non-GAAP EPS $1.30–1.50</td><td>Revenue $665.5M (+65% YoY); non-GAAP EPS $1.67 (above high end); op margin 25.2%</td><td class="num"><span class="score">10/10</span></td></tr>
+          <tr><td>Q3 FY26<br><span class="src">May 5, 2026</span></td><td>Revenue $780–830M; non-GAAP EPS $2.15–2.35</td><td>Revenue $808.4M (+90% YoY); non-GAAP EPS $2.37 (above high end); GM +540 bps QoQ</td><td class="num"><span class="score">10/10</span></td></tr>
+          <tr><td>Q4 FY26<br><span class="src">Aug 11, 2026</span></td><td>Revenue $960M–1.01B; op margin 35–36%; non-GAAP EPS $2.85–3.05</td><td>Revenue $1,006.3M (high end, +109% YoY); non-GAAP EPS $3.23 (above high end); GM 50.4%</td><td class="num"><span class="score">10/10</span></td></tr>
+          <tr><td>Q1 FY27<br><span class="src">guide (Aug 11, 2026)</span></td><td>Revenue $1.225–1.275B; op margin 39.5–40.5%; non-GAAP EPS $4.05–4.35</td><td><em>Reports ~Nov 3, 2026</em> — the tell: does the sold-out book keep converting to beats, and does GM hold above 50%?</td><td class="num"><span class="score">—</span></td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="chart-grid">
+        <div class="chart-box"><div class="ct"><h5>Revenue: Guide Midpoint vs Actual ($M)</h5><button class="zoom" onclick="expand('c_guide')">Click to expand</button></div><canvas id="c_guide"></canvas><div class="note">Last four guided quarters; Q1 FY27 is guidance (no actual yet).</div></div>
+        <div class="chart-box"><div class="ct"><h5>Non-GAAP EPS: Guide (high end) vs Actual</h5><button class="zoom" onclick="expand('c_epsbeat')">Click to expand</button></div><canvas id="c_epsbeat"></canvas><div class="note">Note the Q3 FY25 miss (below guide) before the AI-era beats.</div></div>
+      </div>
+      <div class="callout green"><div class="t">Credibility verdict</div>Recent execution is excellent (four straight beats above the high end since Q2 FY26), and management has repeatedly guided conservatively into an accelerating book. But the Q3 FY25 miss is on the record and matters: it demonstrates that Lumentum's demand is ultimately cyclical and that guidance can be wrong when the cycle turns. We give management high marks for the AI ramp while keeping the cyclical caveat front-of-mind in the conviction score.</div>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 6 ================= -->
+  <section class="card" id="s6">
+    <div class="card-h" onclick="toggle(this)"><div class="badge">6</div><h2>Bull / Base / Bear Case Scenarios</h2><div class="chev">▾</div></div>
+    <div class="card-b">
+      <p>Targets use ~90–95M diluted shares (converts/preferred in the base) and value the company on forward P/E and EV/Sales cross-checked against the peer set in Section 9. The central tension: the business could compound faster than almost any hardware name in the market, but the entry multiple leaves little room for a cyclical air-pocket. Anchor: the CEO's "$40 earnings power in CY2028."</p>
+
+      <div class="horizon">1-Year Horizon (to Sep 2027) — Probability-weighted target: <span style="font-family:'JetBrains Mono',monospace">$1,061</span> (+19%)</div>
+      <div class="scen-grid">
+        <div class="scen bull"><div class="t">Bull Case</div><div class="pt">$1,450</div><span class="prob">Probability 30%</span><ul><li>FY27 revenue ≥$6.0B; OCS + CPO ramps beat; GM holds &gt;50%</li><li>FY27 non-GAAP EPS tracks toward ~$24; market pays ~30x on 2028 visibility</li><li>Short/put covering; index-weight buying continues</li></ul></div>
+        <div class="scen base"><div class="t">Base Case</div><div class="pt">$1,080</div><span class="prob">Probability 45%</span><ul><li>FY27 revenue ~$5.6B; EPS ~$21; margins hold near target model</li><li>~45x forward EPS as growth stays &gt;40%</li><li>Roughly the low end of the Street target range</li></ul></div>
+        <div class="scen bear"><div class="t">Bear Case</div><div class="pt">$560</div><span class="prob">Probability 25%</span><ul><li>AI capex digestion or an ASP reset stalls sequential growth</li><li>GM slips toward mid-40s on mix; multiple de-rates to ~8–9x sales</li><li>"Cyclical, not secular" narrative reasserts (see Q3 FY25)</li></ul></div>
+      </div>
+
+      <div class="horizon">3-Year Horizon (to Sep 2029) — Probability-weighted target: <span style="font-family:'JetBrains Mono',monospace">$1,470</span> (+64%, ~18% CAGR)</div>
+      <div class="scen-grid">
+        <div class="scen bull"><div class="t">Bull Case</div><div class="pt">$2,400</div><span class="prob">Probability 30%</span><ul><li>Optics penetrate in-rack broadly; revenue ~$9B FY29; EPS &gt;$40</li><li>Lumentum is the default light source across pluggable/CPO/OCS</li><li>~40–50x on durable growth</li></ul></div>
+        <div class="scen base"><div class="t">Base Case</div><div class="pt">$1,400</div><span class="prob">Probability 45%</span><ul><li>Revenue ~$8.5B FY29; EPS ~$38 (near CEO's 2028 "$40 power")</li><li>~35x as growth normalizes toward 20–25%</li></ul></div>
+        <div class="scen bear"><div class="t">Bear Case</div><div class="pt">$480</div><span class="prob">Probability 25%</span><ul><li>Module makers vertically integrate lasers; ASPs fall; a capex down-cycle hits</li><li>Revenue plateaus ~$5B; EPS ~$16; multiple compresses to ~12x P/E</li></ul></div>
+      </div>
+
+      <div class="horizon">5-Year Horizon (to Sep 2031) — Probability-weighted target: <span style="font-family:'JetBrains Mono',monospace">$1,872</span> (+109%, ~16% CAGR)</div>
+      <div class="scen-grid">
+        <div class="scen bull"><div class="t">Bull Case</div><div class="pt">$3,200</div><span class="prob">Probability 30%</span><ul><li>Optical interconnect is the standard fabric; Lumentum a $12B+ revenue franchise</li><li>EPS &gt;$60; strategic scarcity premium</li></ul></div>
+        <div class="scen base"><div class="t">Base Case</div><div class="pt">$1,750</div><span class="prob">Probability 45%</span><ul><li>Revenue ~$11B; EPS ~$50; ~30x on high-teens growth</li><li>Cyclicality returns but around a much higher plateau</li></ul></div>
+        <div class="scen bear"><div class="t">Bear Case</div><div class="pt">$500</div><span class="prob">Probability 25%</span><ul><li>Post-boom normalization; competition and CPO commoditize the laser</li><li>Revenue ~$5–6B; EPS ~$18; back to a cyclical multiple</li></ul></div>
+      </div>
+
+      <div class="chart-grid">
+        <div class="chart-box"><div class="ct"><h5>Scenario Price Targets vs Current ($)</h5><button class="zoom" onclick="expand('c_scen')">Click to expand</button></div><canvas id="c_scen"></canvas><div class="note">Bars = scenario targets; diamonds = probability-weighted; dashed = current $893.61.</div></div>
+        <div class="chart-box"><div class="ct"><h5>Base-Case Revenue &amp; Non-GAAP EPS Path</h5><button class="zoom" onclick="expand('c_path')">Click to expand</button></div><canvas id="c_path"></canvas><div class="note">FY26 actual; FY27 near guidance run-rate; FY28–FY30 = FTA base-case model.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 7 ================= -->
+  <section class="card" id="s7">
+    <div class="card-h" onclick="toggle(this)"><div class="badge">7</div><h2>Risks &amp; Anti-Thesis — Steelmanning the Bear</h2><div class="chev">▾</div></div>
+    <div class="card-b">
+      <p>If we were short LITE, these are the five arguments we would lead with, in order of strength.</p>
+
+      <div class="risk"><h4>1. The valuation prices in a secular story for a historically cyclical business</h4>
+        <div class="meta"><span class="tag">Probability <b>45%</b></span><span class="tag">Impact <b>High</b></span><span class="tag">Priced in <b>No</b></span></div>
+        <p>Lumentum traded between roughly $40 and $100 for most of its life because optical/telecom demand is brutally cyclical — inventory corrections, ASP erosion, and capex air-pockets have repeatedly halved optical stocks (the Q3 FY25 miss was only 18 months ago). At 26.6x trailing sales and ~41x forward earnings, the stock requires AI datacenter capex to stay elevated <em>and</em> Lumentum to hold pricing. If either wobbles, the de-rating from a "secular" to a "cyclical" multiple is large and fast.</p>
+        <p><em>Our rebuttal:</em> the order book sold out through 2028 and the diversity of architectures Lumentum supplies genuinely lengthen visibility versus prior cycles. But we cannot claim the cyclicality is gone — only deferred — which is exactly why conviction is 6, not 8.</p></div>
+
+      <div class="risk"><h4>2. Hyperscaler and module-maker customer concentration</h4>
+        <div class="meta"><span class="tag">Probability <b>50%</b></span><span class="tag">Impact <b>High</b></span><span class="tag">Priced in <b>Partially</b></span></div>
+        <p>AI optics demand is concentrated in a handful of hyperscalers and large transceiver assemblers (InnoLight/Eoptolink and the cloud majors). A single customer's design change, insourcing decision, or capex pause can move a quarter materially. Concentration also caps pricing power over time as buyers push for second sources.</p>
+        <p><em>Our rebuttal:</em> being designed in across multiple architectures and customers diversifies within the concentration, and capacity scarcity currently favors the supplier. Still, this is the risk most likely to cause a guidance stumble.</p></div>
+
+      <div class="risk"><h4>3. Vertical integration and CPO could disintermediate the merchant laser</h4>
+        <div class="meta"><span class="tag">Probability <b>35%</b></span><span class="tag">Impact <b>High</b></span><span class="tag">Priced in <b>No</b></span></div>
+        <p>The largest transceiver makers have incentives to bring laser production in-house, and a shift to co-packaged optics moves value toward silicon-photonics IP owners (including hyperscaler-internal and startup efforts such as Lightmatter). If Lumentum's light source becomes a lower-value input in a CPO world, the gross-margin gains reverse.</p>
+        <p><em>Our rebuttal:</em> III-V laser fabrication is genuinely hard to replicate at yield, and CPO still needs external/CW light sources — Lumentum's OFC 2026 SHP CPO laser is a direct play for that socket. But this is the multi-year structural risk to watch.</p></div>
+
+      <div class="risk"><h4>4. ASP erosion compresses the newly-won gross margin</h4>
+        <div class="meta"><span class="tag">Probability <b>40%</b></span><span class="tag">Impact <b>Medium</b></span><span class="tag">Priced in <b>Partially</b></span></div>
+        <p>Today's 50%+ gross margin is partly a scarcity rent: supply is tight, so pricing is firm. As industry capacity catches up (Lumentum, Coherent, and Chinese players are all expanding), ASPs typically fall. Lumentum itself flags "decline of average selling prices" as a top risk factor. A return toward mid-40s gross margin would meaningfully cut the EPS trajectory the stock is capitalizing.</p>
+        <p><em>Our rebuttal:</em> mix shift toward higher-value OCS/CPO and cost-down partially offsets ASP pressure, and the sold-out book protects near-term pricing. Medium impact because some erosion is expected and modeled.</p></div>
+
+      <div class="risk"><h4>5. Dilution, complex capital structure, and GAAP optics</h4>
+        <div class="meta"><span class="tag">Probability <b>60%</b></span><span class="tag">Impact <b>Medium</b></span><span class="tag">Priced in <b>Mostly</b></span></div>
+        <p>Share count rose sharply (69.8M → 88.6M common + 2.9M preferred) as converts equitized and preferred was issued, and the $7.8B GAAP extinguishment loss makes GAAP earnings unusable this year. The capital structure — 2032 converts, capped calls, Series A preferred, two-class EPS math — is complex, and screens/quant models may misread it. Continued SBC (~$191M FY26) adds ongoing dilution.</p>
+        <p><em>Our rebuttal:</em> the dilution bought a materially stronger, near-net-cash balance sheet ahead of a capex-heavy growth phase — a good trade at these prices. But investors must value LITE on cash EPS and share count carefully, not GAAP.</p></div>
+
+      <div class="callout gold"><div class="t">Other risks noted</div>China supply-chain and export-control exposure (optical transceivers are under increasing U.S. scrutiny); rare-earth/component sourcing; execution risk on the aggressive capacity build (yield ramps on new nodes); macro-driven cloud capex sensitivity; and the reflexive risk that a peer's disappointing print (e.g., a soft Coherent or AAOI quarter) drags the whole optical complex regardless of Lumentum's own results.</div>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 8 ================= -->
+  <section class="card" id="s8">
+    <div class="card-h" onclick="toggle(this)"><div class="badge">8</div><h2>Catalyst Timeline</h2><div class="chev">▾</div></div>
+    <div class="card-b">
+      <div class="timeline">
+        <div class="tl"><div class="d">2026-09-15 → 09-17</div><div class="e">ECOC 2026 (European Conference on Optical Communications)</div><div class="x">Lumentum experts presenting; watch for new 1.6T/3.2T module, CPO laser, and scale-up VCSEL disclosures that firm up the 2027 roadmap.</div></div>
+        <div class="tl"><div class="d">2026-09 (ongoing)</div><div class="e">Investor conferences (Citi TMT, Deutsche Bank, Rosenblatt)</div><div class="x">CEO reiterated exponential optical demand, persistent shortages, strong pricing, and "$40 of earnings power in 2028." Any quantification of OCS/CPO/ELS ramps is a catalyst.</div></div>
+        <div class="tl"><div class="d">~2026-11-03</div><div class="e">Q1 FY27 earnings (quarter ending ~Sep 27, 2026)</div><div class="x">Guide: revenue $1.225–1.275B, op margin 39.5–40.5%, EPS $4.05–4.35. Key tells: does GM hold &gt;50%, does the FY27 book stay sold out, and does the CPO/OCS revenue start to show?</div></div>
+        <div class="tl"><div class="d">1H CY2027</div><div class="e">CPO order deliverable + OCS backlog conversion</div><div class="x">Management flagged an incremental multi-hundred-million CPO order deliverable in 1H CY2027 and &gt;$400M OCS backlog. First material revenue recognition would validate the "new vectors" thesis.</div></div>
+        <div class="tl"><div class="d">~2027-02</div><div class="e">Q2 FY27 earnings</div><div class="x">First read on whether sequential growth persists past the initial guide midpoints; 1.6T cloud-module ramp progress.</div></div>
+        <div class="tl"><div class="d">2027-03 (mid)</div><div class="e">OFC 2027</div><div class="x">The optical industry's marquee event; Lumentum typically unveils next-gen lasers, CPO and scale-up engines. Roadmap leadership vs Coherent is judged here.</div></div>
+        <div class="tl"><div class="d">CY2027 (ongoing)</div><div class="e">Capacity expansion milestones</div><div class="x">New wafer/module capacity coming online is the gating factor on a sold-out book — each qualified line is incremental revenue and a competitive wall.</div></div>
+        <div class="tl"><div class="d">CY2028</div><div class="e">"$40 earnings power" test</div><div class="x">The CEO's stated 2028 earnings-power anchor. Hitting it near a 25–30x multiple underpins the four-figure Street targets; missing it is the bear case.</div></div>
+        <div class="tl"><div class="d">2028+</div><div class="e">Industry capacity catch-up / ASP normalization</div><div class="x">As the industry adds capacity, watch for ASP erosion and the return of cyclicality around a higher plateau. The key long-term variable for the multiple.</div></div>
+        <div class="tl"><div class="d">2032</div><div class="e">0.375% Convertible Notes mature</div><div class="x">Capped-call protected; a non-event unless the stock sits far below conversion at maturity.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 9 ================= -->
+  <section class="card" id="s9">
+    <div class="card-h" onclick="toggle(this)"><div class="badge">9</div><h2>Comparable Company Analysis</h2><div class="chev">▾</div></div>
+    <div class="card-b">
+      <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Company</th><th class="num">Mkt Cap</th><th class="num">Rev TTM</th><th class="num">Rev Growth</th><th class="num">Fwd P/E</th><th class="num">P/S</th><th class="num">FCF Margin</th><th class="num">Net Margin</th><th class="num">EV/EBITDA</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Lumentum (LITE)</strong></td><td class="num">$80.2B</td><td class="num">$3.01B</td><td class="num pos">+83%</td><td class="num">~41x</td><td class="num">26.6x</td><td class="num">n/m*</td><td class="num neg">n/m†</td><td class="num">~77x</td></tr>
+          <tr><td>Coherent (COHR)</td><td class="num">$57.1B</td><td class="num">~$5.6B</td><td class="num pos">~+50%</td><td class="num">~40x</td><td class="num">~10.2x</td><td class="num pos">~12%</td><td class="num pos">~5%</td><td class="num">~30x</td></tr>
+          <tr><td>Ciena (CIEN)*</td><td class="num">~$50.7B</td><td class="num">~$5.0B</td><td class="num pos">+37%</td><td class="num">~45x</td><td class="num">~10x</td><td class="num pos">~8%</td><td class="num pos">~7%</td><td class="num">~35x</td></tr>
+          <tr><td>Astera Labs (ALAB)*</td><td class="num">~$41B</td><td class="num">~$1.4B</td><td class="num pos">~+98%</td><td class="num">~60x</td><td class="num">~29x</td><td class="num pos">~25%</td><td class="num pos">~15%</td><td class="num">~n/m</td></tr>
+          <tr><td>Fabrinet (FN)*</td><td class="num">$14.8B</td><td class="num">~$4.0B</td><td class="num pos">~+28%</td><td class="num">~30x</td><td class="num">~3.7x</td><td class="num pos">~7%</td><td class="num pos">~9%</td><td class="num">~22x</td></tr>
+          <tr><td>Applied Optoelectronics (AAOI)*</td><td class="num">$8.3B</td><td class="num">~$0.75B</td><td class="num pos">~+55%</td><td class="num">n/m</td><td class="num">~11x</td><td class="num neg">~neg</td><td class="num neg">~neg</td><td class="num">n/m</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p class="src">LITE from Lumentum 8-K and StockAnalysis as of Sep 17, 2026. COHR market cap/price from StockAnalysis Sep 17. *CIEN, ALAB, FN, AAOI figures approximated from secondary sources (Aug–Sep 2026) — treat as directional. *LITE FCF n/m: not cleanly disclosed and consumed by growth capex. †LITE GAAP net margin n/m due to the one-time $7.8B convert-extinguishment loss. n/m = not meaningful.</p>
+
+      <div class="chart-grid">
+        <div class="chart-box"><div class="ct"><h5>P/S Multiple vs Revenue Growth</h5><button class="zoom" onclick="expand('c_peer')">Click to expand</button></div><canvas id="c_peer"></canvas><div class="note">Bubble size ≈ relative scale. LITE and ALAB carry the richest sales multiples.</div></div>
+        <div class="chart-box"><div class="ct"><h5>Growth-Adjusted Multiple (P/S ÷ Growth %)</h5><button class="zoom" onclick="expand('c_psg')">Click to expand</button></div><canvas id="c_psg"></canvas><div class="note">Lower = cheaper per unit of growth. LITE ~0.32 vs COHR ~0.20.</div></div>
+      </div>
+
+      <h3>Relative valuation read</h3>
+      <p>Lumentum is the most richly valued of the scaled optical names on trailing sales — 26.6x versus ~10x for its closest peer Coherent — and only Astera Labs (a pure-play AI connectivity chip company growing ~98%) sits in the same neighborhood. On a growth-adjusted basis LITE's P/S-to-growth of ~0.32 is a premium to Coherent's ~0.20 and Fabrinet's ~0.13, meaning the market is paying up for Lumentum's purer AI-optical mix, faster growth, and steeper margin inflection. Against Coherent — the natural "what could go right/wrong together" comp — Lumentum trades at ~2.6x the sales multiple while growing faster and expanding margins more sharply; the bull says that gap is earned by mix and momentum, the bear says it is the part most exposed to a de-rating. Fabrinet is the value anchor of the group (a manufacturing partner, not a laser-IP owner) and frames how far the multiple could fall in a downturn. Our read: Lumentum deserves a premium to Coherent and Fabrinet, but the current gap assumes near-flawless execution — consistent with a constructive-but-tempered stance rather than an all-in one.</p>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 10 ================= -->
+  <section class="card" id="s10">
+    <div class="card-h" onclick="toggle(this)"><div class="badge">10</div><h2>First-Principles KPIs</h2><div class="chev">▾</div></div>
+    <div class="card-b">
+      <p>Five leading indicators, in order of importance. If the first three hold, the thesis holds; if gross margin rolls over while sequential revenue stalls, that is the exit signal.</p>
+      <ol style="margin:8px 0 14px 22px;font-size:14.5px">
+        <li><strong>Sequential revenue growth &amp; order-book coverage.</strong> Bar: positive QoQ with book coverage extending. Q4 FY26: +25% QoQ; book "sold out through 2028." The purest read on whether the AI optical cycle is still expanding.</li>
+        <li><strong>Non-GAAP gross margin.</strong> Bar: hold &gt;48%. Q4 FY26: 50.4%. This is the scarcity-rent gauge; a slip toward mid-40s signals ASP erosion (Risk #4).</li>
+        <li><strong>Non-GAAP operating margin vs the ~40% target model.</strong> Bar: at/above target. Q1 FY27 guide 39.5–40.5%. Proves operating leverage is real and durable.</li>
+        <li><strong>Components mix &amp; the CPO/OCS ramp.</strong> Bar: Components growing, new vectors (OCS &gt;$400M backlog, CPO order 1H CY27, ELS/NPO) converting to revenue. Tracks whether the TAM expansion is real.</li>
+        <li><strong>Non-GAAP EPS trajectory vs the "$40 in 2028" anchor.</strong> Bar: on a path to ~$40 CY2028. FY26 $8.67; Q1 FY27 guide $4.05–4.35. The single number the four-figure Street targets rest on.</li>
+      </ol>
+      <div class="chart-grid">
+        <div class="chart-box"><div class="ct"><h5>KPI 1/2: Revenue ($M) &amp; Non-GAAP GM (%)</h5><button class="zoom" onclick="expand('c_kpi_rev')">Click to expand</button></div><canvas id="c_kpi_rev"></canvas><div class="note">Revenue accelerating while gross margin climbs — the ideal combination.</div></div>
+        <div class="chart-box"><div class="ct"><h5>KPI 5: Non-GAAP EPS Path to "$40 Power"</h5><button class="zoom" onclick="expand('c_kpi_eps')">Click to expand</button></div><canvas id="c_kpi_eps"></canvas><div class="note">FY25–FY26 actual; FY27 near guide run-rate; FY28 = CEO's stated power (approx).</div></div>
+      </div>
+      <div class="chart-grid">
+        <div class="chart-box"><div class="ct"><h5>KPI 4: FY26 Revenue Mix — Components vs Systems</h5><button class="zoom" onclick="expand('c_mix')">Click to expand</button></div><canvas id="c_mix"></canvas><div class="note">Components $2.01B (67%) · Systems $1.01B (33%).</div></div>
+        <div class="chart-box"><div class="ct"><h5>KPI 3: Adjusted EBITDA ($M) &amp; Margin</h5><button class="zoom" onclick="expand('c_ebitda')">Click to expand</button></div><canvas id="c_ebitda"></canvas><div class="note">Adj. EBITDA $264M → $1,026M FY26; Q4 margin ~40%.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 11 ================= -->
+  <section class="card" id="s11">
+    <div class="card-h" onclick="toggle(this)"><div class="badge">11</div><h2>Glossary &amp; Methodology</h2><div class="chev">▾</div></div>
+    <div class="card-b">
+      <h3>Methodology</h3>
+      <p>All Lumentum financial figures come from the company's SEC-filed 8-K earnings releases (Q3 FY25 through Q4/FY26), read directly on sec.gov, plus market data (price, market cap, shares, forward P/E, analyst targets) from StockAnalysis.com as of the September 17, 2026 close ($893.61) and September 18 pre-market. FY22–FY24 annual revenue is approximate from prior-year filings and used only for the long-run trend chart. Peer data for CIEN, ALAB, FN and AAOI is approximated from secondary sources dated August–September 2026 and marked as such. Free cash flow is not cleanly disclosed in the earnings releases and is treated as approximate. Scenario targets apply forward P/E and EV/Sales multiples to FTA's own revenue and margin model; probabilities are judgmental. Nothing here is investment advice.</p>
+
+      <div class="gl" id="g-eml"><h4>EML (Electro-absorption Modulated Laser)</h4><div class="f">A DFB laser integrated with an electro-absorption modulator on one indium-phosphide chip</div><p>The high-speed light source inside single-mode datacenter transceivers; four 400G EML lasers power a 1.6T DR4 module. <em>Why it matters:</em> EML is the hard-to-second-source component Lumentum sells into 800G/1.6T optics — the core of the "picks and shovels" thesis.</p><a class="back" href="#s1">↑ Back to Section 1</a></div>
+      <div class="gl" id="g-cw"><h4>CW / DFB Laser</h4><div class="f">Continuous-wave distributed-feedback laser — a steady light source, modulated externally</div><p>Feeds silicon-photonics engines and co-packaged optics, where the laser sits outside the modulator. Lumentum's OFC 2026 &gt;1W 1310nm SHP laser is a high-power CW source for CPO. <em>Why it matters:</em> CW lasers are Lumentum's entry into the CPO socket, hedging the pluggable-vs-CPO architecture debate.</p><a class="back" href="#s1">↑ Back to Section 3</a></div>
+      <div class="gl" id="g-cpo"><h4>Co-Packaged Optics (CPO) / NPO</h4><div class="f">Optics placed in the same package as (CPO) or very near (NPO) the switch/compute ASIC</div><p>Moves the optical engine next to the chip to cut power and boost bandwidth density, replacing pluggable transceivers for the highest-speed links. Needs external CW/SHP light sources. <em>Why it matters:</em> CPO is both a risk (shifts value to silicon-photonics IP) and an opportunity (Lumentum sells the light source) — the key long-term architecture question.</p><a class="back" href="#s1">↑ Back to Section 3</a></div>
+      <div class="gl" id="g-ocs"><h4>Optical Circuit Switch (OCS)</h4><div class="f">A switch that routes light paths directly (no optical-electrical-optical conversion)</div><p>Used by hyperscalers to reconfigure network topology efficiently at scale; Lumentum reports OCS backlog exceeding $400M. <em>Why it matters:</em> a higher-value Systems product that expands Lumentum's served TAM beyond components and is only beginning to layer into revenue.</p><a class="back" href="#s3">↑ Back to Section 3</a></div>
+      <div class="gl" id="g-ps"><h4>Price-to-Sales (P/S) and the FTA Scale</h4><div class="f">P/S = Market cap ÷ TTM revenue · Scale: &gt;30 Euphoric · &gt;18 Excited · &gt;8 Optimistic · 4–8 Aware · &lt;4 Cautious · &lt;2 Pessimistic</div><p>Useful when P/E is distorted (here by a one-time GAAP loss). <em>Why it matters:</em> LITE at 26.6x trailing sales is "Excited," approaching "Euphoric" — a premium that must be earned by the forward revenue ramp (~14x on FY27E).</p><a class="back" href="#s2">↑ Back to Section 2</a></div>
+      <div class="gl" id="g-convertible"><h4>Convertible Senior Notes &amp; Equitization</h4><div class="f">Debt that can convert into equity at a preset price; "equitization" = holders convert to shares</div><p>Lumentum's stock rose far above the conversion prices of its 2026/2028/2029 notes, so holders converted — creating a $7.8B non-cash "loss on debt extinguishment" (conversion value above principal) and swapping debt for equity. A new $1,265M 0.375% note due 2032 (with capped calls, ~$187.77 conversion) remains. <em>Why it matters:</em> the GAAP loss is an accounting artifact of a rising stock, not an operating problem — but it dilutes shareholders.</p><a class="back" href="#s1">↑ Back to Section 1</a></div>
+      <div class="gl" id="g-fcf"><h4>Free Cash Flow (FCF)</h4><div class="f">FCF = Operating cash flow − capital expenditures</div><p>Cash generated after reinvestment. <em>Why it matters:</em> Lumentum is spending heavily on capacity (PP&amp;E +$433M YoY), so near-term FCF is muted even as Adjusted EBITDA scales; not cleanly disclosed in the releases, so we mark it approximate and lean on Adj. EBITDA.</p><a class="back" href="#s4">↑ Back to Section 4</a></div>
+      <div class="gl" id="g-operating-leverage"><h4>Operating Leverage</h4><div class="f">% change in operating income ÷ % change in revenue</div><p>When revenue grows faster than costs, margins expand. <em>Why it matters:</em> Lumentum's non-GAAP operating margin quadrupled (15.0% → 36.6%) while revenue roughly doubled — extreme leverage driven by scarce-capacity pricing and mix.</p><a class="back" href="#s4">↑ Back to Section 4</a></div>
+      <div class="gl" id="g-rule-of-40"><h4>Rule of 40</h4><div class="f">Revenue growth % + operating (or FCF) margin % ≥ 40</div><p>A heuristic balancing growth and profitability. <em>Why it matters:</em> LITE scores ~113 (83% growth + 30% op margin), exceptional — though the metric is usually applied to software and flatters a company at a cyclical peak.</p><a class="back" href="#s2">↑ Back to Section 2</a></div>
+      <div class="gl" id="g-cagr"><h4>CAGR (Compound Annual Growth Rate)</h4><div class="f">CAGR = (End ÷ Start)^(1/years) − 1</div><p>Smoothed annual growth across multi-year periods. <em>Why it matters:</em> revenue CAGR from the FY24 trough (~$1.36B) to FY26 ($3.01B) is ~49% — but off a cyclical low, so the base year matters.</p><a class="back" href="#s4">↑ Back to Section 4</a></div>
+      <div class="gl" id="g-dilution"><h4>Share Dilution</h4><div class="f">Increase in shares outstanding from converts, preferred, SBC and options</div><p>More shares means each existing share owns less of the business. <em>Why it matters:</em> LITE's count rose from ~69.8M to 88.6M common (+2.9M preferred) via convert equitization and a preferred raise — the price paid for a stronger balance sheet.</p><a class="back" href="#s4">↑ Back to Section 4</a></div>
+      <div class="gl" id="g-short-interest"><h4>Short Interest</h4><div class="f">Shares sold short ÷ float; days to cover = short shares ÷ average daily volume</div><p>Measures bearish positioning. <em>Why it matters:</em> not the central story for LITE; we mark any specific figure approximate. Options flow has at times skewed bearish (heavy puts near the money), a sentiment tell rather than a fundamental one.</p><a class="back" href="#s2">↑ Back to Section 2</a></div>
+      <div class="gl" id="g-tam"><h4>TAM (Total Addressable Market)</h4><div class="f">Annual revenue opportunity if a company captured 100% of its target market</div><p>Datacenter-optics TAM estimates are moving targets in the multi-tens-of-billions; new in-rack optical use cases "significantly up" Lumentum's TAM. <em>Why it matters:</em> McKinsey's Technology Trends Outlook 2026 named Lumentum for high-bandwidth optical interconnect and cited its OFC 2026 VCSEL scale-up demo — external validation of the TAM-expansion thesis. Treat any single TAM number as approximate.</p><a class="back" href="#s2">↑ Back to Section 2</a></div>
+
+      <h3>Primary sources</h3>
+      <p class="src">
+        <a href="https://www.sec.gov/Archives/edgar/data/1633978/000162828026055726/lite_ex991xq4fy26.htm">Q4/FY26 8-K press release (Aug 11, 2026)</a> ·
+        <a href="https://www.sec.gov/Archives/edgar/data/1633978/000162828026030530/lite_ex991xq3fy26.htm">Q3 FY26 8-K (May 5, 2026)</a> ·
+        <a href="https://www.sec.gov/Archives/edgar/data/1633978/000162828026005005/lite_ex991xq2fy26.htm">Q2 FY26 8-K (Feb 3, 2026)</a> ·
+        <a href="https://www.sec.gov/Archives/edgar/data/1633978/000162828025048860/lite_ex991xq1fy26.htm">Q1 FY26 8-K (Nov 4, 2025)</a> ·
+        <a href="https://www.sec.gov/Archives/edgar/data/1633978/000162828025022709/lite_ex991xq3fy25.htm">Q3 FY25 8-K</a> ·
+        <a href="https://investor.lumentum.com/financial-news-releases/news-details/2026/Lumentum-Showcases-Breakthrough-Optical-Scale-Up-Demonstration-at-OFC-2026-Using-VCSEL-Technology/default.aspx">OFC 2026 VCSEL scale-up demonstration</a> ·
+        <a href="https://www.businesswire.com/news/home/20260317080634/en/Lumentum-Demonstrates-Industry-Leading-Technologies-and-Products-for-Scale-Out-Scale-Up-and-Scale-Across-AI-Infrastructure-at-OFC-2026">OFC 2026 scale-out/up/across (1.6T EML, SHP CPO laser)</a> ·
+        <a href="https://www.nasdaq.com/articles/lumentum-prices-11-bln-convertible-notes-due-2032-enters-capped-call-transactions">$1.265B 2032 convertible + capped call</a> ·
+        <a href="https://stockanalysis.com/stocks/lite/">StockAnalysis LITE overview</a> ·
+        <a href="https://stockanalysis.com/stocks/cohr/">StockAnalysis COHR</a>
+      </p>
+    </div>
+  </section>
+
+  <p class="src" style="margin-top:30px">© 2026 Foundational Trading Academy. Prepared September 17, 2026. This report is for educational purposes only and is not a recommendation to buy or sell any security. The author is not a licensed financial advisor.</p>
+  </div>
+</main>
+
+<div class="modal" id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal-box"><button class="modal-close" onclick="closeModal()">×</button><h5 id="modal-title"></h5><canvas id="modal-canvas"></canvas></div>
+</div>
+
+<script>
+function toggle(h){h.parentElement.classList.toggle('collapsed')}
+const G='#145A22',DG='#0A3A14',GOLD='#FCC55B',GD='#e0a838',RED='#a8341f',MUTED='#5d6155',LINE='#d8d1c4';
+Chart.defaults.font.family="'Quicksand',sans-serif";Chart.defaults.font.size=11;Chart.defaults.color=MUTED;
+const mono={family:"'JetBrains Mono',monospace",size:10};
+const configs={};const charts={};
+function cloneCfg(o){if(Array.isArray(o))return o.map(cloneCfg);if(o&&typeof o==='object')return Object.fromEntries(Object.entries(o).map(([k,v])=>[k,cloneCfg(v)]));return o;}
+function mk(id,cfg){configs[id]=cfg;const c=document.getElementById(id);if(c)charts[id]=new Chart(c,cloneCfg(cfg));}
+let modalChart=null;
+function expand(id){const cfg=configs[id];if(!cfg)return;document.getElementById('modal-title').textContent=cfg._title||'';const m=document.getElementById('modal');m.classList.add('open');if(modalChart)modalChart.destroy();const c=cloneCfg(cfg);c.options=c.options||{};c.options.maintainAspectRatio=false;c.options.responsive=true;modalChart=new Chart(document.getElementById('modal-canvas'),c);}
+function closeModal(){document.getElementById('modal').classList.remove('open');if(modalChart){modalChart.destroy();modalChart=null;}}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+const base=(extra={})=>Object.assign({responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{boxWidth:10,padding:10}}},scales:{x:{grid:{display:false},ticks:{font:mono}},y:{grid:{color:'#eee8dc'},ticks:{font:mono}}}},extra);
+
+const Q=['Q1 FY25','Q2 FY25','Q3 FY25','Q4 FY25','Q1 FY26','Q2 FY26','Q3 FY26','Q4 FY26'];
+const Q6=['Q3 FY25','Q4 FY25','Q1 FY26','Q2 FY26','Q3 FY26','Q4 FY26'];
+
+mk('c_annual',{_title:'Annual Revenue & Growth (FY22–FY26)',type:'bar',data:{labels:['FY22','FY23','FY24','FY25','FY26'],datasets:[{type:'bar',label:'Revenue ($M)',data:[1714,1768,1361,1645,3014],backgroundColor:[G,G,G,G,GD],borderRadius:5,yAxisID:'y'},{type:'line',label:'YoY Growth %',data:[-2,3,-23,20.9,83.2],borderColor:GD,backgroundColor:GD,tension:.3,yAxisID:'y1',pointRadius:3}]},options:base({scales:{x:{grid:{display:false},ticks:{font:mono}},y:{grid:{color:'#eee8dc'},ticks:{font:mono}},y1:{position:'right',grid:{display:false},ticks:{font:mono,callback:v=>v+'%'}}}})});
+mk('c_mcap',{_title:'Market Cap vs Peers ($B)',type:'bar',data:{labels:['LITE','COHR','CIEN*','ALAB*','FN*','AAOI*'],datasets:[{label:'Market Cap ($B)',data:[80.2,57.1,50.7,41,14.8,8.3],backgroundColor:[GD,'#7aa885','#7aa885','#7aa885','#7aa885','#7aa885'],borderRadius:5}]},options:base({indexAxis:'y',plugins:{legend:{display:false}}})});
+mk('c_rev',{_title:'Quarterly Revenue ($M) & YoY Growth',type:'bar',data:{labels:Q,datasets:[{type:'bar',label:'Revenue ($M)',data:[336.9,402.2,425.2,480.7,533.8,665.5,808.4,1006.3],backgroundColor:[G,G,G,G,GD,GD,GD,GD],borderRadius:4,yAxisID:'y'},{type:'line',label:'YoY Growth %',data:[null,null,null,null,58,65,90,109],borderColor:GD,backgroundColor:GD,tension:.3,yAxisID:'y1',pointRadius:3,spanGaps:false}]},options:base({scales:{x:{grid:{display:false},ticks:{font:mono}},y:{grid:{color:'#eee8dc'},ticks:{font:mono}},y1:{position:'right',min:0,max:130,grid:{display:false},ticks:{font:mono,callback:v=>v+'%'}}}})});
+mk('c_seg',{_title:'Components vs Systems ($M) — FY25 vs FY26',type:'bar',data:{labels:['Components','Systems'],datasets:[{label:'FY25',data:[1116.3,528.7],backgroundColor:'#b9c9bc',borderRadius:4},{label:'FY26',data:[2005.6,1008.4],backgroundColor:G,borderRadius:4}]},options:base()});
+mk('c_margins',{_title:'Non-GAAP Gross & Operating Margin (%)',type:'line',data:{labels:Q6,datasets:[{label:'Gross Margin %',data:[35.2,37.8,39.4,42.5,47.9,50.4],borderColor:G,backgroundColor:'rgba(20,90,34,.12)',fill:true,tension:.3,pointRadius:4,pointBackgroundColor:GOLD},{label:'Operating Margin %',data:[10.8,15.0,18.7,25.2,32.2,36.6],borderColor:GD,backgroundColor:GD,tension:.3,pointRadius:4}]},options:base({scales:{x:{grid:{display:false},ticks:{font:mono}},y:{grid:{color:'#eee8dc'},ticks:{font:mono,callback:v=>v+'%'}}}})});
+mk('c_eps',{_title:'Non-GAAP EPS ($) — Last 8 Quarters',type:'bar',data:{labels:Q,datasets:[{label:'Non-GAAP EPS',data:[0.18,0.42,0.57,0.88,1.10,1.67,2.37,3.23],backgroundColor:[G,G,G,G,GD,GD,GD,GD],borderRadius:4}]},options:base({plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{font:mono}},y:{grid:{color:'#eee8dc'},ticks:{font:mono,callback:v=>'$'+v.toFixed(2)}}}})});
+mk('c_guide',{_title:'Revenue: Guide Midpoint vs Actual ($M)',type:'bar',data:{labels:['Q2 FY26','Q3 FY26','Q4 FY26','Q1 FY27'],datasets:[{label:'Guide midpoint',data:[650,805,985,1250],backgroundColor:'#b9c9bc',borderRadius:4},{label:'Actual',data:[665.5,808.4,1006.3,null],backgroundColor:G,borderRadius:4}]},options:base({scales:{x:{grid:{display:false},ticks:{font:mono}},y:{min:500,grid:{color:'#eee8dc'},ticks:{font:mono}}}})});
+mk('c_epsbeat',{_title:'Non-GAAP EPS: Guide (high end) vs Actual',type:'bar',data:{labels:['Q3 FY25','Q2 FY26','Q3 FY26','Q4 FY26'],datasets:[{label:'Guide (high end)',data:[0.80,1.50,2.35,3.05],backgroundColor:'#b9c9bc',borderRadius:4},{label:'Actual',data:[0.57,1.67,2.37,3.23],backgroundColor:[RED,G,G,G],borderRadius:4}]},options:base({scales:{x:{grid:{display:false},ticks:{font:mono}},y:{grid:{color:'#eee8dc'},ticks:{font:mono,callback:v=>'$'+v.toFixed(2)}}}})});
+mk('c_scen',{_title:'Scenario Price Targets vs Current ($)',type:'bar',data:{labels:['1-Year','3-Year','5-Year'],datasets:[{type:'bar',label:'Bear',data:[560,480,500],backgroundColor:RED,borderRadius:4},{type:'bar',label:'Base',data:[1080,1400,1750],backgroundColor:GD,borderRadius:4},{type:'bar',label:'Bull',data:[1450,2400,3200],backgroundColor:G,borderRadius:4},{type:'line',label:'Prob-weighted',data:[1061,1470,1872],borderColor:DG,backgroundColor:DG,pointRadius:5,pointStyle:'rectRot',tension:0},{type:'line',label:'Current $893.61',data:[893.61,893.61,893.61],borderColor:MUTED,borderDash:[5,4],pointRadius:0}]},options:base({scales:{x:{grid:{display:false},ticks:{font:mono}},y:{grid:{color:'#eee8dc'},ticks:{font:mono,callback:v=>'$'+v}}}})});
+mk('c_path',{_title:'Base-Case Revenue & Non-GAAP EPS Path',type:'bar',data:{labels:['FY26A','FY27E','FY28E','FY29E','FY30E'],datasets:[{type:'bar',label:'Revenue ($M)',data:[3014,5600,7200,8500,9800],backgroundColor:G,borderRadius:4,yAxisID:'y'},{type:'line',label:'Non-GAAP EPS ($)',data:[8.67,21,32,38,43],borderColor:GD,backgroundColor:GD,tension:.3,yAxisID:'y1',pointRadius:4}]},options:base({scales:{x:{grid:{display:false},ticks:{font:mono}},y:{grid:{color:'#eee8dc'},ticks:{font:mono}},y1:{position:'right',grid:{display:false},ticks:{font:mono,callback:v=>'$'+v}}}})});
+mk('c_peer',{_title:'P/S Multiple vs Revenue Growth',type:'bubble',data:{datasets:[{label:'LITE',data:[{x:83,y:26.6,r:18}],backgroundColor:GD},{label:'COHR',data:[{x:50,y:10.2,r:15}],backgroundColor:G},{label:'CIEN*',data:[{x:37,y:10,r:14}],backgroundColor:'#7aa885'},{label:'ALAB*',data:[{x:98,y:29,r:12}],backgroundColor:'#7aa885'},{label:'FN*',data:[{x:28,y:3.7,r:10}],backgroundColor:'#7aa885'},{label:'AAOI*',data:[{x:55,y:11,r:8}],backgroundColor:'#7aa885'}]},options:base({scales:{x:{title:{display:true,text:'Revenue growth % (TTM)'},grid:{color:'#eee8dc'},ticks:{font:mono}},y:{title:{display:true,text:'P/S (x)'},grid:{color:'#eee8dc'},ticks:{font:mono}}}})});
+mk('c_psg',{_title:'Growth-Adjusted Multiple (P/S ÷ Revenue Growth %)',type:'bar',data:{labels:['FN*','COHR','AAOI*','CIEN*','ALAB*','LITE'],datasets:[{label:'P/S ÷ growth',data:[0.13,0.20,0.20,0.27,0.30,0.32],backgroundColor:['#7aa885','#7aa885','#7aa885','#7aa885','#7aa885',GD],borderRadius:5}]},options:base({plugins:{legend:{display:false}}})});
+mk('c_kpi_rev',{_title:'Revenue ($M) & Non-GAAP Gross Margin (%)',type:'bar',data:{labels:Q6,datasets:[{type:'bar',label:'Revenue ($M)',data:[425.2,480.7,533.8,665.5,808.4,1006.3],backgroundColor:G,borderRadius:4,yAxisID:'y'},{type:'line',label:'Gross Margin %',data:[35.2,37.8,39.4,42.5,47.9,50.4],borderColor:GD,backgroundColor:GD,tension:.3,yAxisID:'y1',pointRadius:4}]},options:base({scales:{x:{grid:{display:false},ticks:{font:mono}},y:{grid:{color:'#eee8dc'},ticks:{font:mono}},y1:{position:'right',min:30,max:55,grid:{display:false},ticks:{font:mono,callback:v=>v+'%'}}}})});
+mk('c_kpi_eps',{_title:'Non-GAAP EPS Path to "$40 Power" (CY2028)',type:'bar',data:{labels:['FY25','FY26','FY27E','FY28E (CEO)'],datasets:[{label:'Non-GAAP EPS ($)',data:[2.06,8.67,21,40],backgroundColor:[G,G,GD,GOLD],borderRadius:5}]},options:base({plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{font:mono}},y:{grid:{color:'#eee8dc'},ticks:{font:mono,callback:v=>'$'+v}}}})});
+mk('c_mix',{_title:'FY26 Revenue Mix — Components vs Systems',type:'doughnut',data:{labels:['Components $2.01B (67%)','Systems $1.01B (33%)'],datasets:[{data:[2005.6,1008.4],backgroundColor:[G,GOLD],borderColor:'#fff',borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{position:'bottom',labels:{boxWidth:10}}}}});
+mk('c_ebitda',{_title:'Adjusted EBITDA ($M) & Margin',type:'bar',data:{labels:['Q3 FY25','Q4 FY25','Q2 FY26','Q3 FY26','Q4 FY26'],datasets:[{type:'bar',label:'Adj. EBITDA ($M)',data:[71.0,98.7,198.3,293.5,406.4],backgroundColor:G,borderRadius:4,yAxisID:'y'},{type:'line',label:'Adj. EBITDA Margin %',data:[16.7,20.5,29.8,36.3,40.4],borderColor:GD,backgroundColor:GD,tension:.3,yAxisID:'y1',pointRadius:4}]},options:base({scales:{x:{grid:{display:false},ticks:{font:mono}},y:{grid:{color:'#eee8dc'},ticks:{font:mono}},y1:{position:'right',min:0,max:50,grid:{display:false},ticks:{font:mono,callback:v=>v+'%'}}}})});
+</script>
+</body>
+</html>
