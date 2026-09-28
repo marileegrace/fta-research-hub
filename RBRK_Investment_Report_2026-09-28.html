@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RBRK — Rubrik, Inc. | FTA Investment Research | 2026-09-28</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Questrial&family=Quicksand:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{--green:#145A22;--dark-green:#0A3A14;--forest:#243D27;--gold:#FCC55B;--gold-deep:#e0a838;--beige:#EDE8E0;--beige-card:#f6f3ed;--ink:#23241f;--muted:#5d6155;--red:#a8341f;--line:#d8d1c4;}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Quicksand',sans-serif;background:var(--beige);color:var(--ink);line-height:1.65;font-size:15.5px}
+a{color:var(--green);font-weight:600;text-decoration:none;border-bottom:1px dotted var(--green)}
+a:hover{color:var(--gold-deep);border-color:var(--gold-deep)}
+.layout{display:flex;min-height:100vh}
+/* Sidebar */
+.sidebar{width:262px;flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto;background:linear-gradient(180deg,#071f0b,#0A3A14 40%,#145A22);border-right:3px solid var(--gold);color:#fff;padding:28px 20px}
+.brand{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:26px;font-weight:600;color:var(--gold);line-height:1.1}
+.brand small{display:block;font-family:'Questrial',sans-serif;font-style:normal;font-size:10.5px;letter-spacing:2.5px;text-transform:uppercase;color:#cfe3d2;margin-top:6px}
+.tickerbox{margin:22px 0;padding:14px;border:1px solid rgba(252,197,91,.45);border-radius:12px;background:rgba(255,255,255,.05)}
+.tickerbox .tk{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;color:var(--gold)}
+.tickerbox .nm{font-size:12px;color:#d7e6d9}
+.tickerbox .px{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:600;margin-top:6px}
+.tickerbox .chg{font-family:'JetBrains Mono',monospace;font-size:12px;color:#ffb4a3}
+.sidebar nav a{display:flex;gap:10px;align-items:center;color:#e8f0e9;border:none;font-weight:500;font-size:13.5px;padding:7px 8px;border-radius:8px}
+.sidebar nav a span{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold);width:20px}
+.sidebar nav a:hover{background:rgba(252,197,91,.15);color:#fff}
+.sidebar .foot{font-size:11px;color:#a9c4ad;margin-top:22px;line-height:1.5}
+/* Main */
+main{flex:1;min-width:0}
+.hero{position:relative;overflow:hidden;background:linear-gradient(120deg,var(--dark-green),var(--green) 60%);color:#fff;padding:54px 48px 46px;border-bottom:4px solid var(--gold)}
+.hero::after{content:"";position:absolute;right:-120px;top:-120px;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(252,197,91,.35),rgba(252,197,91,0) 70%)}
+.hero .eyebrow{font-family:'Questrial',sans-serif;letter-spacing:3px;text-transform:uppercase;font-size:12px;color:var(--gold)}
+.hero h1{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:48px;line-height:1.05;margin:10px 0 12px;max-width:820px}
+.hero p.sub{max-width:760px;color:#e2ede4;font-size:16px}
+.verdict{display:inline-flex;gap:12px;align-items:center;margin-top:20px;background:var(--gold);color:var(--dark-green);padding:9px 18px;border-radius:40px;font-family:'Questrial',sans-serif;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;position:relative;z-index:1}
+.verdict b{font-family:'JetBrains Mono',monospace;font-size:14px}
+.hero .meta{margin-top:16px;font-size:12px;color:#cfe3d2;position:relative;z-index:1}
+.kpis{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;padding:22px 48px 0;max-width:1176px}
+.kpi{background:var(--beige-card);border:1px solid var(--line);border-radius:12px;padding:14px}
+.kpi .l{font-family:'Questrial',sans-serif;text-transform:uppercase;font-size:10.5px;letter-spacing:1.3px;color:var(--muted)}
+.kpi .v{font-family:'JetBrains Mono',monospace;font-size:21px;font-weight:700;color:var(--green);margin-top:4px}
+.kpi .s{font-size:11.5px;color:var(--muted)}
+.content{max-width:1080px;padding:26px 48px 70px}
+.card{background:var(--beige-card);border:1px solid var(--line);border-radius:14px;margin-bottom:26px;overflow:hidden;box-shadow:0 2px 10px rgba(10,58,20,.05)}
+.card-h{display:flex;align-items:center;gap:14px;padding:16px 20px;border-left:5px solid var(--green);cursor:pointer;background:#fbf9f5;border-bottom:1px solid var(--line)}
+.num{width:34px;height:34px;border-radius:9px;background:var(--green);color:var(--gold);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:14px;flex-shrink:0}
+.card-h h2{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:27px;color:var(--dark-green);flex:1;line-height:1.1}
+.chev{font-size:18px;color:var(--green);transition:transform .25s}
+.card.collapsed .chev{transform:rotate(-90deg)}
+.card.collapsed .card-b{display:none}
+.card-b{padding:22px 24px}
+.card-b h3{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1.6px;font-size:13px;color:var(--green);margin:22px 0 10px}
+.card-b h3:first-child{margin-top:0}
+.card-b p{margin-bottom:12px}
+.card-b ul{margin:0 0 12px 20px}
+.card-b li{margin-bottom:6px}
+.thesis{font-family:'Cormorant Garamond',serif;font-size:24px;line-height:1.35;border-left:4px solid var(--gold);padding:14px 20px;background:#fff;border-radius:0 10px 10px 0;margin-bottom:18px;color:var(--dark-green)}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0 16px}
+.chip{background:#fff;border:1px solid var(--line);border-radius:10px;padding:9px 13px;min-width:128px;flex:1}
+.chip .l{font-family:'Questrial',sans-serif;text-transform:uppercase;font-size:10px;letter-spacing:1.2px;color:var(--muted)}
+.chip .v{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;color:var(--green)}
+.chip .v.neg{color:var(--red)}
+.callout{background:rgba(252,197,91,.16);border:1px solid var(--gold);border-radius:10px;padding:14px 16px;margin:14px 0}
+.note{background:rgba(20,90,34,.07);border:1px solid rgba(20,90,34,.3);border-radius:10px;padding:14px 16px;margin:14px 0}
+.callout b,.note b{color:var(--dark-green)}
+table{width:100%;border-collapse:collapse;margin:12px 0 16px;font-size:13.5px;background:#fff;border-radius:10px;overflow:hidden}
+th{background:var(--green);color:#fff;font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:11px;text-align:left;padding:10px}
+td{padding:9px 10px;border-bottom:1px solid #eee7da}
+tr:nth-child(even) td{background:#faf7f1}
+tr:hover td{background:rgba(252,197,91,.18)}
+td.n{font-family:'JetBrains Mono',monospace;text-align:right;white-space:nowrap}
+.pos{color:var(--green);font-weight:600}.negt{color:var(--red);font-weight:600}
+tr.hl td{background:rgba(252,197,91,.22)!important;font-weight:600}
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:14px 0 18px}
+.chart-box{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px 10px;position:relative}
+.chart-box.solo{max-width:420px}
+.chart-box .ct{display:flex;justify-content:space-between;align-items:center;font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1.2px;font-size:11px;color:var(--forest);margin-bottom:6px}
+.zoom{background:none;border:1px solid var(--line);border-radius:6px;font-size:10px;padding:2px 7px;cursor:pointer;color:var(--muted);font-family:'Questrial',sans-serif}
+.zoom:hover{border-color:var(--gold-deep);color:var(--dark-green)}
+.chart-box .cw{position:relative;height:160px}
+.scen-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:12px 0 18px}
+.scen{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px;border-top:5px solid var(--green)}
+.scen.base{border-top-color:var(--gold)}.scen.bear{border-top-color:var(--red)}
+.scen .t{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1.5px;font-size:12px;color:var(--muted);display:flex;justify-content:space-between;align-items:center}
+.prob{font-family:'JetBrains Mono',monospace;font-size:11px;background:var(--beige);border-radius:20px;padding:2px 9px;color:var(--ink)}
+.scen .pt{font-family:'JetBrains Mono',monospace;font-size:30px;font-weight:700;color:var(--green);margin:6px 0}
+.scen.base .pt{color:var(--gold-deep)}.scen.bear .pt{color:var(--red)}
+.scen .ud{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted)}
+.scen ul{margin:10px 0 0 18px;font-size:13.5px}
+.horizon{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:22px;color:var(--dark-green);margin:18px 0 4px}
+.wavg{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--forest);margin-bottom:6px}
+.risk{background:#fff;border:1px solid var(--line);border-left:4px solid var(--red);border-radius:10px;padding:14px 16px;margin-bottom:14px}
+.risk h4{color:var(--red);font-family:'Questrial',sans-serif;font-size:15px;letter-spacing:.5px;margin-bottom:6px}
+.tags{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.tag{font-family:'JetBrains Mono',monospace;font-size:11px;border-radius:20px;padding:2px 10px;background:rgba(168,52,31,.08);color:var(--red);border:1px solid rgba(168,52,31,.25)}
+.tag.g{background:rgba(20,90,34,.08);color:var(--green);border-color:rgba(20,90,34,.25)}
+.tag.y{background:rgba(252,197,91,.2);color:#8a5f0a;border-color:var(--gold)}
+.timeline{position:relative;margin:10px 0 10px 12px;padding-left:28px}
+.timeline::before{content:"";position:absolute;left:6px;top:4px;bottom:4px;width:3px;border-radius:3px;background:linear-gradient(180deg,var(--green),var(--gold))}
+.ev{position:relative;margin-bottom:18px}
+.ev::before{content:"";position:absolute;left:-28px;top:5px;width:15px;height:15px;border-radius:50%;background:var(--gold);border:3px solid var(--green)}
+.ev .d{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--green);font-weight:600}
+.ev .e{font-weight:700}
+.ev .x{color:var(--muted);font-size:14px}
+.gl dt{font-family:'Questrial',sans-serif;font-weight:700;color:var(--dark-green);margin-top:14px;font-size:15px}
+.gl dd{margin:4px 0 0 0;font-size:14px}
+.gl .f{font-family:'JetBrains Mono',monospace;font-size:12.5px;background:#fff;border:1px solid var(--line);border-radius:6px;padding:3px 8px;display:inline-block;margin:4px 0}
+.back{font-size:12px;border:none}
+.gl dt:target{background:rgba(252,197,91,.35);border-radius:6px;padding:2px 6px}
+.srcs{font-size:12.5px;color:var(--muted)}
+.srcs li{margin-bottom:4px}
+.modal{display:none;position:fixed;inset:0;background:rgba(7,31,11,.78);z-index:1000;align-items:center;justify-content:center;padding:30px}
+.modal.open{display:flex}
+.modal-box{background:var(--beige-card);border:2px solid var(--gold);border-radius:14px;width:min(1000px,96vw);padding:18px 20px}
+.modal-box .mt{display:flex;justify-content:space-between;font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1.3px;color:var(--dark-green);margin-bottom:10px}
+.modal-box .mt button{background:var(--green);color:#fff;border:none;border-radius:6px;padding:3px 10px;cursor:pointer}
+.modal-box .mw{position:relative;height:62vh;background:#fff;border-radius:10px;padding:10px}
+.disclaimer{font-size:11.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:14px;margin-top:10px}
+@media(max-width:880px){.chart-grid,.scen-grid{grid-template-columns:1fr}.chart-box.solo{max-width:none}}
+@media(max-width:780px){.sidebar{display:none}.kpis{grid-template-columns:repeat(3,1fr);padding:18px 18px 0}.content{padding:20px 18px 50px}.hero{padding:40px 22px}.hero h1{font-size:34px}}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside class="sidebar">
+  <div class="brand">FTA Research<small>Foundational Trading Academy</small></div>
+  <div class="tickerbox">
+    <div class="tk">NYSE: RBRK</div>
+    <div class="nm">Rubrik, Inc. · Security &amp; AI Operations</div>
+    <div class="px">$109.55</div>
+    <div class="chg">−$4.25 (−3.73%) · close 25-Sep-26</div>
+  </div>
+  <nav>
+    <a href="#s1"><span>01</span>Executive Summary</a>
+    <a href="#s2"><span>02</span>Micro &amp; Valuation</a>
+    <a href="#s3"><span>03</span>Moat, Mgmt &amp; Culture</a>
+    <a href="#s4"><span>04</span>Financial Deep Dive</a>
+    <a href="#s5"><span>05</span>Earnings Tracker</a>
+    <a href="#s6"><span>06</span>Bull / Base / Bear</a>
+    <a href="#s7"><span>07</span>Risks &amp; Anti-Thesis</a>
+    <a href="#s8"><span>08</span>Catalyst Timeline</a>
+    <a href="#s9"><span>09</span>Comparable Companies</a>
+    <a href="#s10"><span>10</span>First-Principles KPIs</a>
+    <a href="#s11"><span>11</span>Glossary &amp; Method</a>
+  </nav>
+  <div class="foot">Report date: 28 Sep 2026<br>Data as of FQ2 FY27 (qtr ended 31-Jul-26) and market close 25-Sep-26.<br>Not investment advice.</div>
+</aside>
+
+<main>
+<header class="hero">
+  <div class="eyebrow">Deep-Dive Equity Research · Thursday Queue · Cybersecurity / Infrastructure Software</div>
+  <h1>Rubrik: The "Undo Button" for the Agentic Enterprise</h1>
+  <p class="sub">The market still prices Rubrik like a fast-growing backup vendor. We think it is becoming the recovery-and-rollback layer for a world where frontier AI models attack at machine speed and AI agents make mistakes at machine scale. The operating data now supports that claim. The dilution does not yet.</p>
+  <div class="verdict">Verdict: Accumulate (Bullish) · Conviction <b>7 / 10</b></div>
+  <div class="meta">Price $109.55 · Mkt cap ≈ $22.6B · EV ≈ $22.0B · 52-wk range $42.25 – $116.12</div>
+</header>
+
+<section class="kpis">
+  <div class="kpi"><div class="l">Price</div><div class="v">$109.55</div><div class="s">+159% off 52-wk low</div></div>
+  <div class="kpi"><div class="l">Market Cap</div><div class="v">$22.6B</div><div class="s">~206M basic shares</div></div>
+  <div class="kpi"><div class="l">Sub. ARR Growth</div><div class="v">+33%</div><div class="s">$1.66B · YoY</div></div>
+  <div class="kpi"><div class="l">TTM FCF</div><div class="v">$287M</div><div class="s">≈18.6% margin</div></div>
+  <div class="kpi"><div class="l">EV / ARR</div><div class="v">13.2x</div><div class="s">P/S TTM 14.6x</div></div>
+  <div class="kpi"><div class="l">Analyst PT</div><div class="v">$120</div><div class="s">28 Buy · 0 Hold · 0 Sell</div></div>
+</section>
+
+<div class="content">
+
+<!-- ============ 1 ============ -->
+<section class="card" id="s1">
+<div class="card-h"><div class="num">01</div><h2>Executive Summary &amp; Investment Thesis</h2><div class="chev">▾</div></div>
+<div class="card-b">
+<div class="thesis"><b>Bull thesis:</b> Rubrik is moving from a backup product to <em>the system of record for recovery</em>, covering data, identity and AI agents. It has now beaten guidance for 10 straight quarters and cut its GAAP operating loss from −53% to −17% of revenue in two years. We think the market is still pricing it as a hardware-era backup vendor. What holds us at 7 rather than 9 is heavy <a href="#g-sbc">stock-based compensation</a>. On an SBC-adjusted basis, free cash flow is still slightly negative.</div>
+
+<div class="chips">
+  <div class="chip"><div class="l">Sector</div><div class="v" style="font-size:14px">Infra Software / Cyber</div></div>
+  <div class="chip"><div class="l"><a href="#g-arr">Subscription ARR</a></div><div class="v">$1.66B</div></div>
+  <div class="chip"><div class="l">Cloud ARR</div><div class="v">$1.48B</div></div>
+  <div class="chip"><div class="l">Q2 Revenue</div><div class="v">$427.3M</div></div>
+  <div class="chip"><div class="l">Non-GAAP GM</div><div class="v">81.0%</div></div>
+  <div class="chip"><div class="l">NRR</div><div class="v">&gt;119%</div></div>
+  <div class="chip"><div class="l"><a href="#g-r40">Rule of 40</a></div><div class="v">≈52</div></div>
+  <div class="chip"><div class="l">Conviction</div><div class="v">7/10</div></div>
+</div>
+
+<h3>Why this is mispriced</h3>
+<ul>
+  <li><b>The 2026 selloff was about AI disruption, and it had the logic backwards.</b> The stock fell to $42.25 in May on fears that AI could automate data recovery away. Our view is the opposite. As frontier models (Anthropic's Mythos class) make attacks faster and cheaper to run, prevention fails more often, so an immutable, clean recovery point becomes more valuable. Rubrik is on the recovery side of that trade.</li>
+  <li><b>Agent Cloud is a new product category, not a feature.</b> Rubrik has 15+ paying Rubrik Agent Cloud customers. Agent Rewind reverses destructive agent actions, and SAGE is its intent-based guardrail engine. Both apply the "undo" primitive Rubrik already owns to AI agents. There is an integration with Anthropic's Claude Code, and a GSI alliance (Project Hourglass: Cognizant, Deloitte, HCLTech, NTT DATA, Wipro) to sell it.</li>
+  <li><b>Operating leverage is showing up fast.</b> <a href="#g-contrib">Subscription ARR contribution margin</a> rose from 8.0% to 14.0% in five quarters, with ~15.5% guided for FY27. G&amp;A fell from 21.5% to 13.0% of revenue YoY.</li>
+  <li><b>The headline revenue deceleration is mostly an accounting effect.</b> Q3 guidance implies only 23% reported growth. That is because one-time <a href="#g-material">material-rights</a> revenue is rolling off. Normalized growth is 31%. Investors who screen on headline growth may sell into the print, which could create a buying opportunity.</li>
+</ul>
+
+<div class="callout"><b>What would make us wrong:</b> (1) Net new ARR falls below ~$80M for two quarters in a row, (2) NRR drops under 115%, or (3) SBC plus dilution stays above ~6% a year while FCF margin stalls under 20%. Any one of these would mean the platform story is not converting into per-share value.</div>
+</div>
+</section>
+
+<!-- ============ 2 ============ -->
+<section class="card" id="s2">
+<div class="card-h"><div class="num">02</div><h2>Microeconomic &amp; Valuation Analysis</h2><div class="chev">▾</div></div>
+<div class="card-b">
+<h3>Industry &amp; TAM</h3>
+<p>Rubrik's core market is data replication and protection software. IDC put vendor sales at about <b>$12.3B in 2024</b>, and third-party estimates of recovery-solution growth run as high as ~19% CAGR (a single vendor-published estimate; treat it as an upper bound). Cohesity, the largest private competitor after merging with Veritas, defines a broader <b>$40B+ <a href="#g-tam">TAM</a></b> across cyber resilience. Rubrik is building three more layers on top of that core: <b>identity resilience</b> (Active Directory/Entra/Okta recovery, extended by the Strata.io acquisition), <b>SaaS and cloud-native protection</b> (M365, Google Workspace, Apache Iceberg on AWS), and <b>AI agent operations</b> (Agent Cloud). We estimate these take the addressable market above $50B by 2030. Our model assumes the agent layer alone could be a $5–10B market by then, which is speculative.</p>
+
+<h3>Competitive landscape</h3>
+<p>By market share, Cohesity-Veritas is #1 (~$1.6B ARR, mid-teens growth, IPO expected but no S-1 yet) and Veeam is #2 and gaining. Rubrik is growing faster than either, at 33% ARR growth vs. roughly 15% for Cohesity. Legacy vendors (Dell, IBM, Commvault) are losing share. Commvault (CVLT) is the only listed pure-play peer. It grows ~11% and trades at 5x sales.</p>
+
+<h3>Valuation: P/S sentiment scale</h3>
+<div class="chips">
+  <div class="chip"><div class="l"><a href="#g-ps">P/S TTM</a></div><div class="v">14.6x</div></div>
+  <div class="chip"><div class="l">Sentiment band</div><div class="v" style="font-size:15px">Optimistic (8–18)</div></div>
+  <div class="chip"><div class="l">Fwd P/S (FY27 guide)</div><div class="v">13.4x</div></div>
+  <div class="chip"><div class="l"><a href="#g-evarr">EV/ARR</a></div><div class="v">13.2x</div></div>
+  <div class="chip"><div class="l">EV / FY27 FCF</div><div class="v">67x</div></div>
+  <div class="chip"><div class="l">GAAP P/E</div><div class="v neg">n/m</div></div>
+  <div class="chip"><div class="l">Fwd P/E (non-GAAP)</div><div class="v">~219x</div></div>
+</div>
+<p>At 14.6x trailing sales, RBRK sits in the <b>"Optimistic"</b> band: the market is paying for growth but not at euphoric levels. CrowdStrike (47.8x) and Palo Alto (26.7x) are in "Euphoric" and "Excited". Zscaler (9.4x) is at the low end of Optimistic after its drawdown. Rubrik grows faster than all three on ARR yet trades at roughly a third of CrowdStrike's multiple. <a href="#g-pe">P/E</a> is not meaningful: GAAP earnings are negative, and the FY27 non-GAAP EPS guide of $0.47–0.53 gives ~219x. That is typical for a company at the start of margin expansion.</p>
+
+<div class="chart-grid">
+  <div class="chart-box"><div class="ct">P/S vs. Peers (TTM)<button class="zoom" data-c="cPS">⤢ click to expand</button></div><div class="cw"><canvas id="cPS"></canvas></div></div>
+  <div class="chart-box"><div class="ct">Analyst Ratings (28 covering)<button class="zoom" data-c="cRat">⤢ click to expand</button></div><div class="cw"><canvas id="cRat"></canvas></div></div>
+</div>
+
+<h3>Ownership &amp; insider activity</h3>
+<ul>
+  <li><b>Institutions:</b> ~79.5% of Class A float. That is high for a stock only two years past IPO, and it reflects crossover-fund sponsorship (Lightspeed remains a significant holder).</li>
+  <li><b>Insiders:</b> ~2.3% of Class A, but founders control a disproportionate share of votes through Class B shares (<a href="#g-dual">dual-class</a> structure).</li>
+  <li><b>Recent insider transaction:</b> On 24-Sep-26, CEO Bipul Sinha converted 555K Class B shares into Class A and pledged 500K to an SPV under a <a href="#g-pvf">prepaid variable forward</a>. He is expected to receive about $42.1M upfront, with settlement in Sep-2028. This is liquidity without an outright sale. It keeps some upside exposure but still reduces his net economic exposure. Since the IPO there has been steady, heavy 10b5-1 selling across insiders. We score it <b>mildly negative, not alarming</b>.</li>
+</ul>
+
+<h3>Analyst growth estimates</h3>
+<p>Consensus has 28 analysts at Buy or Strong Buy and none at Hold or Sell. The average price target is about $119–120. Baird raised its target to $139 in late September, and Wedbush added RBRK to its Best Ideas list with a $120 target. Management's FY27 guide calls for ~29% subscription ARR growth to $1.88B, revenue of $1.685–1.693B, and FCF of $323–333M.</p>
+</div>
+</section>
+
+<!-- ============ 3 ============ -->
+<section class="card" id="s3">
+<div class="card-h"><div class="num">03</div><h2>Qualitative Analysis: Moat, Management &amp; Culture</h2><div class="chev">▾</div></div>
+<div class="card-b">
+<h3>The moat, from first principles</h3>
+<p>Backup software has historically been a commodity: every vendor copies data somewhere else. Rubrik's <a href="#g-moat">moat</a> comes from a different design choice. It was built from day one around an <b>immutable, metadata-rich index of an enterprise's entire data estate</b>. Three effects follow:</p>
+<ul>
+  <li><b>Switching costs compound over time.</b> Each year of immutable snapshots, retention policies and compliance history is harder to migrate. Customers do not move their last line of defense in a hurry. NRR above 119% and 88% of ARR coming from $100K+ customers are consistent with that.</li>
+  <li><b>A data-gravity flywheel.</b> Because Rubrik already indexes the data, it can add threat detection, sensitive-data monitoring, identity recovery and now agent rollback with little extra cost of goods sold. Each module makes the index more valuable, and a more valuable index sells more modules.</li>
+  <li><b>Trust at the worst possible moment.</b> Recovery is used rarely, but when it is needed it is mission-critical. A customer who has recovered once after ransomware tends to stay. This is a reputational moat: slow to build and quick to lose after a single public recovery failure.</li>
+</ul>
+<p><b>A systems view:</b> as AI agents take autonomous actions inside enterprises, the question moves from "who is allowed to act?" to "how do we reverse what was done?" Identity vendors (Okta, CyberArk inside PANW) own the first question. Rubrik is well placed to own the second, and we think it is the more durable position because no preventive control reaches 100%.</p>
+
+<h3>Founder-led? Yes</h3>
+<p>Co-founder <b>Bipul Sinha</b> is CEO and Chairman. He is a former Lightspeed partner and an early Nutanix investor, and has led Rubrik since 2014. His record: taking Rubrik from appliance sales to a subscription/cloud model (FY23–FY25), and now positioning it for agentic AI ahead of peers. Co-founder Arvind Jain left years ago and founded Glean. <b>CFO Kiran Choudary</b> has delivered 10 straight quarters of guide-and-beat. <b>CRO Jesse Green</b> (ex-MongoDB, AppDynamics) was promoted in Feb-2026 when Brian McCarthy departed. The two quarters since the transition have been the company's strongest net new ARR prints, which suggests the handoff went well.</p>
+
+<h3>Capital allocation</h3>
+<ul>
+  <li>Issued a <b>~$1.15B 0% <a href="#g-convert">convertible note</a></b> due 2030 in mid-2025, with capped calls. The terms are cheap, but ~9.2M potentially dilutive shares sit behind it.</li>
+  <li>Small tuck-in acquisitions (Laminar for DSPM, Predibase for AI, Strata.io for identity orchestration). This is disciplined and focused on capabilities. Management put zero ARR from Strata into guidance.</li>
+  <li>A £375M ($500M) UK investment, with London named as EMEA HQ. International revenue grew +52% YoY.</li>
+  <li><b>The weak spot is SBC.</b> SBC ran ~$342M TTM, about 22% of revenue, which exceeds FCF. There is no buyback program to offset it.</li>
+</ul>
+
+<h3>Culture &amp; organizational traits</h3>
+<table>
+<tr><th>Trait</th><th>Evidence</th><th>Grade</th></tr>
+<tr><td>Customer obsession</td><td>Ransomware Recovery Warranty; free recovery workshops; AHA preferred provider for ~5,000 hospitals</td><td class="n pos">A−</td></tr>
+<tr><td>Innovation pace</td><td>Agent Cloud, SAGE, Agent Identity, Autonomous Business Recovery, Annapurna and Iceberg protection all shipped within ~12 months</td><td class="n pos">A</td></tr>
+<tr><td>Failure tolerance</td><td>Walked away from appliance revenue (a revenue hit) to rebuild as cloud-first; pivoted the brand to "Security &amp; AI Operations"</td><td class="n pos">B+</td></tr>
+<tr><td>Talent density</td><td>~R&amp;D at 30% of revenue; heavy SBC reflects competing for AI/security talent in Silicon Valley</td><td class="n">B+</td></tr>
+<tr><td>Idea meritocracy / decentralization</td><td>Founder-centric decisions; dual-class voting concentrates control. Well executed so far, but a key-person risk</td><td class="n">B</td></tr>
+<tr><td>Ethics &amp; governance</td><td>Clean audit history; insider-selling cadence and dual-class structure are governance watch-items</td><td class="n">B</td></tr>
+</table>
+</div>
+</section>
+
+<!-- ============ 4 ============ -->
+<section class="card" id="s4">
+<div class="card-h"><div class="num">04</div><h2>Quantitative Analysis: Financial Deep Dive</h2><div class="chev">▾</div></div>
+<div class="card-b">
+<h3>Revenue streams, simply explained</h3>
+<ul>
+  <li><b>Subscription ($407.2M, 95% of Q2 revenue, +37% YoY):</b> customers pay annually for Rubrik Security Cloud (SaaS), self-hosted term licenses (RSC-Private), and add-on modules such as identity recovery, M365 protection, DSPM and Agent Cloud. Cloud ARR is $1.48B (+39%), about 89% of subscription ARR.</li>
+  <li><b>Other ($20.1M, ~5%):</b> legacy maintenance, professional services and some pass-through hardware in certain regions. This line is shrinking by design.</li>
+  <li><b>Geography:</b> Americas $299M (+33%), International $129M (+52%).</li>
+</ul>
+
+<div class="chart-grid">
+  <div class="chart-box"><div class="ct">Quarterly Revenue &amp; FCF ($M)<button class="zoom" data-c="cRev">⤢ click to expand</button></div><div class="cw"><canvas id="cRev"></canvas></div></div>
+  <div class="chart-box"><div class="ct">Q2 FY27 Revenue by Geography<button class="zoom" data-c="cGeo">⤢ click to expand</button></div><div class="cw"><canvas id="cGeo"></canvas></div></div>
+</div>
+
+<h3>Free cash flow: level, margin, trend</h3>
+<table>
+<tr><th>Quarter</th><th>Revenue</th><th>Op. Cash Flow</th><th><a href="#g-fcf" style="color:#fff">FCF</a></th><th>FCF Margin</th><th>SBC</th><th>FCF − SBC</th></tr>
+<tr><td>Q3 FY26 (Oct-25)</td><td class="n">$350.2M</td><td class="n">$86.7M</td><td class="n">≈$77M</td><td class="n">≈22%</td><td class="n">$82.5M</td><td class="n negt">≈−$5M</td></tr>
+<tr><td>Q4 FY26 (Jan-26)</td><td class="n">$377.7M</td><td class="n">$94.9M</td><td class="n">$70.1M</td><td class="n">19%</td><td class="n">$84.9M</td><td class="n negt">−$14.8M</td></tr>
+<tr><td>Q1 FY27 (Apr-26)</td><td class="n">$387.1M</td><td class="n">$81.7M</td><td class="n">$73.6M</td><td class="n">19%</td><td class="n">$73.4M</td><td class="n pos">+$0.2M</td></tr>
+<tr><td>Q2 FY27 (Jul-26)</td><td class="n">$427.3M</td><td class="n">$76.8M</td><td class="n">$65.7M</td><td class="n">15%</td><td class="n">$101.0M</td><td class="n negt">−$35.3M</td></tr>
+<tr class="hl"><td>TTM</td><td class="n">$1,542M</td><td class="n">$340M</td><td class="n">≈$287M</td><td class="n">≈18.6%</td><td class="n">$342M</td><td class="n negt">≈−$55M</td></tr>
+</table>
+<p>FCF is positive, growing and guided up (FY27 $323–333M, from $265–275M in March). But <b>SBC-adjusted FCF is about zero</b>. Q2's FCF margin fell to 15% from 19% a year earlier, partly on timing of collections and the shift to annual billing on cloud deals. This is the main reason we rate conviction 7 and not 9.</p>
+
+<div class="chart-grid">
+  <div class="chart-box"><div class="ct">FCF vs. Stock-Based Comp ($M)<button class="zoom" data-c="cSBC">⤢ click to expand</button></div><div class="cw"><canvas id="cSBC"></canvas></div></div>
+  <div class="chart-box"><div class="ct">GAAP Operating Margin Trend<button class="zoom" data-c="cOpm">⤢ click to expand</button></div><div class="cw"><canvas id="cOpm"></canvas></div></div>
+</div>
+
+<h3>Shares outstanding: dilution check</h3>
+<div class="chips">
+  <div class="chip"><div class="l">Basic wtd. shares Q2 FY27</div><div class="v">206.1M</div></div>
+  <div class="chip"><div class="l">Basic wtd. shares Q2 FY26</div><div class="v">194.9M</div></div>
+  <div class="chip"><div class="l">YoY <a href="#g-dilution">dilution</a></div><div class="v neg">+5.7%</div></div>
+  <div class="chip"><div class="l">Non-GAAP diluted</div><div class="v">226.8M</div></div>
+  <div class="chip"><div class="l">FCF / basic share (TTM)</div><div class="v">≈$1.39</div></div>
+</div>
+<p>TTM FCF per basic share grew from ≈$0.95 a year ago (≈$185M ÷ 194.9M) to ≈$1.39 today (+47%), so per-share cash generation is compounding well ahead of the ~5.7% annual dilution. Dilution is expensive but so far is being outrun.</p>
+
+<h3>Balance sheet &amp; liquidity</h3>
+<div class="chips">
+  <div class="chip"><div class="l">Cash + ST investments</div><div class="v">$1.75B</div></div>
+  <div class="chip"><div class="l">Convertible notes (0%, 2030)</div><div class="v neg">$1.13B</div></div>
+  <div class="chip"><div class="l">Net cash</div><div class="v">≈$0.62B</div></div>
+  <div class="chip"><div class="l"><a href="#g-current">Current ratio</a></div><div class="v">1.64x</div></div>
+  <div class="chip"><div class="l">Deferred revenue (total)</div><div class="v">$1.93B</div></div>
+</div>
+<p>The current ratio of 1.64x understates liquidity. $1.18B of current liabilities is <b>deferred revenue</b>: cash already collected for services Rubrik will deliver, which is a sign of strength rather than debt. Stockholders' deficit (−$499M) is a byproduct of years of accumulated losses and the convertible; it is not a solvency concern.</p>
+
+<h3>Growth history, margins &amp; operating leverage</h3>
+<ul>
+  <li><b>Revenue 5-yr <a href="#g-cagr">CAGR</a> (FY21→FY26):</b> $387.8M → $1,316M = <b>27.7%</b>. The industry average is roughly 8–12%. (The 10-year view is not available: Rubrik was private and on an appliance model before FY21.) FY24→FY25 was depressed by the subscription transition, and FY26 re-accelerated to +48%.</li>
+  <li><b>Revenue vs. costs (Q2 YoY):</b> revenue +38%, total GAAP opex +19%, G&amp;A −16%, S&amp;M +23%, R&amp;D +38%. Revenue is outgrowing costs by a wide margin, a clear case of <a href="#g-oplev">operating leverage</a>.</li>
+  <li><b>Net margin:</b> TTM GAAP −16.5% (improving from −130% in FY25 on IPO SBC). Non-GAAP net income was positive for the last four quarters.</li>
+  <li><b>What is driving margin expansion:</b> (1) S&amp;M efficiency as the installed base expands and new-logo selling becomes a smaller share, (2) G&amp;A scale, (3) Cloud ARR mix, which lifts renewal efficiency. Gross margin dipped slightly (81.0% vs 81.6%) on cloud hosting costs and amortization of acquired intangibles.</li>
+  <li><b>Cost scaling:</b> the non-GAAP cost to serve each incremental $1 of ARR is falling. Subscription ARR contribution margin went 8.0% → 9.4% → 13.2% → 14.0%.</li>
+</ul>
+
+<div class="chart-grid">
+  <div class="chart-box"><div class="ct">Opex as % of Revenue (GAAP)<button class="zoom" data-c="cOpex">⤢ click to expand</button></div><div class="cw"><canvas id="cOpex"></canvas></div></div>
+  <div class="chart-box"><div class="ct">Annual Revenue FY21–FY27E ($M)<button class="zoom" data-c="cAnn">⤢ click to expand</button></div><div class="cw"><canvas id="cAnn"></canvas></div></div>
+</div>
+
+<h3>The flywheel</h3>
+<div class="note"><b>Land</b> with backup/recovery → <b>index</b> the data estate immutably → <b>expand</b> into threat detection, DSPM, identity and M365/Google Workspace (NRR &gt;119%) → <b>bundle</b> through Rubrik Flex (one contract, many modules) → <b>extend</b> into AI agent governance and rollback → more data under management makes each new module cheaper to deliver and harder to replace → higher contribution margin funds more R&amp;D → back to <b>expand</b>.</div>
+</div>
+</section>
+
+<!-- ============ 5 ============ -->
+<section class="card" id="s5">
+<div class="card-h"><div class="num">05</div><h2>Earnings Tracker: Management Credibility</h2><div class="chev">▾</div></div>
+<div class="card-b">
+<p>Rubrik has beaten its guided metrics in every quarter as a public company (management cites 10 straight). The table covers the last 8 quarters. Where specific guidance numbers were not retrievable, the consensus <a href="#g-nongaap">non-GAAP</a> EPS estimate is used as the "promise" benchmark. For Q2 FY27 the chart uses the midpoint of company EPS guidance ($0.04).</p>
+<table>
+<tr><th>Quarter / Date</th><th>Promise / Guidance</th><th>Actual Result</th><th>Credibility</th></tr>
+<tr><td>Q3 FY25 · 5-Dec-24</td><td>Consensus EPS −$0.40; continue subscription transition</td><td>EPS −$0.21; Sub. ARR crossed ~$1.0B</td><td class="n pos">9/10</td></tr>
+<tr><td>Q4 FY25 · 13-Mar-25</td><td>Consensus EPS −$0.39; "path to FCF positive"</td><td>EPS −$0.18; Sub. ARR ~$1.09B; FY25 OCF positive ($48M)</td><td class="n pos">9/10</td></tr>
+<tr><td>Q1 FY26 · 5-Jun-25</td><td>Consensus EPS −$0.32</td><td>EPS −$0.15; Sub. ARR $1.18B (+38%); FCF $33.3M</td><td class="n pos">9/10</td></tr>
+<tr><td>Q2 FY26 · 9-Sep-25</td><td>Consensus EPS −$0.34</td><td>EPS −$0.03; ARR ≈$1.25B; FCF $57.5M; raised FY</td><td class="n pos">10/10</td></tr>
+<tr><td>Q3 FY26 · 4-Dec-25</td><td>Consensus EPS −$0.17</td><td>EPS +$0.10 (first non-GAAP profit); ARR $1.35B</td><td class="n pos">10/10</td></tr>
+<tr><td>Q4 FY26 · 12-Mar-26</td><td>Consensus EPS −$0.11; "exceed all guided metrics" pre-announced</td><td>EPS +$0.04; ARR $1.46B (+34%); FCF $70.1M. FY27 guide: ARR $1.829–1.839B, FCF $265–275M</td><td class="n pos">9/10</td></tr>
+<tr><td>Q1 FY27 · 4-Jun-26</td><td>Consensus EPS −$0.03</td><td>EPS +$0.16; revenue $387.1M (+39%); FCF $73.6M. FY guide raised: ARR $1.854–1.862B, FCF $293–303M</td><td class="n pos">10/10</td></tr>
+<tr class="hl"><td>Q2 FY27 · 27-Aug-26</td><td>Revenue $395–397M; EPS $0.03–0.05; contribution margin 11–12%</td><td>Revenue $427.3M (+7.6% vs top of guide); EPS $0.20; CM 14.0%. FY raised again: ARR $1.880–1.885B, FCF $323–333M</td><td class="n pos">10/10</td></tr>
+</table>
+<div class="callout"><b>Pattern:</b> the FY27 FCF guide has been raised twice, by $58M total (+21%), and the ARR guide by ~$46M in six months. Management sandbags. The Q3 FY27 revenue guide ($429–431M) is probably ~$10–15M conservative. Caveat: the stock <em>fell</em> after both the Q1 and Q2 beats (−5.6% after Q2), so beat-and-raise is already expected. The market now needs <b>net new ARR acceleration</b>, not just beats.</div>
+<div class="chart-box" style="margin-top:12px"><div class="ct">Non-GAAP EPS: Actual vs. Consensus<button class="zoom" data-c="cEPS">⤢ click to expand</button></div><div class="cw"><canvas id="cEPS"></canvas></div></div>
+</div>
+</section>
+
+<!-- ============ 6 ============ -->
+<section class="card" id="s6">
+<div class="card-h"><div class="num">06</div><h2>Bull / Base / Bear Scenarios</h2><div class="chev">▾</div></div>
+<div class="card-b">
+<p>Method: EV/ARR (1-yr) and EV/FCF (3- and 5-yr) applied to projected subscription ARR and FCF. We add projected net cash and divide by a diluted share count that rises ~4–5% a year for SBC. Current price $109.55.</p>
+
+<div class="horizon">1-Year (Sep 2027)</div>
+<div class="wavg">Probability-weighted target: $118 (+8%)</div>
+<div class="scen-grid">
+  <div class="scen"><div class="t">Bull <span class="prob">25%</span></div><div class="pt">$159</div><div class="ud">+45%</div><ul><li>ARR $2.2B (+33%): Agent Cloud scales past 100 customers</li><li>EV/ARR re-rates to 15x as AI-security narrative wins</li><li>FCF margin back above 20%</li></ul></div>
+  <div class="scen base"><div class="t">Base <span class="prob">50%</span></div><div class="pt">$122</div><div class="ud">+11%</div><ul><li>ARR $2.1B (+27%), in line with the beat-and-raise cadence</li><li>EV/ARR ~12x (slight compression)</li><li>~212M diluted shares; net cash $0.7B</li></ul></div>
+  <div class="scen bear"><div class="t">Bear <span class="prob">25%</span></div><div class="pt">$69</div><div class="ud">−37%</div><ul><li>Headline revenue growth falls to the low 20s; screens flag deceleration</li><li>ARR $2.0B; software multiples compress again; EV/ARR 7x</li><li>Cohesity IPO prices at a discount and resets comps</li></ul></div>
+</div>
+
+<div class="horizon">3-Year (Sep 2029)</div>
+<div class="wavg">Probability-weighted target: $142 (+30%, ~9% CAGR)</div>
+<div class="scen-grid">
+  <div class="scen"><div class="t">Bull <span class="prob">25%</span></div><div class="pt">$193</div><div class="ud">+76%</div><ul><li>ARR $3.5B; identity and agents are 20%+ of ARR</li><li>EV/ARR 12x; FCF margin 30%</li><li>Becomes the default "rollback" layer for enterprise AI</li></ul></div>
+  <div class="scen base"><div class="t">Base <span class="prob">50%</span></div><div class="pt">$157</div><div class="ud">+43%</div><ul><li>ARR ~$3.0B (25/22/20% growth path)</li><li>FCF ~$750M (25% margin) × 45x</li><li>~225M shares; net cash $1.5B</li></ul></div>
+  <div class="scen bear"><div class="t">Bear <span class="prob">25%</span></div><div class="pt">$60</div><div class="ud">−45%</div><ul><li>ARR $2.5B; hyperscalers bundle "good-enough" native backup</li><li>Agent security commoditized by PANW/CRWD/MSFT</li><li>EV/ARR 5x</li></ul></div>
+</div>
+
+<div class="horizon">5-Year (Sep 2031)</div>
+<div class="wavg">Probability-weighted target: $167 (+52%, ~9% CAGR)</div>
+<div class="scen-grid">
+  <div class="scen"><div class="t">Bull <span class="prob">20%</span></div><div class="pt">$281</div><div class="ud">+157%</div><ul><li>ARR $5.5B; FCF $1.8B (33% margin)</li><li>35x FCF; the "ServiceNow of recovery"</li><li>SBC under 10% of revenue</li></ul></div>
+  <div class="scen base"><div class="t">Base <span class="prob">50%</span></div><div class="pt">$189</div><div class="ud">+73%</div><ul><li>ARR $4.2B; FCF $1.2B (30% margin)</li><li>35x FCF; net cash $2.5B</li><li>~235M shares</li></ul></div>
+  <div class="scen bear"><div class="t">Bear <span class="prob">30%</span></div><div class="pt">$55</div><div class="ud">−50%</div><ul><li>ARR stalls near $3.0B; share loss to Cohesity/Veeam</li><li>FCF $600M × 20x</li><li>Continued ~5% annual dilution</li></ul></div>
+</div>
+<div class="chart-box"><div class="ct">Scenario Price Targets by Horizon<button class="zoom" data-c="cScen">⤢ click to expand</button></div><div class="cw"><canvas id="cScen"></canvas></div></div>
+<div class="note" style="margin-top:14px"><b>Read-through:</b> the 1-year expected return (+8%) is modest because the stock has already rebounded ~160% from the May low. The asymmetry is in the 3–5 year view. That supports <b>accumulating on pullbacks</b> (roughly the $88–95 zone, around the ~$92 50-day moving average) rather than chasing.</div>
+</div>
+</section>
+
+<!-- ============ 7 ============ -->
+<section class="card" id="s7">
+<div class="card-h"><div class="num">07</div><h2>Risks &amp; Anti-Thesis: Steelmanning the Bear Case</h2><div class="chev">▾</div></div>
+<div class="card-b">
+<p>If we were short RBRK, these are the five arguments we would make.</p>
+<div class="risk"><h4>1. "The FCF is an illusion paid for in stock"</h4><div class="tags"><span class="tag">Probability: High (70%)</span><span class="tag">Impact: Medium-High</span><span class="tag y">Priced in: Partially</span></div><p>TTM SBC ($342M) exceeds TTM FCF (~$287M). Owners are being diluted ~5.7% a year, and Q2 SBC jumped to $101M. On an owner-earnings basis Rubrik has never made money. If investors start valuing FCF net of SBC, as they did with SNOW and ZS in past cycles, the multiple could compress sharply.</p></div>
+<div class="risk"><h4>2. "Headline growth is about to fall off a cliff"</h4><div class="tags"><span class="tag">Probability: Certain (optics)</span><span class="tag">Impact: Medium</span><span class="tag y">Priced in: Partially</span></div><p>Q3 revenue guide implies +23% reported growth, down from +38% in Q2, as material-rights revenue runs off. Quant screens and generalists will see a halving of growth. Adjusted net new Cloud ARR grew only 20% YoY. Stripping out migrations, the true new-business engine is growing slower than the headline 39%.</p></div>
+<div class="risk"><h4>3. "Cohesity and hyperscalers squeeze the core"</h4><div class="tags"><span class="tag">Probability: Medium (40%)</span><span class="tag">Impact: High</span><span class="tag">Priced in: No</span></div><p>Cohesity-Veritas is bigger (~$1.6B ARR), profitable (28% adjusted margin) and plans to IPO. A public Cohesity trading at a lower multiple would give the market a cheaper comp, and it would have cash to fight on price. AWS, Azure and Google keep improving native backup. In a downturn, "good enough and bundled" often wins.</p></div>
+<div class="risk"><h4>4. "Agent Cloud is a narrative, not a business"</h4><div class="tags"><span class="tag">Probability: Medium (45%)</span><span class="tag">Impact: Medium</span><span class="tag y">Priced in: Partially</span></div><p>15 paying customers is small next to 3,084 $100K+ customers. Agent security is crowded: Palo Alto (with CyberArk), CrowdStrike, Microsoft, Okta and dozens of startups. If AI agent governance becomes a feature of identity or endpoint platforms, Rubrik's premium AI multiple disappears.</p></div>
+<div class="risk"><h4>5. "Governance and insider supply"</h4><div class="tags"><span class="tag">Probability: Medium (50%)</span><span class="tag">Impact: Low-Medium</span><span class="tag g">Priced in: Mostly</span></div><p>Dual-class shares limit outside influence. Steady 10b5-1 selling plus the CEO's new $42M prepaid forward create a constant overhang. The 0% convertible (2030) adds ~9M shares if converted. A founder-centric culture concentrates key-person risk in Bipul Sinha.</p></div>
+<div class="callout"><b>Our rebuttal in one line:</b> risks 1 and 2 are real but already known and partly priced (the stock trades at a third of CRWD's P/S despite faster ARR growth). Risk 3 is the one that could break the thesis, so watch the Cohesity S-1 closely.</div>
+</div>
+</section>
+
+<!-- ============ 8 ============ -->
+<section class="card" id="s8">
+<div class="card-h"><div class="num">08</div><h2>Catalyst Timeline</h2><div class="chev">▾</div></div>
+<div class="card-b">
+<div class="timeline">
+  <div class="ev"><div class="d">28 SEP 2026</div><div class="e">CEO prepaid variable forward settles (cash leg)</div><div class="x">~$42.1M to Sinha's SPV. Watch for headline "insider selling" pressure this week.</div></div>
+  <div class="ev"><div class="d">OCT 2026</div><div class="e">Possible Cohesity S-1 / IPO filing</div><div class="x">No S-1 on EDGAR as of 8-Sep. Filing terms would set a new public comp for data-protection valuation. Two-sided catalyst.</div></div>
+  <div class="ev"><div class="d">27–28 OCT 2026</div><div class="e">FOMC meeting</div><div class="x">Long-duration software is rate-sensitive; a dovish result supports high-multiple SaaS.</div></div>
+  <div class="ev"><div class="d">3 NOV 2026</div><div class="e">U.S. midterm elections</div><div class="x">Federal cyber budgets and CISA funding direction; RSC-Government exposure.</div></div>
+  <div class="ev"><div class="d">~1–5 DEC 2026 (est.)</div><div class="e">AWS re:Invent + Q3 FY27 earnings</div><div class="x">Guide: revenue $429–431M, EPS $0.07–0.09, CM ~14%. Key numbers: net new ARR ≥$95M, Agent Cloud customer count, first Strata cross-sell data.</div></div>
+  <div class="ev"><div class="d">31 JAN 2027</div><div class="e">FY27 year-end; material-rights roll-off largely complete</div><div class="x">From FY28, reported revenue growth should converge with ARR growth, which cleans up the optics.</div></div>
+  <div class="ev"><div class="d">~MID-MAR 2027 (est.)</div><div class="e">Q4 FY27 earnings + FY28 guidance</div><div class="x">The first FY28 ARR guide is the key rerating event. A 25%+ ARR guide supports the base case.</div></div>
+  <div class="ev"><div class="d">APR–MAY 2027</div><div class="e">RSAC 2027 / Rubrik product events</div><div class="x">Agent Cloud GA milestones and GSI (Project Hourglass) deployment wins.</div></div>
+  <div class="ev"><div class="d">2030</div><div class="e">0% convertible notes mature (~$1.15B)</div><div class="x">Covered by $1.75B in cash; capped calls limit dilution.</div></div>
+</div>
+</div>
+</section>
+
+<!-- ============ 9 ============ -->
+<section class="card" id="s9">
+<div class="card-h"><div class="num">09</div><h2>Comparable Company Analysis</h2><div class="chev">▾</div></div>
+<div class="card-b">
+<table>
+<tr><th>Company</th><th>Mkt Cap</th><th>Rev TTM</th><th>Rev Growth YoY</th><th>P/E</th><th>P/S</th><th>FCF Margin*</th><th>Net Margin</th><th><a href="#g-evebitda" style="color:#fff">EV/EBITDA</a></th></tr>
+<tr class="hl"><td><b>RBRK</b> Rubrik</td><td class="n">$22.6B</td><td class="n">$1.54B</td><td class="n pos">+37.9%</td><td class="n">n/m</td><td class="n">14.6x</td><td class="n">~19%</td><td class="n negt">−16.5%</td><td class="n">n/m</td></tr>
+<tr><td><b>CVLT</b> Commvault</td><td class="n">$6.0B</td><td class="n">$1.22B</td><td class="n pos">+11.4%</td><td class="n">93.3x</td><td class="n">5.0x</td><td class="n">~17%</td><td class="n pos">+5.6%</td><td class="n">54.9x</td></tr>
+<tr><td><b>ZS</b> Zscaler</td><td class="n">$31.5B</td><td class="n">$3.35B</td><td class="n pos">+24.9%</td><td class="n">n/m</td><td class="n">9.4x</td><td class="n">~26%</td><td class="n negt">−1.9%</td><td class="n">186.8x</td></tr>
+<tr><td><b>CRWD</b> CrowdStrike</td><td class="n">$258.2B</td><td class="n">$5.40B</td><td class="n pos">+25.8%</td><td class="n">n/m</td><td class="n">47.8x</td><td class="n">~27%</td><td class="n pos">+0.8%</td><td class="n">624.9x</td></tr>
+<tr><td><b>PANW</b> Palo Alto</td><td class="n">$306.5B</td><td class="n">$11.48B</td><td class="n pos">+34.5%†</td><td class="n">914x</td><td class="n">26.7x</td><td class="n">~35%</td><td class="n pos">+2.7%</td><td class="n">230.9x</td></tr>
+</table>
+<p class="srcs">*FCF margins for peers are approximate, from each company's latest fiscal year. †PANW growth is inflated by the CyberArk acquisition. Market data from Alpha Vantage as of late Sep-2026. GAAP EBITDA-based multiples are distorted by SBC across the group.</p>
+
+<div class="chart-grid">
+  <div class="chart-box"><div class="ct">Growth vs. P/S (bubble = mkt cap)<button class="zoom" data-c="cScat">⤢ click to expand</button></div><div class="cw"><canvas id="cScat"></canvas></div></div>
+  <div class="chart-box"><div class="ct">Growth-Adjusted P/S (P/S ÷ Growth)<button class="zoom" data-c="cGAPS">⤢ click to expand</button></div><div class="cw"><canvas id="cGAPS"></canvas></div></div>
+</div>
+<h3>Relative valuation read</h3>
+<p>On <b>growth-adjusted P/S</b> (P/S divided by growth), RBRK scores 0.39: cheaper than CRWD (1.85) and PANW (0.77), and CVLT (0.44), and roughly in line with ZS (0.38). The market is paying CrowdStrike a platform premium that Rubrik has not yet earned. <b>If Rubrik shows it can hold 25%+ ARR growth into FY28 while lifting FCF margin toward 25%, a re-rating toward 18–20x sales (still well below CRWD) implies $135–150.</b> That is the core of our 3-year base case.</p>
+</div>
+</section>
+
+<!-- ============ 10 ============ -->
+<section class="card" id="s10">
+<div class="card-h"><div class="num">10</div><h2>First-Principles KPIs</h2><div class="chev">▾</div></div>
+<div class="card-b">
+<p>These five leading indicators tell you whether the thesis is working before revenue does.</p>
+<ol style="margin-left:20px">
+  <li><b>Net new subscription ARR (quarterly):</b> the purest demand signal. Q2 FY27: ~$96M (+35% YoY). Thesis-breaker: under $80M.</li>
+  <li><b>$100K+ customers:</b> measures enterprise penetration. 3,084 (+23%), and these customers are 88% of ARR. $1M+ customers grew 57%+.</li>
+  <li><b>Subscription ARR contribution margin:</b> operating leverage on a recurring basis. 14.0% now, ~15.5% guided for FY27.</li>
+  <li><b><a href="#g-nrr">Net revenue retention</a>:</b> land-and-expand health. &gt;119% (down slightly from ~120%). Watch for &lt;115%.</li>
+  <li><b>Cloud ARR mix:</b> quality and stickiness of revenue. $1.48B, 89% of subscription ARR, up from ~85% a year ago.</li>
+</ol>
+<div class="chart-grid">
+  <div class="chart-box"><div class="ct">Subscription ARR ($B) &amp; YoY Growth<button class="zoom" data-c="cARR">⤢ click to expand</button></div><div class="cw"><canvas id="cARR"></canvas></div></div>
+  <div class="chart-box"><div class="ct">Customers with ≥$100K ARR<button class="zoom" data-c="cCust">⤢ click to expand</button></div><div class="cw"><canvas id="cCust"></canvas></div></div>
+</div>
+<div class="chart-grid">
+  <div class="chart-box"><div class="ct">Sub. ARR Contribution Margin (TTM)<button class="zoom" data-c="cCM">⤢ click to expand</button></div><div class="cw"><canvas id="cCM"></canvas></div></div>
+  <div class="chart-box"><div class="ct">Rule of 40 (ARR growth + FCF margin)<button class="zoom" data-c="cR40">⤢ click to expand</button></div><div class="cw"><canvas id="cR40"></canvas></div></div>
+</div>
+<p class="srcs">Q3 FY26 $100K customer count (~2,640) is interpolated between reported values. The Q3/Q4 FY26 contribution margins are interpolated between reported endpoints. FY27 CM is company guidance.</p>
+</div>
+</section>
+
+<!-- ============ 11 ============ -->
+<section class="card" id="s11">
+<div class="card-h"><div class="num">11</div><h2>Glossary &amp; Methodology</h2><div class="chev">▾</div></div>
+<div class="card-b">
+<dl class="gl">
+<dt id="g-arr">Annual Recurring Revenue (ARR) / Subscription ARR</dt>
+<dd>The annualized value of all active subscription contracts at a point in time. <span class="f">ARR = Σ active contract value, annualized</span><br><b>Why it matters:</b> it is a better measure of a subscription business's real momentum than GAAP revenue, which can be distorted by accounting items like material rights. <a class="back" href="#s1">↩ back</a></dd>
+
+<dt id="g-nrr">Net Revenue Retention (NRR) / Dollar-Based Net Retention</dt>
+<dd>How much ARR last year's customers generate today, after upsells minus churn and downgrades. <span class="f">NRR = ARR today from year-ago customers ÷ their ARR a year ago</span><br><b>Why it matters:</b> above 110% means the company grows even with zero new customers. Rubrik reports a 4-quarter average. <a class="back" href="#s10">↩ back</a></dd>
+
+<dt id="g-fcf">Free Cash Flow (FCF) &amp; FCF Margin</dt>
+<dd>Cash left over after running the business and investing in equipment and software. <span class="f">FCF = Operating Cash Flow − CapEx − Capitalized Software</span> <span class="f">FCF Margin = FCF ÷ Revenue</span><br><b>Why it matters:</b> it is the cash available to reinvest, repay debt or return to shareholders. It is harder to manipulate than earnings. <a class="back" href="#s4">↩ back</a></dd>
+
+<dt id="g-sbc">Stock-Based Compensation (SBC)</dt>
+<dd>Employee pay in shares or options instead of cash. It is a real cost to shareholders (via dilution) but is added back in cash-flow statements. <span class="f">SBC-adjusted FCF = FCF − SBC</span><br><b>Why it matters:</b> high SBC can make FCF look better than the economic reality. <a class="back" href="#s1">↩ back</a></dd>
+
+<dt id="g-ps">Price-to-Sales (P/S) &amp; FTA Sentiment Scale</dt>
+<dd><span class="f">P/S = Market Cap ÷ TTM Revenue</span><br>FTA scale: &gt;30 Euphoric · &gt;18 Excited · 8–18 Optimistic · 4–8 Aware · &lt;4 Cautious · &lt;2 Pessimistic.<br><b>Why it matters:</b> it is the best available valuation tool for companies that are not yet GAAP-profitable. <a class="back" href="#s2">↩ back</a></dd>
+
+<dt id="g-pe">Price-to-Earnings (P/E)</dt>
+<dd><span class="f">P/E = Price ÷ EPS</span>. It is not meaningful when EPS is negative. Forward P/E uses projected (often non-GAAP) EPS.<br><b>Why it matters:</b> it tells you how many years of current earnings you are paying for. <a class="back" href="#s2">↩ back</a></dd>
+
+<dt id="g-evarr">Enterprise Value / ARR (EV/ARR)</dt>
+<dd><span class="f">EV = Market Cap + Debt − Cash</span> <span class="f">EV/ARR = EV ÷ Subscription ARR</span><br><b>Why it matters:</b> it adjusts for the balance sheet and uses the forward-looking recurring base. It is the standard SaaS valuation metric. <a class="back" href="#s2">↩ back</a></dd>
+
+<dt id="g-evebitda">EV/EBITDA</dt>
+<dd><span class="f">EV ÷ Earnings Before Interest, Taxes, Depreciation &amp; Amortization</span><br><b>Why it matters:</b> it compares companies regardless of capital structure. It is distorted for high-SBC software companies because GAAP EBITDA includes SBC. <a class="back" href="#s9">↩ back</a></dd>
+
+<dt id="g-contrib">Subscription ARR Contribution Margin</dt>
+<dd>A Rubrik-defined metric. <span class="f">(Sub. ARR − TTM non-GAAP sub. COGS − TTM non-GAAP opex) ÷ Sub. ARR</span><br><b>Why it matters:</b> it shows how much profit the recurring base would produce if the company stopped investing in growth, so it is a measure of operating leverage. <a class="back" href="#s1">↩ back</a></dd>
+
+<dt id="g-material">Material Rights (revenue)</dt>
+<dd>An accounting (ASC 606) treatment. When customers received rights to convert legacy licenses to cloud subscriptions, part of the original deal value was deferred and is recognized later as revenue.<br><b>Why it matters:</b> it inflated Rubrik's reported revenue in FY26 and is now rolling off. That makes reported growth (Q3 guide +23%) look worse than underlying growth (+31%). <a class="back" href="#s1">↩ back</a></dd>
+
+<dt id="g-convert">Convertible Senior Notes</dt>
+<dd>Debt that can be converted into shares at a preset price. Rubrik's are 0% coupon, due 2030, with "capped calls" bought to limit dilution.<br><b>Why it matters:</b> it is cheap funding, but it carries potential future dilution (~9.2M shares). <a class="back" href="#s3">↩ back</a></dd>
+
+<dt id="g-dilution">Share Dilution</dt>
+<dd><span class="f">Dilution % = (Shares now − Shares a year ago) ÷ Shares a year ago</span><br><b>Why it matters:</b> each existing share owns a smaller slice of the company, so per-share metrics must grow faster than the share count. <a class="back" href="#s4">↩ back</a></dd>
+
+<dt id="g-current">Current Ratio</dt>
+<dd><span class="f">Current Assets ÷ Current Liabilities</span><br><b>Why it matters:</b> it measures short-term liquidity. For SaaS, deferred revenue inflates liabilities, so ratios near 1.5x are healthy. <a class="back" href="#s4">↩ back</a></dd>
+
+<dt id="g-cagr">Compound Annual Growth Rate (CAGR)</dt>
+<dd><span class="f">CAGR = (End ÷ Start)^(1/years) − 1</span><br><b>Why it matters:</b> it smooths volatile year-to-year growth into one comparable rate. <a class="back" href="#s4">↩ back</a></dd>
+
+<dt id="g-oplev">Operating Leverage</dt>
+<dd>When revenue grows faster than operating costs, margins expand. <span class="f">Degree ≈ %Δ Operating Income ÷ %Δ Revenue</span><br><b>Why it matters:</b> it is the mechanism that turns a growth company into a cash compounder. <a class="back" href="#s4">↩ back</a></dd>
+
+<dt id="g-nongaap">Non-GAAP Metrics</dt>
+<dd>Company-adjusted figures that exclude SBC, amortization and one-time items.<br><b>Why it matters:</b> they are useful for seeing core operations, but they always flatter results. Compare them with GAAP. <a class="back" href="#s5">↩ back</a></dd>
+
+<dt id="g-moat">Economic Moat</dt>
+<dd>A durable competitive advantage (switching costs, network effects, scale, brand or data) that protects returns from competitors.<br><b>Why it matters:</b> without a moat, high returns attract competition until they disappear. <a class="back" href="#s3">↩ back</a></dd>
+
+<dt id="g-dual">Dual-Class Share Structure</dt>
+<dd>Class B shares (held by founders and early insiders) carry more votes than the public Class A shares.<br><b>Why it matters:</b> it protects long-term vision but weakens outside shareholders' governance influence. <a class="back" href="#s2">↩ back</a></dd>
+
+<dt id="g-pvf">Prepaid Variable Forward (PVF)</dt>
+<dd>A contract where an insider pledges shares to a bank, receives cash upfront (typically 75–90% of value), and settles later in shares or cash depending on the future price.<br><b>Why it matters:</b> it provides liquidity and hedges downside without an immediate sale. It still signals reduced net exposure. <a class="back" href="#s2">↩ back</a></dd>
+
+<dt id="g-tam">Total Addressable Market (TAM)</dt>
+<dd>Total annual revenue available if a company captured 100% of its market.<br><b>Why it matters:</b> it sets the ceiling on long-run growth. <a class="back" href="#s2">↩ back</a></dd>
+
+<dt id="g-r40">Rule of 40</dt>
+<dd><span class="f">Growth % + FCF Margin % ≥ 40</span><br><b>Why it matters:</b> it is a quick test of whether a software company balances growth and profitability well. Rubrik scores ~52. <a class="back" href="#s10">↩ back</a></dd>
+</dl>
+
+<h3>Methodology</h3>
+<p>Financials come from Rubrik's Q1 and Q2 FY27 press releases (SEC 8-K Exhibit 99.1) and Alpha Vantage normalized statements. Peer data is from Alpha Vantage company overviews (late Sep-2026). Price targets use EV/ARR and EV/FCF multiples applied to our ARR and FCF projections, net cash, and diluted share counts. Scenario probabilities are analyst judgment. TTM FCF includes an approximate Q3 FY26 figure. The monthly price history and insider-transaction feeds were unavailable during this automated run, so the price-history chart is omitted and insider data comes from the SEC Form 4 disclosures reported in news coverage.</p>
+
+<h3>Sources</h3>
+<ul class="srcs">
+<li><a href="https://www.nasdaq.com/press-release/rubrik-reports-second-quarter-fiscal-year-2027-financial-results-2026-08-27">Rubrik Q2 FY27 results press release (Nasdaq / BusinessWire)</a></li>
+<li><a href="https://www.sec.gov/Archives/edgar/data/0001943896/000194389626000041/rubrikinc-991pressrelease4.htm">Rubrik Q1 FY27 results, SEC 8-K Exhibit 99.1</a></li>
+<li><a href="https://finance.yahoo.com/news/rubrik-reports-fourth-quarter-fiscal-200500396.html">Rubrik Q4 FY26 results (Yahoo Finance)</a></li>
+<li><a href="https://finance.yahoo.com/markets/stocks/articles/rubrik-q2-earnings-call-highlights-000146086.html">Rubrik Q2 earnings call highlights (MarketBeat via Yahoo)</a></li>
+<li><a href="https://www.nasdaq.com/press-release/rubrik-promotes-jesse-green-chief-revenue-officer-2026-02-04">Rubrik promotes Jesse Green to CRO</a></li>
+<li><a href="https://www.stocktitan.net/sec-filings/RBRK/form-4-rubrik-inc-insider-trading-activity-b38e01ecff91.html">CEO Form 4: prepaid variable forward (StockTitan)</a></li>
+<li><a href="https://www.investing.com/analysis/rubriks-selloff-could-be-cybersecuritys-hidden-opportunity-200676872">Rubrik's selloff could be cybersecurity's hidden opportunity (Investing.com)</a></li>
+<li><a href="https://quantlogix.ai/briefing/quantlogix-ipo-brief-cohesity-2026-09-08">Cohesity IPO brief (QuantLogix)</a></li>
+<li><a href="https://dataconomy.com/2025/09/04/cohesity-targets-2026-ipo-after-veritas-merger/">Cohesity targets 2026 IPO (Dataconomy)</a></li>
+<li><a href="https://stockanalysis.com/stocks/rbrk/">StockAnalysis: RBRK overview &amp; analyst consensus</a></li>
+<li>Alpha Vantage: RBRK / CVLT / CRWD / ZS / PANW overview, income statement, cash flow, earnings</li>
+</ul>
+<p class="disclaimer">This report is for educational purposes by Foundational Trading Academy and is not personalized investment advice. The author is not a licensed financial advisor. All projections are estimates subject to substantial uncertainty. Do your own due diligence.</p>
+</div>
+</section>
+
+</div>
+</main>
+</div>
+
+<div class="modal" id="modal"><div class="modal-box"><div class="mt"><span id="mTitle"></span><button onclick="closeModal()">✕ Close</button></div><div class="mw"><canvas id="mCanvas"></canvas></div></div></div>
+
+<script>
+// Collapsible cards
+document.querySelectorAll('.card-h').forEach(h=>h.addEventListener('click',()=>h.parentElement.classList.toggle('collapsed')));
+
+const G='#145A22',DG='#0A3A14',GOLD='#FCC55B',GD='#e0a838',RED='#a8341f',MUT='#5d6155',FOR='#243D27';
+Chart.defaults.font.family="'Quicksand',sans-serif";Chart.defaults.font.size=11;Chart.defaults.color=MUT;
+Chart.defaults.plugins.legend.labels.boxWidth=10;
+const CFG={};
+function mk(id,cfg){CFG[id]=cfg;return new Chart(document.getElementById(id),JSON.parse(JSON.stringify(cfg)));}
+const qtr=['Q3 FY25','Q4 FY25','Q1 FY26','Q2 FY26','Q3 FY26','Q4 FY26','Q1 FY27','Q2 FY27'];
+const base={responsive:true,maintainAspectRatio:false};
+
+mk('cPS',{type:'bar',data:{labels:['CRWD','PANW','RBRK','ZS','CVLT'],datasets:[{label:'P/S TTM',data:[47.8,26.7,14.6,9.4,5.0],backgroundColor:[MUT,MUT,GOLD,MUT,MUT]}]},options:{...base,plugins:{legend:{display:false}},scales:{y:{title:{display:true,text:'x sales'}}}}});
+mk('cRat',{type:'doughnut',data:{labels:['Strong Buy','Buy','Hold','Sell'],datasets:[{data:[3,25,0,0],backgroundColor:[DG,G,GOLD,RED]}]},options:{...base,plugins:{legend:{position:'right'}}}});
+mk('cRev',{type:'bar',data:{labels:qtr,datasets:[{label:'Revenue',data:[236.2,258.1,278.5,309.9,350.2,377.7,387.1,427.3],backgroundColor:G},{label:'FCF',data:[16,78,33.3,57.5,77,70.1,73.6,65.7],backgroundColor:GOLD}]},options:{...base,scales:{y:{beginAtZero:true}}}});
+mk('cGeo',{type:'doughnut',data:{labels:['Americas $299M (+33%)','International $129M (+52%)'],datasets:[{data:[299,129],backgroundColor:[G,GOLD]}]},options:{...base,plugins:{legend:{position:'right'}}}});
+mk('cSBC',{type:'bar',data:{labels:qtr,datasets:[{label:'FCF',data:[16,78,33.3,57.5,77,70.1,73.6,65.7],backgroundColor:G},{label:'SBC',data:[92.5,86.0,73.5,88.5,82.5,84.9,73.4,101.0],backgroundColor:RED}]},options:{...base,scales:{y:{beginAtZero:true}}}});
+mk('cOpm',{type:'line',data:{labels:qtr,datasets:[{label:'GAAP Op. Margin %',data:[-52.8,-45.0,-33.4,-30.5,-21.6,-21.8,-13.6,-16.8],borderColor:G,backgroundColor:'rgba(20,90,34,.12)',fill:true,tension:.3,pointBackgroundColor:GOLD}]},options:{...base,plugins:{legend:{display:false}},scales:{y:{max:0}}}});
+mk('cOpex',{type:'bar',data:{labels:['Q2 FY26','Q2 FY27'],datasets:[{label:'S&M',data:[58.7,52.5],backgroundColor:G},{label:'R&D',data:[29.7,29.7],backgroundColor:GOLD},{label:'G&A',data:[21.5,13.0],backgroundColor:MUT}]},options:{...base,indexAxis:'y',scales:{x:{stacked:true,title:{display:true,text:'% of revenue'}},y:{stacked:true}}}});
+mk('cAnn',{type:'bar',data:{labels:['FY21','FY22','FY23','FY24','FY25','FY26','FY27E'],datasets:[{label:'Revenue',data:[387.8,506.1,599.8,627.9,886.5,1316.2,1689],backgroundColor:[G,G,G,G,G,G,GOLD]}]},options:{...base,plugins:{legend:{display:false}}}});
+mk('cEPS',{type:'bar',data:{labels:qtr,datasets:[{label:'Consensus',data:[-0.40,-0.39,-0.32,-0.34,-0.17,-0.11,-0.03,0.04],backgroundColor:MUT},{label:'Actual',data:[-0.21,-0.18,-0.15,-0.03,0.10,0.04,0.16,0.20],backgroundColor:G}]},options:{...base}});
+mk('cScen',{type:'bar',data:{labels:['1-Year','3-Year','5-Year'],datasets:[{label:'Bear',data:[69,60,55],backgroundColor:RED},{label:'Base',data:[122,157,189],backgroundColor:GOLD},{label:'Bull',data:[159,193,281],backgroundColor:G},{label:'Prob-weighted',data:[118,142,167],type:'line',borderColor:DG,backgroundColor:DG,pointRadius:4}]},options:{...base,scales:{y:{beginAtZero:true,title:{display:true,text:'$ / share'}}}}});
+mk('cScat',{type:'bubble',data:{datasets:[
+ {label:'RBRK',data:[{x:37.9,y:14.6,r:8}],backgroundColor:GOLD},
+ {label:'CVLT',data:[{x:11.4,y:5.0,r:5}],backgroundColor:MUT},
+ {label:'ZS',data:[{x:24.9,y:9.4,r:9}],backgroundColor:FOR},
+ {label:'CRWD',data:[{x:25.8,y:47.8,r:18}],backgroundColor:G},
+ {label:'PANW',data:[{x:34.5,y:26.7,r:20}],backgroundColor:DG}]},options:{...base,scales:{x:{title:{display:true,text:'Rev growth %'}},y:{title:{display:true,text:'P/S'}}}}});
+mk('cGAPS',{type:'bar',data:{labels:['CRWD','PANW','CVLT','RBRK','ZS'],datasets:[{label:'P/S ÷ growth',data:[1.85,0.77,0.44,0.39,0.38],backgroundColor:[MUT,MUT,MUT,GOLD,MUT]}]},options:{...base,indexAxis:'y',plugins:{legend:{display:false}}}});
+mk('cARR',{type:'bar',data:{labels:qtr,datasets:[{label:'Sub. ARR $B',data:[1.00,1.09,1.18,1.25,1.35,1.46,1.57,1.66],backgroundColor:G,yAxisID:'y'},{label:'YoY %',type:'line',data:[38,38,38,36,34,34,32,33],borderColor:GD,backgroundColor:GOLD,yAxisID:'y1',tension:.3}]},options:{...base,scales:{y:{beginAtZero:true},y1:{position:'right',min:20,max:45,grid:{display:false}}}}});
+mk('cCust',{type:'line',data:{labels:['Q4 FY25','Q1 FY26','Q2 FY26','Q3 FY26*','Q4 FY26','Q1 FY27','Q2 FY27'],datasets:[{label:'$100K+ customers',data:[2244,2376,2507,2640,2805,2946,3084],borderColor:G,backgroundColor:'rgba(20,90,34,.12)',fill:true,tension:.3,pointBackgroundColor:GOLD}]},options:{...base,plugins:{legend:{display:false}}}});
+mk('cCM',{type:'line',data:{labels:['Q1 FY26','Q2 FY26','Q3 FY26*','Q4 FY26*','Q1 FY27','Q2 FY27','FY27 Guide'],datasets:[{label:'Contribution margin %',data:[8.0,9.4,10.6,11.9,13.2,14.0,15.5],borderColor:G,tension:.3,pointBackgroundColor:[G,G,MUT,MUT,G,G,GOLD],pointRadius:5}]},options:{...base,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}}}});
+mk('cR40',{type:'bar',data:{labels:['RBRK','CRWD','ZS','PANW','CVLT'],datasets:[{label:'Growth',data:[33,26,25,34,11],backgroundColor:G},{label:'FCF margin',data:[19,27,26,35,17],backgroundColor:GOLD}]},options:{...base,scales:{x:{stacked:true},y:{stacked:true}}}});
+
+// Modal zoom
+let mChart=null;
+document.querySelectorAll('.zoom').forEach(b=>b.addEventListener('click',e=>{
+  e.stopPropagation();const id=b.dataset.c;const cfg=JSON.parse(JSON.stringify(CFG[id]));
+  document.getElementById('mTitle').textContent=b.parentElement.firstChild.textContent;
+  document.getElementById('modal').classList.add('open');
+  if(mChart)mChart.destroy();mChart=new Chart(document.getElementById('mCanvas'),cfg);
+}));
+document.querySelectorAll('.chart-box').forEach(bx=>bx.addEventListener('click',()=>bx.querySelector('.zoom').click()));
+function closeModal(){document.getElementById('modal').classList.remove('open');if(mChart){mChart.destroy();mChart=null;}}
+document.getElementById('modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+</script>
+</body>
+</html>
