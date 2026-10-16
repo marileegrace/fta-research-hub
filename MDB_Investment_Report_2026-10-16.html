@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MDB — MongoDB Investment Report (2026-10-16)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Questrial&family=Quicksand:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{--green:#145A22;--dark-green:#0A3A14;--forest:#243D27;--gold:#FCC55B;--gold-deep:#e0a838;--beige:#EDE8E0;--beige-card:#f6f3ed;--ink:#23241f;--muted:#5d6155;--red:#a8341f;--line:#d8d1c4}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--beige);color:var(--ink);font-family:'Quicksand',sans-serif;font-size:15.5px;line-height:1.65;display:flex}
+.side{width:262px;flex:0 0 262px;position:sticky;top:0;height:100vh;overflow:auto;background:linear-gradient(180deg,#071f0b,#0A3A14 40%,#145A22);border-right:2px solid var(--gold);color:#fff;padding:26px 18px}
+.brand{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:26px;font-weight:600;color:var(--gold);line-height:1.1}
+.brand small{display:block;font-family:'Questrial';font-style:normal;font-size:10px;letter-spacing:.18em;color:#cfe3d0;margin-top:6px;text-transform:uppercase}
+.tbox{margin:20px 0;padding:14px;border:1px solid rgba(252,197,91,.5);border-radius:10px;background:rgba(0,0,0,.18)}
+.tbox .t{font-family:'JetBrains Mono';font-weight:700;font-size:22px;color:var(--gold)}.tbox .p{font-family:'JetBrains Mono';font-size:18px}.tbox .s{font-size:11px;color:#bcd2be}
+.side nav a{display:flex;gap:10px;align-items:center;color:#e5efe5;text-decoration:none;font-size:13px;padding:7px 8px;border-radius:7px}
+.side nav a:hover{background:rgba(252,197,91,.15);color:var(--gold)}
+.side nav a b{font-family:'JetBrains Mono';font-size:11px;color:var(--gold);width:22px}
+main{flex:1;min-width:0}
+.hero{background:linear-gradient(120deg,var(--dark-green),var(--green) 60%);color:#fff;padding:54px 48px 44px;position:relative;overflow:hidden;border-bottom:4px solid var(--gold)}
+.hero:after{content:"";position:absolute;right:-90px;top:-90px;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,rgba(252,197,91,.35),transparent 70%)}
+.hero .k{font-family:'Questrial';letter-spacing:.2em;text-transform:uppercase;font-size:12px;color:var(--gold)}
+.hero h1{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:48px;line-height:1.05;margin:8px 0 10px}
+.hero p{max-width:760px;color:#e2eee3;margin:0 0 18px}
+.pill{display:inline-block;font-family:'Questrial';text-transform:uppercase;letter-spacing:.1em;font-size:12px;background:var(--gold);color:var(--dark-green);padding:7px 14px;border-radius:30px;font-weight:700;margin-right:8px;position:relative;z-index:1}
+.pill.o{background:transparent;border:1px solid var(--gold);color:var(--gold)}
+.kpis{display:grid;grid-template-columns:repeat(6,1fr);gap:0;border-bottom:1px solid var(--line)}
+.kpi{background:var(--beige-card);padding:16px 14px;border-right:1px solid var(--line)}
+.kpi .l{font-family:'Questrial';font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.kpi .v{font-family:'JetBrains Mono';font-weight:700;font-size:21px;color:var(--green)}.kpi .sub{font-size:11.5px;color:var(--muted)}
+.wrap{max-width:1080px;margin:0 auto;padding:36px 48px 80px}
+.card{background:var(--beige-card);border:1px solid var(--line);border-radius:14px;margin:0 0 26px;overflow:hidden}
+.card>header{display:flex;align-items:center;gap:14px;padding:16px 20px;border-left:5px solid var(--green);cursor:pointer;background:#fbf9f4}
+.num{width:34px;height:34px;border-radius:8px;background:var(--green);color:#fff;font-family:'JetBrains Mono';font-weight:700;display:flex;align-items:center;justify-content:center}
+.card h2{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:28px;margin:0;flex:1;color:var(--dark-green)}
+.chev{transition:.2s;color:var(--green);font-size:18px}.card.closed .chev{transform:rotate(-90deg)}.card.closed .body{display:none}
+.body{padding:22px 24px}
+h3{font-family:'Questrial';text-transform:uppercase;letter-spacing:.1em;font-size:13px;color:var(--green);margin:24px 0 8px}
+.thesis{font-family:'Cormorant Garamond',serif;font-size:25px;line-height:1.35;border-left:4px solid var(--gold);padding:6px 0 6px 20px;margin:0 0 20px;color:var(--dark-green);font-weight:500}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0 16px}
+.chip{background:#fff;border:1px solid var(--line);border-radius:10px;padding:9px 13px;min-width:130px}
+.chip .l{font-family:'Questrial';font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}.chip .v{font-family:'JetBrains Mono';font-weight:700;color:var(--green);font-size:17px}
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}
+.cbox{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.cbox .ct{display:flex;justify-content:space-between;align-items:center;font-family:'Questrial';text-transform:uppercase;letter-spacing:.08em;font-size:11.5px;color:var(--ink);margin-bottom:6px}
+.zoom{font-family:'Quicksand';font-size:10.5px;text-transform:none;letter-spacing:0;color:var(--green);background:none;border:1px solid var(--line);border-radius:6px;padding:2px 8px;cursor:pointer}
+.cv{height:155px;position:relative}.cv.d{max-width:420px;margin:0 auto}
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin:12px 0;background:#fff;border-radius:10px;overflow:hidden}
+th{background:var(--green);color:#fff;font-family:'Questrial';font-weight:400;text-transform:uppercase;letter-spacing:.06em;font-size:11.5px;text-align:left;padding:9px 10px}
+td{padding:8px 10px;border-bottom:1px solid #eee7da}tr:nth-child(even) td{background:#faf7f1}tr:hover td{background:#fdf1d4}
+td.n{font-family:'JetBrains Mono';font-size:12.5px}.pos{color:var(--green);font-weight:600}.neg{color:var(--red);font-weight:600}
+.tw{overflow-x:auto}
+.call{background:rgba(252,197,91,.2);border:1px solid var(--gold-deep);border-radius:10px;padding:12px 16px;margin:14px 0}
+.call.g{background:rgba(20,90,34,.08);border-color:rgba(20,90,34,.35)}
+.scen-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:14px 0}
+.scen{background:#fff;border:1px solid var(--line);border-top:5px solid var(--green);border-radius:12px;padding:14px}
+.scen.base{border-top-color:var(--gold)}.scen.bear{border-top-color:var(--red)}
+.scen .nm{font-family:'Questrial';text-transform:uppercase;letter-spacing:.1em;font-size:12px}
+.scen .pt{font-family:'JetBrains Mono';font-weight:700;font-size:26px;color:var(--green)}.scen.base .pt{color:var(--gold-deep)}.scen.bear .pt{color:var(--red)}
+.prob{display:inline-block;font-family:'JetBrains Mono';font-size:11px;background:#eee7da;border-radius:20px;padding:2px 9px}
+.scen ul{padding-left:18px;margin:8px 0 0;font-size:13px}
+.hz{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:21px;color:var(--dark-green);margin:22px 0 2px}
+.risk{background:#fff;border:1px solid var(--line);border-left:4px solid var(--red);border-radius:10px;padding:14px 16px;margin:12px 0}
+.risk h4{margin:0 0 6px;color:var(--red);font-family:'Questrial';font-weight:400;font-size:16px}
+.meta span{display:inline-block;font-family:'JetBrains Mono';font-size:11px;background:#f4e3de;color:var(--red);border-radius:20px;padding:2px 10px;margin:0 6px 6px 0}
+.timeline{position:relative;margin:14px 0 4px 14px;padding-left:30px}
+.timeline:before{content:"";position:absolute;left:6px;top:4px;bottom:4px;width:3px;background:linear-gradient(180deg,var(--green),var(--gold))}
+.ev{position:relative;margin-bottom:18px}.ev:before{content:"";position:absolute;left:-31px;top:5px;width:15px;height:15px;border-radius:50%;background:var(--gold);border:3px solid var(--green)}
+.ev .d{font-family:'JetBrains Mono';font-size:12px;color:var(--green)}.ev b{display:block}.ev span{color:var(--muted);font-size:13.5px}
+a{color:var(--green)}a.g{text-decoration:none;border-bottom:1px dotted var(--gold-deep);color:var(--green);font-weight:600}
+.gl{background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 16px;margin:10px 0}.gl h4{margin:0 0 4px;font-family:'Questrial';font-weight:400;color:var(--green);font-size:16px}
+.gl code{font-family:'JetBrains Mono';font-size:12px;background:#f1ece1;padding:1px 6px;border-radius:5px}.gl .back{font-size:12px}
+.foot{font-size:12px;color:var(--muted);border-top:1px solid var(--line);padding-top:14px;margin-top:30px}
+#modal{display:none;position:fixed;inset:0;background:rgba(7,31,11,.82);z-index:99;align-items:center;justify-content:center}
+#modal.on{display:flex}#mbox{background:var(--beige-card);border:3px solid var(--gold);border-radius:14px;width:min(1000px,92vw);height:min(620px,86vh);padding:18px;position:relative}
+#mclose{position:absolute;right:12px;top:8px;border:0;background:none;font-size:28px;cursor:pointer;color:var(--green)}
+#mcv{height:calc(100% - 30px)}
+@media(max-width:880px){.chart-grid,.scen-grid{grid-template-columns:1fr}}
+@media(max-width:780px){.side{display:none}.kpis{grid-template-columns:repeat(3,1fr)}.wrap{padding:24px 16px}.hero{padding:36px 18px}.hero h1{font-size:36px}}
+</style></head><body>
+<aside class="side"><div class="brand">FTA Research<small>Foundational Trading Academy</small></div>
+<div class="tbox"><div class="t">MDB</div><div class="p">$366.49</div><div class="s">MongoDB, Inc. · close Oct 15, 2026 · +2.86%</div></div>
+<nav><a href="#s1"><b>01</b>Executive Summary</a><a href="#s2"><b>02</b>Valuation &amp; Micro</a><a href="#s3"><b>03</b>Moat, Mgmt &amp; Culture</a><a href="#s4"><b>04</b>Financial Deep Dive</a><a href="#s5"><b>05</b>Earnings Tracker</a><a href="#s6"><b>06</b>Bull / Base / Bear</a><a href="#s7"><b>07</b>Risks &amp; Anti-Thesis</a><a href="#s8"><b>08</b>Catalyst Timeline</a><a href="#s9"><b>09</b>Comparable Companies</a><a href="#s10"><b>10</b>First-Principles KPIs</a><a href="#s11"><b>11</b>Glossary &amp; Method</a></nav></aside>
+<main>
+<section class="hero"><div class="k">Thursday Queue · Ticker #3 · Report dated 16 Oct 2026</div>
+<h1>MongoDB, Inc. (MDB)</h1>
+<p>The document database that became a cloud data platform is printing 30% growth at scale, its first positive GAAP operating quarter, and record free cash flow — and the market just handed back ~20% from the August highs because its CEO left for Meta after eleven months.</p>
+<span class="pill">Constructive Bull · Accumulate on leadership-discount</span><span class="pill o">Conviction 7 / 10</span></section>
+<div class="kpis">
+<div class="kpi"><div class="l">Price</div><div class="v">$366.49</div><div class="sub">Oct 15 close</div></div>
+<div class="kpi"><div class="l">Market Cap</div><div class="v">~$30.0B</div><div class="sub">82.0M sh · EV ~$27.7B</div></div>
+<div class="kpi"><div class="l">Q2 Rev Growth</div><div class="v">+30%</div><div class="sub">$771.8M · Atlas +29%</div></div>
+<div class="kpi"><div class="l">TTM FCF</div><div class="v">$659M</div><div class="sub">23.7% margin</div></div>
+<div class="kpi"><div class="l">P/S (TTM)</div><div class="v">10.8x</div><div class="sub">Optimistic band</div></div>
+<div class="kpi"><div class="l">Analyst PT</div><div class="v">$449.74</div><div class="sub">Buy · 40 analysts · +23%</div></div>
+</div>
+<div class="wrap">
+<!-- S1 -->
+<section class="card" id="s1"><header><div class="num">1</div><h2>Executive Summary &amp; Investment Thesis</h2><span class="chev">▾</span></header><div class="body">
+<p class="thesis">Bull thesis: MongoDB is compounding at ~30% with expanding margins and a $2.4B cash fortress, and the Sept-28 CEO exit has pushed the stock ~22% below its August high, turning a second leadership shock into a re-entry point for a franchise whose economics did not change that week.</p>
+<div class="chips"><div class="chip"><div class="l">Price</div><div class="v">$366.49</div></div><div class="chip"><div class="l">Market cap</div><div class="v">~$30.0B</div></div><div class="chip"><div class="l">Sector</div><div class="v" style="font-size:13px">Software · <a class="g" href="#g-db">Database</a></div></div><div class="chip"><div class="l">Q2 FY27 revenue</div><div class="v">$771.8M</div></div><div class="chip"><div class="l">Non-GAAP op margin</div><div class="v">24%</div></div><div class="chip"><div class="l">GAAP op income</div><div class="v">+$28.4M</div></div><div class="chip"><div class="l">RPO growth</div><div class="v">+91%</div></div><div class="chip"><div class="l">Conviction</div><div class="v">7 / 10</div></div></div>
+<p>MongoDB sells the leading document database, mostly as the fully managed <b>Atlas</b> cloud service (73% of Q2 revenue, $565.9M, +29% YoY). In the quarter ended July 31, 2026 it grew revenue 30% to $771.8M, lifted non-GAAP operating margin to 24% (from 15% a year ago), generated $137.6M of free cash flow, and posted its first clearly positive GAAP operating income ($28.4M). Remaining performance obligations jumped 91% to $1.52B. Management raised FY27 guidance to $2.99–3.03B revenue and $6.39–6.58 non-GAAP EPS.</p>
+<p>Then, on September 28, CEO CJ Desai — in the seat since November 2025 — left to join Meta, and co-founder-era CEO Dev Ittycheria returned as interim chief. Shares fell roughly 17% on the news. This is MongoDB's second CEO change in under twelve months, and it is the real debate. Our view: the product, the consumption flywheel and the backlog are the asset; the CEO is a replaceable variable, but the <i>uncertainty premium</i> is real and could persist until a permanent CEO is named.</p>
+<div class="call"><b>Bottom line.</b> At ~10.8x <a class="g" id="r-ps" href="#g-ps">P/S</a> and ~56x forward non-GAAP EPS, MDB is not cheap in absolute terms — but for a 30% grower with 24% operating margins and rising FCF, the price embeds a leadership discount we think is excessive. Accumulate in tranches; do not chase before the CEO search resolves.</div>
+<div class="chart-grid"><div class="cbox"><div class="ct">Quarterly revenue ($M)<button class="zoom" data-c="c1">click to expand</button></div><div class="cv"><canvas id="c1"></canvas></div></div>
+<div class="cbox"><div class="ct">Q2 FY27 revenue mix<button class="zoom" data-c="c2">click to expand</button></div><div class="cv"><canvas id="c2"></canvas></div></div></div>
+</div></section>
+
+<!-- S2 -->
+<section class="card" id="s2"><header><div class="num">2</div><h2>Microeconomic &amp; Valuation Analysis</h2><span class="chev">▾</span></header><div class="body">
+<h3>Industry &amp; TAM</h3>
+<p>One third-party estimate sizes the global database management system market at $135.4B in 2025, growing to $401.1B by 2034 — a <a class="g" id="r-cagr" href="#g-cagr">CAGR</a> of ~12.8% (The Insight Partners; analyst-firm estimates vary widely and should be treated as directional). MongoDB's $2.8B TTM revenue is roughly 2% of that pool, so the constraint on growth is competitive share-taking (Oracle, Microsoft SQL/Cosmos DB, AWS Aurora/DynamoDB, PostgreSQL forks), not market size. AI workloads — unstructured data, vector search, agent memory — expand the pool beyond classic relational use cases, which is where document models are structurally advantaged.</p>
+<h3>Market cap vs. competitors</h3>
+<div class="chips"><div class="chip"><div class="l">MDB</div><div class="v">$30.0B</div></div><div class="chip"><div class="l">Snowflake</div><div class="v">$112.9B</div></div><div class="chip"><div class="l">Datadog</div><div class="v">$91.4B</div></div><div class="chip"><div class="l">Elastic</div><div class="v">$10.2B</div></div></div>
+<h3>Valuation ratios</h3>
+<div class="chips"><div class="chip"><div class="l">P/S TTM</div><div class="v">10.8x</div></div><div class="chip"><div class="l">EV / Sales</div><div class="v">9.9x</div></div><div class="chip"><div class="l">GAAP <a class="g" href="#g-pe">P/E</a> TTM</div><div class="v">~510x</div></div><div class="chip"><div class="l">Non-GAAP P/E TTM</div><div class="v">~59x</div></div><div class="chip"><div class="l">Fwd P/E FY27E</div><div class="v">56x</div></div><div class="chip"><div class="l">Fwd P/E FY28E</div><div class="v">47x</div></div><div class="chip"><div class="l">P/FCF</div><div class="v">45.6x</div></div></div>
+<p>On the FTA scale (&gt;30 Euphoric, &gt;18 Excited, &gt;8 Optimistic, 4–8 Aware, &lt;4 Cautious, &lt;2 Pessimistic), 10.8x sits in <b>Optimistic</b> — well below Snowflake (21.7x) and Datadog (24.1x, Excited), and above Elastic (5.7x, Aware). GAAP P/E is meaningless (~510x on $58.9M of TTM GAAP net income); non-GAAP and FCF multiples are the right lens, with the caveat that non-GAAP excludes ~$157M a quarter of stock comp and amortization (see Section 4).</p>
+<h3>Analyst growth estimates</h3>
+<div class="chips"><div class="chip"><div class="l">FY27E revenue</div><div class="v">$3.03B</div></div><div class="chip"><div class="l">FY28E revenue</div><div class="v">$3.57B (+18%)</div></div><div class="chip"><div class="l">FY27E EPS (non-GAAP)</div><div class="v">$6.55</div></div><div class="chip"><div class="l">FY28E EPS</div><div class="v">$7.79 (+19%)</div></div></div>
+<p>Estimates were revised up almost uniformly after Q2 (30 of ~37 analysts raised FY27 EPS in the trailing 30 days; one cut). Consensus FY28 revenue growth of ~18% looks conservative against a +30% print, a 91% RPO increase and a Q2 that beat the Street by ~$37M.</p>
+<h3>Institutional ownership &amp; insiders</h3>
+<p>Institutions own ~94.7% of shares; insiders ~2.4%. Insider activity since April is <b>all selling or tax withholding, with zero open-market purchases</b>: director Dwight Merriman sold repeatedly (April–August, $236–$472), then-director Dev Ittycheria sold ~40k shares at ~$380–388 on June 4 (~$15M), director Roelof Botha sold ~44k shares near $398 on June 2 (~$17M), and the CFO sold in small blocks in June. Selling into strength before a CEO exit is not a clean signal, though most of it is routine 10b5-1-style diversification by long-tenured holders. </p>
+<div class="chart-grid"><div class="cbox"><div class="ct">Price/Sales: MDB vs peers<button class="zoom" data-c="c3">click to expand</button></div><div class="cv"><canvas id="c3"></canvas></div></div>
+<div class="cbox"><div class="ct">Annual revenue FY21–FY26 ($M)<button class="zoom" data-c="c4">click to expand</button></div><div class="cv"><canvas id="c4"></canvas></div></div></div>
+</div></section>
+
+<!-- S3 -->
+<section class="card" id="s3"><header><div class="num">3</div><h2>Qualitative Analysis — Moat, Management &amp; Culture</h2><span class="chev">▾</span></header><div class="body">
+<h3>The moat, thought about systemically</h3>
+<p>A database is a decision a company makes once and lives with for a decade: schemas, drivers, query patterns, backup tooling, security reviews and the muscle memory of thousands of developers all attach to it. MongoDB's moat is therefore not a feature — it is <b>accumulated switching cost plus developer gravity</b>. The document model maps naturally to how applications and now AI agents represent data (JSON-shaped, evolving), and the developer-first funnel (free Community edition, Atlas free tier) seeds workloads that grow by consumption: a customer who lands at $50K can expand to $5M without a new sales cycle. This is a <a class="g" href="#g-flywheel">flywheel</a>: more developers → more apps in production → more Atlas consumption → more R&amp;D and partner integrations (all three hyperscalers) → a better platform → more developers.</p>
+<div class="call g"><b>Where the moat is thin.</b> PostgreSQL (open source, JSONB support, endlessly forked by every cloud) is the credible substitute for new workloads, and the hyperscalers are simultaneously MongoDB's distribution partners and its competitors (DocumentDB, Cosmos DB for MongoDB API). The moat protects the installed base far better than it guarantees winning net-new greenfield apps.</div>
+<h3>Leadership &amp; governance</h3>
+<div class="chips"><div class="chip"><div class="l">Founder-led?</div><div class="v" style="font-size:13px">No (professional CEOs)</div></div><div class="chip"><div class="l">CEO</div><div class="v" style="font-size:13px">Interim: Dev Ittycheria</div></div><div class="chip"><div class="l">CFO</div><div class="v" style="font-size:13px">Mike Berry</div></div><div class="chip"><div class="l">CEO tenure of Desai</div><div class="v" style="font-size:13px">~10.5 months</div></div></div>
+<p>Dev Ittycheria led MongoDB from 2014 through its IPO and the Atlas pivot, stepping back on November 10, 2025 for Chirantan "CJ" Desai (ex-Cloudflare president of product and engineering). Desai delivered four strong prints, then left on September 28, 2026 to run Meta's enterprise platform business; Ittycheria returned as interim CEO and the board has begun a search with no stated timeline. CFO Mike Berry told investors to expect "business as usual" at the September 30 Investor Day, where the company also launched <i>Atlas Infinite</i> (a compute/storage-separated deployment option, public preview on AWS) and updated long-term targets (specific figures were not verifiable at report time).</p>
+<p><b>Read-through:</b> two CEO changes in 12 months is a governance flag — it raises questions about succession planning and about how attractive the CEO seat is relative to Big Tech. But the underlying operating cadence (guidance conservatism, product roadmap, field execution under President of Field Operations Cedric Pech) continued without disruption, which suggests the machine is bigger than the chair.</p>
+<h3>Capital allocation</h3>
+<p>MongoDB shows no funded debt on its balance sheet (only ~$29M of lease-type obligations), carries ~$2.4B of cash and short-term investments, and has been shifting from burning cash to producing it — FY26 operating cash flow of $505M vs $150M the prior year. Capital is directed to R&amp;D (≈28% of revenue) and go-to-market; shareholder returns have been modest and dilution is tracked in Section 4.</p>
+<h3>Culture, organizational &amp; structural traits</h3>
+<table><tr><th>Trait</th><th>Assessment</th><th>Evidence</th></tr>
+<tr><td>Customer obsession</td><td class="pos">Strong</td><td>70,600+ customers; 2,999 over $100K ARR; developer-led funnel</td></tr>
+<tr><td>Innovation pace</td><td class="pos">Strong</td><td>Vector search, Atlas Infinite, AI-agent tooling; R&amp;D ~28% of revenue</td></tr>
+<tr><td>Failure tolerance</td><td>Moderate</td><td>Past pricing/field-comp resets absorbed; executive turnover at the top is the weak spot</td></tr>
+<tr><td>Talent density</td><td class="pos">High</td><td>Engineering-led; Meta recruiting its CEO signals talent value (and flight risk)</td></tr>
+<tr><td>Idea meritocracy / decentralization</td><td>Moderate</td><td>Product-led bottoms-up adoption, but sales motion is centralized under field ops</td></tr></table>
+</div></section>
+
+<!-- S4 -->
+<section class="card" id="s4"><header><div class="num">4</div><h2>Quantitative Analysis — Financial Deep Dive</h2><span class="chev">▾</span></header><div class="body">
+<h3>Free cash flow — last six quarters</h3>
+<div class="tw"><table><tr><th>Quarter</th><th>Revenue ($M)</th><th>YoY</th><th>Op. cash flow</th><th>FCF*</th><th>FCF margin</th></tr>
+<tr><td>Q2 FY26 (Jul-25)</td><td class="n">591.4</td><td class="n pos">+23.7%</td><td class="n">72.1</td><td class="n">71.6</td><td class="n">12.1%</td></tr>
+<tr><td>Q3 FY26 (Oct-25)</td><td class="n">628.3</td><td class="n pos">+18.7%</td><td class="n">143.5</td><td class="n">141.8</td><td class="n">22.6%</td></tr>
+<tr><td>Q4 FY26 (Jan-26)</td><td class="n">695.1</td><td class="n pos">+26.8%</td><td class="n">179.6</td><td class="n">178.5</td><td class="n">25.7%</td></tr>
+<tr><td>Q1 FY27 (Apr-26)</td><td class="n">687.6</td><td class="n pos">+25.2%</td><td class="n">201.6</td><td class="n">199.3</td><td class="n">29.0%</td></tr>
+<tr><td>Q2 FY27 (Jul-26)</td><td class="n">771.8</td><td class="n pos">+30.5%</td><td class="n">141.9</td><td class="n">139.4 (reported 137.6)</td><td class="n">18.1%</td></tr>
+<tr><td><b>TTM</b></td><td class="n"><b>2,782.8</b></td><td class="n"></td><td class="n"><b>666.6</b></td><td class="n"><b>659.0</b></td><td class="n"><b>23.7%</b></td></tr></table></div>
+<p style="font-size:12px;color:var(--muted)">*Operating cash flow less capex, from the quarterly cash-flow statements; the company's own FCF definition differs slightly. FCF is seasonal — Q1 and Q4 are collection-heavy.</p>
+<div class="chips"><div class="chip"><div class="l">TTM FCF / share</div><div class="v">$8.04</div></div><div class="chip"><div class="l">Yr-ago TTM FCF/share</div><div class="v">~$2.96</div></div><div class="chip"><div class="l">FCF/share growth</div><div class="v">~+172%</div></div><div class="chip"><div class="l">Current ratio</div><div class="v">4.87x</div></div><div class="chip"><div class="l">Cash + ST inv.</div><div class="v">$2.41B</div></div><div class="chip"><div class="l">Debt</div><div class="v">~none</div></div></div>
+<h3>Revenue streams, explained simply</h3>
+<p><b>Atlas</b> (73%): MongoDB runs the database in AWS/Azure/Google Cloud and bills by usage — like a utility meter; revenue grows as customers' apps grow. $565.9M, +29% YoY, ~$2.3B annualized. <b>Enterprise Advanced &amp; other</b> (23.5%): licensed software customers run themselves, often on multi-year contracts recognized largely up front — lumpy by nature; $181.2M, +36% in Q2 vs only +13% in Q1. <b>Services</b> (3.2%): consulting/training, $24.6M, +29%.</p>
+<div class="call"><b>Watch the Q3 guide.</b> Management guided Q3 revenue to $756–761M — <i>below</i> Q2's $771.8M. That implies the Enterprise Advanced beat in Q2 contained timing benefit and that Atlas must carry the growth. Guidance has been conservative (consistent beats), but treat Q2's 30% as a peak-ish print, not a run-rate.</div>
+<h3>Growth, margins &amp; operating leverage</h3>
+<div class="chips"><div class="chip"><div class="l">Rev CAGR 5y (FY21–26)</div><div class="v">33%</div></div><div class="chip"><div class="l">Rev CAGR 10y (FY16–26)</div><div class="v">44%</div></div><div class="chip"><div class="l">FY26 growth</div><div class="v">+22.8%</div></div><div class="chip"><div class="l">Gross margin Q2</div><div class="v">73.8% GAAP</div></div><div class="chip"><div class="l">GAAP net margin TTM</div><div class="v">2.1%</div></div><div class="chip"><div class="l">Non-GAAP op margin Q2</div><div class="v">24%</div></div></div>
+<p>The five-year revenue CAGR (33%) is more than double the ~12.8% growth of the underlying database market, confirming sustained share gain. Operating leverage is visible: GAAP operating margin moved from −11.0% (Q2 FY26) to +3.7% (Q2 FY27) as revenue grew 30% while R&amp;D grew only 18% ($181.7M → $213.9M, now 27.7% of revenue). Gross margin improved ~280 bps YoY (71.0% → 73.8%) as Atlas scales. The gap between non-GAAP (24%) and GAAP (3.7%) operating margin — ~$157M a quarter, ~20% of revenue — is almost entirely <a class="g" href="#g-sbc">stock-based compensation</a> and is the honest measure of what shareholders pay for talent.</p>
+<h3>Dilution check</h3>
+<p>Shares outstanding were ~82.0M at July 31, 2026 vs ~81.1M a year earlier (+1.1%); Q2 weighted diluted GAAP shares were 82.0M and fully diluted non-GAAP 85.8M. Dilution is modest, but SBC means non-GAAP EPS overstates per-share earnings power by roughly the SBC gap.</p>
+<div class="chart-grid"><div class="cbox"><div class="ct">FCF ($M) &amp; FCF margin<button class="zoom" data-c="c5">click to expand</button></div><div class="cv"><canvas id="c5"></canvas></div></div>
+<div class="cbox"><div class="ct">GAAP vs non-GAAP operating margin<button class="zoom" data-c="c6">click to expand</button></div><div class="cv"><canvas id="c6"></canvas></div></div></div>
+</div></section>
+
+<!-- S5 -->
+<section class="card" id="s5"><header><div class="num">5</div><h2>Earnings Tracker — Management Credibility</h2><span class="chev">▾</span></header><div class="body">
+<p>Sources give consensus estimates for every quarter below but not the company's own original guidance ranges for each; "Promise" therefore reflects the Street expectation the guidance set, plus management's explicit raises where retrievable. Credibility scores (1–10) weigh revenue and EPS beats and guide behavior.</p>
+<div class="tw"><table><tr><th>Quarter / Date</th><th>Expectation set (consensus)</th><th>Actual result</th><th>Credibility</th></tr>
+<tr><td>Q3 FY25 · Dec 9, 2024</td><td class="n">Rev $495.7M · EPS $0.69</td><td class="n pos">Rev $529.4M (+$33.7M) · EPS $1.16</td><td class="n">9</td></tr>
+<tr><td>Q4 FY25 · Mar 5, 2025</td><td class="n">Rev $519.8M · EPS $0.67</td><td class="n pos">Rev $548.4M (+$28.6M) · EPS $1.28</td><td class="n">9</td></tr>
+<tr><td>Q1 FY26 · Jun 4, 2025</td><td class="n">Rev ~$528M · EPS $0.66</td><td class="n pos">Rev $549.0M (+$20.9M) · EPS $1.00</td><td class="n">9</td></tr>
+<tr><td>Q2 FY26 · Aug 26, 2025</td><td class="n">Rev ~$554M · EPS $0.66</td><td class="n pos">Rev $591.4M (+$37.3M) · EPS $1.00</td><td class="n">9</td></tr>
+<tr><td>Q3 FY26 · Dec 1, 2025</td><td class="n">Rev ~$594M · EPS $0.79; pre-announced (Nov 3) it would beat the high end of guide</td><td class="n pos">Rev $628.3M (+$34.4M) · EPS $1.32</td><td class="n">9</td></tr>
+<tr><td>Q4 FY26 · Mar 2, 2026</td><td class="n">Rev ~$670M · EPS $1.47</td><td class="n pos">Rev $695.1M (+$25.0M) · EPS $1.65</td><td class="n">8</td></tr>
+<tr><td>Q1 FY27 · May 28, 2026</td><td class="n">Rev $664.5M · EPS $1.18; FY27 guide raised to $2.92–2.96B</td><td class="n pos">Rev $687.6M (+$23.1M, +25%) · EPS $1.32</td><td class="n">8</td></tr>
+<tr><td>Q2 FY27 · Sep 1, 2026</td><td class="n">Rev ~$735M · EPS $1.61</td><td class="n pos">Rev $771.8M (+$36.8M, +30%) · EPS $1.90; FY27 raised to $2.99–3.03B</td><td class="n">9</td></tr></table></div>
+<div class="call g"><b>Pattern:</b> eight straight revenue and non-GAAP EPS beats, averaging ~$30M (≈5%) on revenue. Management guides conservatively and raises — the opposite of the CEO-level credibility problem. Deduction: Q1 FY27 revenue ($687.6M) slipped sequentially from Q4's $695.1M, a reminder that the Enterprise Advanced line is lumpy, and the Q3 guide again implies a sequential dip.</div>
+<div class="chart-grid"><div class="cbox"><div class="ct">Non-GAAP EPS: actual vs consensus<button class="zoom" data-c="c7">click to expand</button></div><div class="cv"><canvas id="c7"></canvas></div></div>
+<div class="cbox"><div class="ct">Revenue beat vs consensus ($M)<button class="zoom" data-c="c8">click to expand</button></div><div class="cv"><canvas id="c8"></canvas></div></div></div>
+</div></section>
+<!-- S6 -->
+<section class="card" id="s6"><header><div class="num">6</div><h2>Bull / Bear / Base Case Scenarios</h2><span class="chev">▾</span></header><div class="body">
+<p>Targets are illustrative, built from consensus FY28 (revenue $3.57B, EPS $7.79) and our own growth/multiple assumptions; they are not predictions or advice. Current price: $366.49.</p>
+<div class="hz">1-year horizon (Oct 2027)</div>
+<div class="scen-grid">
+<div class="scen"><div class="nm">Bull</div><div class="pt">$520</div><span class="prob">25%</span><ul><li>Permanent CEO named within ~2 quarters; Atlas holds ≥30%</li><li>FY28 EPS ~$8.50 at ~61x</li><li>Multiple re-rates as leadership overhang clears</li></ul></div>
+<div class="scen base"><div class="nm">Base</div><div class="pt">$430</div><span class="prob">50%</span><ul><li>FY28 EPS ≈ consensus $7.8 at ~55x</li><li>Atlas growth drifts to mid/high-20s</li><li>Search resolves without disruption</li></ul></div>
+<div class="scen bear"><div class="nm">Bear</div><div class="pt">$250</div><span class="prob">25%</span><ul><li>Growth fades to mid-teens, field attrition after second CEO exit</li><li>EPS ~$7.1 at ~35x</li><li>Software multiples compress</li></ul></div></div>
+<p><b>Probability-weighted: ≈ $407 (+11%).</b></p>
+<div class="hz">3-year horizon (Oct 2029)</div>
+<div class="scen-grid">
+<div class="scen"><div class="nm">Bull</div><div class="pt">$850</div><span class="prob">25%</span><ul><li>Revenue CAGR ~26% to ~$6.0B (FY30)</li><li>Non-GAAP EPS ~$14 at ~60x</li><li>Document model wins agentic-AI memory layer</li></ul></div>
+<div class="scen base"><div class="nm">Base</div><div class="pt">$620</div><span class="prob">50%</span><ul><li>Revenue CAGR ~22% to ~$5.4B</li><li>EPS ~$11.5 at ~54x</li><li>Op margin ~28% non-GAAP</li></ul></div>
+<div class="scen bear"><div class="nm">Bear</div><div class="pt">$300</div><span class="prob">25%</span><ul><li>CAGR ~14% to ~$4.5B; Postgres erosion</li><li>EPS ~$8.5 at ~35x</li><li>SBC drag persists</li></ul></div></div>
+<p><b>Probability-weighted: ≈ $598 (+63%, ~18% annualized).</b></p>
+<div class="hz">5-year horizon (Oct 2031)</div>
+<div class="scen-grid">
+<div class="scen"><div class="nm">Bull</div><div class="pt">$1,300</div><span class="prob">20%</span><ul><li>Becomes a core data platform; ~$9B+ revenue</li><li>EPS ~$26 at ~50x</li></ul></div>
+<div class="scen base"><div class="nm">Base</div><div class="pt">$850</div><span class="prob">50%</span><ul><li>~$7B revenue, high-20s margins</li><li>EPS ~$18 at ~47x</li></ul></div>
+<div class="scen bear"><div class="nm">Bear</div><div class="pt">$330</div><span class="prob">30%</span><ul><li>Share loss to Postgres/hyperscalers; ~$5B revenue</li><li>EPS ~$11 at ~30x</li></ul></div></div>
+<p><b>Probability-weighted: ≈ $784 (+114%, ~16% annualized).</b></p>
+<div class="chart-grid"><div class="cbox"><div class="ct">Scenario price targets vs current<button class="zoom" data-c="c9">click to expand</button></div><div class="cv"><canvas id="c9"></canvas></div></div>
+<div class="cbox"><div class="ct">YoY revenue growth by quarter<button class="zoom" data-c="c10">click to expand</button></div><div class="cv"><canvas id="c10"></canvas></div></div></div>
+</div></section>
+
+<!-- S7 -->
+<section class="card" id="s7"><header><div class="num">7</div><h2>Risks &amp; Anti-Thesis (Steelman the Bear)</h2><span class="chev">▾</span></header><div class="body">
+<div class="risk"><h4>1. Leadership instability is a symptom, not a blip</h4><div class="meta"><span>Probability: 60%</span><span>Impact: High</span><span>Priced in: Partly (−17% on news)</span></div><p>Two CEOs in twelve months, the second leaving for a Big Tech role after ten months. If a permanent CEO takes 6–9 months, enterprise buyers, partners and sales talent will sense drift. The short case: the best executive candidates now know the seat has a revolving door, and Ittycheria's stopgap cannot set a new multi-year strategy.</p></div>
+<div class="risk"><h4>2. PostgreSQL and hyperscaler gravity cap the TAM MongoDB can win</h4><div class="meta"><span>Probability: 35%</span><span>Impact: High</span><span>Priced in: No</span></div><p>Every cloud ships a Postgres-compatible, JSON-capable database at lower prices, and AI-coding agents default to whatever stack is most represented in training data — historically relational. Atlas is also 100% dependent on AWS/Azure/GCP infrastructure whose owners compete with it.</p></div>
+<div class="risk"><h4>3. The growth print was flattered by lumpy licence revenue</h4><div class="meta"><span>Probability: 50%</span><span>Impact: Medium</span><span>Priced in: Partly</span></div><p>Enterprise Advanced grew +36% in Q2 after +13% in Q1; the Q3 revenue guide ($756–761M) sits below Q2's $771.8M. Atlas — the recurring engine — grew 29%, flat versus Q1. A 30% headline that normalizes to 25% would hit a stock priced for acceleration.</p></div>
+<div class="risk"><h4>4. Valuation leaves no margin for error, and GAAP profit is thin</h4><div class="meta"><span>Probability: 40%</span><span>Impact: High</span><span>Priced in: No</span></div><p>~10.8x sales, ~510x GAAP earnings, and ~$157M a quarter of excluded costs (~20% of revenue). Analyst consensus PT implies only +23% while the bear scenario implies −32%. Software multiple compression alone could erase a year of earnings growth.</p></div>
+<div class="risk"><h4>5. Insider selling and talent flight</h4><div class="meta"><span>Probability: 30%</span><span>Impact: Medium</span><span>Priced in: Yes</span></div><p>No open-market insider buying since April; several directors sold tens of millions of dollars into June–August strength. Meta's recruitment of the CEO shows rivals will poach leadership, and equity-comp retention gets harder if the share price stays below recent highs.</p></div>
+</div></section>
+
+<!-- S8 -->
+<section class="card" id="s8"><header><div class="num">8</div><h2>Catalyst Timeline</h2><span class="chev">▾</span></header><div class="body">
+<p style="font-size:12.5px;color:var(--muted)">Dates marked "est." are inferred from prior-year cadence and not yet confirmed by the company.</p>
+<div class="timeline">
+<div class="ev"><div class="d">Sep 28–30, 2026 · done</div><b>CEO exit + Investor Day</b><span>Desai departs for Meta; Ittycheria interim; Atlas Infinite (preview) and updated long-term targets announced; stock −17%.</span></div>
+<div class="ev"><div class="d">Q4 CY2026 · TBD</div><b>Permanent CEO announcement</b><span>Biggest binary event: an external heavyweight or credible internal pick likely closes the discount; a prolonged search extends it.</span></div>
+<div class="ev"><div class="d">~Dec 7, 2026 (est.)</div><b>Q3 FY27 earnings</b><span>Guide: revenue $756–761M, non-GAAP EPS $1.57–1.61. Test of Atlas durability after a lumpy Q2 and first read on post-CEO field behavior.</span></div>
+<div class="ev"><div class="d">Early Dec 2026 (est.)</div><b>AWS re:Invent / partner announcements</b><span>Hyperscaler partnership and AI-agent integrations; also a competitive-response window.</span></div>
+<div class="ev"><div class="d">Jan 31, 2027</div><b>FY27 year-end</b><span>Guide implies $2.99–3.03B revenue, $6.39–6.58 non-GAAP EPS.</span></div>
+<div class="ev"><div class="d">~Early Mar 2027 (est.)</div><b>Q4 FY27 results &amp; FY28 guide</b><span>Consensus FY28: $3.57B revenue, $7.79 EPS — a high bar for the initial guide.</span></div>
+<div class="ev"><div class="d">2027 · TBD</div><b>Atlas Infinite general availability</b><span>Compute/storage separation targets large-scale and cost-sensitive AI workloads.</span></div>
+<div class="ev"><div class="d">Macro</div><b>Rates &amp; software multiples</b><span>Fed policy and AI-capex sentiment drive growth-software multiples independent of MDB's execution.</span></div>
+</div></div></section>
+
+<!-- S9 -->
+<section class="card" id="s9"><header><div class="num">9</div><h2>Comparable Company Analysis</h2><span class="chev">▾</span></header><div class="body">
+<div class="tw"><table><tr><th>Company</th><th>Mkt Cap</th><th>Rev TTM</th><th>Rev Growth YoY (latest qtr)</th><th>P/E</th><th>P/S</th><th>FCF Margin</th><th>Net Margin</th><th>EV/EBITDA</th></tr>
+<tr><td><b>MongoDB (MDB)</b></td><td class="n">$30.0B</td><td class="n">$2.78B</td><td class="n pos">+30.5%</td><td class="n">~510x GAAP / 56x fwd</td><td class="n">10.8x</td><td class="n pos">23.7%</td><td class="n pos">2.1%</td><td class="n">n/m (&gt;1,900x)</td></tr>
+<tr><td>Snowflake (SNOW)</td><td class="n">$112.9B</td><td class="n">$5.43B</td><td class="n pos">+35.1%</td><td class="n">n/a (loss) / 133x fwd</td><td class="n">21.7x</td><td class="n pos">22.0%</td><td class="n neg">−20.1%</td><td class="n">n/m</td></tr>
+<tr><td>Datadog (DDOG)</td><td class="n">$91.4B</td><td class="n">$3.97B</td><td class="n pos">+35.6%</td><td class="n">519x</td><td class="n">24.1x</td><td class="n pos">29.8%</td><td class="n pos">4.5%</td><td class="n">~1,109x</td></tr>
+<tr><td>Elastic (ESTC)</td><td class="n">$10.2B</td><td class="n">$1.80B</td><td class="n pos">+15.1%</td><td class="n">27.7x</td><td class="n">5.7x</td><td class="n pos">19.4%</td><td class="n pos">20.8%*</td><td class="n">n/m</td></tr></table></div>
+<p style="font-size:12px;color:var(--muted)">Sources: StockAnalysis.com statistics and quarterly financials (Oct 16, 2026), company filings. *Elastic net margin inflated by a ~$395M tax benefit. EV/EBITDA is not meaningful for all four on GAAP EBITDA.</p>
+<p><b>Relative valuation.</b> MDB trades at about half the sales multiple of the two premium-growth data-infrastructure leaders (SNOW 21.7x, DDOG 24.1x) despite comparable FCF margins (23.7% vs 22.0%/29.8%) and a growth rate only ~5 points lower. The discount reflects (1) thinner GAAP profitability than DDOG, (2) the CEO overhang, and (3) a slower expected FY28 growth path (~18%). Against Elastic, the closest search/document-data peer, MDB earns a ~90% sales-multiple premium for twice the growth. If MDB closed a quarter of its gap to the SNOW/DDOG average multiple (~13.8x sales), it would trade near $470 — consistent with our one-year base-to-bull range. The honest read: MDB is the cheapest of the high-growth names, not a cheap stock.</p>
+<div class="chart-grid"><div class="cbox"><div class="ct">Growth vs FCF margin (%)<button class="zoom" data-c="c11">click to expand</button></div><div class="cv"><canvas id="c11"></canvas></div></div>
+<div class="cbox"><div class="ct">Market cap ($B)<button class="zoom" data-c="c12">click to expand</button></div><div class="cv"><canvas id="c12"></canvas></div></div></div>
+</div></section>
+
+<!-- S10 -->
+<section class="card" id="s10"><header><div class="num">10</div><h2>First-Principles KPIs</h2><span class="chev">▾</span></header><div class="body">
+<p>If the thesis is "a consumption flywheel with improving unit economics," five numbers tell us early whether it is intact:</p>
+<div class="chips"><div class="chip"><div class="l">1. Atlas YoY growth</div><div class="v">29%</div></div><div class="chip"><div class="l">2. RPO growth (cRPO)</div><div class="v">91% (73%)</div></div><div class="chip"><div class="l">3. Non-GAAP op margin</div><div class="v">24%</div></div><div class="chip"><div class="l">4. $100K+ customers</div><div class="v">2,999</div></div><div class="chip"><div class="l">5. TTM FCF / share</div><div class="v">$8.04</div></div></div>
+<ul><li><b>Atlas growth</b> is the engine: ≥28% = thesis intact; &lt;24% = flywheel slowing. (Q1: 29.4%, Q2: ~29%.)</li><li><b><a class="g" href="#g-rpo">RPO</a> / cRPO growth</b> leads revenue by 2–4 quarters; RPO +91% suggests multi-year commitments accelerated (some from large Enterprise Advanced deals).</li><li><b>Non-GAAP operating margin</b> shows whether scale is flowing through; 24% vs 15% a year ago is the key proof.</li><li><b>$100K+ customers</b> (2,999) captures land-and-expand health; watch the growth rate, not the level.</li><li><b>FCF per share</b> is the all-in owner metric after dilution.</li></ul>
+<div class="chart-grid"><div class="cbox"><div class="ct">Non-GAAP operating margin trend (%)<button class="zoom" data-c="c13">click to expand</button></div><div class="cv"><canvas id="c13"></canvas></div></div>
+<div class="cbox"><div class="ct">RPO growth vs cRPO growth (%)<button class="zoom" data-c="c14">click to expand</button></div><div class="cv"><canvas id="c14"></canvas></div></div></div>
+</div></section>
+
+<!-- S11 -->
+<section class="card" id="s11"><header><div class="num">11</div><h2>Glossary &amp; Methodology</h2><span class="chev">▾</span></header><div class="body">
+<div class="gl" id="g-ps"><h4>Price-to-Sales (P/S)</h4>Market cap ÷ trailing-twelve-month revenue. <code>30.05B ÷ 2.783B = 10.8x</code>. Why it matters: lets you compare unprofitable or margin-in-transition growth companies. FTA scale: &gt;30 Euphoric, &gt;18 Excited, &gt;8 Optimistic, 4–8 Aware, &lt;4 Cautious, &lt;2 Pessimistic. <a class="back" href="#r-ps">↑ back to text</a></div>
+<div class="gl" id="g-cagr"><h4>CAGR</h4>Compound annual growth rate: <code>(End ÷ Start)^(1/years) − 1</code>. MDB 5-yr revenue: (2,463.8 ÷ 590.4)^(1/5) − 1 ≈ 33%. Smooths lumpy years into one comparable number. <a class="back" href="#r-cagr">↑ back to text</a></div>
+<div class="gl" id="g-pe"><h4>P/E (price-to-earnings)</h4>Price ÷ earnings per share. GAAP includes stock comp; non-GAAP excludes it (flattering). Used here: GAAP TTM ~510x, non-GAAP TTM ~59x (TTM $6.19 = 1.90+1.32+1.65+1.32), forward FY27E ~56x. <a class="back" href="#s2">↑ back</a></div>
+<div class="gl" id="g-db"><h4>Document database</h4>A database storing flexible JSON-like documents rather than fixed rows and columns — suited to evolving application data and AI workloads. <a class="back" href="#s1">↑ back</a></div>
+<div class="gl" id="g-flywheel"><h4>Flywheel</h4>A self-reinforcing loop where each stage feeds the next and output compounds over time. Why it matters: it explains why growth can persist and margins can expand without proportional spend. <a class="back" href="#s3">↑ back</a></div>
+<div class="gl" id="g-sbc"><h4>Stock-based compensation (SBC)</h4>Equity paid to employees instead of cash; a real cost that dilutes owners. MDB's non-GAAP-to-GAAP operating income gap is ~$157M/quarter (185.9 − 28.4). <a class="back" href="#s4">↑ back</a></div>
+<div class="gl" id="g-rpo"><h4>RPO / cRPO</h4>Remaining performance obligations: contracted revenue not yet recognized (cRPO = portion due within 12 months). Leading indicator of revenue; MDB: $1,519M (+91%), cRPO $797M (+73%). <a class="back" href="#s10">↑ back</a></div>
+<div class="gl"><h4>Free cash flow (FCF) &amp; margin</h4><code>Operating cash flow − capex</code>; margin = FCF ÷ revenue. TTM: 666.6 − 7.6 = $659.0M, 23.7%. Shows cash left for owners. <a class="back" href="#s4">↑ back</a></div>
+<div class="gl"><h4>Current ratio</h4><code>Current assets ÷ current liabilities = 3,126.0 ÷ 642.4 = 4.87x</code>; &gt;1.5 is comfortable. <a class="back" href="#s4">↑ back</a></div>
+<div class="gl"><h4>Operating leverage</h4>Profit growing faster than revenue because costs scale slower. Evidence: revenue +30% vs R&amp;D +18%. <a class="back" href="#s4">↑ back</a></div>
+<div class="gl"><h4>Enterprise value (EV)</h4><code>Market cap + debt − cash</code> = 30.05B + 0.03B − 2.41B ≈ $27.7B. <a class="back" href="#s1">↑ back</a></div>
+<h3>Methodology &amp; sources</h3>
+<p style="font-size:13.5px">Price: Alpha Vantage Global Quote (Oct 15, 2026 close). Financials: Alpha Vantage statements (quarterly income, balance sheet, cash flow), cross-checked to MongoDB's Q2 FY27 8-K (SEC EDGAR). Peers: StockAnalysis.com (Oct 16, 2026). TAM: The Insight Partners. Q1 FY27 detail: TIKR, OpenCapital. CEO transition: Blocks &amp; Files, Constellation Research, Nasdaq. Insider data: Alpha Vantage insider transactions. Share count 82.0M from the Q2 balance sheet. Alpha Vantage's "reported EPS" mixes GAAP and non-GAAP; the tracker uses non-GAAP. Where inputs conflicted we favored the company release. <b>Educational research, not investment advice.</b></p>
+<div class="foot">FTA Research Hub · Thursday queue slot #3 (MDB) · generated autonomously 2026-10-16 · figures web-sourced; verify before acting.</div>
+</div></section>
+</div></main>
+<div id="modal"><div id="mbox"><button id="mclose">×</button><div id="mcv"><canvas id="mcanvas"></canvas></div></div></div>
+<script>
+const G='#145A22',GD='#0A3A14',GO='#FCC55B',GO2='#e0a838',RD='#a8341f',MU='#5d6155';
+Chart.defaults.font.family="Quicksand";Chart.defaults.font.size=10.5;Chart.defaults.color=MU;
+const base=()=>({responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false}},y:{grid:{color:'#eee7da'}}}});
+const Q=["Q3'25","Q4'25","Q1'26","Q2'26","Q3'26","Q4'26","Q1'27","Q2'27"];
+const cfgs={
+c1:{type:'bar',data:{labels:Q,datasets:[{data:[529.4,548.4,549.0,591.4,628.3,695.1,687.6,771.8],backgroundColor:G,borderRadius:4}]},options:base()},
+c2:{type:'doughnut',data:{labels:['Atlas $565.9M','Enterprise Adv. & other $181.2M','Services $24.6M'],datasets:[{data:[565.9,181.2,24.6],backgroundColor:[G,GO,RD],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,cutout:'58%',plugins:{legend:{position:'right',labels:{boxWidth:10}}}}},
+c3:{type:'bar',data:{labels:['ESTC','MDB','SNOW','DDOG'],datasets:[{data:[5.7,10.8,21.7,24.1],backgroundColor:[GO,G,GO2,GO2],borderRadius:4}]},options:base()},
+c4:{type:'bar',data:{labels:['FY21','FY22','FY23','FY24','FY25','FY26'],datasets:[{data:[590.4,873.8,1284.0,1683.0,2006.4,2463.8],backgroundColor:GD,borderRadius:4}]},options:base()},
+c5:{type:'bar',data:{labels:["Q2'26","Q3'26","Q4'26","Q1'27","Q2'27"],datasets:[{label:'FCF $M',data:[71.6,141.8,178.5,199.3,139.4],backgroundColor:G,borderRadius:4,yAxisID:'y'},{type:'line',label:'FCF margin %',data:[12.1,22.6,25.7,29.0,18.1],borderColor:GO2,backgroundColor:GO2,yAxisID:'y1',tension:.3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,labels:{boxWidth:10}}},scales:{x:{grid:{display:false}},y:{grid:{color:'#eee7da'}},y1:{position:'right',grid:{display:false}}}}},
+c6:{type:'line',data:{labels:["Q1'26","Q2'26","Q3'26","Q4'26","Q1'27","Q2'27"],datasets:[{label:'GAAP',data:[-9.8,-11.0,-2.9,0.0,-3.6,3.7],borderColor:RD,backgroundColor:RD,tension:.3},{label:'Non-GAAP',data:[16,15,null,null,18,24],borderColor:G,backgroundColor:G,tension:.3,spanGaps:true}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,labels:{boxWidth:10}}},scales:{x:{grid:{display:false}},y:{grid:{color:'#eee7da'}}}}},
+c7:{type:'bar',data:{labels:["Q3'25","Q4'25","Q1'26","Q2'26","Q3'26","Q4'26","Q1'27","Q2'27"],datasets:[{label:'Consensus',data:[0.69,0.67,0.66,0.66,0.79,1.47,1.18,1.61],backgroundColor:'#c9c1b0',borderRadius:3},{label:'Actual',data:[1.16,1.28,1.00,1.00,1.32,1.65,1.32,1.90],backgroundColor:G,borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,labels:{boxWidth:10}}},scales:{x:{grid:{display:false}},y:{grid:{color:'#eee7da'}}}}},
+c8:{type:'bar',data:{labels:["Q3'25","Q4'25","Q1'26","Q2'26","Q3'26","Q4'26","Q1'27","Q2'27"],datasets:[{data:[33.7,28.6,20.9,37.3,34.4,25.0,23.1,36.8],backgroundColor:GO2,borderRadius:4}]},options:base()},
+c9:{type:'bar',data:{labels:['1Y Bear','1Y Base','1Y Bull','3Y Bear','3Y Base','3Y Bull','5Y Bear','5Y Base','5Y Bull'],datasets:[{data:[250,430,520,300,620,850,330,850,1300],backgroundColor:[RD,GO,G,RD,GO,G,RD,GO,G],borderRadius:3}]},options:base()},
+c10:{type:'line',data:{labels:Q,datasets:[{data:[22.3,19.7,21.8,23.7,18.7,26.8,25.2,30.5],borderColor:G,backgroundColor:'rgba(20,90,34,.15)',fill:true,tension:.3}]},options:base()},
+c11:{type:'scatter',data:{datasets:[{label:'MDB',data:[{x:30.5,y:23.7}],backgroundColor:G,pointRadius:8},{label:'SNOW',data:[{x:35.1,y:22.0}],backgroundColor:GO2,pointRadius:8},{label:'DDOG',data:[{x:35.6,y:29.8}],backgroundColor:GD,pointRadius:8},{label:'ESTC',data:[{x:15.1,y:19.4}],backgroundColor:RD,pointRadius:8}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,labels:{boxWidth:10}}},scales:{x:{title:{display:true,text:'Rev growth %'},grid:{color:'#eee7da'}},y:{title:{display:true,text:'FCF margin %'},grid:{color:'#eee7da'}}}}},
+c12:{type:'bar',data:{labels:['ESTC','MDB','DDOG','SNOW'],datasets:[{data:[10.2,30.0,91.4,112.9],backgroundColor:[GO,G,GO2,GO2],borderRadius:4}]},options:{...base(),indexAxis:'y'}},
+c13:{type:'bar',data:{labels:["Q2'26","Q1'27","Q2'27"],datasets:[{data:[15,18,24],backgroundColor:G,borderRadius:4}]},options:base()},
+c14:{type:'bar',data:{labels:['RPO','cRPO'],datasets:[{data:[91,73],backgroundColor:[G,GO2],borderRadius:4}]},options:base()}
+};
+const inst={};
+Object.keys(cfgs).forEach(k=>{const el=document.getElementById(k);if(el)inst[k]=new Chart(el,JSON.parse(JSON.stringify(cfgs[k])))});
+let mc=null;
+document.querySelectorAll('.zoom').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();const k=b.dataset.c;document.getElementById('modal').classList.add('on');if(mc)mc.destroy();const c=JSON.parse(JSON.stringify(cfgs[k]));c.options=c.options||{};c.options.responsive=true;c.options.maintainAspectRatio=false;mc=new Chart(document.getElementById('mcanvas'),c)}));
+function closeM(){document.getElementById('modal').classList.remove('on');if(mc){mc.destroy();mc=null}}
+document.getElementById('mclose').onclick=closeM;document.getElementById('modal').addEventListener('click',e=>{if(e.target.id==='modal')closeM()});
+document.querySelectorAll('.card>header').forEach(h=>h.addEventListener('click',()=>h.parentElement.classList.toggle('closed')));
+</script></body></html>
