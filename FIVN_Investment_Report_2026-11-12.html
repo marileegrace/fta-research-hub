@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FIVN Investment Report — Five9 | FTA Research</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Questrial&family=Quicksand:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  --green:#145A22;--dark-green:#0A3A14;--forest:#243D27;--gold:#FCC55B;--gold-deep:#e0a838;
+  --beige:#EDE8E0;--beige-card:#f6f3ed;--ink:#23241f;--muted:#5d6155;--red:#a8341f;--line:#d8d1c4;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Quicksand',sans-serif;background:var(--beige);color:var(--ink);line-height:1.65;font-size:15.5px}
+a{color:var(--green);font-weight:600;text-decoration:none;border-bottom:1px dotted var(--green)}
+a:hover{color:var(--gold-deep);border-color:var(--gold-deep)}
+.layout{display:flex;min-height:100vh}
+/* Sidebar */
+.sidebar{width:262px;flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto;background:linear-gradient(180deg,#071f0b,#0A3A14 40%,#145A22);border-right:3px solid var(--gold);color:#fff;padding:28px 20px}
+.brand{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:28px;font-weight:600;color:var(--gold);line-height:1.1}
+.brand small{display:block;font-family:'Questrial',sans-serif;font-style:normal;font-size:10.5px;letter-spacing:2.5px;text-transform:uppercase;color:#cfe3d1;margin-top:6px}
+.ticker-box{margin:22px 0;background:rgba(255,255,255,.07);border:1px solid rgba(252,197,91,.45);border-radius:12px;padding:14px}
+.ticker-box .sym{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;color:var(--gold)}
+.ticker-box .nm{font-size:12px;color:#d7e6d9}
+.ticker-box .px{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:600;margin-top:6px}
+.ticker-box .chg{font-family:'JetBrains Mono',monospace;font-size:12px;color:#9fe0a9}
+.nav a{display:flex;gap:10px;align-items:center;color:#e8f1e9;border:none;font-weight:500;font-size:13.5px;padding:7px 8px;border-radius:8px;margin-bottom:2px}
+.nav a:hover{background:rgba(252,197,91,.15);color:var(--gold)}
+.nav .n{font-family:'JetBrains Mono',monospace;font-size:11px;width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;border:1px solid rgba(252,197,91,.6);border-radius:6px;color:var(--gold);flex-shrink:0}
+.side-foot{margin-top:20px;font-size:11px;color:#b8cdb9;line-height:1.5}
+/* Main */
+.main{flex:1;min-width:0}
+.hero{position:relative;overflow:hidden;background:linear-gradient(120deg,var(--dark-green),var(--green) 60%);color:#fff;padding:54px 48px 46px;border-bottom:4px solid var(--gold)}
+.hero::after{content:"";position:absolute;right:-120px;top:-120px;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(252,197,91,.35),rgba(252,197,91,0) 70%)}
+.hero .eyebrow{font-family:'Questrial',sans-serif;letter-spacing:3px;text-transform:uppercase;font-size:12px;color:var(--gold)}
+.hero h1{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:48px;line-height:1.08;margin:10px 0 12px;max-width:820px;position:relative;z-index:1}
+.hero p{max-width:760px;color:#e3efe4;font-size:16px;position:relative;z-index:1}
+.verdict{display:inline-flex;gap:12px;align-items:center;margin-top:20px;background:var(--gold);color:var(--dark-green);font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1.5px;font-size:13px;font-weight:700;padding:9px 18px;border-radius:999px;position:relative;z-index:1}
+.verdict .score{font-family:'JetBrains Mono',monospace;background:var(--dark-green);color:var(--gold);padding:3px 10px;border-radius:999px}
+.hero .meta{margin-top:16px;font-size:12.5px;color:#cfe3d1;position:relative;z-index:1}
+.kpi-strip{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;padding:18px 48px;background:var(--beige)}
+.kpi{background:var(--beige-card);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.kpi .l{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1.2px;font-size:10.5px;color:var(--muted)}
+.kpi .v{font-family:'JetBrains Mono',monospace;font-size:21px;font-weight:600;color:var(--green);margin-top:2px}
+.kpi .s{font-size:11.5px;color:var(--muted)}
+.content{max-width:1080px;margin:0 auto;padding:16px 48px 60px}
+/* Cards */
+.card{background:var(--beige-card);border:1px solid var(--line);border-radius:14px;margin:22px 0;overflow:hidden;box-shadow:0 2px 10px rgba(10,58,20,.05)}
+.card-h{display:flex;align-items:center;gap:14px;padding:16px 20px;border-left:5px solid var(--green);cursor:pointer;user-select:none;background:linear-gradient(90deg,rgba(20,90,34,.06),transparent)}
+.badge{width:34px;height:34px;border-radius:9px;background:var(--green);color:var(--gold);font-family:'JetBrains Mono',monospace;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.card-h h2{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:27px;color:var(--dark-green);flex:1;line-height:1.15}
+.chev{font-size:18px;color:var(--green);transition:transform .25s}
+.card.collapsed .chev{transform:rotate(-90deg)}
+.card.collapsed .card-b{display:none}
+.card-b{padding:6px 24px 24px}
+.card-b h3{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1.6px;font-size:13px;color:var(--green);margin:22px 0 8px;border-bottom:1px solid var(--line);padding-bottom:5px}
+.card-b p{margin:8px 0}
+.card-b ul{margin:8px 0 8px 22px}
+.card-b li{margin:4px 0}
+.thesis{font-family:'Cormorant Garamond',serif;font-size:24px;line-height:1.35;font-weight:500;border-left:4px solid var(--gold);padding:14px 20px;margin:14px 0;background:rgba(252,197,91,.09);color:var(--dark-green)}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0}
+.chip{background:#fff;border:1px solid var(--line);border-radius:10px;padding:9px 13px;min-width:128px;flex:1 1 128px}
+.chip .l{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:10px;color:var(--muted)}
+.chip .v{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:600;color:var(--green)}
+.chip .v.neg{color:var(--red)}
+.callout{background:rgba(252,197,91,.14);border:1px solid var(--gold);border-radius:10px;padding:13px 16px;margin:14px 0}
+.callout.note{background:rgba(20,90,34,.07);border-color:rgba(20,90,34,.35)}
+.callout b.t{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1.2px;font-size:11.5px;color:var(--dark-green);display:block;margin-bottom:3px}
+/* Tables */
+.tbl-wrap{overflow-x:auto;margin:12px 0;border-radius:10px;border:1px solid var(--line)}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{background:var(--green);color:#fff;font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:.8px;font-size:11px;text-align:left;padding:10px 11px;white-space:nowrap}
+td{padding:9px 11px;border-top:1px solid #ece6db;vertical-align:top}
+tr:nth-child(even) td{background:#faf8f3}
+tr:hover td{background:rgba(252,197,91,.16)}
+td.num{font-family:'JetBrains Mono',monospace;white-space:nowrap}
+.pos{color:var(--green);font-weight:600}.negv{color:var(--red);font-weight:600}
+tr.hl td{background:rgba(20,90,34,.08)!important;font-weight:600}
+.score-pill{font-family:'JetBrains Mono',monospace;font-size:12px;padding:2px 8px;border-radius:999px;background:rgba(20,90,34,.12);color:var(--green);font-weight:700;white-space:nowrap}
+.score-pill.mid{background:rgba(252,197,91,.3);color:#7a5a12}
+.score-pill.low{background:rgba(168,52,31,.12);color:var(--red)}
+/* Charts */
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}
+.chart-box{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px 10px;cursor:zoom-in;position:relative}
+.chart-box.solo{max-width:420px}
+.chart-box .ct{display:flex;justify-content:space-between;align-items:center;font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1.2px;font-size:11px;color:var(--dark-green);margin-bottom:6px}
+.zoom{font-size:9.5px;color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:2px 6px;background:var(--beige-card)}
+.chart-box .cv{position:relative;height:160px}
+.chart-src{font-size:10.5px;color:var(--muted);margin-top:4px}
+.modal{position:fixed;inset:0;background:rgba(7,31,11,.78);display:none;align-items:center;justify-content:center;z-index:1000;padding:24px}
+.modal.open{display:flex}
+.modal-box{background:var(--beige-card);border:2px solid var(--gold);border-radius:16px;width:min(1000px,100%);padding:18px 22px;position:relative}
+.modal-box h4{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1.5px;color:var(--dark-green);font-size:13px;margin-bottom:10px}
+.modal-close{position:absolute;right:14px;top:10px;background:var(--green);color:var(--gold);border:none;border-radius:8px;width:32px;height:32px;font-size:18px;cursor:pointer}
+.modal-cv{position:relative;height:min(62vh,520px)}
+/* Scenarios */
+.scen-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:14px 0}
+.scen{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px;border-top:5px solid var(--gold)}
+.scen.bull{border-top-color:var(--green)}.scen.bear{border-top-color:var(--red)}
+.scen .hd{display:flex;justify-content:space-between;align-items:center}
+.scen .nm{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:1.4px;font-size:12px;color:var(--muted)}
+.scen .prob{font-family:'JetBrains Mono',monospace;font-size:11.5px;background:var(--beige);border-radius:999px;padding:2px 9px;font-weight:600}
+.scen .pt{font-family:'JetBrains Mono',monospace;font-size:30px;font-weight:700;color:var(--green);margin:6px 0 2px}
+.scen.bear .pt{color:var(--red)}.scen.base .pt{color:#9a6c10}
+.scen .ud{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted)}
+.scen ul{margin:8px 0 0 18px;font-size:13.5px}
+.horizon{font-family:'Questrial',sans-serif;text-transform:uppercase;letter-spacing:2px;font-size:12.5px;color:var(--dark-green);margin-top:18px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px}
+.horizon span.w{font-family:'JetBrains Mono',monospace;letter-spacing:0;color:var(--green);font-weight:700}
+/* Risks */
+.risk{background:#fff;border:1px solid var(--line);border-left:4px solid var(--red);border-radius:10px;padding:14px 16px;margin:12px 0}
+.risk h4{color:var(--red);font-family:'Questrial',sans-serif;font-size:15px;letter-spacing:.5px;margin-bottom:6px}
+.tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px}
+.tag{font-family:'JetBrains Mono',monospace;font-size:11px;padding:2px 9px;border-radius:999px;background:rgba(168,52,31,.09);color:var(--red);border:1px solid rgba(168,52,31,.25)}
+.tag.g{background:rgba(20,90,34,.08);color:var(--green);border-color:rgba(20,90,34,.25)}
+.tag.y{background:rgba(252,197,91,.22);color:#7a5a12;border-color:rgba(224,168,56,.5)}
+/* Timeline */
+.timeline{position:relative;margin:16px 0 6px 8px;padding-left:28px}
+.timeline::before{content:"";position:absolute;left:7px;top:4px;bottom:4px;width:3px;border-radius:3px;background:linear-gradient(180deg,var(--green),var(--gold))}
+.tl{position:relative;margin-bottom:18px}
+.tl::before{content:"";position:absolute;left:-28px;top:4px;width:15px;height:15px;border-radius:50%;background:var(--gold);border:3px solid var(--green)}
+.tl .d{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--green);font-weight:600}
+.tl .e{font-weight:700}
+.tl .x{color:var(--muted);font-size:14px}
+/* Glossary */
+.gl{background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 15px;margin:10px 0;scroll-margin-top:20px}
+.gl h4{font-family:'Questrial',sans-serif;color:var(--dark-green);font-size:15px;letter-spacing:.4px}
+.gl .f{font-family:'JetBrains Mono',monospace;font-size:12.5px;background:var(--beige);border-radius:6px;padding:3px 8px;display:inline-block;margin:4px 0}
+.gl .back{font-size:12px;float:right}
+.gl:target{border-color:var(--gold);box-shadow:0 0 0 3px rgba(252,197,91,.4)}
+.foot{font-size:12px;color:var(--muted);text-align:center;margin-top:30px;line-height:1.6}
+@media (max-width:880px){.chart-grid,.scen-grid{grid-template-columns:1fr}.chart-box.solo{max-width:none}}
+@media (max-width:780px){.sidebar{display:none}.kpi-strip{grid-template-columns:repeat(3,1fr);padding:14px 16px}.content{padding:10px 16px 40px}.hero{padding:38px 20px}.hero h1{font-size:34px}}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside class="sidebar">
+  <div class="brand">FTA Research<small>Foundational Trading Academy</small></div>
+  <div class="ticker-box">
+    <div class="sym">FIVN</div>
+    <div class="nm">Five9, Inc. · NASDAQ</div>
+    <div class="px">$28.07</div>
+    <div class="chg">Close Nov 11, 2026 · +1.15%</div>
+  </div>
+  <nav class="nav">
+    <a href="#s1"><span class="n">01</span>Executive Summary</a>
+    <a href="#s2"><span class="n">02</span>Micro &amp; Valuation</a>
+    <a href="#s3"><span class="n">03</span>Moat &amp; Management</a>
+    <a href="#s4"><span class="n">04</span>Financial Deep Dive</a>
+    <a href="#s5"><span class="n">05</span>Earnings Tracker</a>
+    <a href="#s6"><span class="n">06</span>Scenarios</a>
+    <a href="#s7"><span class="n">07</span>Risks &amp; Anti-Thesis</a>
+    <a href="#s8"><span class="n">08</span>Catalyst Timeline</a>
+    <a href="#s9"><span class="n">09</span>Comparable Companies</a>
+    <a href="#s10"><span class="n">10</span>First-Principles KPIs</a>
+    <a href="#s11"><span class="n">11</span>Glossary &amp; Method</a>
+  </nav>
+  <div class="side-foot">Report date: Nov 12, 2026<br>Data through Q3 FY2026 (reported Nov 5, 2026). Not investment advice.</div>
+</aside>
+
+<main class="main">
+<header class="hero">
+  <div class="eyebrow">Deep-Dive Equity Research · Software / Customer Experience (CCaaS)</div>
+  <h1>Five9: The Market Is Pricing an AI Casualty. The Numbers Show a Company Speeding Up.</h1>
+  <p>Subscription growth has sped up for four quarters in a row, AI revenue nearly doubled, and the business throws off an ~8% free-cash-flow yield. Yet the stock trades at 1.7× sales after a 20% post-earnings drop. We think the market is fixed on a guidance cut and a pricey acquisition and is missing the bigger change underneath.</p>
+  <div class="verdict">Verdict: Contrarian Long · Asymmetric <span class="score">7 / 10</span></div>
+  <div class="meta">Price $28.07 (Nov 11, 2026 close) · Market cap ≈ $2.11B · 52-week range $13.29 – $40.00 · Next report ≈ late Feb 2027</div>
+</header>
+
+<section class="kpi-strip">
+  <div class="kpi"><div class="l">Price</div><div class="v">$28.07</div><div class="s">−18% since Q3 print</div></div>
+  <div class="kpi"><div class="l">Market Cap</div><div class="v">$2.11B</div><div class="s">≈75.3M shares</div></div>
+  <div class="kpi"><div class="l">Rev Growth (Q3)</div><div class="v">+13.1%</div><div class="s">Subscription +16%</div></div>
+  <div class="kpi"><div class="l">FY26 FCF Guide</div><div class="v">~$175M</div><div class="s">≈8.3% FCF yield</div></div>
+  <div class="kpi"><div class="l">P/S (TTM)</div><div class="v">1.70×</div><div class="s">"Pessimistic" zone</div></div>
+  <div class="kpi"><div class="l">Analyst PT</div><div class="v">$36.10</div><div class="s">Consensus "Buy" (21)</div></div>
+</section>
+
+<div class="content">
+
+<!-- SECTION 1 -->
+<section class="card" id="s1">
+  <div class="card-h"><div class="badge">1</div><h2>Executive Summary &amp; Investment Thesis</h2><span class="chev">▾</span></div>
+  <div class="card-b">
+    <div class="thesis"><b>Bull thesis:</b> Five9 is changing from a company that sells seats to one that sells AI-driven results, and the change is already showing in the numbers. Subscription growth went from 12% to 16% in four quarters. AI is now 17% of subscription revenue and growing 91%. At about 7× <a href="#g-evebitda">EV/EBITDA</a> and 1.7× <a href="#g-ps">sales</a>, the price assumes the company is being disrupted, while the data points to a recovery. We rate it a <b>contrarian long, conviction 7/10</b>, with a probability-weighted 1-year value of about $34 and a 3-year value of about $50.</div>
+
+    <div class="chips">
+      <div class="chip"><div class="l">Sector</div><div class="v" style="font-size:14px">Software · CCaaS / CX AI</div></div>
+      <div class="chip"><div class="l">Q3 Revenue</div><div class="v">$323.3M</div></div>
+      <div class="chip"><div class="l">AI Revenue Q3</div><div class="v">~$45M · +91%</div></div>
+      <div class="chip"><div class="l">Sub. <a href="#g-dbnrr">DBRR</a></div><div class="v">109%</div></div>
+      <div class="chip"><div class="l"><a href="#g-adjebitda">Adj. EBITDA</a> Mgn</div><div class="v">25.1%</div></div>
+      <div class="chip"><div class="l">Fwd <a href="#g-pe">P/E</a> (FY26)</div><div class="v">8.8×</div></div>
+      <div class="chip"><div class="l">Net Cash (pre-deal)</div><div class="v neg">≈ −$50M</div></div>
+      <div class="chip"><div class="l">Conviction</div><div class="v">7 / 10</div></div>
+    </div>
+
+    <h3>Why the stock fell, and why we think the reaction went too far</h3>
+    <p>On November 5, Five9 reported Q3 revenue of $323.3M (+13.1% YoY). That was above the top of its own $316–322M guidance range and its strongest growth in two years. <a href="#g-nongaap">Non-GAAP EPS</a> was $0.82 against a $0.80 consensus. Even so, shares fell from about $34 to $27.40, roughly 20%. Three things drove the selloff. Full-year EPS guidance was cut to $3.19 from $3.26, because a planned restructuring was pushed into 2027 and the share count came in higher. Management agreed to buy Level AI for $325M in cash, about 16× its ~$20M of current <a href="#g-arr">ARR</a>, a deal it says will cut 2027 EBITDA margin by about 1 point. And the CFO warned that strong AI ramps will make 2027 year-over-year comparisons hard.</p>
+    <p>All three are real, but they are about the next few quarters, not the next several years. The underlying trend is what decides the stock over 3–5 years, and it is clearly improving. Subscription revenue grew 12% → 13% → 14% → 16% over the last four quarters. Subscription retention went from 105% to 109%. A ~$100M <a href="#g-tcv">TCV</a> win was announced in Q2. <a href="#g-rpo">RPO</a> reached $1.6B. Five9 also retired about 3.5M shares at $25.97 in its September <a href="#g-asr">ASR</a>, which tells us management sees value close to today's price.</p>
+
+    <h3>The non-consensus insight</h3>
+    <p>The common view is that AI agents shrink the number of human agents in contact centers, and so they shrink a seat-priced vendor's revenue. That holds for a company that only sells seats. Five9 is moving the other way. Its AI products (Agent Assist, Genius Routing, Voice AI Agents) are priced on usage and outcomes, and Level AI adds a standalone AI layer that can be sold to contact centers running <i>competitors'</i> platforms, including on-premise ones. The real <a href="#g-tam">TAM</a> is the labor budget, not the software budget, and labor spending in contact centers is many times larger than CCaaS software spending. If Five9 captures even a small slice of the labor it automates, revenue per customer can rise while seat counts fall. Today's price leaves almost nothing for that outcome.</p>
+
+    <div class="callout"><b class="t">Asymmetry in one line</b>At 7× EBITDA with about $700M of cash and investments, Five9 is valued like a business in decline. The bear case (~$19) is down about 32%; the base case (~$34) is up about 21%; the bull case (~$45, or ~$80 over 3 years) is up 60–185%. Five9 also has takeover appeal: Zoom offered about $14.7B for it in 2021, and private equity has already taken out a peer (Verint, Thoma Bravo, 2025).</div>
+  </div>
+</section>
+
+<!-- SECTION 2 -->
+<section class="card" id="s2">
+  <div class="card-h"><div class="badge">2</div><h2>Microeconomic &amp; Valuation Analysis</h2><span class="chev">▾</span></div>
+  <div class="card-b">
+    <h3>Industry &amp; TAM</h3>
+    <p>Five9 sells cloud contact-center software (<a href="#g-ccaas">CCaaS</a>). This is the system that routes customer calls, chats and messages to human or AI agents, records and scores them, and connects to CRMs like Salesforce and ServiceNow. Grand View Research projects the CCaaS market will reach about <b>$17.1B by 2030</b> at an <b>18.4% <a href="#g-cagr">CAGR</a></b>. Research &amp; Markets puts 2025–2030 growth at about 16.5%. Cloud penetration of the roughly 17M-seat global agent base is still incomplete, and much of the enterprise market still runs on-premise Avaya, Cisco and Genesys systems. That installed base is the replacement pool for every CCaaS vendor.</p>
+    <p>The bigger opportunity sits next to CCaaS: <b>AI for customer experience</b>. NICE reported AI ARR of $392M (+46%), and Five9's AI business runs at roughly $180M ARR (+91%). Hyperscalers (Google CES, AWS Connect, Microsoft) and AI-native startups (Sierra, Decagon, Cresta) are all competing for the same automation budget. We think the right way to frame the market is that CCaaS becomes the system of record and orchestration layer, while AI becomes the revenue layer on top.</p>
+
+    <div class="chart-grid">
+      <div class="chart-box" data-chart="tam"><div class="ct">CCaaS market path (Grand View, 18.4% CAGR) <span class="zoom">click to expand</span></div><div class="cv"><canvas id="c_tam"></canvas></div><div class="chart-src">Interpolated from Grand View Research's 2030 estimate; illustrative.</div></div>
+      <div class="chart-box" data-chart="mcap"><div class="ct">Market cap vs. peers ($B) <span class="zoom">click to expand</span></div><div class="cv"><canvas id="c_mcap"></canvas></div><div class="chart-src">StockAnalysis, Alpha Vantage quotes (Nov 11, 2026); peers approximate.</div></div>
+    </div>
+
+    <h3>Valuation multiples</h3>
+    <div class="chips">
+      <div class="chip"><div class="l">P/S TTM</div><div class="v">1.70×</div></div>
+      <div class="chip"><div class="l">P/E GAAP TTM</div><div class="v">39.6×</div></div>
+      <div class="chip"><div class="l">P/E Non-GAAP FY26</div><div class="v">8.8×</div></div>
+      <div class="chip"><div class="l">EV/Adj. EBITDA TTM</div><div class="v">≈7.1×</div></div>
+      <div class="chip"><div class="l"><a href="#g-fcfy">FCF Yield</a></div><div class="v">≈8.3%</div></div>
+      <div class="chip"><div class="l">Beta</div><div class="v">1.55</div></div>
+    </div>
+    <p><b><a href="#g-ps">P/S</a> scale:</b> at 1.70×, Five9 sits in the <b>"Pessimistic" (&lt;2)</b> zone on the FTA sentiment scale (&gt;30 Euphoric · &gt;18 Excited · &gt;8 Optimistic · 4–8 Aware · &lt;4 Cautious · &lt;2 Pessimistic). As recently as 2021 the same company was valued at more than 20× sales. The market now prices it like a legacy telecom vendor, even though it has 62% adjusted gross margins, more than 80% recurring revenue, and growth that is speeding up.</p>
+    <p>The trailing GAAP P/E of about 40× is misleading. GAAP earnings carry heavy stock-based compensation and acquisition amortization, which non-GAAP figures add back. FY26 non-GAAP EPS of $3.19 gives about 8.8×. Our 2027 non-GAAP estimate of about $3.45 (organic, before Level AI dilution) gives about 8.1×. On FCF, the ~$175M FY26 guide is an 8.3% yield on market cap. DA Davidson's $30 target uses 10× 2027E FCF, a multiple we think is too low for a business whose subscription revenue is growing mid-teens.</p>
+
+    <h3>Ownership &amp; insider activity</h3>
+    <p>The shareholder base is almost entirely institutional. 13F activity in 2026 was mixed. Pictet Asset Management sold about 5.4M shares (reported July 2026), and First Trust cut its position. Gagnon Securities added. Five9 joined the <b>S&amp;P SmallCap 600 on August 3, 2026</b>, which pulled in passive buying but also confirms how far it has fallen from large-cap status.</p>
+    <p><b>Insiders:</b> there were no open-market purchases in 2026. Executives sold repeatedly. In March 2026, sales were near $17.70–$17.98, mostly tax-withholding sales after the February RSU vest. In June, sales were near $24–25. In late August and September, sales were near $31.50–$35, including President Andy Dignan (≈17.8K shares at $35.03 on Aug 28) and CFO Bryan Lee (≈19K shares at ~$33 on Sep 4). CEO Amit Mathradas received a 716,743-share grant in February 2026 and has not sold. Many of these sales look like scheduled or tax-related trades, but no insider buying at $17 or $28 is a fair point against the bull case.</p>
+    <div class="chart-grid">
+      <div class="chart-box" data-chart="insider"><div class="ct">Insider sales by month (shares) &amp; avg price <span class="zoom">click to expand</span></div><div class="cv"><canvas id="c_insider"></canvas></div><div class="chart-src">Form 4 data via Alpha Vantage. Grants excluded.</div></div>
+      <div class="chart-box" data-chart="analyst"><div class="ct">Analyst targets after Q3 ($) <span class="zoom">click to expand</span></div><div class="cv"><canvas id="c_analyst"></canvas></div><div class="chart-src">Investing.com, MarketBeat, StockAnalysis (Nov 2026).</div></div>
+    </div>
+    <h3>Analyst growth estimates</h3>
+    <p>Consensus expects about <b>9.7% revenue growth over the next 12 months</b> (StockStory), and organic 2027 revenue of about <b>$1.39B</b>, which management called "a reasonable starting point." That works out to about 9% growth on the $1.272B FY26 midpoint, even though Q3 grew 13%. Analysts are clearly baking in a 2027 slowdown from tough AI comparisons. After Q3, targets were cut: Barclays to $38 (Overweight), DA Davidson to $30 from $33 (Neutral), Needham held $40 (Buy), and Wells Fargo and Truist also lowered targets. Consensus sits near $36.</p>
+  </div>
+</section>
+
+<!-- SECTION 3 -->
+<section class="card" id="s3">
+  <div class="card-h"><div class="badge">3</div><h2>Qualitative Analysis — Moat, Management &amp; Culture</h2><span class="chev">▾</span></div>
+  <div class="card-b">
+    <h3>The moat, viewed as a system</h3>
+    <p>A contact center is the nervous system of a company's customer relationships. It ties together telephony carriers, CRM data, workforce scheduling, compliance recording (PCI, HIPAA, TCPA), quality scoring, and now AI models. Replacing it means re-plumbing hundreds of integrations and retraining thousands of agents, and a bad cutover can mean dropped calls during peak season. Five9's <a href="#g-moat">moat</a> is therefore mostly about <b>switching costs and operational embedding</b>, not network effects. That shows in its LTM subscription retention, which sits above 100% even during a weak 2025.</p>
+    <p>The moat is narrower than it was in 2020. CCaaS has partly become a commodity: NICE CXone, Genesys Cloud, Talkdesk, AWS Connect, and Zoom Contact Center all offer comparable routing. Where we think a new moat is forming is in <b>data gravity</b>. Every interaction Five9 handles produces a labeled dataset (intent, outcome, agent action, sentiment). That dataset makes AI routing and Agent Assist better, which brings in more AI volume. Level AI's QA and analytics engine strengthens this loop by letting Five9 collect interaction data from contact centers that don't run Five9's own platform. That is the real strategic logic behind the acquisition. It is a purchase of data reach more than of revenue.</p>
+    <div class="callout note"><b class="t">Moat scorecard</b>Switching costs: <b>Strong</b> · Data and AI flywheel: <b>Emerging</b> · Scale vs. NICE and Genesys: <b>Weaker</b> (about 40% of NICE's revenue) · Brand in the mid-market: <b>Strong</b> · Ecosystem (Google, Salesforce, ServiceNow; over 80% of business partner-influenced): <b>Good, but dependent on partners</b>.</div>
+
+    <h3>Founder-led? Management &amp; board</h3>
+    <p>Five9 is <b>no longer founder-led</b>. Long-time CEO Mike Burkland, who built the company from a $13 IPO in 2014 to about $1.1B of revenue, stepped back to the board. <b>Amit Mathradas</b>, formerly CEO of workflow-automation company Nintex, was named CEO late in 2025 and took over in February 2026. Since taking over he has rebuilt the leadership team: a new CTO (Niranjan Vijayaragavan), a new Chief Sales Officer (Robert Hornish), an EVP of Transformation &amp; Strategy, and a new Chief Marketing &amp; Growth Officer. CFO <b>Bryan Lee</b> was promoted from interim CFO in July 2025. So many changes at once are a risk to execution, but the growth pickup through 2026 has happened on the new team's watch.</p>
+    <h3>Capital allocation</h3>
+    <p>The record is mixed but getting better. On the positive side, the company repaid its 2025 convertible notes in cash, bought back about $150M of stock in the last 12 months (including the $90M ASR at an average of $25.97), approved a new $200M program, and kept diluted share count roughly flat (≈76.4M in Q2'26 vs. ≈76.7M in Q2'25). On the negative side, Level AI at about 16× trailing ARR is expensive, and past acquisitions (Inference, Virtual Observer, Aceyus) did not clearly speed up growth. The $747.5M of 1% convertible notes due 2029 leaves net cash slightly negative before the deal and about −$370M after it closes, which is still easy to manage at roughly 1.2× EBITDA.</p>
+    <h3>Culture &amp; organizational traits</h3>
+    <ul>
+      <li><b>Customer obsession:</b> Five9 has historically ranked highly on Gartner Peer Insights and G2 for mid-market service. The open-ecosystem approach (letting customers bring their own AI partners) puts customer choice ahead of lock-in.</li>
+      <li><b>Innovation pace:</b> It has picked up: Voice AI Agents launched in Q2'26, Genius Routing is scaling, and an agentic CX roadmap was laid out. Management says Level AI pulls the roadmap forward by about 12 months, which also admits that internal R&amp;D was falling behind.</li>
+      <li><b>Failure tolerance:</b> Moderate. The new CEO started open "portfolio deep dives" and has said he is willing to cut products, which suggests a culture shifting from defending legacy products to reallocating capital.</li>
+      <li><b>Talent density and meritocracy:</b> Heavy turnover in the C-suite. The new leaders bring payments and scale-SaaS experience. The restructuring delayed into early 2027 suggests layers are being removed, which should help decision speed.</li>
+      <li><b>Decentralization:</b> Go-to-market is moving toward partner-led sales (Google, Salesforce) and a separate team for standalone AI, which looks like a sensible split into business units.</li>
+    </ul>
+    <h3>Ethics</h3>
+    <p>We found no material governance controversies. Executive pay is heavily equity-based, and large RSU grants were made in February 2026. The 2021 Zoom deal was rejected by shareholders, so this board has a history of shareholders pushing back on strategic decisions. That could matter if a take-private bid arrives at a low premium.</p>
+  </div>
+</section>
+
+<!-- SECTION 4 -->
+<section class="card" id="s4">
+  <div class="card-h"><div class="badge">4</div><h2>Quantitative Analysis — Financial Deep Dive</h2><span class="chev">▾</span></div>
+  <div class="card-b">
+    <h3>Revenue streams, explained simply</h3>
+    <ul>
+      <li><b>Core CCaaS subscription (~$223M in Q3, +8% YoY):</b> customers pay per agent seat per month for the cloud contact-center platform. Steady, but growth matches seat growth.</li>
+      <li><b>AI subscription and usage (~$45M in Q3, +91% YoY):</b> Agent Assist, Genius Routing, IVA and Voice AI Agents, intelligent QA. Usually priced per interaction or per minute. Now 17% of subscription revenue, up from 10% a year ago.</li>
+      <li><b>Telecom usage (~11% of revenue, ~$36M):</b> pass-through minutes and carrier fees. Low margin, tracks call volume.</li>
+      <li><b>Professional services (~6%, ~$19M):</b> implementation and AI deployment work. Usually breaks even, but it is the entry point for large migrations.</li>
+    </ul>
+    <div class="chart-grid">
+      <div class="chart-box" data-chart="rev"><div class="ct">Quarterly revenue ($M) &amp; YoY growth <span class="zoom">click to expand</span></div><div class="cv"><canvas id="c_rev"></canvas></div><div class="chart-src">Company filings via Alpha Vantage.</div></div>
+      <div class="chart-box" data-chart="mix"><div class="ct">Q3 FY26 revenue mix ($M) <span class="zoom">click to expand</span></div><div class="cv"><canvas id="c_mix"></canvas></div><div class="chart-src">Q3'26 call: subscription $268.3M (CCaaS $223.3M + AI ≈$45M); telecom ≈11%, services ≈6%.</div></div>
+    </div>
+
+    <h3>Growth by stream (YoY / QoQ)</h3>
+    <div class="tbl-wrap"><table>
+      <tr><th>Metric</th><th>Q4'25</th><th>Q1'26</th><th>Q2'26</th><th>Q3'26</th><th>Trend</th></tr>
+      <tr><td>Total revenue YoY</td><td class="num">+7.8%</td><td class="num">+9.2%</td><td class="num">+10.3%</td><td class="num pos">+13.1%</td><td>Accelerating ▲</td></tr>
+      <tr><td>Total revenue QoQ</td><td class="num">+5.1%</td><td class="num">+1.7%</td><td class="num">+2.3%</td><td class="num pos">+3.5%</td><td>Seasonal, healthy</td></tr>
+      <tr><td>Subscription YoY</td><td class="num">+12%</td><td class="num">+13%</td><td class="num">+14%</td><td class="num pos">+16%</td><td>4 straight accelerations</td></tr>
+      <tr><td>AI revenue YoY</td><td class="num">+50%</td><td class="num">+68%</td><td class="num">&gt;sub. growth</td><td class="num pos">+91%</td><td>Hypergrowth</td></tr>
+      <tr><td>Core CCaaS YoY</td><td class="num">+8%</td><td class="num">n/d</td><td class="num">n/d</td><td class="num">+8%</td><td>Flat-steady</td></tr>
+      <tr><td>LTM Sub. DBRR</td><td class="num">105%*</td><td class="num">107%</td><td class="num">107%</td><td class="num pos">109%</td><td>Inflecting ▲</td></tr>
+    </table></div>
+    <p style="font-size:12px;color:var(--muted)">*Q4'25 figure is total DBRR; the company moved to subscription DBRR in Q1'26 (total DBRR was 105% in Q1'26). n/d = not disclosed.</p>
+
+    <h3>Free cash flow, OCF &amp; margins</h3>
+    <div class="chart-grid">
+      <div class="chart-box" data-chart="cf"><div class="ct">Operating cash flow vs. FCF ($M) <span class="zoom">click to expand</span></div><div class="cv"><canvas id="c_cf"></canvas></div><div class="chart-src">OCF and capex from 10-Q/10-K via Alpha Vantage. FCF = OCF − purchases of PP&amp;E; mgmt-defined FCF (which also subtracts capitalized software) is lower, e.g., Q3'26 $43M.</div></div>
+      <div class="chart-box" data-chart="ni"><div class="ct">GAAP net income ($M) &amp; net margin <span class="zoom">click to expand</span></div><div class="cv"><canvas id="c_ni"></canvas></div><div class="chart-src">Company filings via Alpha Vantage.</div></div>
+    </div>
+    <p><b>FCF:</b> Management-defined FCF was $49M in Q1'26 (16% of revenue), about $15M in Q2'26 (4.9%, hurt by a data-center refresh, with capex near 3.1% of revenue for the year), and $43M in Q3'26 (13%). The FY26 guide is about $175M, a ~13.8% margin, with Q4 implied near $68M. FCF margin has more than doubled since 2023 (FY23 OCF $129M less capex $31M ≈ $98M, ~10.7%). Nine-month OCF of $164.4M is up 15% YoY.</p>
+    <p><b>FCF per share:</b> since the diluted share count is roughly flat (~76M), FCF per share tracks FCF. On an OCF − PP&amp;E capex basis it rose from about $1.06 (FY24: $78.6M) to about $2.63 (FY25: $201.2M). On management's stricter definition, the FY26E figure is about $2.30 ($175M ÷ ~76M). Either way, FCF per share has more than doubled in two years.</p>
+    <p><b>Dilution check:</b> Basic shares were 74.5M at YE24, and diluted weighted shares were about 76.7M in Q2'25 and about 76.4M in Q2'26. Buybacks ($150M LTM) have fully offset stock-based compensation, which ends Five9's history of 2–3% annual dilution. The FY EPS cut was partly caused by a <i>higher</i> share count from the stock's rally (more in-the-money convert and RSU dilution in the diluted count). That is a mechanical effect, not an operating miss.</p>
+
+    <div class="chips">
+      <div class="chip"><div class="l">Cash + ST Inv.</div><div class="v">$697.7M</div></div>
+      <div class="chip"><div class="l">Convertible Debt</div><div class="v neg">$747.5M</div></div>
+      <div class="chip"><div class="l">Coupon / Due</div><div class="v">1.0% · 2029</div></div>
+      <div class="chip"><div class="l"><a href="#g-current">Current Ratio</a></div><div class="v">4.0×</div></div>
+      <div class="chip"><div class="l">RPO</div><div class="v">$1.6B</div></div>
+      <div class="chip"><div class="l">Post-Level AI cash</div><div class="v">≈$370M+</div></div>
+    </div>
+
+    <h3>Long-run growth (CAGR)</h3>
+    <div class="chart-grid">
+      <div class="chart-box" data-chart="annual"><div class="ct">Annual revenue 2015–2026E ($M) <span class="zoom">click to expand</span></div><div class="cv"><canvas id="c_annual"></canvas></div><div class="chart-src">10-K data; 2026E = guidance midpoint $1.272B.</div></div>
+      <div class="chart-box" data-chart="margin"><div class="ct">Margin structure by quarter (%) <span class="zoom">click to expand</span></div><div class="cv"><canvas id="c_margin"></canvas></div><div class="chart-src">Adj. EBITDA margin from releases; GAAP op. margin computed from filings.</div></div>
+    </div>
+    <p>Revenue CAGR: <b>5-year (2020→2025) ≈ 21.4%</b>, which StockStory measures at 17.1%, and <b>10-year (2015→2025) ≈ 24.5%</b>. Both are well above the ~16–18% CCaaS industry CAGR, though much of that came from the COVID-era boom in cloud migration. The 2-year annualized rate of 11.3% is the cyclical low that the market is extrapolating forward.</p>
+
+    <h3>Operating leverage, cost scaling &amp; the flywheel</h3>
+    <p><a href="#g-oplev">Operating leverage</a> is visible in GAAP results. GAAP operating income went from −$98.6M in FY23 to −$51.3M in FY24 to +$32.6M in FY25, and reached $34.8M over the first nine months of FY26. Over FY23–FY25, revenue grew 26% while R&amp;D stayed nearly flat (about $160M a year). Adjusted EBITDA margin rose from about 19% (Q1'25) to about 25% (Q3'26). Adjusted gross margin slipped to 61.7% from 62.8%, because of cost timing with a large partner and the data-center refresh. Management expects it to improve in Q4.</p>
+    <p><b>Margin expansion drivers:</b> (1) mix shift toward AI and subscription (higher margin than telecom and services); (2) the end of the data-center refresh (capex returns to about 2% of revenue); (3) the 2027 org redesign; (4) Level AI becoming accretive by 2028. <b>Headwinds:</b> GPU and LLM inference costs inside AI products, and partner revenue share on Google-sourced deals.</p>
+    <div class="callout note"><b class="t">Flywheel</b>More interactions → more labeled outcome data → better AI routing and automation → better customer results (lower handle time, higher containment) → more AI consumption and wider deployment (DBRR ↑) → more interactions. Level AI widens the top of this loop to contact centers that don't run Five9.</div>
+  </div>
+</section>
+
+<!-- SECTION 5 -->
+<section class="card" id="s5">
+  <div class="card-h"><div class="badge">5</div><h2>Earnings Tracker — Management Credibility</h2><span class="chev">▾</span></div>
+  <div class="card-b">
+    <p>This table compares eight quarters of specific promises with what actually happened. Scores run from 1 (broken) to 10 (beat, with conviction).</p>
+    <div class="tbl-wrap"><table>
+      <tr><th>Quarter / Date</th><th>Specific Promise / Guidance</th><th>Actual Result</th><th>Credibility</th></tr>
+      <tr><td>Q4'24 · Feb 20, 2025</td><td>FY25 revenue $1.140–1.144B; non-GAAP EPS $2.58–2.62</td><td>FY25 revenue <b>$1.149B</b>; EPS <b>$2.96</b>. Both above the original range.</td><td><span class="score-pill">9</span></td></tr>
+      <tr><td>Q1'25 · May 1, 2025</td><td>Q1 revenue $271.5–272.5M; EPS $0.47–0.49</td><td>Revenue <b>$279.7M</b>; EPS <b>$0.62</b>. A big beat on both.</td><td><span class="score-pill">9</span></td></tr>
+      <tr><td>Q2'25 · Jul 31, 2025</td><td>Q3 revenue $283–286M; EPS $0.72–0.74; FY25 $1.1435–1.1495B</td><td>Q3 revenue <b>$285.8M</b> (upper half, not above the range); EPS <b>$0.78</b>.</td><td><span class="score-pill mid">7</span></td></tr>
+      <tr><td>Q3'25 · Nov 6, 2025</td><td>FY25 revenue narrowed to $1.143–1.149B (top end trimmed); EPS raised to $2.92–2.96</td><td>Revenue landed at the top of the cut range; EPS hit $2.96. Stock fell 14%, because the top-line cut followed CEO-transition uncertainty.</td><td><span class="score-pill mid">6</span></td></tr>
+      <tr><td>Q4'25 · Feb 19, 2026</td><td>FY26 revenue ≈$1.254B mid; EPS $3.18; FCF ≈$175M; "double-digit growth in H2'26"; DBRR to inflect in H2</td><td>Q3'26 growth <b>13.1%</b> ✓; DBRR <b>109%</b> ✓; FY revenue now $1.272B mid ✓; FCF still ~$175M ✓; EPS now $3.19 (≈flat vs. original).</td><td><span class="score-pill">9</span></td></tr>
+      <tr><td>Q1'26 · Apr 30, 2026</td><td>Q2 revenue $303–309M; EPS $0.65–0.69; complete $90M ASR by end of Q3; FY EPS raised to $3.26</td><td>Q2 revenue <b>$312.4M</b> (above range); EPS <b>$0.70</b>; ASR completed Sept 30 at $25.97 ✓. FY EPS later cut to $3.19 ✗.</td><td><span class="score-pill mid">7</span></td></tr>
+      <tr><td>Q2'26 · Aug 6, 2026</td><td>Q3 revenue $316–322M; EPS $0.77–0.81; FY $1.260–1.272B / $3.22–3.30; AI growth ≥60%</td><td>Q3 revenue <b>$323.3M</b> (above range); EPS <b>$0.82</b> (above range); AI guide raised to ≥75%. FY EPS cut below the old range ✗.</td><td><span class="score-pill mid">7</span></td></tr>
+      <tr><td>Q3'26 · Nov 5, 2026</td><td>Q4 revenue $328–334M; EPS $0.88–0.92; FY26 adj. EBITDA ≥24%; Level AI close in Q4; Level AI EBITDA breakeven in about 6 months; Investor Day moved to 2027; org redesign moved to early 2027</td><td><i>Pending.</i> Delayed Investor Day and org work are small credibility hits; delivery on Q4 will be tested in Feb 2027.</td><td><span class="score-pill low">—</span></td></tr>
+    </table></div>
+    <div class="chart-grid">
+      <div class="chart-box" data-chart="eps"><div class="ct">Non-GAAP EPS: actual vs. consensus <span class="zoom">click to expand</span></div><div class="cv"><canvas id="c_eps"></canvas></div><div class="chart-src">Company releases; consensus via Alpha Vantage / StockStory.</div></div>
+      <div class="chart-box" data-chart="cred"><div class="ct">Credibility score by quarter <span class="zoom">click to expand</span></div><div class="cv"><canvas id="c_cred"></canvas></div><div class="chart-src">FTA scoring (1–10).</div></div>
+    </div>
+    <div class="callout"><b class="t">Verdict on credibility — 7.7 / 10</b>Five9 has beaten consensus EPS in every quarter since Q3 2017 (37 in a row), and has beaten the top of its revenue guidance three quarters in a row. The weak spot is planning: margin guidance and timing commitments (the org redesign, the Investor Day, the FY EPS range) have slipped. Management is reliable on revenue and less reliable on costs and timelines. The market is currently punishing it for the second while ignoring the first.</div>
+  </div>
+</section>
+
+<!-- SECTION 6 -->
+<section class="card" id="s6">
+  <div class="card-h"><div class="badge">6</div><h2>Bull / Bear / Base Case Scenarios</h2><span class="chev">▾</span></div>
+  <div class="card-b">
+    <p>The price targets below are <a href="#g-pwpt">probability-weighted</a>. Each one is built as an EPS (or FCF) estimate times a multiple that fits the growth rate in that scenario. Starting price: $28.07.</p>
+
+    <div class="horizon">1-Year Horizon (Nov 2027) <span>Weighted: <span class="w">$34.30 (+22%)</span></span></div>
+    <div class="scen-grid">
+      <div class="scen bull"><div class="hd"><span class="nm">Bull</span><span class="prob">30%</span></div><div class="pt">$45</div><div class="ud">+60% · 12× FY28E EPS $3.75</div><ul><li>2027 revenue about $1.42B (+12%, Level AI adds ~2 pts)</li><li>AI stays above 50% growth despite tough comps; sub. DBRR at 110%+</li><li>Org redesign lifts adj. EBITDA margin to ~26% excluding Level AI</li><li>Multiple re-rates as the "AI loser" view fades; possible PE bid</li></ul></div>
+      <div class="scen base"><div class="hd"><span class="nm">Base</span><span class="prob">50%</span></div><div class="pt">$34</div><div class="ud">+21% · ~10× FY27E EPS $3.45</div><ul><li>2027 organic revenue $1.39B (+9%), in line with consensus</li><li>AI growth slows to ~40–50%; CCaaS core +6–8%</li><li>~1 pt of Level AI margin dilution; FCF ~$190M</li><li>Buybacks keep the share count flat</li></ul></div>
+      <div class="scen bear"><div class="hd"><span class="nm">Bear</span><span class="prob">20%</span></div><div class="pt">$19</div><div class="ud">−32% · 6× EPS $3.10</div><ul><li>Growth falls back to 6–7% as AI cuts seats faster than AI revenue grows</li><li>Level AI integration stalls; another guidance cut in Feb 2027</li><li>Gross margin squeezed by inference costs</li><li>Retests the 2026 low zone ($13–18)</li></ul></div>
+    </div>
+
+    <div class="horizon">3-Year Horizon (Nov 2029) <span>Weighted: <span class="w">$49.60 (+77%)</span></span></div>
+    <div class="scen-grid">
+      <div class="scen bull"><div class="hd"><span class="nm">Bull</span><span class="prob">30%</span></div><div class="pt">$80</div><div class="ud">+185% · 14.5× EPS $5.50</div><ul><li>Revenue about $2.0B (~16% CAGR); AI ≥40% of subscription</li><li>Standalone AI (Level AI) wins on Genesys, NICE, and Avaya floors</li><li>Adj. EBITDA margin 29–30%; FCF over $350M</li></ul></div>
+      <div class="scen base"><div class="hd"><span class="nm">Base</span><span class="prob">45%</span></div><div class="pt">$48</div><div class="ud">+71% · 10.5× EPS $4.60</div><ul><li>Revenue about $1.75B (~11% CAGR)</li><li>2029 converts refinanced or settled with cash</li><li>Margin 27%; buybacks retire about 2% a year</li></ul></div>
+      <div class="scen bear"><div class="hd"><span class="nm">Bear</span><span class="prob">25%</span></div><div class="pt">$16</div><div class="ud">−43% · 6× EPS $2.60</div><ul><li>Revenue stalls near $1.4B; seat compression around −5% a year</li><li>Hyperscaler agents (Google CES, AWS Connect) take the AI layer</li><li>Converts refinanced at a high coupon</li></ul></div>
+    </div>
+
+    <div class="horizon">5-Year Horizon (Nov 2031) <span>Weighted: <span class="w">$64.10 (+128%)</span></span></div>
+    <div class="scen-grid">
+      <div class="scen bull"><div class="hd"><span class="nm">Bull</span><span class="prob">25%</span></div><div class="pt">$125</div><div class="ud">+345% · 15.5× EPS $8.00</div><ul><li>Revenue about $2.7B; outcome-based pricing captures part of labor savings</li><li>Five9 becomes the neutral "AI control plane" for CX</li><li>FCF margin above 25%</li></ul></div>
+      <div class="scen base"><div class="hd"><span class="nm">Base</span><span class="prob">45%</span></div><div class="pt">$65</div><div class="ud">+132% · 11× EPS $5.90</div><ul><li>Revenue about $2.1B (~10% CAGR)</li><li>A durable mid-cap CX platform, or acquired at a premium along the way</li></ul></div>
+      <div class="scen bear"><div class="hd"><span class="nm">Bear</span><span class="prob">30%</span></div><div class="pt">$12</div><div class="ud">−57% · disintermediated</div><ul><li>AI-native agents replace the CCaaS layer for digital-first companies</li><li>Five9 shrinks to a legacy-voice cash cow</li></ul></div>
+    </div>
+    <div class="chart-grid">
+      <div class="chart-box" data-chart="scen"><div class="ct">Scenario price targets by horizon ($) <span class="zoom">click to expand</span></div><div class="cv"><canvas id="c_scen"></canvas></div><div class="chart-src">FTA estimates.</div></div>
+      <div class="chart-box" data-chart="ev"><div class="ct">Probability-weighted value vs. price ($) <span class="zoom">click to expand</span></div><div class="cv"><canvas id="c_ev"></canvas></div><div class="chart-src">FTA estimates; current price $28.07.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 7 -->
+<section class="card" id="s7">
+  <div class="card-h"><div class="badge">7</div><h2>Risks &amp; Anti-Thesis (Steelman the Bear Case)</h2><span class="chev">▾</span></div>
+  <div class="card-b">
+    <p>If we were short FIVN, these are the five arguments we would make.</p>
+    <div class="risk"><h4>1 · AI eats the seat base faster than AI revenue replaces it</h4>
+      <div class="tags"><span class="tag">Probability: 35%</span><span class="tag">Impact: Severe</span><span class="tag y">Partly priced in</span></div>
+      <p>Core CCaaS grew only 8%, roughly in line with concurrent seats. If AI agents handle 30–50% of contacts by 2029, seat counts could fall by double digits. AI revenue of about $45M a quarter is still small next to about $223M of seat-based CCaaS. A 10% drop in seats removes about $90M of annual revenue, which is more than the whole AI business generates today. The 91% AI growth also flatters the picture because it starts from a low base. Management itself warned about "difficult year-over-year comparisons for 2027."</p></div>
+    <div class="risk"><h4>2 · Level AI is an expensive admission that internal R&amp;D fell behind</h4>
+      <div class="tags"><span class="tag">Probability: 40%</span><span class="tag">Impact: Moderate</span><span class="tag y">Largely priced in</span></div>
+      <p>$325M is 15% of market cap and about 47% of cash, spent on ~$20M of ARR (~16× trailing, ~11× NTM), while Five9 itself trades at 1.7× sales. The deal dilutes margins by about 1 pt in 2027, and management says it is "not counting on measurable financial contribution in the very near term." Five9's past AI acquisitions (Inference Solutions, Aceyus) did not change its growth path. Buying back $325M of stock at 8× earnings could have created more value with certainty.</p></div>
+    <div class="risk"><h4>3 · Competitive squeeze from above and below</h4>
+      <div class="tags"><span class="tag">Probability: 45%</span><span class="tag">Impact: High</span><span class="tag y">Partly priced in</span></div>
+      <p>NICE (2.4× Five9's revenue, $392M AI ARR) and Genesys own the top of the enterprise market. Piper Sandler noted in January 2026 that Five9 is "less competitive at the high end." Hyperscalers (Google CES, AWS Connect, Microsoft Dynamics Contact Center) can bundle AI agents almost for free. AI-native players (Sierra, Decagon) sell straight to CX leaders and skip CCaaS entirely. Google is a partner today and a possible competitor tomorrow. Over 80% partner-influenced revenue means Five9 relies on companies whose incentives may change.</p></div>
+    <div class="risk"><h4>4 · Execution risk from a rebuilt leadership team</h4>
+      <div class="tags"><span class="tag">Probability: 30%</span><span class="tag">Impact: Moderate</span><span class="tag g">Not fully priced in</span></div>
+      <p>The CEO (since Feb 2026), CFO, CTO, CSO, CMO, and EVP of Strategy have all been in their roles less than about 18 months. The org redesign slipped from Q4'26 to early 2027, the Investor Day slipped to 2027, and FY EPS was cut despite a revenue beat. Insiders sold steadily from $18 to $35 with no open-market buys. A restructuring during sales-force integration (adding the Level AI team) risks disrupting the pipeline just as tough AI comps arrive.</p></div>
+    <div class="risk"><h4>5 · Balance sheet and macro sensitivity</h4>
+      <div class="tags"><span class="tag">Probability: 20%</span><span class="tag">Impact: Moderate</span><span class="tag g">Not priced in</span></div>
+      <p>After Level AI closes, net debt is about $370M against $747.5M of 1% converts due 2029. Refinancing in 2028–29 at 5–7% would cost $30–45M a year in extra interest, about 15–20% of FCF. Contact-center volume and seats are cyclical: a recession hits BPOs and retail customers first, and the stock's 1.55 beta reflects that. Telecom usage (11% of revenue) swings with call volume.</p></div>
+    <div class="callout note"><b class="t">Our rebuttal, in brief</b>Risk #1 is the main debate, but the data so far argues against it. Subscription retention <i>rose</i> from 105% to 109% while AI adoption sped up, which means existing customers are spending more, not less. Risk #2 is real, but at $325M it is a bounded mistake, not a fatal one. Risks #3–5 are why the stock sits at 7× EBITDA rather than 15×.</div>
+  </div>
+</section>
+
+<!-- SECTION 8 -->
+<section class="card" id="s8">
+  <div class="card-h"><div class="badge">8</div><h2>Catalyst Timeline</h2><span class="chev">▾</span></div>
+  <div class="card-b">
+    <div class="timeline">
+      <div class="tl"><div class="d">Q4 2026 (Nov–Dec)</div><div class="e">Level AI acquisition closes</div><div class="x">$325M cash deal; ~$20M ARR growing ~50%. Watch for early cross-sell announcements and the remaining $200M buyback authorization.</div></div>
+      <div class="tl"><div class="d">Mid-Dec 2026</div><div class="e">FOMC rate decision (macro)</div><div class="x">High-beta (1.55) small-cap software is sensitive to rates; lower rates help both the multiple and the 2029 convert refinancing math.</div></div>
+      <div class="tl"><div class="d">Early 2027</div><div class="e">Org-structure redesign executed</div><div class="x">Delayed from Q4'26. The size of cost savings sets the 2027 margin path; a restructuring charge is likely in Q1.</div></div>
+      <div class="tl"><div class="d">~Late Feb 2027</div><div class="e">Q4 FY26 earnings + first formal FY27 guidance</div><div class="x">The key event. Consensus is near $1.39B organic revenue. A guide at or above that, plus Level AI added on top, could reset the narrative.</div></div>
+      <div class="tl"><div class="d">Mar 2027</div><div class="e">Enterprise Connect (industry conference)</div><div class="x">Annual CX and contact-center conference; agentic AI product launches and competitive positioning versus NICE and Genesys.</div></div>
+      <div class="tl"><div class="d">Apr 2027</div><div class="e">Google Cloud Next</div><div class="x">Gemini and CES partnership updates; Google-sourced pipeline is a key channel.</div></div>
+      <div class="tl"><div class="d">~Late Apr / early May 2027</div><div class="e">Q1 FY27 earnings: first tough-comp quarter</div><div class="x">Management guided Q1'27 revenue about flat with Q4'26. AI growth deceleration will be tested.</div></div>
+      <div class="tl"><div class="d">2027 (TBD)</div><div class="e">Investor Day</div><div class="x">Rescheduled from 2026. Likely to bring multi-year margin and AI-mix targets, a classic re-rating catalyst.</div></div>
+      <div class="tl"><div class="d">Ongoing</div><div class="e">Take-private / strategic M&amp;A optionality</div><div class="x">EV of ~$2.2B, ~$300M EBITDA, and a sticky recurring base fit a typical PE LBO profile (see Thoma Bravo/Verint). Zoom offered ~$14.7B in 2021.</div></div>
+      <div class="tl"><div class="d">Mar 2029</div><div class="e">$747.5M 1% convertible notes mature</div><div class="x">Refinancing or cash settlement; at current cash generation it is manageable without dilution.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 9 -->
+<section class="card" id="s9">
+  <div class="card-h"><div class="badge">9</div><h2>Comparable Company Analysis</h2><span class="chev">▾</span></div>
+  <div class="card-b">
+    <div class="tbl-wrap"><table>
+      <tr><th>Company</th><th>Mkt Cap</th><th>Rev TTM</th><th>Rev Gr. YoY</th><th>P/E</th><th>P/S</th><th>FCF Mgn</th><th>Net Mgn</th><th>EV/EBITDA</th></tr>
+      <tr class="hl"><td><b>Five9 (FIVN)</b></td><td class="num">$2.11B</td><td class="num">$1.24B</td><td class="num pos">+13.1%</td><td class="num">39.6× / 8.8× fwd</td><td class="num">1.70×</td><td class="num">~13.8%</td><td class="num">4.5%</td><td class="num">~7.1×</td></tr>
+      <tr><td>NICE Ltd (NICE)</td><td class="num">$4.91B</td><td class="num">$3.01B</td><td class="num">+8.0%</td><td class="num">9.3× / 7.2× fwd</td><td class="num">1.63×</td><td class="num">19.5%</td><td class="num">17.6%</td><td class="num">5.5×</td></tr>
+      <tr><td>RingCentral (RNG)</td><td class="num">~$6.3B</td><td class="num">~$2.63B</td><td class="num">+5.9%</td><td class="num">n/m* / ~14.7× fwd</td><td class="num">~2.4×</td><td class="num">~23.5%</td><td class="num">n/m*</td><td class="num">~10×</td></tr>
+      <tr><td>Twilio (TWLO)</td><td class="num">~$33.9B</td><td class="num">~$5.7B</td><td class="num pos">+20% (16% org.)</td><td class="num">~60×</td><td class="num">~5.9×</td><td class="num">~20%</td><td class="num">~9%</td><td class="num">~25×</td></tr>
+      <tr><td>8x8 (EGHT)</td><td class="num">small-cap</td><td class="num">~$0.76B</td><td class="num">low-single</td><td class="num">n/m</td><td class="num">&lt;1×</td><td class="num">~8–10%</td><td class="num">neg.</td><td class="num">~7×</td></tr>
+    </table></div>
+    <p style="font-size:12px;color:var(--muted)">Sources: StockAnalysis, Alpha Vantage quotes (Nov 11, 2026), Q3 2026 filings and releases. *RNG Q3 GAAP net income of $569.7M includes a ~$545M tax valuation-allowance release. Figures marked "~" are FTA approximations built from the latest quarter and FY guidance. 8x8 TTM reflects its FY27 revenue guide of $750–770M.</p>
+    <div class="chart-grid">
+      <div class="chart-box" data-chart="psg"><div class="ct">P/S vs. revenue growth <span class="zoom">click to expand</span></div><div class="cv"><canvas id="c_psg"></canvas></div><div class="chart-src">FTA compilation.</div></div>
+      <div class="chart-box" data-chart="peer"><div class="ct">FCF margin vs. EV/EBITDA <span class="zoom">click to expand</span></div><div class="cv"><canvas id="c_peer"></canvas></div><div class="chart-src">FTA compilation.</div></div>
+    </div>
+    <h3>Relative valuation read-through</h3>
+    <p>Among direct CCaaS peers, <b>Five9 has the fastest growth and the second-lowest multiple</b>. NICE trades cheaper on EV/EBITDA (5.5×), but its cloud growth has been cut twice this year (to about 12% from 14.5–15%), its AI ARR growth is slowing (52% → 46%), and FCF fell to $69M from $164M. NICE's momentum is fading while Five9's is building. RingCentral grows less than half as fast at about 6% but trades at a higher P/S (2.4×) and a forward P/E near 15×. Twilio shows what a re-rating looks like: once growth reached about 20% with strong FCF, the market paid about 6× sales.</p>
+    <p>If Five9 simply traded at RingCentral's ~2.4× sales, the stock would be about $40. At 10× EV/EBITDA, in line with RNG, it would be about $38. Neither scenario requires Five9 to be valued as an AI winner. Both only require the market to stop pricing it as a loser.</p>
+  </div>
+</section>
+
+<!-- SECTION 10 -->
+<section class="card" id="s10">
+  <div class="card-h"><div class="badge">10</div><h2>First-Principles KPIs</h2><span class="chev">▾</span></div>
+  <div class="card-b">
+    <p>These five leading indicators will settle the AI-casualty vs. AI-beneficiary debate before the income statement does:</p>
+    <ul>
+      <li><b>KPI 1 · AI revenue as a % of subscription:</b> 10% → 17% in a year. The thesis needs about 25% by end-2027. This is the clearest single measure of whether outcome-based monetization is replacing seats.</li>
+      <li><b>KPI 2 · LTM subscription DBRR:</b> 105/107% → 109%. Above 110% means AI expansion is outrunning seat losses. A drop below 105% would break the thesis.</li>
+      <li><b>KPI 3 · Subscription growth minus core CCaaS growth (the "AI spread"):</b> Q3: 16% − 8% = 8 pts. A widening spread means AI is carrying the growth.</li>
+      <li><b>KPI 4 · Adj. EBITDA margin net of inference costs:</b> 22.4–25.7% range. It needs to hold at 24% or higher while absorbing Level AI, which would show AI is not lowering unit economics.</li>
+      <li><b>KPI 5 · Concurrent seat growth:</b> currently about equal to CCaaS growth (~8%). A turn negative would confirm the bear case's seat-cannibalization fear. Watch disclosures closely.</li>
+    </ul>
+    <div class="chart-grid">
+      <div class="chart-box" data-chart="kpi1"><div class="ct">KPI 1 &amp; 3 — Subscription vs. AI growth (%) <span class="zoom">click to expand</span></div><div class="cv"><canvas id="c_kpi1"></canvas></div><div class="chart-src">Earnings releases and calls; Q2'26 AI growth not disclosed (est.).</div></div>
+      <div class="chart-box" data-chart="kpi2"><div class="ct">KPI 2 &amp; 4 — DBRR &amp; Adj. EBITDA margin (%) <span class="zoom">click to expand</span></div><div class="cv"><canvas id="c_kpi2"></canvas></div><div class="chart-src">Earnings releases.</div></div>
+    </div>
+    <div class="chart-grid">
+      <div class="chart-box" data-chart="aishare"><div class="ct">KPI 1 — AI share of subscription revenue (%) <span class="zoom">click to expand</span></div><div class="cv"><canvas id="c_aishare"></canvas></div><div class="chart-src">Q3'25 10%, Q3'26 17% (disclosed); 2027 target is FTA thesis threshold.</div></div>
+      <div class="chart-box" data-chart="arr"><div class="ct">AI run-rate ($M) <span class="zoom">click to expand</span></div><div class="cv"><canvas id="c_arr"></canvas></div><div class="chart-src">Q4'25 Enterprise AI ARR &gt;$100M; Q1'26 &gt;$125M; Q3'26 ≈$180M (Investing.com/DA Davidson).</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 11 -->
+<section class="card" id="s11">
+  <div class="card-h"><div class="badge">11</div><h2>Glossary &amp; Methodology</h2><span class="chev">▾</span></div>
+  <div class="card-b">
+    <div class="gl" id="g-ps"><a class="back" href="#s2">↩ back</a><h4>P/S (Price-to-Sales)</h4><div class="f">Market Cap ÷ Trailing-12-Month Revenue</div><p>Shows how much investors pay per dollar of revenue. It is useful for companies whose GAAP earnings are held down by non-cash charges. FTA scale: &gt;30 Euphoric, &gt;18 Excited, &gt;8 Optimistic, 4–8 Aware, &lt;4 Cautious, &lt;2 Pessimistic.</p></div>
+    <div class="gl" id="g-pe"><a class="back" href="#s1">↩ back</a><h4>P/E (Price-to-Earnings)</h4><div class="f">Share Price ÷ EPS</div><p>Measures how many years of current earnings you are paying for. "Forward" uses expected next-year EPS. GAAP and non-GAAP P/E can differ a lot for software companies.</p></div>
+    <div class="gl" id="g-evebitda"><a class="back" href="#s1">↩ back</a><h4>EV/EBITDA</h4><div class="f">(Market Cap + Debt − Cash) ÷ EBITDA</div><p>A valuation that accounts for both debt and cash. It makes companies with different balance sheets comparable. Below 8× is usually considered value territory for software.</p></div>
+    <div class="gl" id="g-adjebitda"><a class="back" href="#s1">↩ back</a><h4>Adjusted EBITDA</h4><div class="f">Net Income + Interest + Taxes + D&amp;A + Stock Comp + One-offs</div><p>A management-defined profit measure that strips out non-cash and non-recurring items. It is useful, but it flatters companies that pay heavily in stock, so always check it against FCF.</p></div>
+    <div class="gl" id="g-nongaap"><a class="back" href="#s1">↩ back</a><h4>Non-GAAP EPS</h4><div class="f">Adjusted Net Income ÷ Diluted Shares</div><p>Earnings per share that exclude stock comp, amortization of acquired intangibles, and similar items. This is the figure Wall Street consensus tracks.</p></div>
+    <div class="gl" id="g-dbnrr"><a class="back" href="#s1">↩ back</a><h4>DBRR / DBNRR (Dollar-Based Retention Rate)</h4><div class="f">LTM revenue from a customer cohort ÷ that cohort's revenue a year earlier</div><p>Above 100% means existing customers spend more over time, net of churn and downgrades. It is the cleanest read on whether customers are expanding or shrinking.</p></div>
+    <div class="gl" id="g-arr"><a class="back" href="#s1">↩ back</a><h4>ARR (Annual Recurring Revenue)</h4><div class="f">Current monthly recurring revenue × 12</div><p>The annualized value of recurring contracts, a forward-looking snapshot of subscription scale.</p></div>
+    <div class="gl" id="g-tcv"><a class="back" href="#s1">↩ back</a><h4>TCV (Total Contract Value)</h4><div class="f">Sum of all payments over the full contract term</div><p>Shows the size of a multi-year deal. A $100M TCV contract over five years is about $20M a year.</p></div>
+    <div class="gl" id="g-rpo"><a class="back" href="#s1">↩ back</a><h4>RPO (Remaining Performance Obligations)</h4><div class="f">Contracted revenue not yet recognized</div><p>Backlog of committed revenue. It can jump when one customer signs a longer contract, so management says it is not a forecasting tool.</p></div>
+    <div class="gl" id="g-asr"><a class="back" href="#s1">↩ back</a><h4>ASR (Accelerated Share Repurchase)</h4><div class="f">Company pays a bank upfront → receives most shares immediately</div><p>A way to retire a large block of stock quickly. The final price is settled later against the average price over the period.</p></div>
+    <div class="gl" id="g-tam"><a class="back" href="#s1">↩ back</a><h4>TAM (Total Addressable Market)</h4><p>The total revenue opportunity if a company captured 100% of its market. For AI-for-CX companies, the relevant TAM can include part of the labor budget, not only software spend.</p></div>
+    <div class="gl" id="g-ccaas"><a class="back" href="#s2">↩ back</a><h4>CCaaS (Contact Center as a Service)</h4><p>Cloud-hosted contact-center software (routing, IVR, recording, analytics, AI) sold by subscription, as opposed to on-premise hardware such as legacy Avaya or Cisco systems.</p></div>
+    <div class="gl" id="g-cagr"><a class="back" href="#s2">↩ back</a><h4>CAGR (Compound Annual Growth Rate)</h4><div class="f">(End ÷ Start)^(1 ÷ Years) − 1</div><p>The smoothed annual growth rate over a period, which removes year-to-year noise.</p></div>
+    <div class="gl" id="g-fcfy"><a class="back" href="#s2">↩ back</a><h4>FCF Yield</h4><div class="f">Free Cash Flow ÷ Market Cap</div><p>The cash return the business generates relative to its price. Above 8% for a growing company is unusual and often signals mispricing or hidden risk.</p></div>
+    <div class="gl" id="g-moat"><a class="back" href="#s3">↩ back</a><h4>Moat</h4><p>A durable competitive advantage (switching costs, network effects, scale, data, brand) that protects returns from competition over time.</p></div>
+    <div class="gl" id="g-current"><a class="back" href="#s4">↩ back</a><h4>Current Ratio</h4><div class="f">Current Assets ÷ Current Liabilities</div><p>Short-term liquidity. Above 1.5× is comfortable. Five9 is at about 4.0×.</p></div>
+    <div class="gl" id="g-oplev"><a class="back" href="#s4">↩ back</a><h4>Operating Leverage</h4><div class="f">% change in operating income ÷ % change in revenue</div><p>When costs grow more slowly than revenue, each extra dollar of sales adds more profit. This is the main way software margins expand.</p></div>
+    <div class="gl" id="g-pwpt"><a class="back" href="#s6">↩ back</a><h4>Probability-Weighted Price Target</h4><div class="f">Σ (Scenario Price × Probability)</div><p>The expected value across bull, base, and bear outcomes, which forces you to think about the full distribution rather than a single point.</p></div>
+    <h3>Methodology</h3>
+    <p>Financial statements come from Five9's 10-Q/10-K filings (via Alpha Vantage) and the Q3 2026 earnings release and call (Nov 5, 2026). Prices are Nov 11, 2026 closes. Non-GAAP figures are company-defined. Scenario values apply growth-adjusted EPS multiples (6×–15.5×) to FTA's EPS estimates. Probabilities reflect our judgment of the distribution of outcomes. Peer figures marked "~" are approximations built from the latest quarterly results and full-year guidance. Credibility scores compare specific guidance against reported results.</p>
+    <p style="font-size:12.5px;color:var(--muted)"><b>Key sources:</b> Five9 Q1–Q3 2026 and Q2/Q4 2024–2025 earnings releases (Business Wire / SEC 8-K); Q3 2026 earnings call transcript (The Motley Fool); StockStory; StockAnalysis; Investing.com (DA Davidson note); MarketBeat; Futurum Group; Yahoo Finance (Piper Sandler downgrade); NICE, RingCentral, Twilio, and 8x8 Q3 2026 releases; Grand View Research; Alpha Vantage (Form 4 insider data, financial statements).</p>
+  </div>
+</section>
+
+<div class="foot">FTA Research Hub · Five9 (FIVN) Investment Report · November 12, 2026<br>For educational purposes only. Not a recommendation to buy or sell any security. The author is not a licensed financial advisor. Do your own due diligence.</div>
+</div>
+</main>
+</div>
+
+<div class="modal" id="modal"><div class="modal-box"><button class="modal-close" id="mclose">×</button><h4 id="mtitle"></h4><div class="modal-cv"><canvas id="mcanvas"></canvas></div></div></div>
+
+<script>
+const G='#145A22',DG='#0A3A14',GOLD='#FCC55B',GD='#e0a838',RED='#a8341f',MUT='#5d6155',FOR='#243D27',LG='rgba(20,90,34,.25)';
+Chart.defaults.font.family="'Quicksand',sans-serif";Chart.defaults.font.size=11;Chart.defaults.color=MUT;
+Chart.defaults.plugins.legend.labels.boxWidth=10;Chart.defaults.maintainAspectRatio=false;
+const Q8=["Q4'24","Q1'25","Q2'25","Q3'25","Q4'25","Q1'26","Q2'26","Q3'26"];
+const cfg={
+ tam:{type:'line',data:{labels:['2024','2025','2026','2027','2028','2029','2030'],datasets:[{label:'CCaaS market ($B)',data:[6.2,7.4,8.7,10.3,12.2,14.5,17.1],borderColor:G,backgroundColor:'rgba(20,90,34,.12)',fill:true,tension:.3}]},options:{plugins:{legend:{display:false}}}},
+ mcap:{type:'bar',data:{labels:['FIVN','NICE','RNG','EGHT*','TWLO'],datasets:[{label:'Market cap ($B)',data:[2.11,4.91,6.3,0.3,33.9],backgroundColor:[GOLD,G,G,G,FOR]}]},options:{plugins:{legend:{display:false}},scales:{y:{type:'logarithmic'}}}},
+ insider:{type:'bar',data:{labels:['Mar-26','May-26','Jun-26','Aug-26','Sep-26'],datasets:[{label:'Shares sold',data:[43798,29817,56003,17767,66064],backgroundColor:RED,yAxisID:'y'},{label:'Avg price ($)',type:'line',data:[17.85,21.05,24.85,35.03,33.2],borderColor:GOLD,backgroundColor:GOLD,yAxisID:'y1'}]},options:{scales:{y:{position:'left'},y1:{position:'right',grid:{display:false}}}}},
+ analyst:{type:'bar',data:{labels:['DA Davidson','Consensus','Barclays','Needham','Price'],datasets:[{label:'Target ($)',data:[30,36.1,38,40,28.07],backgroundColor:[G,GD,G,G,RED]}]},options:{indexAxis:'y',plugins:{legend:{display:false}}}},
+ rev:{type:'bar',data:{labels:["Q2'24","Q3'24",...Q8],datasets:[{label:'Revenue ($M)',data:[252.1,264.2,278.7,279.7,283.3,285.8,300.3,305.3,312.4,323.3],backgroundColor:G,yAxisID:'y'},{label:'YoY %',type:'line',data:[null,null,17.4,13.3,12.4,8.2,7.8,9.2,10.3,13.1],borderColor:GOLD,backgroundColor:GOLD,yAxisID:'y1',tension:.3}]},options:{scales:{y:{beginAtZero:false,min:200},y1:{position:'right',grid:{display:false},min:0,max:20}}}},
+ mix:{type:'doughnut',data:{labels:['Core CCaaS sub.','AI sub./usage','Telecom usage','Prof. services'],datasets:[{data:[223.3,45,35.6,19.4],backgroundColor:[G,GOLD,FOR,GD],borderColor:'#fff'}]},options:{plugins:{legend:{position:'right'}},cutout:'58%'}},
+ cf:{type:'bar',data:{labels:Q8,datasets:[{label:'Operating CF',data:[49.8,48.4,35.1,59.2,83.6,63.9,42.1,58.4],backgroundColor:G},{label:'OCF − PP&E capex',data:[32.5,34.9,21.6,48.7,67.3,58.7,24.5,53.3],backgroundColor:GOLD}]}},
+ ni:{type:'bar',data:{labels:Q8,datasets:[{label:'GAAP net income ($M)',data:[11.6,0.6,1.2,18.0,19.7,18.4,3.4,14.5],backgroundColor:G,yAxisID:'y'},{label:'Net margin %',type:'line',data:[4.2,0.2,0.4,6.3,6.6,6.0,1.1,4.5],borderColor:GOLD,backgroundColor:GOLD,yAxisID:'y1'}]},options:{scales:{y1:{position:'right',grid:{display:false}}}}},
+ annual:{type:'bar',data:{labels:['2015','2016','2017','2018','2019','2020','2021','2022','2023','2024','2025','2026E'],datasets:[{label:'Revenue ($M)',data:[128.9,162.1,200.2,257.7,328.0,434.9,609.6,778.8,910.5,1041.9,1149.1,1272],backgroundColor:[...Array(11).fill(G),GOLD]}]},options:{plugins:{legend:{display:false}}}},
+ margin:{type:'line',data:{labels:Q8,datasets:[{label:'Adj. EBITDA %',data:[23.1,19.0,24.0,25.0,25.7,24.2,22.4,25.1],borderColor:G,backgroundColor:G,tension:.3},{label:'GAAP op. margin %',data:[1.5,-1.9,-0.6,5.6,7.3,6.1,0.6,4.4],borderColor:RED,backgroundColor:RED,tension:.3},{label:'GAAP gross %',data:[56.0,55.0,54.9,55.0,54.6,55.9,53.4,53.4],borderColor:GOLD,backgroundColor:GOLD,tension:.3}]}},
+ eps:{type:'bar',data:{labels:Q8,datasets:[{label:'Actual',data:[0.79,0.62,0.76,0.78,0.80,0.76,0.70,0.82],backgroundColor:G},{label:'Consensus',data:[0.70,0.48,0.65,0.73,0.78,0.68,0.67,0.80],backgroundColor:GOLD}]}},
+ cred:{type:'line',data:{labels:["Q4'24","Q1'25","Q2'25","Q3'25","Q4'25","Q1'26","Q2'26"],datasets:[{label:'Credibility (1–10)',data:[9,9,7,6,9,7,7],borderColor:G,backgroundColor:'rgba(20,90,34,.12)',fill:true,tension:.3,pointBackgroundColor:GOLD}]},options:{plugins:{legend:{display:false}},scales:{y:{min:0,max:10}}}},
+ scen:{type:'bar',data:{labels:['1-Year','3-Year','5-Year'],datasets:[{label:'Bear',data:[19,16,12],backgroundColor:RED},{label:'Base',data:[34,48,65],backgroundColor:GD},{label:'Bull',data:[45,80,125],backgroundColor:G}]}},
+ ev:{type:'line',data:{labels:['Today','1-Year','3-Year','5-Year'],datasets:[{label:'Prob-weighted value',data:[28.07,34.3,49.6,64.1],borderColor:G,backgroundColor:'rgba(20,90,34,.12)',fill:true,tension:.25},{label:'Current price',data:[28.07,28.07,28.07,28.07],borderColor:RED,borderDash:[5,4],pointRadius:0}]}},
+ psg:{type:'bar',data:{labels:['FIVN','NICE','RNG','TWLO','EGHT'],datasets:[{label:'P/S (×)',data:[1.70,1.63,2.4,5.9,0.5],backgroundColor:G},{label:'Rev growth (%)',data:[13.1,8.0,5.9,20,2],backgroundColor:GOLD}]}},
+ peer:{type:'bar',data:{labels:['FIVN','NICE','RNG','TWLO','EGHT'],datasets:[{label:'FCF margin (%)',data:[13.8,19.5,23.5,20,9],backgroundColor:G},{label:'EV/EBITDA (×)',data:[7.1,5.5,10,25,7],backgroundColor:GOLD}]}},
+ kpi1:{type:'line',data:{labels:["Q1'25","Q2'25","Q4'25","Q1'26","Q2'26","Q3'26"],datasets:[{label:'AI revenue growth %',data:[32,42,50,68,75,91],borderColor:GOLD,backgroundColor:GOLD,tension:.3},{label:'Subscription growth %',data:[null,null,12,13,14,16],borderColor:G,backgroundColor:G,tension:.3},{label:'Core CCaaS %',data:[null,null,8,null,null,8],borderColor:RED,backgroundColor:RED,spanGaps:true,borderDash:[4,3]}]}},
+ kpi2:{type:'line',data:{labels:["Q3'25","Q4'25","Q1'26","Q2'26","Q3'26"],datasets:[{label:'DBRR %',data:[107,105,107,107,109],borderColor:G,backgroundColor:G,yAxisID:'y',tension:.3},{label:'Adj. EBITDA %',data:[25.0,25.7,24.2,22.4,25.1],borderColor:GOLD,backgroundColor:GOLD,yAxisID:'y1',tension:.3}]},options:{scales:{y:{min:100,max:112},y1:{position:'right',min:15,max:30,grid:{display:false}}}}},
+ aishare:{type:'bar',data:{labels:["Q3'25","Q3'26","2027 target"],datasets:[{label:'AI % of subscription',data:[10,17,25],backgroundColor:[G,G,GOLD]}]},options:{plugins:{legend:{display:false}},scales:{y:{min:0,max:30}}}},
+ arr:{type:'line',data:{labels:["Q4'25","Q1'26","Q3'26"],datasets:[{label:'AI run-rate ($M)',data:[100,125,180],borderColor:G,backgroundColor:'rgba(252,197,91,.35)',fill:true,tension:.3,pointBackgroundColor:GOLD}]},options:{plugins:{legend:{display:false}}}}
+};
+const ids={tam:'c_tam',mcap:'c_mcap',insider:'c_insider',analyst:'c_analyst',rev:'c_rev',mix:'c_mix',cf:'c_cf',ni:'c_ni',annual:'c_annual',margin:'c_margin',eps:'c_eps',cred:'c_cred',scen:'c_scen',ev:'c_ev',psg:'c_psg',peer:'c_peer',kpi1:'c_kpi1',kpi2:'c_kpi2',aishare:'c_aishare',arr:'c_arr'};
+const clone=o=>JSON.parse(JSON.stringify(o));
+Object.entries(ids).forEach(([k,id])=>{const el=document.getElementById(id);if(el)new Chart(el,clone(cfg[k]));});
+let mChart=null;const modal=document.getElementById('modal');
+document.querySelectorAll('.chart-box').forEach(b=>b.addEventListener('click',()=>{const k=b.dataset.chart;document.getElementById('mtitle').textContent=b.querySelector('.ct').childNodes[0].textContent.trim();if(mChart)mChart.destroy();modal.classList.add('open');mChart=new Chart(document.getElementById('mcanvas'),clone(cfg[k]));}));
+const closeM=()=>{modal.classList.remove('open');if(mChart){mChart.destroy();mChart=null;}};
+document.getElementById('mclose').onclick=closeM;modal.addEventListener('click',e=>{if(e.target===modal)closeM();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeM();});
+document.querySelectorAll('.card-h').forEach(h=>h.addEventListener('click',()=>h.parentElement.classList.toggle('collapsed')));
+</script>
+</body>
+</html>
